@@ -1,0 +1,12 @@
+[project]
+name = "qwen-operator-lab"
+version = "0.1.0"
+description = "Qwen3 Triton kernels, numerical validation, inference and training benchmarks"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "accelerate>=1.6",
+    "transformers==4.51.0",
+]
+
+[tool.uv]
+package = false

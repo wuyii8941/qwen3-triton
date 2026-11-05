@@ -1,0 +1,11 @@
+{
+  "model": "/data1/tzh/models/Qwen/Qwen3-1.7B",
+  "corpus": "artifacts/convergence_corpus_v1",
+  "seed": 20261102,
+  "seq": 512,
+  "lr": 0.00001,
+  "eval_every": 2,
+  "log_every": 1,
+  "max_seconds": 3600,
+  "plateau": {"min_delta": 0.002, "patience": 8, "min_checks": 10}
+}
