@@ -1,0 +1,41 @@
+{
+  "verified": true,
+  "checkpoint": "DeepSeek-R1-0528-Qwen3-8B",
+  "model_type": "qwen3",
+  "global_parameters": 8190735360,
+  "world_size": 4,
+  "gpu": "RTX A6000",
+  "dtype": "BF16 compute; FP32 master/gradients/AdamW",
+  "seq": 512,
+  "microbatch_per_rank": 1,
+  "global_batch": 4,
+  "steps": 3,
+  "data": "Existing WikiText token corpus",
+  "full_parameter_training": true,
+  "initial_hf_max_abs": 0.0,
+  "export_reload_max_abs": 0.0,
+  "greedy_generated_tokens": 32,
+  "max_peak_allocated_gib": 35.75682258605957,
+  "max_peak_reserved_gib": 39.3359375,
+  "q_projection_changed_fraction": 0.18625956773757935,
+  "q_projection_max_abs_update": 3.0517578125e-05,
+  "pytorch": "2.10.0+cu128",
+  "triton": "3.6.0",
+  "transformers": "4.51.0",
+  "source_sha256": {
+    "training/minimal_fsdp.py": "fd20513654bafd56a6d086479ea3519f8b67b7f90c517646c6da62ad8bb21280",
+    "training/block_fsdp.py": "756cf677c9e6a015b212b06c7a03653653a15f8716678ab6834c0f0a61ec0ba0",
+    "training/run_sharded_qwen.py": "df30ef9d3e7d8b644b694cdeab9da12a7e0c8c2997e38602eef7f9258e3f0cb9",
+    "training/sharded_checkpoint.py": "2d4be8c7c3bab63138a624418ddc82a8621da9fdf904a3c48999917e938069f9",
+    "training/export_sharded_hf.py": "7296479dfddb1a1cf26887a1d9a4ad97f2c2c27a35cba155979ec5c13cae831e",
+    "scripts/deploy_sharded_8b.py": "f418523dd053bac1fe3e790a9b3eb7edd4a74760ed8314e9f81eb6e74024d087",
+    "benchmarks/verify_exported_qwen.py": "8629f52abe6c9faf053642204ae13e66150649fd3283e6330b13182ccfbc1db2"
+  },
+  "limits": [
+    "Short training smoke, not convergence or quality evaluation",
+    "Not a benchmark against official FSDP",
+    "HF model export verified; full 8B AdamW checkpoint not saved due disk capacity",
+    "Original Qwen/Qwen3-8B download incomplete; real checkpoint is DeepSeek Qwen3 derivative",
+    "YaRN attn_factor warning retained under HF 4.51.0; long context not validated"
+  ]
+}

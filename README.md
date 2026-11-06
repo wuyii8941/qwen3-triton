@@ -2,6 +2,8 @@
 
 ## 仓库范围与最新训练实验
 
+新增：[7B/8B 级全分片训练与 HF 导出](MINIMAL_FSDP.md)。真实 DeepSeek-R1-0528-Qwen3-8B 已完成四卡全参数训练、标准 HF 权重导出和重新加载验证；不是随机初始化容量测试。NCCL 负责通信，Triton 负责本地 shard cast/复制/梯度平均。本版本仅覆盖基础实现与部署验证，不包含后续官方 FSDP 性能对照和调优实验。
+
 本项目包含 PyTorch reference、自定义 Triton forward/backward、Tiny-Qwen、真实 HF Qwen3 接入、算子与完整训练 benchmark。它是实验研究代码，不是所有配置都更快的通用训练框架。
 
 - `ops/`：reference 与 Triton 实现；`model/`：模型及 HF 接入。
