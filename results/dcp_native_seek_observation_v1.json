@@ -1,0 +1,26 @@
+{
+  "scope": "Read-only host /proc samples of the live native DCP load; not an I/O benchmark, total seek-distance measurement or causal speedup proof",
+  "worker_pid": 396021,
+  "file_descriptor": 84,
+  "file": "/data1/tzh/proj/qwen_operator_lab/artifacts/fsdp_real_resume_8b_queue_v1/replay/step2/state/__0_0.distcp",
+  "samples": [
+    {
+      "process_elapsed_seconds": 1995,
+      "file_position_bytes": 22084772113,
+      "process_rchar": 8310766668,
+      "process_read_bytes": 12250378240
+    },
+    {
+      "process_elapsed_seconds": 2060,
+      "file_position_bytes": 9968132647,
+      "process_rchar": 9639737292,
+      "process_read_bytes": 13037223936
+    }
+  ],
+  "same_worker_and_same_file": true,
+  "observed_non_monotonic_file_position": true,
+  "sampling_is_atomic": false,
+  "native_run_interrupted": false,
+  "sorted_reader_performance_proven": false,
+  "interpretation": "Supports testing file-offset request sorting; does not isolate disk contention, cache effects or internal deserializer seeking"
+}

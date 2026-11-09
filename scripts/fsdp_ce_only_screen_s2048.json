@@ -1,0 +1,8 @@
+{
+  "baseline_full_k8": [8, 2, "full", 0],
+  "ce_full_k8": [8, 2, "full", 128],
+  "ce_full_k12": [12, 2, "full", 128],
+  "ce_full_k16": [16, 2, "full", 128],
+  "ce_native_k0": [0, 0, "full", 128],
+  "ce_native_k8": [8, 0, "full", 128]
+}

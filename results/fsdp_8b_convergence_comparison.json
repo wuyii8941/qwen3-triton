@@ -1,0 +1,165 @@
+{
+  "records": [
+    {
+      "schema_version": 1,
+      "backend": "official",
+      "complete": true,
+      "converged": true,
+      "stop_reason": "validation_plateau",
+      "protocol": {
+        "schema_version": 1,
+        "status": "preregistered_not_executed",
+        "model": "/data1/tzh/models/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+        "corpus": "artifacts/convergence_corpus_v1",
+        "seed": 20261106,
+        "world_size": 4,
+        "sequence_length": 512,
+        "microbatch_per_rank": 1,
+        "global_batch": 4,
+        "optimizer": "AdamW",
+        "learning_rate": 0.00001,
+        "betas": [
+          0.9,
+          0.999
+        ],
+        "epsilon": 1e-8,
+        "weight_decay": 0.01,
+        "compute_dtype": "bfloat16",
+        "master_gradient_optimizer_dtype": "float32",
+        "validation": {
+          "split": "validation.bin",
+          "scope": "all complete sequence blocks; do not substitute a small subset",
+          "every_updates": 32,
+          "batch_per_rank": 4,
+          "aggregation": "sum token negative log likelihood divided by valid shifted token count",
+          "exclude_padding": true
+        },
+        "plateau": {
+          "min_delta": 0.002,
+          "patience": 8,
+          "min_checks": 10
+        },
+        "safety": {
+          "max_updates": 4096,
+          "max_hours_per_backend": 6
+        },
+        "convergence_claim": "Validation plateau on this fixed WikiText continual-pretraining task only; never original pretraining convergence",
+        "safety_cutoff_means_converged": false,
+        "test_policy": "Evaluate held-out test once after restoring best validation parameters; never tune on test",
+        "resource_policy": {
+          "serial_large_model_jobs": true,
+          "home_writes": false,
+          "runtime_root": "/data1/tzh/proj/qwen_operator_lab/.runtime-research",
+          "output_root": "/data1/tzh/proj/qwen_operator_lab/artifacts",
+          "save_full_optimizer_checkpoint": false,
+          "reason": "Available disk cannot hold approximately 92 GiB full optimizer checkpoint",
+          "best_parameters": "One reusable CPU snapshot per rank; no repeated 16 GiB model exports during validation"
+        }
+      },
+      "updates": 1184,
+      "validation_checks": 38,
+      "best_step": 1152,
+      "best_validation": 2.1510522118286612,
+      "best_parameters_restored": true,
+      "test": {
+        "loss": 2.106290687017372,
+        "tokens": 297913,
+        "blocks": 583
+      },
+      "elapsed_seconds": 10768.158271888271,
+      "median_recorded_step_seconds": 7.0969497468322515,
+      "max_rank_peak_allocated_gib": 35.171597480773926,
+      "max_rank_peak_reserved_gib": 43.8203125,
+      "source": "artifacts/fsdp_convergence_campaign_v2/official_full_protocol/result.json",
+      "source_sha256": "da8f9db6f151beaeedc9353121a15c8142472345eb26a973febe07d5833c753d"
+    },
+    {
+      "schema_version": 1,
+      "backend": "custom_avg",
+      "complete": true,
+      "converged": true,
+      "stop_reason": "validation_plateau",
+      "protocol": {
+        "schema_version": 1,
+        "status": "preregistered_not_executed",
+        "model": "/data1/tzh/models/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+        "corpus": "artifacts/convergence_corpus_v1",
+        "seed": 20261106,
+        "world_size": 4,
+        "sequence_length": 512,
+        "microbatch_per_rank": 1,
+        "global_batch": 4,
+        "optimizer": "AdamW",
+        "learning_rate": 0.00001,
+        "betas": [
+          0.9,
+          0.999
+        ],
+        "epsilon": 1e-8,
+        "weight_decay": 0.01,
+        "compute_dtype": "bfloat16",
+        "master_gradient_optimizer_dtype": "float32",
+        "validation": {
+          "split": "validation.bin",
+          "scope": "all complete sequence blocks; do not substitute a small subset",
+          "every_updates": 32,
+          "batch_per_rank": 4,
+          "aggregation": "sum token negative log likelihood divided by valid shifted token count",
+          "exclude_padding": true
+        },
+        "plateau": {
+          "min_delta": 0.002,
+          "patience": 8,
+          "min_checks": 10
+        },
+        "safety": {
+          "max_updates": 4096,
+          "max_hours_per_backend": 6
+        },
+        "convergence_claim": "Validation plateau on this fixed WikiText continual-pretraining task only; never original pretraining convergence",
+        "safety_cutoff_means_converged": false,
+        "test_policy": "Evaluate held-out test once after restoring best validation parameters; never tune on test",
+        "resource_policy": {
+          "serial_large_model_jobs": true,
+          "home_writes": false,
+          "runtime_root": "/data1/tzh/proj/qwen_operator_lab/.runtime-research",
+          "output_root": "/data1/tzh/proj/qwen_operator_lab/artifacts",
+          "save_full_optimizer_checkpoint": false,
+          "reason": "Available disk cannot hold approximately 92 GiB full optimizer checkpoint",
+          "best_parameters": "One reusable CPU snapshot per rank; no repeated 16 GiB model exports during validation"
+        }
+      },
+      "updates": 1152,
+      "validation_checks": 37,
+      "best_step": 1152,
+      "best_validation": 2.1509505671297733,
+      "best_parameters_restored": true,
+      "test": {
+        "loss": 2.1063312516009813,
+        "tokens": 297913,
+        "blocks": 583
+      },
+      "elapsed_seconds": 11765.240338625386,
+      "median_recorded_step_seconds": 7.816291115246713,
+      "max_rank_peak_allocated_gib": 35.17723369598389,
+      "max_rank_peak_reserved_gib": 39.224609375,
+      "source": "artifacts/fsdp_convergence_campaign_v2/custom_avg_full_protocol/result.json",
+      "source_sha256": "c29050f29922d96326a2bff7b3030a31fc662271260ec68f578d0057acf44823"
+    }
+  ],
+  "comparison": {
+    "ready": true,
+    "baseline": "official",
+    "candidate": "custom_avg",
+    "candidate_over_baseline_job_time": 1.0925954133995348,
+    "candidate_minus_baseline_best_validation": -0.00010164469888795935,
+    "candidate_minus_baseline_test_loss": 0.00004056458360945925,
+    "scope": "Matched-protocol job-to-plateau runtime; not equal-quality speedup or statistical significance"
+  },
+  "limitations": [
+    "Single seed; no statistical equivalence claim",
+    "Shared GPUs with other Python/vLLM jobs; wall times are observational, not isolated implementation performance",
+    "Fixed WikiText continual-pretraining plateau, not original pretraining convergence",
+    "Long-run best parameters restored in process but not exported; initial deployment export remains a separate three-update artifact"
+  ]
+}

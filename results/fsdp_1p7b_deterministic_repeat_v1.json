@@ -1,0 +1,44 @@
+{
+  "complete": true,
+  "raw_summary_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/fsdp_1p7b_deterministic_repeat_v1/result.json",
+  "raw_summary_sha256": "c1cbdb8c12b70b5e4ae70fcf4b9f1e860e0fa1182d71b80caafd18bfc2f05030",
+  "checked_runs": [
+    "native_a",
+    "native_b",
+    "keep28",
+    "checkpoint28"
+  ],
+  "loss_exact_vs_native": {
+    "native_b": true,
+    "keep28": true,
+    "checkpoint28": true
+  },
+  "loss_checks": {
+    "native_b": {
+      "max_absolute_loss_difference": 0.0,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": true,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "keep28": {
+      "max_absolute_loss_difference": 0.0,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": true,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "checkpoint28": {
+      "max_absolute_loss_difference": 0.0,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": true,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    }
+  },
+  "frozen_content_sha256": "a8512bf9de2269b1ab6cf565883c559b25aed7c5fa851c72b84b4676cf3bb185",
+  "implementation_sha256": "910b351ffbad62ed0eb3e1ba0b6186f2de84277f686026e7fe04b3b4d2015c2e",
+  "defaults_changed": false,
+  "convergence_proven": false,
+  "scope": "Independent record audit: four real1.7B updates, mean losses only; not full gradients/moments, 15-step replay or performance"
+}

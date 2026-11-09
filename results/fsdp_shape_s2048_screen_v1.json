@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "baseline_case": "full_k0",
+  "workload_signature": [
+    "/data1/tzh/models/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+    4,
+    1,
+    2048,
+    3,
+    6,
+    "FP32 master/AdamW/reduce, BF16 compute",
+    "forced Flash SDPA",
+    42.0,
+    "895483174bb100a2e213d9f72589796fcabf45747885a8369e732680f0094a66",
+    "fcfaacdbe49ed9ad503199adca62a0f4ba3111f21e0324df09ffaee56027c726",
+    "2.10.0+cu128",
+    "12.8",
+    "NVIDIA RTX A6000",
+    "{\"backend\": \"native\", \"environment\": {\"PYTORCH_ALLOC_CONF\": \"backend:native,expandable_segments:False\", \"PYTORCH_CUDA_ALLOC_CONF\": null}, \"settings\": {\"PYTORCH_CUDA_ALLOC_CONF\": \"backend:native,expandable_segments:False\", \"expandable_segments\": false, \"garbage_collection_threshold\": 0.0, \"graph_capture_record_stream_reuse\": false, \"max_split_size\": -1, \"pinned_num_register_threads\": 1, \"pinned_use_cuda_host_register\": false, \"release_lock_on_cudamalloc\": false, \"roundup_power2_divisions\": {\"1\": 0, \"1024\": 0, \"128\": 0, \"16\": 0, \"16384\": 0, \"2\": 0, \"2048\": 0, \"256\": 0, \"32\": 0, \"32768\": 0, \"4\": 0, \"4096\": 0, \"512\": 0, \"64\": 0, \"8\": 0, \"8192\": 0}}}"
+  ],
+  "records": [
+    {
+      "case": "full_k0",
+      "policy": {
+        "keep_full_layers": 0,
+        "checkpoint_every": 2,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "artifacts/fsdp_shape_s2048_screen_v1/full_k0.log",
+      "log_sha256": "a87813e00a6feee365ef84e8c93c1df124aa75472f84985c19eaa56b1629b9d0",
+      "status": "passed",
+      "source": "artifacts/fsdp_shape_s2048_screen_v1/full_k0/result.json",
+      "sha256": "efdbc7585642005c99f90738f150e30a7dca4fdd77d093e940b0679949a3065e",
+      "median_step_seconds": 7.81861593388021,
+      "tokens_per_second": 1047.7557753542817,
+      "peak_allocated_gib": 35.404799461364746,
+      "peak_reserved_gib": 42.0,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_baseline": 1.0
+    },
+    {
+      "case": "native_k0",
+      "policy": {
+        "keep_full_layers": 0,
+        "checkpoint_every": 0,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 1,
+      "log_source": "artifacts/fsdp_shape_s2048_screen_v1/native_k0.log",
+      "log_sha256": "212372360204519cad7d09896b62b7072e1e1e6cf83f641e224861fd1d4e0e23",
+      "status": "oom"
+    },
+    {
+      "case": "full_k8",
+      "policy": {
+        "keep_full_layers": 8,
+        "checkpoint_every": 2,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "artifacts/fsdp_shape_s2048_screen_v1/full_k8.log",
+      "log_sha256": "b16b13c5cc1a4de183f4a913995949c6cc54beaf988070378f5bbe70b9ed44f6",
+      "status": "passed",
+      "source": "artifacts/fsdp_shape_s2048_screen_v1/full_k8/result.json",
+      "sha256": "0853929a3ebe302f24c6f995c885e675d217a1b1ce35e492827cef6f84aed579",
+      "median_step_seconds": 7.374188521876931,
+      "tokens_per_second": 1110.9018945877062,
+      "peak_allocated_gib": 38.27992916107178,
+      "peak_reserved_gib": 41.9921875,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_baseline": 1.0602679753419377
+    },
+    {
+      "case": "full_k16",
+      "policy": {
+        "keep_full_layers": 16,
+        "checkpoint_every": 2,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 1,
+      "log_source": "artifacts/fsdp_shape_s2048_screen_v1/full_k16.log",
+      "log_sha256": "e201b381e222ba87aadef181184b2f9857b7b4a123790b6faea81b34ffedef37",
+      "status": "oom"
+    }
+  ],
+  "screening_winner": "full_k8",
+  "scope": "Fixed-workload single-round screen; not ABBA confirmation, convergence or universal optimum"
+}

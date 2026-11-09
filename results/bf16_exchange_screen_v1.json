@@ -1,0 +1,123 @@
+{
+  "complete": true,
+  "screens": {
+    "auto": {
+      "path": "/data1/tzh/proj/qwen_operator_lab/artifacts/fsdp_nccl_then_quality_v4/exchange/auto/result.json",
+      "sha256": "52698d0caa07d3ba081e7ec3206d39c0439995af403193ada9b7c1477f6e6443",
+      "audit": {
+        "paired_throughput_ratios": {
+          "small": {
+            "exchange_torch": [
+              0.9926153999133225,
+              0.7955942701890113
+            ],
+            "exchange_triton": [
+              1.7168706335542838,
+              0.8043853487208804
+            ]
+          },
+          "decoder": {
+            "exchange_torch": [
+              1.284071011409151,
+              1.2051820180523762
+            ],
+            "exchange_triton": [
+              0.9245745112994584,
+              1.3314012946181049
+            ]
+          },
+          "head": {
+            "exchange_torch": [
+              1.3584572244686197,
+              1.313556951123173
+            ],
+            "exchange_triton": [
+              1.5212365473105325,
+              0.9803229683479512
+            ]
+          }
+        },
+        "triton_over_two_percent_in_both_orders": {
+          "small": false,
+          "decoder": false,
+          "head": false
+        }
+      }
+    },
+    "simple": {
+      "path": "/data1/tzh/proj/qwen_operator_lab/artifacts/fsdp_nccl_then_quality_v4/exchange/simple/result.json",
+      "sha256": "b89df59c47ff83e52e80544253d9418efe01dac289a623a89527ec50d5314881",
+      "audit": {
+        "paired_throughput_ratios": {
+          "small": {
+            "exchange_torch": [
+              0.857771299942004,
+              0.9299395097999522
+            ],
+            "exchange_triton": [
+              1.3547938874569583,
+              2.0460215878611
+            ]
+          },
+          "decoder": {
+            "exchange_torch": [
+              1.2443997007743224,
+              0.8122944102373074
+            ],
+            "exchange_triton": [
+              1.3602379935951199,
+              0.9029959749577051
+            ]
+          },
+          "head": {
+            "exchange_torch": [
+              0.9906444966511843,
+              1.904246844012398
+            ],
+            "exchange_triton": [
+              1.1575680350638091,
+              3.0747964853759466
+            ]
+          }
+        },
+        "triton_over_two_percent_in_both_orders": {
+          "small": true,
+          "decoder": false,
+          "head": true
+        }
+      }
+    }
+  },
+  "model_gate_candidates": [
+    {
+      "protocol_request": "auto",
+      "size": "decoder",
+      "backend": "exchange_torch",
+      "paired_ratios": [
+        1.284071011409151,
+        1.2051820180523762
+      ]
+    },
+    {
+      "protocol_request": "auto",
+      "size": "head",
+      "backend": "exchange_torch",
+      "paired_ratios": [
+        1.3584572244686197,
+        1.313556951123173
+      ]
+    },
+    {
+      "protocol_request": "Simple",
+      "size": "head",
+      "backend": "exchange_triton",
+      "paired_ratios": [
+        1.1575680350638091,
+        3.0747964853759466
+      ]
+    }
+  ],
+  "model_integrated": false,
+  "model_speedup_proven": false,
+  "scope": "Random finite exact-upcast BF16 inputs; two ordered operator measurements on shared GPUs. Not statistical significance, arbitrary FP32 quantization, FSDP gradient parity, full-step memory/performance or convergence. Protocol is requested, not trace-verified."
+}

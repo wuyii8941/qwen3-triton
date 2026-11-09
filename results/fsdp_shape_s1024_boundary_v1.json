@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "baseline_case": "native_k16",
+  "workload_signature": [
+    "/data1/tzh/models/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+    4,
+    1,
+    1024,
+    3,
+    6,
+    "FP32 master/AdamW/reduce, BF16 compute",
+    "forced Flash SDPA",
+    42.0,
+    "9fa6051814412110266a741a1790f13e57191571d715beb5665dd3a10d57e978",
+    "fcfaacdbe49ed9ad503199adca62a0f4ba3111f21e0324df09ffaee56027c726",
+    "2.10.0+cu128",
+    "12.8",
+    "NVIDIA RTX A6000",
+    "{\"backend\": \"native\", \"environment\": {\"PYTORCH_ALLOC_CONF\": \"backend:native,expandable_segments:False\", \"PYTORCH_CUDA_ALLOC_CONF\": null}, \"settings\": {\"PYTORCH_CUDA_ALLOC_CONF\": \"backend:native,expandable_segments:False\", \"expandable_segments\": false, \"garbage_collection_threshold\": 0.0, \"graph_capture_record_stream_reuse\": false, \"max_split_size\": -1, \"pinned_num_register_threads\": 1, \"pinned_use_cuda_host_register\": false, \"release_lock_on_cudamalloc\": false, \"roundup_power2_divisions\": {\"1\": 0, \"1024\": 0, \"128\": 0, \"16\": 0, \"16384\": 0, \"2\": 0, \"2048\": 0, \"256\": 0, \"32\": 0, \"32768\": 0, \"4\": 0, \"4096\": 0, \"512\": 0, \"64\": 0, \"8\": 0, \"8192\": 0}}}"
+  ],
+  "records": [
+    {
+      "case": "native_k16",
+      "policy": {
+        "keep_full_layers": 16,
+        "checkpoint_every": 0,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "artifacts/fsdp_shape_s1024_boundary_v1/native_k16.log",
+      "log_sha256": "0f6f81d1c4b7ed0a41f111ee9f6c36f43e9f39b332f86e5c9cd125ade30211bc",
+      "status": "passed",
+      "source": "artifacts/fsdp_shape_s1024_boundary_v1/native_k16/result.json",
+      "sha256": "21b8c4f74146bd931291194e9e540e224806efb46e99fc47ff04530b905bae67",
+      "median_step_seconds": 6.991211762651801,
+      "tokens_per_second": 585.8784054978141,
+      "peak_allocated_gib": 40.840527057647705,
+      "peak_reserved_gib": 41.998046875,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_baseline": 1.0
+    },
+    {
+      "case": "native_k18",
+      "policy": {
+        "keep_full_layers": 18,
+        "checkpoint_every": 0,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 1,
+      "log_source": "artifacts/fsdp_shape_s1024_boundary_v1/native_k18.log",
+      "log_sha256": "8cb0fff4491ff8bcc252b9b065f8688ede5af21cec88ef825a74dc736ce6f685",
+      "status": "oom"
+    },
+    {
+      "case": "native_k19",
+      "policy": {
+        "keep_full_layers": 19,
+        "checkpoint_every": 0,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 1,
+      "log_source": "artifacts/fsdp_shape_s1024_boundary_v1/native_k19.log",
+      "log_sha256": "24b5b02a5968a6faf5bb299ccbb5ea1dd4bcb94c890e2bacac29e1c1d83caa06",
+      "status": "oom"
+    },
+    {
+      "case": "full_k28",
+      "policy": {
+        "keep_full_layers": 28,
+        "checkpoint_every": 2,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "artifacts/fsdp_shape_s1024_boundary_v1/full_k28.log",
+      "log_sha256": "fb81c1c26d45e0e84cb5b3a1c7d011eff0409ef545f8afce67f68a64695d4d60",
+      "status": "passed",
+      "source": "artifacts/fsdp_shape_s1024_boundary_v1/full_k28/result.json",
+      "sha256": "75baa3d6e41741cbbb837e826f1cafefd33f9794e12ad79659090f851e26a388",
+      "median_step_seconds": 6.149910459294915,
+      "tokens_per_second": 666.0259571437085,
+      "peak_allocated_gib": 41.245787143707275,
+      "peak_reserved_gib": 41.984375,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_baseline": 1.1367989516148729
+    },
+    {
+      "case": "full_k29",
+      "policy": {
+        "keep_full_layers": 29,
+        "checkpoint_every": 2,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "artifacts/fsdp_shape_s1024_boundary_v1/full_k29.log",
+      "log_sha256": "f8b89f2ff7488eeb6996f39fe4b55ab46595aab6b16132272731081fb8497d24",
+      "status": "passed",
+      "source": "artifacts/fsdp_shape_s1024_boundary_v1/full_k29/result.json",
+      "sha256": "6d1a4d358a97a91e66a792b4adc185b64b0a8b57665a5d713a9f6bfc3f81bc5c",
+      "median_step_seconds": 6.2250553127378225,
+      "tokens_per_second": 657.9861212829209,
+      "peak_allocated_gib": 41.605178356170654,
+      "peak_reserved_gib": 41.998046875,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_baseline": 1.1230762477477518
+    }
+  ],
+  "screening_winner": "full_k28",
+  "scope": "Fixed-workload single-round screen; not ABBA confirmation, convergence or universal optimum"
+}

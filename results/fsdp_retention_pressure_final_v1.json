@@ -1,0 +1,236 @@
+{
+  "complete": true,
+  "partial_diagnostic_only": false,
+  "raw_jobs_audited": 8,
+  "records": [
+    {
+      "case": "native_k36",
+      "result_sha256": "94525da82d73089ee22f049b1ebc8bf0a0d6e16af3ff89a766e81b7a764159f1",
+      "allocator_sha256": [
+        "21101c766c3dd339d5fbb67ce70ca6962c6d828ae5bb161b8c9824183f1e5d76",
+        "76de02abc00aad244aa00c8f44b00076d7041bc410de8dd49534c9845075a5ca",
+        "9960ddc9029e3b9e0695d8ca4381c793734d8ecad5903f40b2e4a43f1f1fba9e",
+        "a41b91e21510bffebc0b78c50c31a8dc4f945f3deb4bac76b4ee30980d2d65fa"
+      ],
+      "median_step_seconds": 6.230922155082226,
+      "peak_allocated_gib": 40.0525689125061,
+      "peak_reserved_gib": 41.8671875,
+      "counter_medians": {
+        "num_alloc_retries": 4.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 4.0,
+        "num_device_alloc": 238.5,
+        "num_device_free": 20.0
+      },
+      "repeat": 0,
+      "source": "artifacts/fsdp_retention_pressure_v1/r0_native_k36",
+      "log_sha256": "8385b09c0f392d41926b95ecc104ff4b4979d656bea22221418494470ffee56a",
+      "resource_sha256": "a803150a69c5161e45c5c10050d798269f5002fa90b4975e7052d94857a76774"
+    },
+    {
+      "case": "native_k24",
+      "result_sha256": "4fa9f59add6173e349b18cbb8399fb78879943a3b9d7ba4e0837bdc4afe7bf21",
+      "allocator_sha256": [
+        "6533f80474a1e659490cfb667a8dda592e37935b2150b2c11860cdc0c6ac8ecb",
+        "76de02abc00aad244aa00c8f44b00076d7041bc410de8dd49534c9845075a5ca",
+        "9960ddc9029e3b9e0695d8ca4381c793734d8ecad5903f40b2e4a43f1f1fba9e",
+        "a41b91e21510bffebc0b78c50c31a8dc4f945f3deb4bac76b4ee30980d2d65fa"
+      ],
+      "median_step_seconds": 6.626597234047949,
+      "peak_allocated_gib": 35.73987436294556,
+      "peak_reserved_gib": 41.791015625,
+      "counter_medians": {
+        "num_alloc_retries": 2.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 2.0,
+        "num_device_alloc": 127.0,
+        "num_device_free": 11.0
+      },
+      "repeat": 0,
+      "source": "artifacts/fsdp_retention_pressure_v1/r0_native_k24",
+      "log_sha256": "7031265493db4a0fc686114aec327685f0b9f44cf43525c025c3440dc1e4e78d",
+      "resource_sha256": "4fc0ee9dbebc341304a54c7bf939de087545e2666bda60ead2e415b8674a2106"
+    },
+    {
+      "case": "decoder_k32",
+      "result_sha256": "af9376da5817672b2262ab0b6286d20e677e8bcdc61f5e287a0e9293bd338778",
+      "allocator_sha256": [
+        "3c33f97420376212db35184e7ac629dbf322022ad167c96382673bce89e979fd",
+        "76de02abc00aad244aa00c8f44b00076d7041bc410de8dd49534c9845075a5ca",
+        "9960ddc9029e3b9e0695d8ca4381c793734d8ecad5903f40b2e4a43f1f1fba9e",
+        "a41b91e21510bffebc0b78c50c31a8dc4f945f3deb4bac76b4ee30980d2d65fa"
+      ],
+      "median_step_seconds": 5.687181363813579,
+      "peak_allocated_gib": 38.61500406265259,
+      "peak_reserved_gib": 41.7890625,
+      "counter_medians": {
+        "num_alloc_retries": 3.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 3.0,
+        "num_device_alloc": 207.0,
+        "num_device_free": 15.0
+      },
+      "repeat": 0,
+      "source": "artifacts/fsdp_retention_pressure_v1/r0_decoder_k32",
+      "log_sha256": "38310bb2ec95a80e886142301f096fbc9f46d8cda3112a440477a3edf1d93617",
+      "resource_sha256": "9f3643b52792426a3e993bda592e41f1b63220063e2b69cc7ec8e520043cfada"
+    },
+    {
+      "case": "decoder_k24",
+      "result_sha256": "49c0b37656b246d4ddf4a5dfcc0a49d2557a34399a3de2407ca8f464ec90de28",
+      "allocator_sha256": [
+        "fecb1c44166a925c5c1806f48de32bf23f90bdb7d51168345b010042e5011076",
+        "76de02abc00aad244aa00c8f44b00076d7041bc410de8dd49534c9845075a5ca",
+        "9960ddc9029e3b9e0695d8ca4381c793734d8ecad5903f40b2e4a43f1f1fba9e",
+        "a41b91e21510bffebc0b78c50c31a8dc4f945f3deb4bac76b4ee30980d2d65fa"
+      ],
+      "median_step_seconds": 5.6243743393570185,
+      "peak_allocated_gib": 35.73987436294556,
+      "peak_reserved_gib": 41.828125,
+      "counter_medians": {
+        "num_alloc_retries": 2.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 2.0,
+        "num_device_alloc": 100.0,
+        "num_device_free": 11.0
+      },
+      "repeat": 0,
+      "source": "artifacts/fsdp_retention_pressure_v1/r0_decoder_k24",
+      "log_sha256": "d1b41a4e56569e9d58ee4aef06d50350ba23d627f8d7cebb111441b3682d848a",
+      "resource_sha256": "c8ac2a63d698875dcdc44a1289d80b15be4b2b7dc0405253fce9c8cab63a99bc"
+    },
+    {
+      "case": "decoder_k24",
+      "result_sha256": "d0359009124af2b3d2c18cced4847a1211af41a1dcfc79d806e9fa3554892e81",
+      "allocator_sha256": [
+        "9d056298a361039c57c6bb1844e9c4ec738f24b9d9da8f1f160ef7bab600cbf2",
+        "76de02abc00aad244aa00c8f44b00076d7041bc410de8dd49534c9845075a5ca",
+        "9960ddc9029e3b9e0695d8ca4381c793734d8ecad5903f40b2e4a43f1f1fba9e",
+        "a41b91e21510bffebc0b78c50c31a8dc4f945f3deb4bac76b4ee30980d2d65fa"
+      ],
+      "median_step_seconds": 5.620633592829108,
+      "peak_allocated_gib": 35.73987436294556,
+      "peak_reserved_gib": 41.828125,
+      "counter_medians": {
+        "num_alloc_retries": 2.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 2.0,
+        "num_device_alloc": 100.0,
+        "num_device_free": 11.0
+      },
+      "repeat": 1,
+      "source": "artifacts/fsdp_retention_pressure_v1/r1_decoder_k24",
+      "log_sha256": "55db5328b7ae74a5af5b8a88f492dfc0c3e980769bead8ea7674634a6529219a",
+      "resource_sha256": "ba9f449facc2fa17b0f7080a5678d48cb5ed0d2745f192a8c1d9061af16f4a80"
+    },
+    {
+      "case": "decoder_k32",
+      "result_sha256": "f26b21ce92bc2012e231043ba616699945ce0f2706ad57a53b7a968255821afa",
+      "allocator_sha256": [
+        "ac1947850a78f9b505d55ad19ccc82535ce3652a0be4535a01002e62a5ce866a",
+        "76de02abc00aad244aa00c8f44b00076d7041bc410de8dd49534c9845075a5ca",
+        "9960ddc9029e3b9e0695d8ca4381c793734d8ecad5903f40b2e4a43f1f1fba9e",
+        "a41b91e21510bffebc0b78c50c31a8dc4f945f3deb4bac76b4ee30980d2d65fa"
+      ],
+      "median_step_seconds": 5.455139785073698,
+      "peak_allocated_gib": 38.61500406265259,
+      "peak_reserved_gib": 41.7890625,
+      "counter_medians": {
+        "num_alloc_retries": 3.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 3.0,
+        "num_device_alloc": 207.0,
+        "num_device_free": 15.0
+      },
+      "repeat": 1,
+      "source": "artifacts/fsdp_retention_pressure_v1/r1_decoder_k32",
+      "log_sha256": "39318b758689f7ea813b540f6b31fe5eeb2d878ca36004d42a3063e35d15c5bf",
+      "resource_sha256": "920e45727356cee3c15371cf3f00fb29a1e7f0a8abd0d64606e69c88370b2329"
+    },
+    {
+      "case": "native_k24",
+      "result_sha256": "81396e300122dc7ab2035e69ef55b5d633980a1526b73a8c79c33212c47d683c",
+      "allocator_sha256": [
+        "808d6e8581203559f92dc1f4ae1ff4aa0d286136e3b5cf30d8018fb978c92b3b",
+        "76de02abc00aad244aa00c8f44b00076d7041bc410de8dd49534c9845075a5ca",
+        "9960ddc9029e3b9e0695d8ca4381c793734d8ecad5903f40b2e4a43f1f1fba9e",
+        "a41b91e21510bffebc0b78c50c31a8dc4f945f3deb4bac76b4ee30980d2d65fa"
+      ],
+      "median_step_seconds": 6.4830779284238815,
+      "peak_allocated_gib": 35.73987436294556,
+      "peak_reserved_gib": 41.791015625,
+      "counter_medians": {
+        "num_alloc_retries": 2.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 2.0,
+        "num_device_alloc": 127.0,
+        "num_device_free": 11.0
+      },
+      "repeat": 1,
+      "source": "artifacts/fsdp_retention_pressure_v1/r1_native_k24",
+      "log_sha256": "3d1cb7d88a5e8ec7e7bb846843d7399b1fc325f5cae0ee510c4c9b2ee2f48290",
+      "resource_sha256": "7ea8571c4b925898ea78ab2209bc3f03bcf2cfa10b16b16f5927d65ce6e1e3b4"
+    },
+    {
+      "case": "native_k36",
+      "result_sha256": "57712c25f50cecca2256822a325ccdf8810a1a7e85c63d00d424f6336d319d5c",
+      "allocator_sha256": [
+        "75a90f081664f1f639d4eed296718295806d2825ea3c072082ce676cdfb8a5f5",
+        "76de02abc00aad244aa00c8f44b00076d7041bc410de8dd49534c9845075a5ca",
+        "9960ddc9029e3b9e0695d8ca4381c793734d8ecad5903f40b2e4a43f1f1fba9e",
+        "a41b91e21510bffebc0b78c50c31a8dc4f945f3deb4bac76b4ee30980d2d65fa"
+      ],
+      "median_step_seconds": 5.81310994643718,
+      "peak_allocated_gib": 40.0525689125061,
+      "peak_reserved_gib": 41.8671875,
+      "counter_medians": {
+        "num_alloc_retries": 4.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 4.0,
+        "num_device_alloc": 238.5,
+        "num_device_free": 20.0
+      },
+      "repeat": 1,
+      "source": "artifacts/fsdp_retention_pressure_v1/r1_native_k36",
+      "log_sha256": "3bcf228b47660944616bfb033f7e94f422d8b37168581465f9026957edd88feb",
+      "resource_sha256": "322ccf5c925cc6ef89ae7f41a320b33c0dd17652c6ceb53ffd0797e31f2b6f08"
+    }
+  ],
+  "decisions": {
+    "native_k24": {
+      "pairs": [
+        {
+          "time_reduction_fraction": -0.06350184918342983,
+          "retry_reduction": 2.0,
+          "sync_reduction": 2.0
+        },
+        {
+          "time_reduction_fraction": -0.1152512146097151,
+          "retry_reduction": 2.0,
+          "sync_reduction": 2.0
+        }
+      ],
+      "worth_further_validation": false,
+      "supports_pressure_hypothesis": false
+    },
+    "decoder_k24": {
+      "pairs": [
+        {
+          "time_reduction_fraction": 0.01104361201775439,
+          "retry_reduction": 1.0,
+          "sync_reduction": 1.0
+        },
+        {
+          "time_reduction_fraction": -0.03033722585958909,
+          "retry_reduction": 1.0,
+          "sync_reduction": 1.0
+        }
+      ],
+      "worth_further_validation": false,
+      "supports_pressure_hypothesis": false
+    }
+  },
+  "full_quality_completed": false,
+  "defaults_changed": false,
+  "scope": "Short unprofiled same-cap screen; not causal synchronization timing or convergence"
+}

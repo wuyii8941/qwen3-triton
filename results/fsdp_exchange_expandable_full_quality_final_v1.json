@@ -1,0 +1,92 @@
+{
+  "complete": true,
+  "partial_diagnostic_only": false,
+  "raw_jobs_audited": 2,
+  "evidence": [
+    {
+      "case": "native",
+      "sha256": "6c6295d359e934bbe451c17f8a6f2557fa699a044b6c250c1e54b40e082b29cd",
+      "resource_sha256": "9653928cd9319249d041dfb0bc1f839f905de2e5fb5f3015a37f307f61b69896",
+      "evidence": {
+        "history": {
+          "backend": "official",
+          "history_consistent": true,
+          "updates": 1152,
+          "validation_checks": 37,
+          "best_step": 1152,
+          "best_validation": 2.1501222711253307,
+          "test": {
+            "loss": 2.106150809312408,
+            "tokens": 297913,
+            "blocks": 583
+          },
+          "scope": "Recorded history/coverage consistency; not independent training replay or exported-weight verification"
+        },
+        "manifest_sha256": [
+          "2cf45d1bdedb6da3d35f2f07bea3c4d67b490da2de98fed6cc1576c38aed323b",
+          "5ff702c11a69cfd51e423aa7eb6dac941507a3cfe59369e946ddd95ce45c4688",
+          "920dbeb8d13b1e504b5fe2452a45516604b9b00d372224e5dcd4087394b10a40",
+          "b4a4d7653f842e86860f411123b78f696ae341162ef5279bcd53d81264f7807f"
+        ]
+      },
+      "allocator_sha256": [
+        "bbd519036587defda4fba5bf8035b0d2e881e7fcfeb36c0c18fd308e5bec8c9c",
+        "b99e013e60efe9efc4bfc1a93cd3d6837e162519daa4dc33b58f62637fb64b9f",
+        "7ceee910169b2a21bc890bbbfd60fb32d37626fa31315003443a6d99c8d2def4",
+        "08bc342b625a988082a8faf41b6e23c636101d9f4dd190594afe17858fe932d7"
+      ]
+    },
+    {
+      "case": "decoder",
+      "sha256": "68d9fad0d74eaf2f03b582fc479e83ef26089649ec3193236a484ec049885726",
+      "resource_sha256": "1d1cd8f746ced6b4a2bca176c497ef6dc45021a91b10dafdc8fc78a4f7106043",
+      "evidence": {
+        "history": {
+          "backend": "official",
+          "history_consistent": true,
+          "updates": 1184,
+          "validation_checks": 38,
+          "best_step": 1152,
+          "best_validation": 2.1512672019331425,
+          "test": {
+            "loss": 2.107072024212501,
+            "tokens": 297913,
+            "blocks": 583
+          },
+          "scope": "Recorded history/coverage consistency; not independent training replay or exported-weight verification"
+        },
+        "manifest_sha256": [
+          "4fc16f18c50bc3f76cf4ae4a8699b4ca1342a8166afd30911cce2d9f256a8a9e",
+          "b005ce2c92acbc12ba5b70da57baa880153ba8b1230198032e240cd1f80e47f5",
+          "d5d42a2e2cc2dd02c82014b20587983f7ec1d1377552af0113917b0636f3d851",
+          "2c1db028e46eaa926a1f488ea88d7367733c3fb30cd67c397993f332a5fffba1"
+        ]
+      },
+      "allocator_sha256": [
+        "71950499c6fa36fe2787d95107fb4fc124c43c7a75f6fbc19a535e597423ac57",
+        "15e2694453e0370a636a8dacddd2495b9c06eeef97ff3d7b3727c0c4dcdaa645",
+        "82e4cfe02e77cc5cea1f068aa0331e1bc101524e0d113d8bb11d8da10c6083ef",
+        "78687b2fa57c6021f099e73be466292444cb1017a976a52d00f4ba98d652047d"
+      ]
+    }
+  ],
+  "comparison": {
+    "native_seconds": 8408.479732027277,
+    "bounded_seconds": 7705.412402424961,
+    "bounded_over_native_job_time": 0.9163859161217474,
+    "native_updates": 1152,
+    "bounded_updates": 1184,
+    "native_median_recorded_step_seconds": 6.147046783007681,
+    "bounded_median_recorded_step_seconds": 5.291208851151168,
+    "test_loss_difference": 0.0009212149000927816,
+    "scope": "Single-seed shared-hardware complete task-plateau observation; not statistical quality equivalence or isolated causal implementation speedup"
+  },
+  "full_quality_completed": true,
+  "allocator": "backend:native,expandable_segments:True",
+  "effective_allocator_cap_gib": 41.875,
+  "audited_reserved_upper_bound_gib": 42.0,
+  "defaults_changed": false,
+  "checkpoints_written": false,
+  "best_parameters_exported": false,
+  "statistical_quality_equivalence_proven": false
+}

@@ -1,0 +1,247 @@
+{
+  "passed": true,
+  "records": [
+    {
+      "case": "all_finite_bf16_patterns",
+      "count": 65280,
+      "expected": 1,
+      "actual": 1,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_1",
+      "count": 1,
+      "expected": 1,
+      "actual": 1,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_1_inexact",
+      "count": 1,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_1_inf",
+      "count": 1,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_1_nan",
+      "count": 1,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_17",
+      "count": 17,
+      "expected": 1,
+      "actual": 1,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_17_inexact",
+      "count": 17,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_17_inf",
+      "count": 17,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_17_nan",
+      "count": 17,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_4095",
+      "count": 4095,
+      "expected": 1,
+      "actual": 1,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_4095_inexact",
+      "count": 4095,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_4095_inf",
+      "count": 4095,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_4095_nan",
+      "count": 4095,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_4096",
+      "count": 4096,
+      "expected": 1,
+      "actual": 1,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_4096_inexact",
+      "count": 4096,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_4096_inf",
+      "count": 4096,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_4096_nan",
+      "count": 4096,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_4097",
+      "count": 4097,
+      "expected": 1,
+      "actual": 1,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_4097_inexact",
+      "count": 4097,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_4097_inf",
+      "count": 4097,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_4097_nan",
+      "count": 4097,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_8193",
+      "count": 8193,
+      "expected": 1,
+      "actual": 1,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_8193_inexact",
+      "count": 8193,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_8193_inf",
+      "count": 8193,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_8193_nan",
+      "count": 8193,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "real_shape_decoder_valid",
+      "count": 192946432,
+      "expected": 1,
+      "actual": 1,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "real_shape_decoder_invalid_tail",
+      "count": 192946432,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "real_shape_head_valid",
+      "count": 622329856,
+      "expected": 1,
+      "actual": 1,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    },
+    {
+      "case": "real_shape_head_invalid_tail",
+      "count": 622329856,
+      "expected": 0,
+      "actual": 0,
+      "peak_extra_allocated_bytes": 512,
+      "nondefault_stream": true
+    }
+  ],
+  "gpu": "NVIDIA RTX A6000",
+  "torch_version": "2.10.0+cu128",
+  "allocator_cap_gib": 8,
+  "latency_measured": false,
+  "fsdp_integrated": false,
+  "scope": "Read-only validator correctness and Torch peak allocated delta excluding preexisting input; not reserved/NVML memory or full training benefit",
+  "source_sha256": {
+    "benchmarks/verify_bf16_scratch_validation.py": "26ca835b85f3e96d6856b7e5a0e462dea6165ddf5e1a388e351ca81e561d6500",
+    "benchmarks/bf16_scratch_validation.py": "f61814fb4ecf7167ef146ec97d1843d246e1845ffe778b8e0699924d062c689f"
+  }
+}

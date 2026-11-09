@@ -1,0 +1,103 @@
+{
+  "complete": false,
+  "partial_diagnostic_only": true,
+  "raw_records_audited": 4,
+  "records": [
+    {
+      "case": "tiny_native",
+      "preflight": true,
+      "complete": true,
+      "converged": false,
+      "updates": 2,
+      "validation_checks": 3,
+      "validation_steps": [
+        0,
+        1,
+        2
+      ],
+      "validation_tokens": [
+        255,
+        255,
+        255
+      ],
+      "best_parameters_restored": true,
+      "peak_train_allocated_gib": 0.016574859619140625,
+      "source": "artifacts/fsdp_scratch_bounded_quality_campaign_v1/tiny_native/result.json",
+      "sha256": "89034edf612c7ff6001f6ace581914279ee8faf8602f7a1369383b44ca88a642",
+      "resource_sha256": "cbcdc4393d77ac368a0aac3b9ef98245f520f7535a492ee575b547f34d4848ad"
+    },
+    {
+      "case": "tiny_bounded",
+      "preflight": true,
+      "complete": true,
+      "converged": false,
+      "updates": 2,
+      "validation_checks": 3,
+      "validation_steps": [
+        0,
+        1,
+        2
+      ],
+      "validation_tokens": [
+        255,
+        255,
+        255
+      ],
+      "best_parameters_restored": true,
+      "peak_train_allocated_gib": 0.016574859619140625,
+      "source": "artifacts/fsdp_scratch_bounded_quality_campaign_v1/tiny_bounded/result.json",
+      "sha256": "89844288c7af7e636480eb75b17da90a66c2b227bacf17ff5004a47b81180069",
+      "resource_sha256": "520f37c5944933faf821a8024d3c27567e11a0cdb6121aaeddef57673364e469"
+    },
+    {
+      "case": "real_native_preflight",
+      "preflight": true,
+      "complete": true,
+      "converged": false,
+      "updates": 2,
+      "validation_checks": 2,
+      "validation_steps": [
+        0,
+        2
+      ],
+      "validation_tokens": [
+        261632,
+        261632
+      ],
+      "best_parameters_restored": true,
+      "peak_train_allocated_gib": 39.33812618255615,
+      "source": "artifacts/fsdp_scratch_bounded_quality_campaign_v1/real_native_preflight/result.json",
+      "sha256": "ac973f852bc9dc76e367a35db710394739c6b5da588a9c0e0954bbfb259bd779",
+      "resource_sha256": "49069c3fc48eb752c4228bef6024b7936dea22998d25d8ebfda8a708e3ca339a"
+    },
+    {
+      "case": "real_bounded_preflight",
+      "preflight": true,
+      "complete": true,
+      "converged": false,
+      "updates": 2,
+      "validation_checks": 2,
+      "validation_steps": [
+        0,
+        2
+      ],
+      "validation_tokens": [
+        261632,
+        261632
+      ],
+      "best_parameters_restored": true,
+      "peak_train_allocated_gib": 39.33812618255615,
+      "source": "artifacts/fsdp_scratch_bounded_quality_campaign_v1/real_bounded_preflight/result.json",
+      "sha256": "6959f864d37ffe43c141b568a6b9d32deac7368bdeee9dac6f3a5d32f0b2870f",
+      "resource_sha256": "ca155c495ceb222a5665d6836682d6c3dd7bdec11d5c339bde8cd5a55e0294b7"
+    }
+  ],
+  "all_preflights_passed": true,
+  "full_quality_completed": false,
+  "full_job_comparison": null,
+  "default_changed": false,
+  "statistical_quality_equivalence_proven": false,
+  "checkpoints_written": false,
+  "best_parameters_exported": false,
+  "scope": "Independent completed-stage history/source/adapter/resource audit; partial mode does not imply full quality completion"
+}

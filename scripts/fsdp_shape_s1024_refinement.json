@@ -1,0 +1,9 @@
+{
+  "native_k16": [16, 0, "full"],
+  "native_k20": [20, 0, "full"],
+  "native_k24": [24, 0, "full"],
+  "native_k28": [28, 0, "full"],
+  "full_k24": [24, 2, "full"],
+  "full_k28": [28, 2, "full"],
+  "full_k30": [30, 2, "full"]
+}

@@ -1,0 +1,1425 @@
+{
+  "complete": true,
+  "records": [
+    {
+      "size": "decoder",
+      "count": 192946432,
+      "repeat": 0,
+      "mode": "separate_bf16",
+      "samples": [
+        {
+          "warmup": true,
+          "wall_seconds": 0.02222028560936451,
+          "cuda_ms": 22.167552947998047,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002426769584417343
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.0018466319888830185,
+          "cuda_ms": 1.7879040241241455,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.0023373980075120926
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.001812860369682312,
+          "cuda_ms": 1.7500159740447998,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002305099740624428
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.001842724159359932,
+          "cuda_ms": 1.7879040241241455,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.0023102201521396637
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.001794980838894844,
+          "cuda_ms": 1.743872046470642,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.00230567529797554
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0017922315746545792,
+          "cuda_ms": 1.7408000230789185,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.0023036226630210876
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018110666424036026,
+          "cuda_ms": 1.751039981842041,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.0023092851042747498
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.001791674643754959,
+          "cuda_ms": 1.745919942855835,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002301931381225586
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0017785485833883286,
+          "cuda_ms": 1.738752007484436,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002292994409799576
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0017901565879583359,
+          "cuda_ms": 1.745919942855835,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002293197438120842
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018115583807229996,
+          "cuda_ms": 1.7571840286254883,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002295117825269699
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018102079629898071,
+          "cuda_ms": 1.7571840286254883,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002316124737262726
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0017886310815811157,
+          "cuda_ms": 1.7448960542678833,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.0023024193942546844
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.001793842762708664,
+          "cuda_ms": 1.7489919662475586,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002299230545759201
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018079150468111038,
+          "cuda_ms": 1.756160020828247,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.0023028794676065445
+        }
+      ],
+      "median_wall_seconds": 0.001794411800801754,
+      "median_cuda_ms": 1.7474559545516968,
+      "peak_extra_allocated_bytes": 771785728,
+      "fixed_input_values_checked": true
+    },
+    {
+      "size": "decoder",
+      "count": 192946432,
+      "repeat": 0,
+      "mode": "scratch_debug",
+      "samples": [
+        {
+          "warmup": true,
+          "wall_seconds": 1.7544882763177156,
+          "cuda_ms": 1754.4058837890625,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0026050247251987457
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.01304708793759346,
+          "cuda_ms": 12.980223655700684,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.002330852672457695
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.012759212404489517,
+          "cuda_ms": 12.709888458251953,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023095551878213882
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012693267315626144,
+          "cuda_ms": 12.635135650634766,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023049842566251755
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012703267857432365,
+          "cuda_ms": 12.650495529174805,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.002304868772625923
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012620361521840096,
+          "cuda_ms": 12.559359550476074,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.002312546595931053
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012720415368676186,
+          "cuda_ms": 12.678144454956055,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023076068609952927
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012549752369523048,
+          "cuda_ms": 12.500991821289062,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023114848881959915
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.013342216610908508,
+          "cuda_ms": 13.264896392822266,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.002306567505002022
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.013587560504674911,
+          "cuda_ms": 13.485055923461914,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023785587400197983
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.013641620054841042,
+          "cuda_ms": 13.514752388000488,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.002345064654946327
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.013446362689137459,
+          "cuda_ms": 13.355008125305176,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023644287139177322
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.013526516035199165,
+          "cuda_ms": 13.412351608276367,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023652613162994385
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012716259807348251,
+          "cuda_ms": 12.660736083984375,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023688822984695435
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012670239433646202,
+          "cuda_ms": 12.614656448364258,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023032482713460922
+        }
+      ],
+      "median_wall_seconds": 0.012718337588012218,
+      "median_cuda_ms": 12.669440269470215,
+      "peak_extra_allocated_bytes": 1350625792,
+      "fixed_input_values_checked": true
+    },
+    {
+      "size": "decoder",
+      "count": 192946432,
+      "repeat": 0,
+      "mode": "scratch_bounded",
+      "samples": [
+        {
+          "warmup": true,
+          "wall_seconds": 0.008732231333851814,
+          "cuda_ms": 8.656895637512207,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.002565208822488785
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.0037433430552482605,
+          "cuda_ms": 3.6925439834594727,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0024744607508182526
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.0036105532199144363,
+          "cuda_ms": 3.536895990371704,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0025166720151901245
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.004027713090181351,
+          "cuda_ms": 3.955712080001831,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.00238967128098011
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.003873836249113083,
+          "cuda_ms": 3.8205440044403076,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.002303948625922203
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.003582475706934929,
+          "cuda_ms": 3.5194880962371826,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023124217987060547
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.003521151840686798,
+          "cuda_ms": 3.4693119525909424,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023121293634176254
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0038925912231206894,
+          "cuda_ms": 3.8246400356292725,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023265648633241653
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0036065280437469482,
+          "cuda_ms": 3.5327999591827393,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.002321239560842514
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0035559218376874924,
+          "cuda_ms": 3.5051519870758057,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023349765688180923
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.003559371456503868,
+          "cuda_ms": 3.5082240104675293,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.00233297236263752
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0036789942532777786,
+          "cuda_ms": 3.6116480827331543,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.002337208017706871
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.003605019301176071,
+          "cuda_ms": 3.551232099533081,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.002310575917363167
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0035908930003643036,
+          "cuda_ms": 3.5327999591827393,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.002361539751291275
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0036499742418527603,
+          "cuda_ms": 3.5686399936676025,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023174211382865906
+        }
+      ],
+      "median_wall_seconds": 0.0036057736724615097,
+      "median_cuda_ms": 3.54201602935791,
+      "peak_extra_allocated_bytes": 512,
+      "fixed_input_values_checked": true
+    },
+    {
+      "size": "decoder",
+      "count": 192946432,
+      "repeat": 1,
+      "mode": "scratch_bounded",
+      "samples": [
+        {
+          "warmup": true,
+          "wall_seconds": 0.004019400104880333,
+          "cuda_ms": 3.9639039039611816,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.002523280680179596
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.0035961326211690903,
+          "cuda_ms": 3.540992021560669,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023267921060323715
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.0035583917051553726,
+          "cuda_ms": 3.5000319480895996,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023186039179563522
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.00377834215760231,
+          "cuda_ms": 3.719167947769165,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.002313528209924698
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0036498475819826126,
+          "cuda_ms": 3.575808048248291,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023291800171136856
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0043177735060453415,
+          "cuda_ms": 4.232192039489746,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023498274385929108
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.004399096593260765,
+          "cuda_ms": 4.302847862243652,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023453477770090103
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.004189394414424896,
+          "cuda_ms": 4.089856147766113,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.002379016950726509
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.004088602960109711,
+          "cuda_ms": 3.9925758838653564,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0024021845310926437
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0046733468770980835,
+          "cuda_ms": 4.571135997772217,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023923665285110474
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.003589121624827385,
+          "cuda_ms": 3.5092480182647705,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023560263216495514
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.004014467820525169,
+          "cuda_ms": 3.9331839084625244,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.002351192757487297
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.003980729728937149,
+          "cuda_ms": 3.8983678817749023,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.002341829240322113
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.004258411005139351,
+          "cuda_ms": 4.163584232330322,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023782718926668167
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.003592381253838539,
+          "cuda_ms": 3.5338239669799805,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0023604556918144226
+        }
+      ],
+      "median_wall_seconds": 0.00405153539031744,
+      "median_cuda_ms": 3.9628798961639404,
+      "peak_extra_allocated_bytes": 512,
+      "fixed_input_values_checked": true
+    },
+    {
+      "size": "decoder",
+      "count": 192946432,
+      "repeat": 1,
+      "mode": "scratch_debug",
+      "samples": [
+        {
+          "warmup": true,
+          "wall_seconds": 0.013130148872733116,
+          "cuda_ms": 13.072383880615234,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0025240350514650345
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.012728095054626465,
+          "cuda_ms": 12.6627836227417,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.002316601574420929
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.01271120086312294,
+          "cuda_ms": 12.650495529174805,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023169703781604767
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012731248512864113,
+          "cuda_ms": 12.666879653930664,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023109763860702515
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012686088681221008,
+          "cuda_ms": 12.628992080688477,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023105889558792114
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012634655460715294,
+          "cuda_ms": 12.583935737609863,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023157279938459396
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012704376131296158,
+          "cuda_ms": 12.65766429901123,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023075714707374573
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.013039261102676392,
+          "cuda_ms": 12.956671714782715,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.002325216308236122
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012685023248195648,
+          "cuda_ms": 12.627967834472656,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023139100521802902
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.013129284605383873,
+          "cuda_ms": 13.03551959991455,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023405198007822037
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.013648046180605888,
+          "cuda_ms": 13.56595230102539,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.00234953872859478
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.01279577985405922,
+          "cuda_ms": 12.722175598144531,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023460518568754196
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012625016272068024,
+          "cuda_ms": 12.575743675231934,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023159291595220566
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012799059972167015,
+          "cuda_ms": 12.735487937927246,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023284368216991425
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.012623175978660583,
+          "cuda_ms": 12.572671890258789,
+          "peak_extra_allocated_bytes": 1350625792,
+          "restore_seconds": 0.0023134350776672363
+        }
+      ],
+      "median_wall_seconds": 0.012717812322080135,
+      "median_cuda_ms": 12.662271976470947,
+      "peak_extra_allocated_bytes": 1350625792,
+      "fixed_input_values_checked": true
+    },
+    {
+      "size": "decoder",
+      "count": 192946432,
+      "repeat": 1,
+      "mode": "separate_bf16",
+      "samples": [
+        {
+          "warmup": true,
+          "wall_seconds": 0.004714798182249069,
+          "cuda_ms": 4.627456188201904,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002530030906200409
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.0020092595368623734,
+          "cuda_ms": 1.9322880506515503,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.0024967454373836517
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.001997079700231552,
+          "cuda_ms": 1.9251199960708618,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002491964027285576
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018388517200946808,
+          "cuda_ms": 1.7766400575637817,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.0023700837045907974
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0019025858491659164,
+          "cuda_ms": 1.8165760040283203,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.0023359265178442
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0019015688449144363,
+          "cuda_ms": 1.815551996231079,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002375006675720215
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018308740109205246,
+          "cuda_ms": 1.7745920419692993,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002325240522623062
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018342919647693634,
+          "cuda_ms": 1.7797119617462158,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.0023077689111232758
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018208660185337067,
+          "cuda_ms": 1.7694720029830933,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002310127019882202
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018424224108457565,
+          "cuda_ms": 1.785856008529663,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002321917563676834
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018532611429691315,
+          "cuda_ms": 1.7817599773406982,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.0023196320980787277
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018540006130933762,
+          "cuda_ms": 1.7889280319213867,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002324456349015236
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018418096005916595,
+          "cuda_ms": 1.7838079929351807,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.0023139994591474533
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018626619130373001,
+          "cuda_ms": 1.8032640218734741,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.0023174434900283813
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0018056929111480713,
+          "cuda_ms": 1.7571840286254883,
+          "peak_extra_allocated_bytes": 771785728,
+          "restore_seconds": 0.002305818721652031
+        }
+      ],
+      "median_wall_seconds": 0.001842116005718708,
+      "median_cuda_ms": 1.7827839851379395,
+      "peak_extra_allocated_bytes": 771785728,
+      "fixed_input_values_checked": true
+    },
+    {
+      "size": "head",
+      "count": 622329856,
+      "repeat": 0,
+      "mode": "separate_bf16",
+      "samples": [
+        {
+          "warmup": true,
+          "wall_seconds": 0.02768041379749775,
+          "cuda_ms": 27.597824096679688,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007912268862128258
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.005602383986115456,
+          "cuda_ms": 5.516287803649902,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.00739438459277153
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.00564364530146122,
+          "cuda_ms": 5.569536209106445,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007389243692159653
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005723932757973671,
+          "cuda_ms": 5.590015888214111,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007449205964803696
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005622923374176025,
+          "cuda_ms": 5.553152084350586,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007395576685667038
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0056194402277469635,
+          "cuda_ms": 5.548031806945801,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007379600778222084
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.00564165972173214,
+          "cuda_ms": 5.570559978485107,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.00737789086997509
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005622418597340584,
+          "cuda_ms": 5.549056053161621,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007379014045000076
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005650322884321213,
+          "cuda_ms": 5.559296131134033,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.0074164979159832
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005606641992926598,
+          "cuda_ms": 5.539840221405029,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007366187870502472
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005625275894999504,
+          "cuda_ms": 5.544960021972656,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007382160052657127
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005621826276183128,
+          "cuda_ms": 5.5562238693237305,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007390156388282776
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005671897903084755,
+          "cuda_ms": 5.577727794647217,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007433447986841202
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005674116313457489,
+          "cuda_ms": 5.575679779052734,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007410544902086258
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.00568230077624321,
+          "cuda_ms": 5.584896087646484,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007433727383613586
+        }
+      ],
+      "median_wall_seconds": 0.005633467808365822,
+      "median_cuda_ms": 5.557760000228882,
+      "peak_extra_allocated_bytes": 2491416576,
+      "fixed_input_values_checked": true
+    },
+    {
+      "size": "head",
+      "count": 622329856,
+      "repeat": 0,
+      "mode": "scratch_debug",
+      "samples": [
+        {
+          "warmup": true,
+          "wall_seconds": 0.04473991319537163,
+          "cuda_ms": 44.64128112792969,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007980575785040855
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.0393146313726902,
+          "cuda_ms": 39.21510314941406,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007843995466828346
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.03913034312427044,
+          "cuda_ms": 39.049217224121094,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007441714406013489
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.038925742730498314,
+          "cuda_ms": 38.818817138671875,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007396146655082703
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03886529803276062,
+          "cuda_ms": 38.787071228027344,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007380146533250809
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03892584890127182,
+          "cuda_ms": 38.80857467651367,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007384136319160461
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.038881657645106316,
+          "cuda_ms": 38.795265197753906,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007400820031762123
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03888150490820408,
+          "cuda_ms": 38.798336029052734,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.0074013639241456985
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.038843607529997826,
+          "cuda_ms": 38.754302978515625,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.0073716361075639725
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.039632514119148254,
+          "cuda_ms": 39.53561782836914,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007408648729324341
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.039620380848646164,
+          "cuda_ms": 39.50796890258789,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007462799549102783
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0389455147087574,
+          "cuda_ms": 38.83827209472656,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007429018616676331
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03912222385406494,
+          "cuda_ms": 39.05228805541992,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007402142509818077
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03922601789236069,
+          "cuda_ms": 39.14854431152344,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007398243993520737
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03926387056708336,
+          "cuda_ms": 39.179264068603516,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007396023720502853
+        }
+      ],
+      "median_wall_seconds": 0.03893568180501461,
+      "median_cuda_ms": 38.82854461669922,
+      "peak_extra_allocated_bytes": 4357881856,
+      "fixed_input_values_checked": true
+    },
+    {
+      "size": "head",
+      "count": 622329856,
+      "repeat": 0,
+      "mode": "scratch_bounded",
+      "samples": [
+        {
+          "warmup": true,
+          "wall_seconds": 0.011501407250761986,
+          "cuda_ms": 11.44422435760498,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007921751588582993
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.010437272489070892,
+          "cuda_ms": 10.375167846679688,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007888780906796455
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.010441424325108528,
+          "cuda_ms": 10.371071815490723,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007910748943686485
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.010426364839076996,
+          "cuda_ms": 10.359807968139648,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.00789492018520832
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.009707797318696976,
+          "cuda_ms": 9.649151802062988,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007356623187661171
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.00986037403345108,
+          "cuda_ms": 9.788415908813477,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007361076772212982
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.009767701849341393,
+          "cuda_ms": 9.696255683898926,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.00737714022397995
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.00976935587823391,
+          "cuda_ms": 9.70854377746582,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0073858704417943954
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.009764112532138824,
+          "cuda_ms": 9.693183898925781,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007366728037595749
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.00985853374004364,
+          "cuda_ms": 9.772031784057617,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.00739077664911747
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.009836437180638313,
+          "cuda_ms": 9.758720397949219,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007377428933978081
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.009755779057741165,
+          "cuda_ms": 9.686016082763672,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007391083985567093
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.009877199307084084,
+          "cuda_ms": 9.792511940002441,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007375223562121391
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.009775934740900993,
+          "cuda_ms": 9.686016082763672,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007384307682514191
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.01025480218231678,
+          "cuda_ms": 10.158080101013184,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007406771183013916
+        }
+      ],
+      "median_wall_seconds": 0.009806185960769653,
+      "median_cuda_ms": 9.73363208770752,
+      "peak_extra_allocated_bytes": 512,
+      "fixed_input_values_checked": true
+    },
+    {
+      "size": "head",
+      "count": 622329856,
+      "repeat": 1,
+      "mode": "scratch_bounded",
+      "samples": [
+        {
+          "warmup": true,
+          "wall_seconds": 0.011467758566141129,
+          "cuda_ms": 11.371520042419434,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007964404299855232
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.010052608326077461,
+          "cuda_ms": 9.929727554321289,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007417488843202591
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.010727223008871078,
+          "cuda_ms": 10.62399959564209,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007437581196427345
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.010359549894928932,
+          "cuda_ms": 10.253312110900879,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007417934015393257
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.010831685736775398,
+          "cuda_ms": 10.704895973205566,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.00744287483394146
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.010543031617999077,
+          "cuda_ms": 10.461183547973633,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007433032616972923
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.010597022250294685,
+          "cuda_ms": 10.496000289916992,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007425561547279358
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.010465485975146294,
+          "cuda_ms": 10.359807968139648,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007439175620675087
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.009776836261153221,
+          "cuda_ms": 9.70956802368164,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.00742478109896183
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.01045617088675499,
+          "cuda_ms": 10.366975784301758,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.0073856934905052185
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.009732095524668694,
+          "cuda_ms": 9.674752235412598,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007378444075584412
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.010243210941553116,
+          "cuda_ms": 10.158080101013184,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007355596870183945
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.010308530181646347,
+          "cuda_ms": 10.21132755279541,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007404783740639687
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.010296192020177841,
+          "cuda_ms": 10.195967674255371,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007432950660586357
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.010241728276014328,
+          "cuda_ms": 10.142720222473145,
+          "peak_extra_allocated_bytes": 512,
+          "restore_seconds": 0.007444346323609352
+        }
+      ],
+      "median_wall_seconds": 0.01033404003828764,
+      "median_cuda_ms": 10.232319831848145,
+      "peak_extra_allocated_bytes": 512,
+      "fixed_input_values_checked": true
+    },
+    {
+      "size": "head",
+      "count": 622329856,
+      "repeat": 1,
+      "mode": "scratch_debug",
+      "samples": [
+        {
+          "warmup": true,
+          "wall_seconds": 0.041334643959999084,
+          "cuda_ms": 41.23955154418945,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007954521104693413
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.03931865282356739,
+          "cuda_ms": 39.218177795410156,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007411722093820572
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.03930193744599819,
+          "cuda_ms": 39.204864501953125,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007410531863570213
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03941546194255352,
+          "cuda_ms": 39.30521774291992,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007432311773300171
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03918345272541046,
+          "cuda_ms": 39.08198547363281,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007443469017744064
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03931630216538906,
+          "cuda_ms": 39.218177795410156,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.0074318088591098785
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03925837576389313,
+          "cuda_ms": 39.162879943847656,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007417293265461922
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03932615555822849,
+          "cuda_ms": 39.21510314941406,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.0074281636625528336
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03940770775079727,
+          "cuda_ms": 39.314430236816406,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007444638758897781
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03932018019258976,
+          "cuda_ms": 39.216129302978516,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007441161200404167
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.039351439103484154,
+          "cuda_ms": 39.237632751464844,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007416112348437309
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03911242075264454,
+          "cuda_ms": 39.002113342285156,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.0074385832995176315
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.039124611765146255,
+          "cuda_ms": 39.03897476196289,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007416157051920891
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.03940906375646591,
+          "cuda_ms": 39.30828857421875,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.007421782240271568
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.039202237501740456,
+          "cuda_ms": 39.10758590698242,
+          "peak_extra_allocated_bytes": 4357881856,
+          "restore_seconds": 0.00742645189166069
+        }
+      ],
+      "median_wall_seconds": 0.03931824117898941,
+      "median_cuda_ms": 39.21561622619629,
+      "peak_extra_allocated_bytes": 4357881856,
+      "fixed_input_values_checked": true
+    },
+    {
+      "size": "head",
+      "count": 622329856,
+      "repeat": 1,
+      "mode": "separate_bf16",
+      "samples": [
+        {
+          "warmup": true,
+          "wall_seconds": 0.008001483976840973,
+          "cuda_ms": 7.910399913787842,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007948145270347595
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.006019357591867447,
+          "cuda_ms": 5.93612813949585,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007939012721180916
+        },
+        {
+          "warmup": true,
+          "wall_seconds": 0.006093109026551247,
+          "cuda_ms": 5.991424083709717,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007923614233732224
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.006093636155128479,
+          "cuda_ms": 5.997568130493164,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007955523207783699
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005847776308655739,
+          "cuda_ms": 5.744639873504639,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007965385913848877
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.0056612323969602585,
+          "cuda_ms": 5.552127838134766,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007442312315106392
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005676502361893654,
+          "cuda_ms": 5.577727794647217,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007435047999024391
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005663342773914337,
+          "cuda_ms": 5.554175853729248,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007434466853737831
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005683470517396927,
+          "cuda_ms": 5.582848072052002,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007436312735080719
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005691593512892723,
+          "cuda_ms": 5.5859198570251465,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007414419203996658
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005701735615730286,
+          "cuda_ms": 5.596159934997559,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.0074415504932403564
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005678027868270874,
+          "cuda_ms": 5.582848072052002,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007413389161229134
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.00566081702709198,
+          "cuda_ms": 5.567488193511963,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007426925003528595
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005669215694069862,
+          "cuda_ms": 5.571584224700928,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007429447025060654
+        },
+        {
+          "warmup": false,
+          "wall_seconds": 0.005651265382766724,
+          "cuda_ms": 5.56441593170166,
+          "peak_extra_allocated_bytes": 2491416576,
+          "restore_seconds": 0.007403558120131493
+        }
+      ],
+      "median_wall_seconds": 0.005677265115082264,
+      "median_cuda_ms": 5.580287933349609,
+      "peak_extra_allocated_bytes": 2491416576,
+      "fixed_input_values_checked": true
+    }
+  ],
+  "source_sha256": {
+    "benchmarks/benchmark_bf16_scratch_pack.py": "7a9c0e2d3b2465c99c547a6a5643de05d83c91cb39e08f690a2c3f004f82b8ab",
+    "benchmarks/bf16_scratch_pack.py": "c1dfba01f139799fab0085f9c618cb71344389a93532de9f646b4ff9acdb4e78",
+    "benchmarks/bf16_scratch_bounded.py": "dedf94572b322ee5d12e121eebd2fb728ce8d8c19733be398e7753030eb02ef3",
+    "benchmarks/bf16_scratch_validation.py": "f61814fb4ecf7167ef146ec97d1843d246e1845ffe778b8e0699924d062c689f",
+    "benchmarks/fsdp_scratch_exchange_adapter.py": "495bac45873c9267d4cc2bb8cd20ca6b8638292ca4c2f0d69d1f05081ce6ba8c",
+    "benchmarks/bf16_exchange_reduce.py": "4f05c3e18014a45d7c752f3990e27b02945d9588d2fae65ee51a6246927a9233"
+  },
+  "gpu": "NVIDIA RTX A6000",
+  "torch_version": "2.10.0+cu128",
+  "allocator_cap_gib": 12,
+  "input_contract": "FP32 constant1.25, exactly BF16 representable; rich inputs tested separately",
+  "input_restore_excluded_from_op": true,
+  "input_restore_time_recorded": true,
+  "workspace_baseline": "Excludes immutable reference input and mutable scratch; includes returned send/receive and validation temporaries",
+  "scope": "Isolated single-GPU packing only; no NCCL/FSDP/optimizer/end-to-end speedup claim"
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "source": "artifacts/fsdp_convergence_campaign_v2/official_full_protocol/result.json",
+    "sha256": "da8f9db6f151beaeedc9353121a15c8142472345eb26a973febe07d5833c753d",
+    "backend": "official",
+    "history_consistent": true,
+    "updates": 1184,
+    "validation_checks": 38,
+    "best_step": 1152,
+    "best_validation": 2.1510522118286612,
+    "test": {
+      "loss": 2.106290687017372,
+      "tokens": 297913,
+      "blocks": 583
+    },
+    "scope": "Recorded history/coverage consistency; not independent training replay or exported-weight verification"
+  },
+  {
+    "source": "artifacts/fsdp_convergence_campaign_v2/custom_avg_full_protocol/result.json",
+    "sha256": "c29050f29922d96326a2bff7b3030a31fc662271260ec68f578d0057acf44823",
+    "backend": "custom_avg",
+    "history_consistent": true,
+    "updates": 1152,
+    "validation_checks": 37,
+    "best_step": 1152,
+    "best_validation": 2.1509505671297733,
+    "test": {
+      "loss": 2.1063312516009813,
+      "tokens": 297913,
+      "blocks": 583
+    },
+    "scope": "Recorded history/coverage consistency; not independent training replay or exported-weight verification"
+  },
+  {
+    "source": "artifacts/fsdp_keep8_convergence_campaign_v2/official_keep8_full_protocol/result.json",
+    "sha256": "788610aa6deb4a1c9cdacd985dffd1858b54f025e8ae1729d3095ecedff53768",
+    "backend": "official_keep8",
+    "history_consistent": true,
+    "updates": 1152,
+    "validation_checks": 37,
+    "best_step": 1152,
+    "best_validation": 2.150771277291434,
+    "test": {
+      "loss": 2.106298840253646,
+      "tokens": 297913,
+      "blocks": 583
+    },
+    "scope": "Recorded history/coverage consistency; not independent training replay or exported-weight verification"
+  },
+  {
+    "source": "artifacts/fsdp_keep24_convergence_campaign_v1/official_keep24_full_protocol/result.json",
+    "sha256": "061299b507904a76adf203ddde9fef25e6bf7f6591831ab073f713c5e0340705",
+    "backend": "official_keep24",
+    "history_consistent": true,
+    "updates": 1184,
+    "validation_checks": 38,
+    "best_step": 1152,
+    "best_validation": 2.150742419778484,
+    "test": {
+      "loss": 2.1066942234525055,
+      "tokens": 297913,
+      "blocks": 583
+    },
+    "scope": "Recorded history/coverage consistency; not independent training replay or exported-weight verification"
+  }
+]

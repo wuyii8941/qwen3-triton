@@ -1,0 +1,190 @@
+{
+  "complete": true,
+  "partial_diagnostic_only": false,
+  "memory_budget_gib": 40,
+  "raw_records_audited": 12,
+  "records": [
+    {
+      "case": "r0_native_auto_k32",
+      "status": "passed",
+      "median_step_seconds": 6.309652354568243,
+      "measured_min_seconds": 6.0326830092817545,
+      "measured_max_seconds": 10.960487462580204,
+      "peak_allocated_gib": 38.61842203140259,
+      "peak_reserved_gib": 39.994140625,
+      "max_allocator_retries_measured": 4,
+      "max_allocator_syncs_measured": 4,
+      "initial_hf_logits_max_abs": 0.0
+    },
+    {
+      "case": "r0_native_auto_k34",
+      "status": "passed",
+      "median_step_seconds": 6.904720272868872,
+      "measured_min_seconds": 6.506307031959295,
+      "measured_max_seconds": 10.777303416281939,
+      "peak_allocated_gib": 39.337692737579346,
+      "peak_reserved_gib": 40.0,
+      "max_allocator_retries_measured": 5,
+      "max_allocator_syncs_measured": 5,
+      "initial_hf_logits_max_abs": 0.0
+    },
+    {
+      "case": "r0_native_simple_k32",
+      "status": "passed",
+      "median_step_seconds": 7.045447174459696,
+      "measured_min_seconds": 6.463790539652109,
+      "measured_max_seconds": 13.315285360440612,
+      "peak_allocated_gib": 38.61842203140259,
+      "peak_reserved_gib": 39.994140625,
+      "max_allocator_retries_measured": 4,
+      "max_allocator_syncs_measured": 4,
+      "initial_hf_logits_max_abs": 0.0
+    },
+    {
+      "case": "r0_native_simple_k34",
+      "status": "passed",
+      "median_step_seconds": 7.553693173453212,
+      "measured_min_seconds": 6.0253652930259705,
+      "measured_max_seconds": 9.080930599942803,
+      "peak_allocated_gib": 39.337692737579346,
+      "peak_reserved_gib": 40.0,
+      "max_allocator_retries_measured": 5,
+      "max_allocator_syncs_measured": 5,
+      "initial_hf_logits_max_abs": 0.0
+    },
+    {
+      "case": "r0_torch_decoder_auto_k28",
+      "status": "passed",
+      "median_step_seconds": 6.365817160345614,
+      "measured_min_seconds": 5.392067685723305,
+      "measured_max_seconds": 9.891244990751147,
+      "peak_allocated_gib": 37.18183374404907,
+      "peak_reserved_gib": 39.9765625,
+      "max_allocator_retries_measured": 4,
+      "max_allocator_syncs_measured": 4,
+      "initial_hf_logits_max_abs": 0.0
+    },
+    {
+      "case": "r0_triton_head_simple_k26",
+      "status": "passed",
+      "median_step_seconds": 7.636248833499849,
+      "measured_min_seconds": 6.235631037503481,
+      "measured_max_seconds": 11.600339317694306,
+      "peak_allocated_gib": 38.783363819122314,
+      "peak_reserved_gib": 39.998046875,
+      "max_allocator_retries_measured": 3,
+      "max_allocator_syncs_measured": 3,
+      "initial_hf_logits_max_abs": 0.0
+    },
+    {
+      "case": "r1_triton_head_simple_k26",
+      "status": "passed",
+      "median_step_seconds": 8.094550262205303,
+      "measured_min_seconds": 6.136231010779738,
+      "measured_max_seconds": 10.944714484736323,
+      "peak_allocated_gib": 38.783363819122314,
+      "peak_reserved_gib": 39.998046875,
+      "max_allocator_retries_measured": 3,
+      "max_allocator_syncs_measured": 3,
+      "initial_hf_logits_max_abs": 0.0
+    },
+    {
+      "case": "r1_torch_decoder_auto_k28",
+      "status": "passed",
+      "median_step_seconds": 7.124005914665759,
+      "measured_min_seconds": 5.401274278759956,
+      "measured_max_seconds": 9.270480267703533,
+      "peak_allocated_gib": 37.18183374404907,
+      "peak_reserved_gib": 39.9765625,
+      "max_allocator_retries_measured": 4,
+      "max_allocator_syncs_measured": 4,
+      "initial_hf_logits_max_abs": 0.0
+    },
+    {
+      "case": "r1_native_simple_k34",
+      "status": "passed",
+      "median_step_seconds": 7.589182906784117,
+      "measured_min_seconds": 5.826855018734932,
+      "measured_max_seconds": 11.10635875724256,
+      "peak_allocated_gib": 39.337692737579346,
+      "peak_reserved_gib": 40.0,
+      "max_allocator_retries_measured": 5,
+      "max_allocator_syncs_measured": 5,
+      "initial_hf_logits_max_abs": 0.0
+    },
+    {
+      "case": "r1_native_simple_k32",
+      "status": "passed",
+      "median_step_seconds": 8.022114773280919,
+      "measured_min_seconds": 6.04780557192862,
+      "measured_max_seconds": 11.597071731463075,
+      "peak_allocated_gib": 38.61842203140259,
+      "peak_reserved_gib": 39.994140625,
+      "max_allocator_retries_measured": 4,
+      "max_allocator_syncs_measured": 4,
+      "initial_hf_logits_max_abs": 0.0
+    },
+    {
+      "case": "r1_native_auto_k34",
+      "status": "passed",
+      "median_step_seconds": 6.0721190785989165,
+      "measured_min_seconds": 5.960809882730246,
+      "measured_max_seconds": 7.14251185208559,
+      "peak_allocated_gib": 39.337692737579346,
+      "peak_reserved_gib": 40.0,
+      "max_allocator_retries_measured": 5,
+      "max_allocator_syncs_measured": 5,
+      "initial_hf_logits_max_abs": 0.0
+    },
+    {
+      "case": "r1_native_auto_k32",
+      "status": "passed",
+      "median_step_seconds": 6.105632411316037,
+      "measured_min_seconds": 6.00707090087235,
+      "measured_max_seconds": 8.104756502434611,
+      "peak_allocated_gib": 38.61842203140259,
+      "peak_reserved_gib": 39.994140625,
+      "max_allocator_retries_measured": 4,
+      "max_allocator_syncs_measured": 4,
+      "initial_hf_logits_max_abs": 0.0
+    }
+  ],
+  "decisions": {
+    "torch_decoder_auto_k28": {
+      "ratios_vs_best_feasible_native": [
+        0.9911771255185844,
+        0.8523461590758387
+      ],
+      "over_two_percent_both_orders": false
+    },
+    "triton_head_simple_k26": {
+      "ratios_vs_best_feasible_native": [
+        0.8262764208112375,
+        0.7501490363152814
+      ],
+      "over_two_percent_both_orders": false
+    }
+  },
+  "best_tested_native_simple_over_auto_ratios": [
+    0.8955644969479344,
+    0.8001018229737132
+  ],
+  "launch_resource_sha256": {
+    "r0_native_auto_k32": "b266cb5afaf04242c0405c2a5395861177b7cd750aa2b5f2d6fdbcd5224ac473",
+    "r0_native_auto_k34": "824a56168376097d8d0e2b181ba6b05b37f239e2035e3c117a8098ce7954bff0",
+    "r0_native_simple_k32": "bc8865d985a1b9b7eaa4f5a60a11498d674d2f065d5c7312f89312b28ed22669",
+    "r0_native_simple_k34": "2708288cf24fc0cfc0f70c711999181839ebc8957a4883910fbdfb3b86cc8761",
+    "r0_torch_decoder_auto_k28": "16e4f388364860f39f999907be1606e9567dd7aae537dc7e44f77309d3280003",
+    "r0_triton_head_simple_k26": "6fcff92ca791d69c6ab192a169d5a20f60f590acfdb3b96faef05b3acc916df3",
+    "r1_triton_head_simple_k26": "1e8b74aea4e4f0f89089dcfd63fe3876cb3b57c19be64158eb9e40f503ab55cc",
+    "r1_torch_decoder_auto_k28": "861ea77959f0c59abc38240758e40db4eb5eee005fa64ccd1c13ab79fbce21ba",
+    "r1_native_simple_k34": "e53f699bbb624266cbd8a844e6c39de6f3da2cb703873c3d7a05b5c76797c429",
+    "r1_native_simple_k32": "7cab9f52c2b3448a53785d15e62b2135089964cdd95bc5c61acadeb8ef044bbd",
+    "r1_native_auto_k34": "d0cb65c8db8540abea7d6be335d408a59c319640fc7d5f5f526e9daf753b5f70",
+    "r1_native_auto_k32": "405c5c4ccb250cda1bbfb0c832f3cecd899e21a5c0a848d33616be9d819308ce"
+  },
+  "defaults_changed": false,
+  "convergence_proven": false,
+  "original_42gib_study_replaced": false,
+  "scope": "Raw record/launch/allocator audit for this40GiB study only. Partial mode has no speedup decisions; no causal allocator attribution, external-load isolation, convergence or42GiB claim"
+}

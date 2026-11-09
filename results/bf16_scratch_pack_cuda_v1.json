@@ -1,0 +1,103 @@
+{
+  "passed": true,
+  "records": [
+    {
+      "case": "all_finite_bf16_patterns",
+      "count": 65280,
+      "bits_equal": true,
+      "receive_write_preserves_send": true,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_1",
+      "count": 1,
+      "bits_equal": true,
+      "receive_write_preserves_send": true,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_2",
+      "count": 2,
+      "bits_equal": true,
+      "receive_write_preserves_send": true,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_3",
+      "count": 3,
+      "bits_equal": true,
+      "receive_write_preserves_send": true,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_15",
+      "count": 15,
+      "bits_equal": true,
+      "receive_write_preserves_send": true,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_16",
+      "count": 16,
+      "bits_equal": true,
+      "receive_write_preserves_send": true,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_17",
+      "count": 17,
+      "bits_equal": true,
+      "receive_write_preserves_send": true,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_127",
+      "count": 127,
+      "bits_equal": true,
+      "receive_write_preserves_send": true,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_129",
+      "count": 129,
+      "bits_equal": true,
+      "receive_write_preserves_send": true,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_1025",
+      "count": 1025,
+      "bits_equal": true,
+      "receive_write_preserves_send": true,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_4097",
+      "count": 4097,
+      "bits_equal": true,
+      "receive_write_preserves_send": true,
+      "nondefault_stream": true
+    },
+    {
+      "case": "tail_1048583",
+      "count": 1048583,
+      "bits_equal": true,
+      "receive_write_preserves_send": true,
+      "nondefault_stream": true
+    }
+  ],
+  "gpu": "NVIDIA RTX A6000",
+  "compute_capability": [
+    8,
+    6
+  ],
+  "torch_version": "2.10.0+cu128",
+  "peak_allocated_bytes": 11536896,
+  "allocator_cap_bytes": 2147483648,
+  "timing_measured": false,
+  "scope": "Single-GPU packing correctness only; no NCCL/FSDP integration or speed/memory benefit claim",
+  "source_sha256": {
+    "/data1/tzh/proj/qwen_operator_lab/benchmarks/verify_bf16_scratch_pack.py": "d9cd2cc90b530cc1a6e9753e090c9c6057a9e0e653e0e992cb55d85f7934668c",
+    "benchmarks/bf16_scratch_pack.py": "c1dfba01f139799fab0085f9c618cb71344389a93532de9f646b4ff9acdb4e78"
+  }
+}

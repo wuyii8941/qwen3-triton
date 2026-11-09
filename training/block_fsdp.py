@@ -44,10 +44,11 @@ class _Call(torch.autograd.Function):
         grad_full = (gradients[0].contiguous() if gradients[0].dtype == torch.float32
                      else copy_scale(gradients[0].contiguous(),dtype=torch.float32))
         local = torch.empty_like(shard)
-        dist.reduce_scatter_tensor(local, grad_full, op=dist.ReduceOp.SUM)
+        dist.reduce_scatter_tensor(local, grad_full,
+            op=dist.ReduceOp.AVG if owner.reduce_average else dist.ReduceOp.SUM)
         iterator = iter(gradients[1:])
         input_grads = [next(iterator) if t.requires_grad else None for t in inputs]
-        return (None, None, None, copy_scale(local, 1. / owner.world), *input_grads)
+        return (None, None, None, local if owner.reduce_average else copy_scale(local, 1. / owner.world), *input_grads)
 
 
 class BlockFSDP(torch.nn.Module):
@@ -68,6 +69,7 @@ class BlockFSDP(torch.nn.Module):
         self.world, self.rank = dist.get_world_size(), dist.get_rank()
         self.size = (self.numel + self.world - 1) // self.world
         self.compute_dtype = compute_dtype
+        self.reduce_average = False
         key = tuple(id(p) for _, p in entries)
         if shared is not None and key in shared:
             self.shard = shared[key]

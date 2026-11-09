@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "world": 2,
+  "real_parameters": 1720574976,
+  "parameter_entries_per_rank": 310,
+  "steps": 3,
+  "candidate_phases": [
+    "native_b",
+    "keep28",
+    "checkpoint28"
+  ],
+  "full_gradients_exact": true,
+  "full_fp32_masters_exact": true,
+  "full_adamw_states_exact": true,
+  "buffers_and_groups_exact": true,
+  "raw_summary_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/fsdp_1p7b_full_state_gate_v2/result.json",
+  "raw_summary_sha256": "0932e5a354dcd3dfdc751f2f8944ffe20f2962808c047e4446df6423d95d7072",
+  "raw_reports": [
+    {
+      "rank": 0,
+      "path": "artifacts/fsdp_1p7b_full_state_gate_v2/gate/rank0_result.json",
+      "sha256": "4f933d45574d014969da0d1e3ba99dbdd13a64b04e0b6e0a780d843ac9a52931"
+    },
+    {
+      "rank": 1,
+      "path": "artifacts/fsdp_1p7b_full_state_gate_v2/gate/rank1_result.json",
+      "sha256": "70ea0c1c085dff05c54543230edb22bd48dc5ae4341a33e1f8670d5bbf61d1c2"
+    }
+  ],
+  "implementation_sha256": "910b351ffbad62ed0eb3e1ba0b6186f2de84277f686026e7fe04b3b4d2015c2e",
+  "current_worker_hash_matches": true,
+  "frozen_content_sha256": "a8512bf9de2269b1ab6cf565883c559b25aed7c5fa851c72b84b4676cf3bb185",
+  "defaults_changed": false,
+  "convergence_proven": false,
+  "scope": "All-rank record/coverage/finite/byte-hash audit for three deterministic real1.7B updates; not independent GPU replay, long quality, performance or changed-world proof"
+}

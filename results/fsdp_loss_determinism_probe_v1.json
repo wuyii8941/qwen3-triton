@@ -1,0 +1,18 @@
+{
+  "complete": true,
+  "source": "artifacts/fsdp_loss_determinism_probe_v1/result.json",
+  "sha256": "2aa07c94fb112132275326a00d8b19bd4ebc15fc456bed0ab6be4c12367a78b9",
+  "world_size": 4,
+  "head_dim": 128,
+  "seq": 11,
+  "chunk_size": 7,
+  "deterministic": true,
+  "default": "gradient_parity_failed",
+  "native_ce": "gradient_parity_failed",
+  "first_failure": "untied embedding gradient at update 0",
+  "max_abs": 0.0009765625,
+  "original_atol": 0.00002,
+  "original_rtol": 0.002,
+  "decision": "Keep disabled; deterministic execution does not resolve the loss gradient mismatch",
+  "scope": "Negative correctness diagnostic, no benchmark or quality claim"
+}

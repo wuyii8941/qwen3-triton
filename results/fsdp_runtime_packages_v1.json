@@ -1,0 +1,23 @@
+{
+  "scope": "Observed direct package versions in the current research interpreter; not a complete dependency lock or validated clean-install recipe",
+  "python": "3.11.16",
+  "packages": {
+    "torch": "2.10.0+cu128",
+    "triton": "3.6.0",
+    "transformers": "4.51.0",
+    "accelerate": "1.15.0",
+    "numpy": "2.4.6",
+    "pytest": "9.1.1",
+    "safetensors": "0.8.0",
+    "tokenizers": "0.21.4",
+    "huggingface-hub": "0.36.2"
+  },
+  "environment": ".venv-research",
+  "include_system_site_packages": false,
+  "explicit_readonly_pth": [
+    "/data1/tzh/envs/hf_ga_5190/lib/python3.11/site-packages",
+    "/data1/tzh/envs/ka_main/lib/python3.11/site-packages"
+  ],
+  "package_mutations_performed": false,
+  "clean_environment_reproduction_verified": false
+}

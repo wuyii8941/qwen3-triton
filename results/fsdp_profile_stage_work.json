@@ -1,0 +1,36 @@
+{
+  "scope": "One separately profiled 8B/S512 training step per backend; kernel work, NOT wall latency",
+  "custom": {
+    "all_gather_kernel_ms": 2971.206244,
+    "all_gather_launches": 78,
+    "reduce_scatter_kernel_ms": 2995.906678,
+    "reduce_scatter_launches": 39,
+    "compute_and_local_kernel_ms": 1478.619850,
+    "compute_and_local_launches": 9172,
+    "communication_interval_union_ms": 5967.112925,
+    "local_interval_union_ms": 1478.619867,
+    "communication_local_overlap_ms": 0.0,
+    "source": "artifacts/fsdp_compare_8b_custom_screen_v1/trace.json"
+  },
+  "official": {
+    "all_gather_kernel_ms": 3354.901191,
+    "all_gather_launches": 78,
+    "reduce_scatter_kernel_ms": 3553.156281,
+    "reduce_scatter_launches": 39,
+    "compute_and_local_kernel_ms": 905.642760,
+    "compute_and_local_launches": 6780,
+    "communication_interval_union_ms": 6908.057472,
+    "local_interval_union_ms": 840.309458,
+    "communication_local_overlap_ms": 658.787199,
+    "source": "artifacts/fsdp_8b_comparison_v1/r0_official/trace.json"
+  },
+  "caveats": [
+    "Both paths have the same collective counts; this does not establish equal wire throughput",
+    "NCCL kernels include synchronization/waiting and may overlap computation",
+    "Larger summed NCCL duration does not imply slower end-to-end training",
+    "Extra custom local work is consistent with recomputation/data handling; this is not an isolated causal ablation",
+    "Do not add kernel work to predict wall-clock speedup",
+    "Overlap is the intersection of NCCL and non-NCCL GPU-kernel interval unions in one rank0 trace",
+    "Observed overlap is not a controlled prefetch-off/on causal ablation"
+  ]
+}

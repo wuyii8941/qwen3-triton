@@ -1,0 +1,104 @@
+{
+  "complete": true,
+  "physical_gpus": [
+    0,
+    2
+  ],
+  "world_size": 2,
+  "effective_global_batch": 4,
+  "seq": 512,
+  "cases": {
+    "large_batch": {
+      "spec": [
+        2,
+        1,
+        "each"
+      ],
+      "median_seconds_by_order": [
+        1.063018218614161,
+        1.074711738154292
+      ],
+      "tokens_per_second_by_order": [
+        1926.5897461945133,
+        1905.6272740793092
+      ],
+      "peak_allocated_gib": 17.24452495574951,
+      "mean_loss_max_abs_vs_large_batch_by_order": [
+        0.0,
+        0.0
+      ]
+    },
+    "accum_each": {
+      "spec": [
+        1,
+        2,
+        "each"
+      ],
+      "median_seconds_by_order": [
+        2.0733021004125476,
+        2.060974626801908
+      ],
+      "tokens_per_second_by_order": [
+        987.7962307531001,
+        993.7046159456892
+      ],
+      "peak_allocated_gib": 18.393271923065186,
+      "mean_loss_max_abs_vs_large_batch_by_order": [
+        0.0304487943649292,
+        0.029476284980773926
+      ]
+    },
+    "accum_defer": {
+      "spec": [
+        1,
+        2,
+        "defer"
+      ],
+      "median_seconds_by_order": [
+        1.9416856560856104,
+        1.9708986626937985
+      ],
+      "tokens_per_second_by_order": [
+        1054.7536330513542,
+        1039.1198891985753
+      ],
+      "peak_allocated_gib": 21.598580837249756,
+      "mean_loss_max_abs_vs_large_batch_by_order": [
+        0.030428051948547363,
+        0.02873516082763672
+      ]
+    }
+  },
+  "comparisons": {
+    "large_batch_over_accum_each": {
+      "paired_throughput_ratios": [
+        1.9503918786222467,
+        1.9176999316499714
+      ],
+      "over_two_percent_both_orders": true
+    },
+    "large_batch_over_accum_defer": {
+      "paired_throughput_ratios": [
+        1.8265779664782729,
+        1.8338858623416696
+      ],
+      "over_two_percent_both_orders": true
+    },
+    "accum_defer_over_accum_each": {
+      "paired_throughput_ratios": [
+        1.0677846302847356,
+        1.0457029911345086
+      ],
+      "over_two_percent_both_orders": true
+    }
+  },
+  "fastest_observed_by_sum_of_medians": "large_batch",
+  "input_identity_scope": "all_ranks",
+  "raw_summary_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/fsdp_1p7b_accumulation_screen_v1/result.json",
+  "raw_summary_sha256": "8777cd32f5fa2142614c77cda9890c617afe1d1db7e9c2875758d4012b3ad73d",
+  "implementation_sha256": "910b351ffbad62ed0eb3e1ba0b6186f2de84277f686026e7fe04b3b4d2015c2e",
+  "frozen_content_sha256": "a8512bf9de2269b1ab6cf565883c559b25aed7c5fa851c72b84b4676cf3bb185",
+  "defaults_changed": false,
+  "convergence_proven": false,
+  "scope": "Real1.7B B2/A1 vs B1/A2 at same globalbatch4, short paired training steps. Different native BF16 shapes/accumulation may differ numerically; gate references match each microbatch partition. Not bitwise full-batch, long quality, significance or cross-globalbatch2 speedup proof"
+}

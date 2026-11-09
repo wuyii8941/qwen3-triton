@@ -1,0 +1,599 @@
+{
+  "complete": true,
+  "records": [
+    {
+      "case": "native_k35",
+      "source": "artifacts/fsdp_allocator_screen_42_v1/native_k35/result.json",
+      "sha256": "815c1bd8e4f6c4bf1c3621c358ff7bf7ee4d315039091d3cda5a758cb04a0146",
+      "log_sha256": "b7a742635c45a8de2978fb6574dfefaeb5841ad584ef78501c8c8d397f46e648",
+      "allocator": {
+        "backend": "native",
+        "environment": {
+          "PYTORCH_ALLOC_CONF": "backend:native,expandable_segments:False",
+          "PYTORCH_CUDA_ALLOC_CONF": null
+        },
+        "settings": {
+          "PYTORCH_CUDA_ALLOC_CONF": "backend:native,expandable_segments:False",
+          "max_split_size": -1,
+          "garbage_collection_threshold": 0.0,
+          "expandable_segments": false,
+          "pinned_num_register_threads": 1,
+          "release_lock_on_cudamalloc": false,
+          "pinned_use_cuda_host_register": false,
+          "graph_capture_record_stream_reuse": false,
+          "roundup_power2_divisions": {
+            "1": 0,
+            "2": 0,
+            "4": 0,
+            "8": 0,
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "128": 0,
+            "256": 0,
+            "512": 0,
+            "1024": 0,
+            "2048": 0,
+            "4096": 0,
+            "8192": 0,
+            "16384": 0,
+            "32768": 0
+          }
+        }
+      },
+      "median_step_seconds": 5.855157461948693,
+      "peak_allocated_gib": 41.65127897262573,
+      "peak_reserved_gib": 41.99609375,
+      "counter_medians": {
+        "num_alloc_retries": 4.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 4.0,
+        "num_device_alloc": 231.0,
+        "num_device_free": 238.5
+      },
+      "measured_records": [
+        {
+          "step": 4,
+          "warmup": false,
+          "max_rank_seconds": 5.809521470218897,
+          "loss": 2.306264877319336,
+          "peak_allocated_gib": 41.65127897262573,
+          "peak_reserved_gib": 41.99609375,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 231,
+            "num_device_free": 229
+          }
+        },
+        {
+          "step": 5,
+          "warmup": false,
+          "max_rank_seconds": 5.789828473702073,
+          "loss": 2.3807999193668365,
+          "peak_allocated_gib": 41.65127897262573,
+          "peak_reserved_gib": 41.9921875,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 206,
+            "num_device_free": 205
+          }
+        },
+        {
+          "step": 6,
+          "warmup": false,
+          "max_rank_seconds": 5.774116972461343,
+          "loss": 2.589585602283478,
+          "peak_allocated_gib": 41.65127897262573,
+          "peak_reserved_gib": 41.994140625,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 231,
+            "num_device_free": 229
+          }
+        },
+        {
+          "step": 7,
+          "warmup": false,
+          "max_rank_seconds": 5.900793453678489,
+          "loss": 2.784008264541626,
+          "peak_allocated_gib": 41.65127897262573,
+          "peak_reserved_gib": 41.994140625,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 5,
+            "num_ooms": 0,
+            "num_sync_all_streams": 5,
+            "num_device_alloc": 207,
+            "num_device_free": 248
+          }
+        },
+        {
+          "step": 8,
+          "warmup": false,
+          "max_rank_seconds": 5.932886904105544,
+          "loss": 2.031130224466324,
+          "peak_allocated_gib": 41.65127897262573,
+          "peak_reserved_gib": 41.98828125,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 5,
+            "num_ooms": 0,
+            "num_sync_all_streams": 5,
+            "num_device_alloc": 323,
+            "num_device_free": 323
+          }
+        },
+        {
+          "step": 9,
+          "warmup": false,
+          "max_rank_seconds": 6.242288934066892,
+          "loss": 2.4794992804527283,
+          "peak_allocated_gib": 41.65127897262573,
+          "peak_reserved_gib": 41.966796875,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 294,
+            "num_device_free": 258
+          }
+        }
+      ]
+    },
+    {
+      "case": "expandable_k35",
+      "source": "artifacts/fsdp_allocator_screen_42_v1/expandable_k35/result.json",
+      "sha256": "9e2c2d4163da043b6a78515098cf4e246051d03c2178a592c2aca0875c8e9754",
+      "log_sha256": "a1378d9bdafd5ee7f1a42f62f4fde90ae23c03222ec267044cd671d19179f918",
+      "allocator": {
+        "backend": "native",
+        "environment": {
+          "PYTORCH_ALLOC_CONF": "backend:native,expandable_segments:True",
+          "PYTORCH_CUDA_ALLOC_CONF": null
+        },
+        "settings": {
+          "PYTORCH_CUDA_ALLOC_CONF": "backend:native,expandable_segments:True",
+          "max_split_size": -1,
+          "garbage_collection_threshold": 0.0,
+          "expandable_segments": true,
+          "pinned_num_register_threads": 1,
+          "release_lock_on_cudamalloc": false,
+          "pinned_use_cuda_host_register": false,
+          "graph_capture_record_stream_reuse": false,
+          "roundup_power2_divisions": {
+            "1": 0,
+            "2": 0,
+            "4": 0,
+            "8": 0,
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "128": 0,
+            "256": 0,
+            "512": 0,
+            "1024": 0,
+            "2048": 0,
+            "4096": 0,
+            "8192": 0,
+            "16384": 0,
+            "32768": 0
+          }
+        }
+      },
+      "median_step_seconds": 6.25739358086139,
+      "peak_allocated_gib": 41.64688444137573,
+      "peak_reserved_gib": 41.99609375,
+      "counter_medians": {
+        "num_alloc_retries": 4.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 4.0,
+        "num_device_alloc": 228.0,
+        "num_device_free": 19.0
+      },
+      "measured_records": [
+        {
+          "step": 4,
+          "warmup": false,
+          "max_rank_seconds": 6.241253845393658,
+          "loss": 2.30785271525383,
+          "peak_allocated_gib": 41.64688444137573,
+          "peak_reserved_gib": 41.99609375,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 228,
+            "num_device_free": 19
+          }
+        },
+        {
+          "step": 5,
+          "warmup": false,
+          "max_rank_seconds": 6.278050918132067,
+          "loss": 2.3785347044467926,
+          "peak_allocated_gib": 41.64688444137573,
+          "peak_reserved_gib": 41.99609375,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 228,
+            "num_device_free": 19
+          }
+        },
+        {
+          "step": 6,
+          "warmup": false,
+          "max_rank_seconds": 6.325238827615976,
+          "loss": 2.588451385498047,
+          "peak_allocated_gib": 41.64688444137573,
+          "peak_reserved_gib": 41.99609375,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 228,
+            "num_device_free": 19
+          }
+        },
+        {
+          "step": 7,
+          "warmup": false,
+          "max_rank_seconds": 6.273533316329122,
+          "loss": 2.784064531326294,
+          "peak_allocated_gib": 41.64688444137573,
+          "peak_reserved_gib": 41.99609375,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 227,
+            "num_device_free": 19
+          }
+        },
+        {
+          "step": 8,
+          "warmup": false,
+          "max_rank_seconds": 6.183086894452572,
+          "loss": 2.028609871864319,
+          "peak_allocated_gib": 41.64688444137573,
+          "peak_reserved_gib": 41.99609375,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 228,
+            "num_device_free": 20
+          }
+        },
+        {
+          "step": 9,
+          "warmup": false,
+          "max_rank_seconds": 6.227668127045035,
+          "loss": 2.478139579296112,
+          "peak_allocated_gib": 41.64688444137573,
+          "peak_reserved_gib": 41.99609375,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 229,
+            "num_device_free": 19
+          }
+        }
+      ]
+    },
+    {
+      "case": "native_k30",
+      "source": "artifacts/fsdp_allocator_screen_42_v1/native_k30/result.json",
+      "sha256": "c9d048bf9dcbba3ccdf0cddd80c72a269c4f35086b3909b9c21f65011f398edf",
+      "log_sha256": "66b7ee5ef1ecba37becd1ee3920fff581982f44b62a9fd96cc592f9cdd9a3a9d",
+      "allocator": {
+        "backend": "native",
+        "environment": {
+          "PYTORCH_ALLOC_CONF": "backend:native,expandable_segments:False",
+          "PYTORCH_CUDA_ALLOC_CONF": null
+        },
+        "settings": {
+          "PYTORCH_CUDA_ALLOC_CONF": "backend:native,expandable_segments:False",
+          "max_split_size": -1,
+          "garbage_collection_threshold": 0.0,
+          "expandable_segments": false,
+          "pinned_num_register_threads": 1,
+          "release_lock_on_cudamalloc": false,
+          "pinned_use_cuda_host_register": false,
+          "graph_capture_record_stream_reuse": false,
+          "roundup_power2_divisions": {
+            "1": 0,
+            "2": 0,
+            "4": 0,
+            "8": 0,
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "128": 0,
+            "256": 0,
+            "512": 0,
+            "1024": 0,
+            "2048": 0,
+            "4096": 0,
+            "8192": 0,
+            "16384": 0,
+            "32768": 0
+          }
+        }
+      },
+      "median_step_seconds": 6.195542400702834,
+      "peak_allocated_gib": 41.808048725128174,
+      "peak_reserved_gib": 41.994140625,
+      "counter_medians": {
+        "num_alloc_retries": 5.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 5.0,
+        "num_device_alloc": 253.5,
+        "num_device_free": 275.0
+      },
+      "measured_records": [
+        {
+          "step": 4,
+          "warmup": false,
+          "max_rank_seconds": 6.109101466834545,
+          "loss": 2.306429088115692,
+          "peak_allocated_gib": 41.808048725128174,
+          "peak_reserved_gib": 41.970703125,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 254,
+            "num_device_free": 252
+          }
+        },
+        {
+          "step": 5,
+          "warmup": false,
+          "max_rank_seconds": 6.255496410652995,
+          "loss": 2.380180686712265,
+          "peak_allocated_gib": 41.808048725128174,
+          "peak_reserved_gib": 41.978515625,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 5,
+            "num_ooms": 0,
+            "num_sync_all_streams": 5,
+            "num_device_alloc": 223,
+            "num_device_free": 275
+          }
+        },
+        {
+          "step": 6,
+          "warmup": false,
+          "max_rank_seconds": 6.149555386975408,
+          "loss": 2.591213047504425,
+          "peak_allocated_gib": 41.808048725128174,
+          "peak_reserved_gib": 41.982421875,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 5,
+            "num_ooms": 0,
+            "num_sync_all_streams": 5,
+            "num_device_alloc": 338,
+            "num_device_free": 287
+          }
+        },
+        {
+          "step": 7,
+          "warmup": false,
+          "max_rank_seconds": 6.191302940249443,
+          "loss": 2.785163998603821,
+          "peak_allocated_gib": 41.808048725128174,
+          "peak_reserved_gib": 41.970703125,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 253,
+            "num_device_free": 251
+          }
+        },
+        {
+          "step": 8,
+          "warmup": false,
+          "max_rank_seconds": 6.312033396214247,
+          "loss": 2.0314857065677643,
+          "peak_allocated_gib": 41.808048725128174,
+          "peak_reserved_gib": 41.978515625,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 5,
+            "num_ooms": 0,
+            "num_sync_all_streams": 5,
+            "num_device_alloc": 222,
+            "num_device_free": 275
+          }
+        },
+        {
+          "step": 9,
+          "warmup": false,
+          "max_rank_seconds": 6.199781861156225,
+          "loss": 2.4787073731422424,
+          "peak_allocated_gib": 41.808048725128174,
+          "peak_reserved_gib": 41.982421875,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 5,
+            "num_ooms": 0,
+            "num_sync_all_streams": 5,
+            "num_device_alloc": 338,
+            "num_device_free": 287
+          }
+        }
+      ]
+    },
+    {
+      "case": "expandable_k30",
+      "source": "artifacts/fsdp_allocator_screen_42_v1/expandable_k30/result.json",
+      "sha256": "228dab5f9eb8eb23837aa019772583cca1d5e8e7b1e8a2d42c12da63e100cfe8",
+      "log_sha256": "bfd487e800516cd278f3e8767881c9cb49985cf132ce90c73b28211749425abe",
+      "allocator": {
+        "backend": "native",
+        "environment": {
+          "PYTORCH_ALLOC_CONF": "backend:native,expandable_segments:True",
+          "PYTORCH_CUDA_ALLOC_CONF": null
+        },
+        "settings": {
+          "PYTORCH_CUDA_ALLOC_CONF": "backend:native,expandable_segments:True",
+          "max_split_size": -1,
+          "garbage_collection_threshold": 0.0,
+          "expandable_segments": true,
+          "pinned_num_register_threads": 1,
+          "release_lock_on_cudamalloc": false,
+          "pinned_use_cuda_host_register": false,
+          "graph_capture_record_stream_reuse": false,
+          "roundup_power2_divisions": {
+            "1": 0,
+            "2": 0,
+            "4": 0,
+            "8": 0,
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "128": 0,
+            "256": 0,
+            "512": 0,
+            "1024": 0,
+            "2048": 0,
+            "4096": 0,
+            "8192": 0,
+            "16384": 0,
+            "32768": 0
+          }
+        }
+      },
+      "median_step_seconds": 6.602485272102058,
+      "peak_allocated_gib": 41.803654193878174,
+      "peak_reserved_gib": 41.9921875,
+      "counter_medians": {
+        "num_alloc_retries": 4.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 4.0,
+        "num_device_alloc": 254.5,
+        "num_device_free": 20.0
+      },
+      "measured_records": [
+        {
+          "step": 4,
+          "warmup": false,
+          "max_rank_seconds": 6.485548792406917,
+          "loss": 2.305318534374237,
+          "peak_allocated_gib": 41.803654193878174,
+          "peak_reserved_gib": 41.9921875,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 253,
+            "num_device_free": 20
+          }
+        },
+        {
+          "step": 5,
+          "warmup": false,
+          "max_rank_seconds": 6.472393436357379,
+          "loss": 2.376748949289322,
+          "peak_allocated_gib": 41.803654193878174,
+          "peak_reserved_gib": 41.9921875,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 256,
+            "num_device_free": 20
+          }
+        },
+        {
+          "step": 6,
+          "warmup": false,
+          "max_rank_seconds": 6.5483382269740105,
+          "loss": 2.5868749022483826,
+          "peak_allocated_gib": 41.803654193878174,
+          "peak_reserved_gib": 41.9921875,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 253,
+            "num_device_free": 20
+          }
+        },
+        {
+          "step": 7,
+          "warmup": false,
+          "max_rank_seconds": 6.656632317230105,
+          "loss": 2.781385600566864,
+          "peak_allocated_gib": 41.803654193878174,
+          "peak_reserved_gib": 41.9921875,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 254,
+            "num_device_free": 19
+          }
+        },
+        {
+          "step": 8,
+          "warmup": false,
+          "max_rank_seconds": 6.950743138790131,
+          "loss": 2.0277951657772064,
+          "peak_allocated_gib": 41.803654193878174,
+          "peak_reserved_gib": 41.9921875,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 255,
+            "num_device_free": 20
+          }
+        },
+        {
+          "step": 9,
+          "warmup": false,
+          "max_rank_seconds": 6.886231040582061,
+          "loss": 2.4752228260040283,
+          "peak_allocated_gib": 41.803654193878174,
+          "peak_reserved_gib": 41.9921875,
+          "allocator_activity_max_rank": {
+            "num_alloc_retries": 4,
+            "num_ooms": 0,
+            "num_sync_all_streams": 4,
+            "num_device_alloc": 255,
+            "num_device_free": 19
+          }
+        }
+      ]
+    }
+  ],
+  "expandable_throughput_ratios": {
+    "k35": 0.9357182645274288,
+    "k30": 0.9383651981597433
+  },
+  "scope": "Single-round matched allocator screen, not repeated or convergence evidence",
+  "workload_signature": [
+    "/data1/tzh/models/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+    4,
+    1,
+    512,
+    3,
+    6,
+    "FP32 master/AdamW/reduce, BF16 compute",
+    "forced Flash SDPA",
+    42.0,
+    "d9bc46af76b2bd228ccb677bce95e4b305e472f5487a145b2f5c2dcc3b94821c",
+    "fcfaacdbe49ed9ad503199adca62a0f4ba3111f21e0324df09ffaee56027c726",
+    "2.10.0+cu128",
+    "12.8",
+    "NVIDIA RTX A6000",
+    null
+  ]
+}

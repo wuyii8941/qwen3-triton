@@ -1,0 +1,195 @@
+{
+  "complete": true,
+  "partial_diagnostic_only": false,
+  "raw_records_audited": 6,
+  "records": [
+    {
+      "case": "tiny_native",
+      "result_sha256": "a4198e078f3a3a3c445211cca262f9bc034416b892489c6c93b455105ac4355c",
+      "resource_sha256": "4d081b2fc200e27c9cfa531ed464f6352629e6fca9aff33216f01a3aeaef337e",
+      "manifest_sha256": [
+        "f0f85be8d3126b00da8189a25c515af7806033604b522924cff19418629cb5ec",
+        "5ff702c11a69cfd51e423aa7eb6dac941507a3cfe59369e946ddd95ce45c4688",
+        "920dbeb8d13b1e504b5fe2452a45516604b9b00d372224e5dcd4087394b10a40",
+        "b4a4d7653f842e86860f411123b78f696ae341162ef5279bcd53d81264f7807f"
+      ],
+      "validation": [
+        {
+          "loss": 4.86137554692287,
+          "tokens": 255,
+          "blocks": 17,
+          "step": 0,
+          "elapsed_seconds": 1.1047154515981674
+        },
+        {
+          "loss": 4.861372315649893,
+          "tokens": 255,
+          "blocks": 17,
+          "step": 1,
+          "elapsed_seconds": 1.3004727475345135
+        },
+        {
+          "loss": 4.8614019655713845,
+          "tokens": 255,
+          "blocks": 17,
+          "step": 2,
+          "elapsed_seconds": 1.3918019086122513
+        }
+      ]
+    },
+    {
+      "case": "tiny_decoder",
+      "result_sha256": "3f7f4940cd131b908a4ee049263c9047506fdbd60e7cd7e912bff61f02dbe6cf",
+      "resource_sha256": "d4fd26dbc1dee9648e7120d61f90493fc2d0629dc49d827e728eba82ea351a52",
+      "manifest_sha256": [
+        "62f9b62b8d64343d1101874b9a643639a2542030d601dffd6a6f7bab93ab334d",
+        "f103f5485ab2a5ab75d373b572ff4fee7162f2492b16eee7dd6cab0fb6b631af",
+        "ac04b19475f312a760397461c8f708b1257262d41beff3b79388b6118da74cfa",
+        "2bb93163d8a865e834f02128953b382bae771de638e4fc64771a53dd2e0b5698"
+      ],
+      "validation": [
+        {
+          "loss": 4.86137554692287,
+          "tokens": 255,
+          "blocks": 17,
+          "step": 0,
+          "elapsed_seconds": 1.2319034282118082
+        },
+        {
+          "loss": 4.861372315649893,
+          "tokens": 255,
+          "blocks": 17,
+          "step": 1,
+          "elapsed_seconds": 1.5359165873378515
+        },
+        {
+          "loss": 4.8614019655713845,
+          "tokens": 255,
+          "blocks": 17,
+          "step": 2,
+          "elapsed_seconds": 1.608771674335003
+        }
+      ]
+    },
+    {
+      "case": "tiny_head",
+      "result_sha256": "8964d660e892a30d4d302e1dbe3b27d91186314ce69d1c6533b5f738d1bb6670",
+      "resource_sha256": "3b42cb63623af6e3ad4e9876ade2949f65f06599845ace1826f131aaa1c2f960",
+      "manifest_sha256": [
+        "136cd96740150606a3fbe3c4679a27ce30fac2a0916e7dbb8706210859ffd9fd",
+        "14571ef69d0420fab59c1a80089d9714cb88db9296427be2d3c10af14b7cc0d3",
+        "a96e168a3a565c3ad42b35e6ab5da5745ea50ac52f208cf430dce3c053c427dd",
+        "a3ef0d354dce2891f4493a86291bdf0a2d73ea2a21dbd24b66f3a8d6f78fcd34"
+      ],
+      "validation": [
+        {
+          "loss": 4.86137554692287,
+          "tokens": 255,
+          "blocks": 17,
+          "step": 0,
+          "elapsed_seconds": 1.058320039883256
+        },
+        {
+          "loss": 4.861372315649893,
+          "tokens": 255,
+          "blocks": 17,
+          "step": 1,
+          "elapsed_seconds": 2.9746489077806473
+        },
+        {
+          "loss": 4.8614019655713845,
+          "tokens": 255,
+          "blocks": 17,
+          "step": 2,
+          "elapsed_seconds": 3.059060512110591
+        }
+      ]
+    },
+    {
+      "case": "real_native",
+      "result_sha256": "1fdea7d12964dd7dc6c5add793018dc52fb0551e5a651fd5b4bf76cdad558907",
+      "resource_sha256": "65e26678f97a27620c5f2ee15ff34f833d8c990256ffbcbe6e62ec983d2153c6",
+      "manifest_sha256": [
+        "5a101f454af864ea8d22f0e544b310d6883d8e970219ff39d6b158abe5c16c71",
+        "f57786e726819b33688e1bbf671dfa26af255f9c6b15eefbb03cd8ab22d596f0",
+        "4465009d97432893ce8734624f747d67611f6dca3742a4b9c24c075dfd892c0a",
+        "907a2ca2e2fb86e31980ce135ec4731c973f0951cf4919df094a14c5044e283a"
+      ],
+      "validation": [
+        {
+          "loss": 2.7371728686203927,
+          "tokens": 261632,
+          "blocks": 512,
+          "step": 0,
+          "elapsed_seconds": 48.548315862193704
+        },
+        {
+          "loss": 2.584018693278214,
+          "tokens": 261632,
+          "blocks": 512,
+          "step": 2,
+          "elapsed_seconds": 82.91264174878597
+        }
+      ]
+    },
+    {
+      "case": "real_decoder",
+      "result_sha256": "e4ff0d903aec276f8d517c140ece00e1a1f4ffc9de1fffeebf04feb54cc7f0ef",
+      "resource_sha256": "783c72a107e28e62e12737d5c2eda65acbaa03a3fae73230a4a5aa634e112590",
+      "manifest_sha256": [
+        "399967ad2079ce8c8ab0b791d2f59c3a88eacd706af76c1ccedb250e703db07b",
+        "4a75c462796632f7b8de306da9d1e73d0a5a685f25c51b93d1dd76bdcb539894",
+        "622566b8fb25439418d3d0b2ac0c6a8955c0d5dd484cc2337cb80d5149b8d6a1",
+        "8173f2f7286dfecf592936203abb863b3b08d4559873ff7e55abdaf5c6c057e3"
+      ],
+      "validation": [
+        {
+          "loss": 2.7371728686203927,
+          "tokens": 261632,
+          "blocks": 512,
+          "step": 0,
+          "elapsed_seconds": 52.96908617205918
+        },
+        {
+          "loss": 2.5838638294466323,
+          "tokens": 261632,
+          "blocks": 512,
+          "step": 2,
+          "elapsed_seconds": 93.88445798493922
+        }
+      ]
+    },
+    {
+      "case": "real_head",
+      "result_sha256": "095c99ae98b1fee59fde5bc27fdf33d86f1daa55972a35c32e537c3a36a389c8",
+      "resource_sha256": "8474a35b176ad256613a4506e3e0bc162055bf3b0929126780bd3d019d95c80f",
+      "manifest_sha256": [
+        "3f244b880124dc2ba994a54acfecfb99f1a4ccb16578686ab6855bcd5943f6b1",
+        "8441c9f53b126c284d4a04de5556602ff0b9b37c3f13687ae0ce848da3a325d1",
+        "faa15531f5a93b207aa7b71238791553b9a0921eef5128b9944734da3bc7392c",
+        "28505ddc44879be322ee5c64a6cabd76c4dbe39ea10dcdb2f81d794df0a08f15"
+      ],
+      "validation": [
+        {
+          "loss": 2.7371728686203927,
+          "tokens": 261632,
+          "blocks": 512,
+          "step": 0,
+          "elapsed_seconds": 51.54507727921009
+        },
+        {
+          "loss": 2.5836251542526214,
+          "tokens": 261632,
+          "blocks": 512,
+          "step": 2,
+          "elapsed_seconds": 94.03253727219999
+        }
+      ]
+    }
+  ],
+  "all_preflights_passed": true,
+  "full_quality_completed": false,
+  "defaults_changed": false,
+  "checkpoints_written": false,
+  "scope": "Tiny/real two-update full-validation/best-restore integration audit, not convergence or speed evidence"
+}

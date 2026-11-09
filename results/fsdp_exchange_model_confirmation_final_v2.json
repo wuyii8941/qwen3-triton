@@ -1,0 +1,86 @@
+{
+  "complete": true,
+  "raw_runs_audited": 8,
+  "decisions": {
+    "torch_decoder_auto_k32": {
+      "ratios_vs_stronger_control": [
+        1.1732923243466733,
+        1.0605296958712989
+      ],
+      "over_two_percent_both_orders": true
+    },
+    "triton_head_simple_k32": {
+      "ratios_vs_stronger_control": [
+        1.0571719138660656,
+        1.0247683915931152
+      ],
+      "over_two_percent_both_orders": true
+    }
+  },
+  "native_simple_vs_native_auto": {
+    "paired_throughput_ratios": [
+      0.8718557336181109,
+      0.9917185272420407
+    ],
+    "over_two_percent_both_orders": false
+  },
+  "launch_resource_guard_audited": true,
+  "launch_resource_sha256": {
+    "r0_native_auto_k36": "6f7feedc4c9ebb4ccb4a5d2f96218abda39b02fb3cc9fdd82ecabf5f02971459",
+    "r0_torch_decoder_auto_k32": "8bb4ccddd3a33e94cc7978080ff3cf70721347124364c9f16816c9eaa78b082f",
+    "r0_native_simple_k36": "60b0c9adb40a2c3a7706b079be33777a37a4a2026c4fb4785a1d3f1cc1add906",
+    "r0_triton_head_simple_k32": "fac99e94b06d5ecbd9cace262b563ed075c691c88c2d9c2900771b93b2b4b35c",
+    "r1_triton_head_simple_k32": "70528e8828d42577f45f219147a496811a5c93d91fd85c072c5a78c53209cf4d",
+    "r1_native_simple_k36": "501f31901915dcd32357fd98fbf212de894dc5b4a8b08a093f0b9792333d0830",
+    "r1_torch_decoder_auto_k32": "dbc48d6134c7e9fdece851267f945532ecc408208c558f52a6567d952becf8ff",
+    "r1_native_auto_k36": "2f483879de7b930eb4fda31ff2291ba72c3c239a10d0400a6753f672f28fb54a"
+  },
+  "loss_trajectory_checks": {
+    "r0_torch_decoder_auto_k32": {
+      "max_absolute_loss_difference": 0.0025399327278137207,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "r0_native_simple_k36": {
+      "max_absolute_loss_difference": 0.0018253922462463379,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "r0_triton_head_simple_k32": {
+      "max_absolute_loss_difference": 0.0044630467891693115,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "r1_torch_decoder_auto_k32": {
+      "max_absolute_loss_difference": 0.005255460739135742,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "r1_native_simple_k36": {
+      "max_absolute_loss_difference": 0.0032126903533935547,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "r1_triton_head_simple_k32": {
+      "max_absolute_loss_difference": 0.0026869475841522217,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    }
+  },
+  "candidates_for_quality": [],
+  "defaults_changed": false,
+  "convergence_proven": false,
+  "scope": "Raw-file/hash/ordered-workload/callback/short-loss audit; not an independent training replay or significance proof"
+}

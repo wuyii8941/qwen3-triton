@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "rounds": [
+    {
+      "source": "artifacts/fsdp_hybrid_8b_screen_v1/matrix.json",
+      "sha256": "af88146e1fcda5c20a98e0cc6ebca16561ab6f79c42276edf38e9daa6d9884e4",
+      "workload": [
+        "/data1/tzh/models/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+        512,
+        1,
+        4,
+        6,
+        3,
+        "FP32 master/AdamW/reduce, BF16 compute",
+        "forced Flash SDPA",
+        "d9bc46af76b2bd228ccb677bce95e4b305e472f5487a145b2f5c2dcc3b94821c"
+      ],
+      "records": [
+        {
+          "repeat": 0,
+          "backend": "official",
+          "median_step_seconds": 6.7799945287406445,
+          "global_tokens_per_second": 302.06514051279146,
+          "peak_allocated_gib": 34.01147270202637,
+          "peak_reserved_gib": 43.81640625,
+          "optimization": {
+            "keep_full_layers": 0,
+            "swiglu": "native"
+          },
+          "initial_hf_parity": {
+            "max_abs": 0
+          },
+          "manifest": {
+            "pytorch": "2.10.0+cu128",
+            "cuda": "12.8",
+            "nccl": [
+              2,
+              27,
+              5
+            ],
+            "gpu": "NVIDIA RTX A6000",
+            "source_sha256": "0a8bca86e10343ad9e9e425db9eb4b354cafb0f5bb9c8f24da8d13afbedc2860",
+            "input_sha256": "d9bc46af76b2bd228ccb677bce95e4b305e472f5487a145b2f5c2dcc3b94821c"
+          }
+        },
+        {
+          "repeat": 0,
+          "backend": "official_swiglu",
+          "median_step_seconds": 6.763512771576643,
+          "global_tokens_per_second": 302.8012320175734,
+          "peak_allocated_gib": 34.01147270202637,
+          "peak_reserved_gib": 43.541015625,
+          "optimization": {
+            "keep_full_layers": 0,
+            "swiglu": "hf_rounded_triton_forward_backward"
+          },
+          "initial_hf_parity": {
+            "max_abs": 0
+          },
+          "manifest": {
+            "pytorch": "2.10.0+cu128",
+            "cuda": "12.8",
+            "nccl": [
+              2,
+              27,
+              5
+            ],
+            "gpu": "NVIDIA RTX A6000",
+            "source_sha256": "0a8bca86e10343ad9e9e425db9eb4b354cafb0f5bb9c8f24da8d13afbedc2860",
+            "input_sha256": "d9bc46af76b2bd228ccb677bce95e4b305e472f5487a145b2f5c2dcc3b94821c"
+          }
+        },
+        {
+          "repeat": 0,
+          "backend": "official_keep8",
+          "median_step_seconds": 6.470494597218931,
+          "global_tokens_per_second": 316.5136712856922,
+          "peak_allocated_gib": 34.01147270202637,
+          "peak_reserved_gib": 46.498046875,
+          "optimization": {
+            "keep_full_layers": 8,
+            "swiglu": "native"
+          },
+          "initial_hf_parity": {
+            "max_abs": 0
+          },
+          "manifest": {
+            "pytorch": "2.10.0+cu128",
+            "cuda": "12.8",
+            "nccl": [
+              2,
+              27,
+              5
+            ],
+            "gpu": "NVIDIA RTX A6000",
+            "source_sha256": "0a8bca86e10343ad9e9e425db9eb4b354cafb0f5bb9c8f24da8d13afbedc2860",
+            "input_sha256": "d9bc46af76b2bd228ccb677bce95e4b305e472f5487a145b2f5c2dcc3b94821c"
+          }
+        },
+        {
+          "repeat": 0,
+          "backend": "official_keep8_swiglu",
+          "median_step_seconds": 6.658315017819405,
+          "global_tokens_per_second": 307.58532669587015,
+          "peak_allocated_gib": 34.01147270202637,
+          "peak_reserved_gib": 46.080078125,
+          "optimization": {
+            "keep_full_layers": 8,
+            "swiglu": "hf_rounded_triton_forward_backward"
+          },
+          "initial_hf_parity": {
+            "max_abs": 0
+          },
+          "manifest": {
+            "pytorch": "2.10.0+cu128",
+            "cuda": "12.8",
+            "nccl": [
+              2,
+              27,
+              5
+            ],
+            "gpu": "NVIDIA RTX A6000",
+            "source_sha256": "0a8bca86e10343ad9e9e425db9eb4b354cafb0f5bb9c8f24da8d13afbedc2860",
+            "input_sha256": "d9bc46af76b2bd228ccb677bce95e4b305e472f5487a145b2f5c2dcc3b94821c"
+          }
+        }
+      ]
+    },
+    {
+      "source": "artifacts/fsdp_hybrid_8b_repeat_v2/matrix.json",
+      "sha256": "2513d6bede3e110f9b0bcec5e72da1766d6adfe9d46dc59204370d5969f61f0f",
+      "workload": [
+        "/data1/tzh/models/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+        512,
+        1,
+        4,
+        12,
+        3,
+        "FP32 master/AdamW/reduce, BF16 compute",
+        "forced Flash SDPA",
+        "c9cdd61089a33690ff9e155f4a0b2aae542b7197eac2778293f063b37fe95eae"
+      ],
+      "records": [
+        {
+          "repeat": 0,
+          "backend": "official_keep8",
+          "median_step_seconds": 6.468675033189356,
+          "global_tokens_per_second": 316.60270294800097,
+          "peak_allocated_gib": 34.01149559020996,
+          "peak_reserved_gib": 46.498046875,
+          "optimization": {
+            "keep_full_layers": 8,
+            "swiglu": "native"
+          },
+          "initial_hf_parity": {
+            "max_abs": 0
+          },
+          "manifest": {
+            "pytorch": "2.10.0+cu128",
+            "cuda": "12.8",
+            "nccl": [
+              2,
+              27,
+              5
+            ],
+            "gpu": "NVIDIA RTX A6000",
+            "source_sha256": "0a8bca86e10343ad9e9e425db9eb4b354cafb0f5bb9c8f24da8d13afbedc2860",
+            "input_sha256": "c9cdd61089a33690ff9e155f4a0b2aae542b7197eac2778293f063b37fe95eae"
+          }
+        },
+        {
+          "repeat": 0,
+          "backend": "official",
+          "median_step_seconds": 6.824027203954756,
+          "global_tokens_per_second": 300.1160368782109,
+          "peak_allocated_gib": 34.01149559020996,
+          "peak_reserved_gib": 43.81640625,
+          "optimization": {
+            "keep_full_layers": 0,
+            "swiglu": "native"
+          },
+          "initial_hf_parity": {
+            "max_abs": 0
+          },
+          "manifest": {
+            "pytorch": "2.10.0+cu128",
+            "cuda": "12.8",
+            "nccl": [
+              2,
+              27,
+              5
+            ],
+            "gpu": "NVIDIA RTX A6000",
+            "source_sha256": "0a8bca86e10343ad9e9e425db9eb4b354cafb0f5bb9c8f24da8d13afbedc2860",
+            "input_sha256": "c9cdd61089a33690ff9e155f4a0b2aae542b7197eac2778293f063b37fe95eae"
+          }
+        },
+        {
+          "repeat": 1,
+          "backend": "official",
+          "median_step_seconds": 6.974046013318002,
+          "global_tokens_per_second": 293.6602362658681,
+          "peak_allocated_gib": 34.01149559020996,
+          "peak_reserved_gib": 43.81640625,
+          "optimization": {
+            "keep_full_layers": 0,
+            "swiglu": "native"
+          },
+          "initial_hf_parity": {
+            "max_abs": 0
+          },
+          "manifest": {
+            "pytorch": "2.10.0+cu128",
+            "cuda": "12.8",
+            "nccl": [
+              2,
+              27,
+              5
+            ],
+            "gpu": "NVIDIA RTX A6000",
+            "source_sha256": "0a8bca86e10343ad9e9e425db9eb4b354cafb0f5bb9c8f24da8d13afbedc2860",
+            "input_sha256": "c9cdd61089a33690ff9e155f4a0b2aae542b7197eac2778293f063b37fe95eae"
+          }
+        },
+        {
+          "repeat": 1,
+          "backend": "official_keep8",
+          "median_step_seconds": 6.467926983721554,
+          "global_tokens_per_second": 316.63931970079375,
+          "peak_allocated_gib": 34.01149559020996,
+          "peak_reserved_gib": 46.498046875,
+          "optimization": {
+            "keep_full_layers": 8,
+            "swiglu": "native"
+          },
+          "initial_hf_parity": {
+            "max_abs": 0
+          },
+          "manifest": {
+            "pytorch": "2.10.0+cu128",
+            "cuda": "12.8",
+            "nccl": [
+              2,
+              27,
+              5
+            ],
+            "gpu": "NVIDIA RTX A6000",
+            "source_sha256": "0a8bca86e10343ad9e9e425db9eb4b354cafb0f5bb9c8f24da8d13afbedc2860",
+            "input_sha256": "c9cdd61089a33690ff9e155f4a0b2aae542b7197eac2778293f063b37fe95eae"
+          }
+        }
+      ]
+    }
+  ],
+  "scope": "Steady-state official FSDP parameter-retention ablation, not Triton speedup or convergence proof",
+  "long_run": "artifacts/fsdp_keep8_convergence_campaign_v2/official_keep8_full_protocol/result.json",
+  "long_run_complete": false
+}

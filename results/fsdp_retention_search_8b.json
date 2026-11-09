@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "source": "artifacts/fsdp_retention_search_8b_s512_b1_v2/status.json",
+  "sha256": "06d8a0d9eeb36b85ea4e80f47992377dca6a6779ad8f8b76aaffb2cb14aea835",
+  "implementation_sources_sha256": "7c21265bc5d4862bf0882f813b42c02198d7f5e8809ece277046f6c0994eafb4",
+  "all_passing_result_source_hashes_verified": true,
+  "world_size": 4, "sequence_length": 512, "microbatch_per_rank": 1,
+  "allocator_budget_gib": 42.0,
+  "screen_warmup": 3, "screen_steps": 6,
+  "screen": [
+    {"keep": 0, "status": "passed", "median_seconds": 6.80888547282666},
+    {"keep": 4, "status": "passed", "median_seconds": 7.018649301491678},
+    {"keep": 8, "status": "passed", "median_seconds": 6.888653305359185},
+    {"keep": 12, "status": "passed", "median_seconds": 6.608936045318842},
+    {"keep": 16, "status": "passed", "median_seconds": 6.294815892353654},
+    {"keep": 24, "status": "passed", "median_seconds": 6.093386424705386},
+    {"keep": 36, "status": "oom"}
+  ],
+  "confirmed_keep": 24, "confirmation_warmup": 3, "confirmation_steps": 12,
+  "confirmation": [
+    {"repeat": 0, "baseline_seconds": 6.8775640688836575, "candidate_seconds": 6.228705074638128, "throughput_speedup": 1.1041723739477625},
+    {"repeat": 1, "baseline_seconds": 7.0401685275137424, "candidate_seconds": 6.074819972738624, "throughput_speedup": 1.158909821049384}
+  ],
+  "cuda_checkpoint_gate": {
+    "passed": true, "world_size": 4, "scope": "D128 tiny Qwen CUDA FSDP2",
+    "replay_steps": 2, "parameter_optimizer_rng_replay": "bitwise_equal",
+    "negative_gates": ["overwrite", "metadata", "incomplete", "disk_budget"]
+  },
+  "keep24_convergence_proven": false,
+  "scope": "Steady-state winner among tested K at one shape; not global optimum, causal proof or convergence"
+}

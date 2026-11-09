@@ -1,0 +1,10 @@
+{
+  "full_k0": [0, 2, "full"],
+  "full_k8": [8, 2, "full"],
+  "full_k12": [12, 2, "full"],
+  "full_k14": [14, 2, "full"],
+  "full_k16": [16, 2, "full"],
+  "all_k20": [20, 1, "full"],
+  "all_k24": [24, 1, "full"],
+  "sparse_k8": [8, 3, "full"]
+}

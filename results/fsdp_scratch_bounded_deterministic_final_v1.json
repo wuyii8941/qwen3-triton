@@ -1,0 +1,76 @@
+{
+  "complete": true,
+  "partial_diagnostic_only": false,
+  "raw_records_audited": 3,
+  "records": [
+    {
+      "case": "native_a",
+      "loss": [
+        2.6517364382743835,
+        2.6813946664333344,
+        2.7330790758132935,
+        2.3054084181785583
+      ],
+      "initial_hf_logits_max_abs": 0.0,
+      "deterministic_all_ranks": true,
+      "actual_bounded_adapter": false,
+      "resource_sha256": "6c3b33387d031f63fb9d1f53af1da89709b250150564cc56946469c9713f72c6"
+    },
+    {
+      "case": "native_b",
+      "loss": [
+        2.6517364382743835,
+        2.6813946664333344,
+        2.7330790758132935,
+        2.3054084181785583
+      ],
+      "initial_hf_logits_max_abs": 0.0,
+      "deterministic_all_ranks": true,
+      "actual_bounded_adapter": false,
+      "resource_sha256": "92a79d0556518b1d679e0908513917c807a13f5dc30ffccf00e2f729346735b5"
+    },
+    {
+      "case": "bounded_decoder",
+      "loss": [
+        2.6517364382743835,
+        2.6813946664333344,
+        2.7330790758132935,
+        2.3054084181785583
+      ],
+      "initial_hf_logits_max_abs": 0.0,
+      "deterministic_all_ranks": true,
+      "actual_bounded_adapter": true,
+      "resource_sha256": "d41b4d16413131f7463c922d5f3522987b281726a677c7f2c850411d6a826752"
+    }
+  ],
+  "native_repeat": {
+    "max_absolute_loss_difference": 0.0,
+    "atol": 0.0001,
+    "rtol": 1e-05,
+    "within_declared_loss_tolerance": true,
+    "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+  },
+  "native_repeat_exact": true,
+  "candidate_comparisons": {
+    "native_a": {
+      "max_absolute_loss_difference": 0.0,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": true,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "native_b": {
+      "max_absolute_loss_difference": 0.0,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": true,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    }
+  },
+  "eligible_for_quality_preflight": true,
+  "convergence_proven": false,
+  "full_gradient_moment_parity_proven": false,
+  "ordinary_performance_claim": false,
+  "default_changed": false,
+  "scope": "Four-update real8B deterministic loss replay only; partial mode cannot qualify quality preflight"
+}

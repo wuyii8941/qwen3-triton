@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "scope": "Single-seed matched-protocol task-plateau observation on shared GPUs; not statistical quality equivalence or universal optimality",
+  "source": "artifacts/fsdp_keep24_convergence_campaign_v1/official_keep24_full_protocol/result.json",
+  "sha256": "061299b507904a76adf203ddde9fef25e6bf7f6591831ab073f713c5e0340705",
+  "baseline_source": "artifacts/fsdp_convergence_campaign_v2/official_full_protocol/result.json",
+  "baseline_sha256": "da8f9db6f151beaeedc9353121a15c8142472345eb26a973febe07d5833c753d",
+  "backend": "official_keep24", "complete": true, "converged": true,
+  "stop_reason": "validation_plateau", "updates": 1184, "validation_checks": 38,
+  "history_audit": "First plateau at stop; finite sequential updates; complete validation; actual minimum selected",
+  "best_step": 1152, "best_validation": 2.150742419778484,
+  "best_parameters_restored": true,
+  "test": {"loss": 2.1066942234525055, "tokens": 297913, "blocks": 583},
+  "elapsed_seconds": 9063.739112395793,
+  "median_recorded_step_seconds": 6.46939810924232,
+  "peak_allocated_gib": 39.6520357131958,
+  "peak_reserved_gib": 47.0859375,
+  "comparison": {
+    "candidate_over_baseline_job_time": 0.8417167433411437,
+    "candidate_minus_baseline_best_validation": -0.00030979205017711564,
+    "candidate_minus_baseline_test_loss": 0.00040353643513357795
+  },
+  "long_run_weights_exported": false,
+  "full_8b_optimizer_resume_proven": false
+}

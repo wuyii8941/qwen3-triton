@@ -1,0 +1,19 @@
+{
+  "complete": true,
+  "source": "artifacts/fsdp_s2048_final_confirmation_v2/headroom/result.json",
+  "sha256": "6c2f3fb2325862d6f7e0b590e8cdc03c049d21f6575167d2fb5dafb1a1343e07",
+  "world_size": 4,
+  "batch_per_rank": 1,
+  "seq": 2048,
+  "memory_budget_gib": 42,
+  "checkpoint_every": 1,
+  "ce_only_chunk_size": 0,
+  "records": [
+    {"keep_full_layers": 28, "median_step_seconds": 6.169935524463654, "peak_allocated_gib": 37.651909828186035},
+    {"keep_full_layers": 32, "median_step_seconds": 6.136197817511857, "peak_allocated_gib": 39.08947467803955},
+    {"keep_full_layers": 36, "median_step_seconds": 6.137154763564467, "peak_allocated_gib": 40.528016090393066}
+  ],
+  "selected_for_confirmation": 32,
+  "interpretation": "K32/K36 are effectively tied in this single screen; K32 uses less memory. K28 is a lower-memory candidate with a small observed latency difference. No statistical or quality claim.",
+  "scope": "Single-order headroom screen, not repeated comparison or universal optimum"
+}

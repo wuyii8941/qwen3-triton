@@ -1,0 +1,123 @@
+{
+  "complete": true,
+  "partial_diagnostic_only": false,
+  "raw_records_audited": 6,
+  "evidence": [
+    {
+      "case": "auto_a",
+      "sha256": "3125e6a2292b759efa52f3f01a6dd64b9ec2746804d01647886fd490900009cb",
+      "resource_sha256": "1e1abad969e66f2dd70b3644355678f53960e39fa8aeea86c8f52e600165d3d1",
+      "context_sha256": [
+        "9e8a03600b12a010d6a2c6e5e7fb146d77d1173a0f5eae9d6cbd97f092156a10",
+        "3001302a2675c93ac5f85ecbc691ffc07673e24790fb03b7f5706a318af181e1",
+        "005d8b70dcd9d1d2c31ac29b4abb125fa2b4c92cacc2f53afc022fdf75333718",
+        "f493567470f97c4c8dcaa634b355827b94f139f6e164b46be8d3e4acc52288ca"
+      ]
+    },
+    {
+      "case": "auto_b",
+      "sha256": "472272efc9bcfeafcc5619b1137d4aa5bd724792ec110647c415b502989c24c6",
+      "resource_sha256": "884a0416ec3cb10cb6b8bcd642c879155295778ec768c959207d64dd9c0623c0",
+      "context_sha256": [
+        "510cb5a61214ac50536e14f5d180675eb1aa801569d1ccb052545a2d13fbdaad",
+        "3001302a2675c93ac5f85ecbc691ffc07673e24790fb03b7f5706a318af181e1",
+        "005d8b70dcd9d1d2c31ac29b4abb125fa2b4c92cacc2f53afc022fdf75333718",
+        "f493567470f97c4c8dcaa634b355827b94f139f6e164b46be8d3e4acc52288ca"
+      ]
+    },
+    {
+      "case": "simple_a",
+      "sha256": "fe8e7baa4661b61e9d30307b39dfdee20fa0119a43b01ed0843611ce4bad79f8",
+      "resource_sha256": "f9743207ac91bf4be5885feb897c65d2921505f8f062d1e6e8aa8033b3d70dcf",
+      "context_sha256": [
+        "4bd5f5cef62cd2d2a1db38da43495b6e77a8dd1d47322768158a7a6293336445",
+        "4d69fa284680f141bcedd0a92019e29d89b6b716644c4b478a148b99579e52b1",
+        "73d391277a9a39335c1aa08f5490ab9f2c69cd69a1bf981e0bf6f0817e2a2bd5",
+        "2e43cee99d367268ac1dae62eace0e72ad292ee30c8d1802368ffc3d543118c6"
+      ]
+    },
+    {
+      "case": "simple_b",
+      "sha256": "94cb3d8928c2b57f4cad6b842fa6be111d206cafeb4d01b7cb5cf24b98bbabc7",
+      "resource_sha256": "4047701a77037fefccc8519577cce2aeba79797c97edde2451f6379759e3e244",
+      "context_sha256": [
+        "8303ab5cba23b181ff2515a1bd26a0e01351f64ddd16b750a6add3e1b6d7efd3",
+        "4d69fa284680f141bcedd0a92019e29d89b6b716644c4b478a148b99579e52b1",
+        "73d391277a9a39335c1aa08f5490ab9f2c69cd69a1bf981e0bf6f0817e2a2bd5",
+        "2e43cee99d367268ac1dae62eace0e72ad292ee30c8d1802368ffc3d543118c6"
+      ]
+    },
+    {
+      "case": "decoder",
+      "sha256": "28360308f18042ed8aa3deb67aea2491ec93883f41c48d045efbcbb37610b756",
+      "resource_sha256": "c616a34e349009c75ed4ac7823f6fcc0ecb097af6216deb290480e440abc9832",
+      "context_sha256": [
+        "3206474cb6c0533aa80168ca8ef0482a8906ee15f31f7f7a09dd2853377119d9",
+        "3001302a2675c93ac5f85ecbc691ffc07673e24790fb03b7f5706a318af181e1",
+        "005d8b70dcd9d1d2c31ac29b4abb125fa2b4c92cacc2f53afc022fdf75333718",
+        "f493567470f97c4c8dcaa634b355827b94f139f6e164b46be8d3e4acc52288ca"
+      ]
+    },
+    {
+      "case": "head",
+      "sha256": "412f2296ed746a9c2d3abe32b2e7929a12bde494b58827ac1bbbc0a01facffef",
+      "resource_sha256": "ec11071d861d83cd2431afdfdf29d89c2057333cffabd6d4db7b2516e7d9fe2f",
+      "context_sha256": [
+        "38fc10c5e15e43011db7a3c5ec87cf2d74122c157b928388b4be8f19f5003ea4",
+        "4d69fa284680f141bcedd0a92019e29d89b6b716644c4b478a148b99579e52b1",
+        "73d391277a9a39335c1aa08f5490ab9f2c69cd69a1bf981e0bf6f0817e2a2bd5",
+        "2e43cee99d367268ac1dae62eace0e72ad292ee30c8d1802368ffc3d543118c6"
+      ]
+    }
+  ],
+  "checks": {
+    "decoder": {
+      "native_repeat_exact": true,
+      "comparisons": [
+        {
+          "max_absolute_loss_difference": 0.0,
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "within_declared_loss_tolerance": true,
+          "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+        },
+        {
+          "max_absolute_loss_difference": 0.0,
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "within_declared_loss_tolerance": true,
+          "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+        }
+      ],
+      "eligible_for_quality_preflight": true
+    },
+    "head": {
+      "native_repeat_exact": true,
+      "comparisons": [
+        {
+          "max_absolute_loss_difference": 0.0,
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "within_declared_loss_tolerance": true,
+          "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+        },
+        {
+          "max_absolute_loss_difference": 0.0,
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "within_declared_loss_tolerance": true,
+          "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+        }
+      ],
+      "eligible_for_quality_preflight": true
+    }
+  },
+  "eligible_for_quality_preflight": {
+    "decoder": true,
+    "head": true
+  },
+  "defaults_changed": false,
+  "full_state_equality_proven": false,
+  "convergence_proven": false,
+  "scope": "Independent four-update loss/context/source/resource audit, not timing, complete gradients, optimizer states or long quality"
+}

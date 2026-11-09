@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "world_size": 4,
+  "parameters": 4034560,
+  "synthetic_tiny": true,
+  "full_8b_resume_proven": false,
+  "head_dim": 128,
+  "keep_full_layers": 1,
+  "checkpoint_every": 2,
+  "deterministic": true,
+  "replay_steps": 2,
+  "comparison": "Exact loss/input/RNG plus per-tensor SHA256 of parameters, buffers and optimizer states after release/rebuild/load/replay",
+  "source": "artifacts/fsdp_real_resume_pipeline_tiny_v1/result.json",
+  "sha256": "4863caae220fd5d85c7f4a21be289b22b044e862b0c1f349ac283f03b40acdb8",
+  "rank_result_sha256": [
+    "cbd1db1eb87467af2fe1d450e4e6630800ecd6e41b817c5226513de2ce9f84c2",
+    "8221b65fa59c5daf77846abd052adffed2a194ed05f5c7573c068ed4ea896e7d",
+    "ede63460cc3aee4d3d3fa5d5f162be9b79f94cc4cbce335a057dbfd5f5678d0c",
+    "1e8f87623f63b519c76c610f7c0c28313069e735883854995b5c2f865efda0ac"
+  ],
+  "scope": "Synthetic D128 same-entrypoint CUDA pipeline gate; NOT real 8B recovery, convergence or performance proof"
+}

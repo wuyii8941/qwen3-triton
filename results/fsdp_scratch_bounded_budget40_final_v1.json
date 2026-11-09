@@ -1,0 +1,186 @@
+{
+  "complete": true,
+  "partial_diagnostic_only": false,
+  "raw_records_audited": 8,
+  "records": [
+    {
+      "case": "r0_native_k32",
+      "status": "passed",
+      "median_step_seconds": 6.062171966768801,
+      "measured_min_seconds": 5.852081572636962,
+      "measured_max_seconds": 8.884651187807322,
+      "peak_allocated_gib": 38.61842203140259,
+      "peak_reserved_gib": 39.994140625,
+      "initial_hf_logits_max_abs": 0.0,
+      "actual_adapter": "native",
+      "resource_sha256": "d027ebe9a4ece3dd32a91ddb1b95caa01fc941fe6167b2681d3f65749d3a2741"
+    },
+    {
+      "case": "r0_native_k34",
+      "status": "passed",
+      "median_step_seconds": 5.988056030124426,
+      "measured_min_seconds": 5.859793925657868,
+      "measured_max_seconds": 8.948138115927577,
+      "peak_allocated_gib": 39.337692737579346,
+      "peak_reserved_gib": 40.0,
+      "initial_hf_logits_max_abs": 0.0,
+      "actual_adapter": "native",
+      "resource_sha256": "d277074c05b3bda9db8d05de1370927a8dfa5be16386b06ae98d90f8fd53c595"
+    },
+    {
+      "case": "r0_bounded_head_k34",
+      "status": "passed",
+      "median_step_seconds": 5.860225930809975,
+      "measured_min_seconds": 5.785346291959286,
+      "measured_max_seconds": 6.539579486474395,
+      "peak_allocated_gib": 39.33769369125366,
+      "peak_reserved_gib": 40.0,
+      "initial_hf_logits_max_abs": 0.0,
+      "actual_adapter": "BoundedScratchExchangeReduceScatter",
+      "resource_sha256": "40ebfe589aa93350db4175aaf3a136807b9e5c3093bc8e25a0d61fb7f9d246c3"
+    },
+    {
+      "case": "r0_bounded_decoder_k34",
+      "status": "passed",
+      "median_step_seconds": 5.219340509735048,
+      "measured_min_seconds": 5.10215556807816,
+      "measured_max_seconds": 8.515789773315191,
+      "peak_allocated_gib": 39.337692737579346,
+      "peak_reserved_gib": 40.0,
+      "initial_hf_logits_max_abs": 0.0,
+      "actual_adapter": "BoundedScratchExchangeReduceScatter",
+      "resource_sha256": "221bfcf19d447826a051e676d44cdb5b1a7735729d8ed8033e0630022bd167ae"
+    },
+    {
+      "case": "r1_bounded_decoder_k34",
+      "status": "passed",
+      "median_step_seconds": 5.261380893178284,
+      "measured_min_seconds": 5.018632350489497,
+      "measured_max_seconds": 5.774118937551975,
+      "peak_allocated_gib": 39.337692737579346,
+      "peak_reserved_gib": 40.0,
+      "initial_hf_logits_max_abs": 0.0,
+      "actual_adapter": "BoundedScratchExchangeReduceScatter",
+      "resource_sha256": "5c61c84181dd9a16cfa9e8aa0b4b96607e6df5344b76bf43bce0f5f0765495a1"
+    },
+    {
+      "case": "r1_bounded_head_k34",
+      "status": "passed",
+      "median_step_seconds": 5.904655420221388,
+      "measured_min_seconds": 5.817474070936441,
+      "measured_max_seconds": 6.490258703008294,
+      "peak_allocated_gib": 39.33769369125366,
+      "peak_reserved_gib": 40.0,
+      "initial_hf_logits_max_abs": 0.0,
+      "actual_adapter": "BoundedScratchExchangeReduceScatter",
+      "resource_sha256": "1f2a8892b4bf456c6d3bdcf14c9e67a564cadfd536d0a9357747b3c3d18a1443"
+    },
+    {
+      "case": "r1_native_k34",
+      "status": "passed",
+      "median_step_seconds": 5.803576735779643,
+      "measured_min_seconds": 5.732046073302627,
+      "measured_max_seconds": 6.487556107342243,
+      "peak_allocated_gib": 39.337692737579346,
+      "peak_reserved_gib": 40.0,
+      "initial_hf_logits_max_abs": 0.0,
+      "actual_adapter": "native",
+      "resource_sha256": "e9bb2e6b681f9a22c755d2688b6f6ad66a1e9406a5a335a4826eb5577dcee9ae"
+    },
+    {
+      "case": "r1_native_k32",
+      "status": "passed",
+      "median_step_seconds": 5.944928756915033,
+      "measured_min_seconds": 5.899367298930883,
+      "measured_max_seconds": 6.589639691635966,
+      "peak_allocated_gib": 38.61842203140259,
+      "peak_reserved_gib": 39.994140625,
+      "initial_hf_logits_max_abs": 0.0,
+      "actual_adapter": "native",
+      "resource_sha256": "bd81c87c4b93d940997f9c33c52741588999e73ccc3b39909eb4cf53747f194b"
+    }
+  ],
+  "decisions": {
+    "bounded_head_k34": {
+      "ratios_vs_best_tested_native": [
+        1.021813169120731,
+        0.9828815269904513
+      ],
+      "over_two_percent_both_orders": false,
+      "convergence_proven": false,
+      "default_changed": false
+    },
+    "bounded_decoder_k34": {
+      "ratios_vs_best_tested_native": [
+        1.1472821171478618,
+        1.103052003572741
+      ],
+      "over_two_percent_both_orders": true,
+      "convergence_proven": false,
+      "default_changed": false
+    }
+  },
+  "loss_trajectories": {
+    "r0_bounded_head_k34_vs_native_k32": {
+      "max_absolute_loss_difference": 0.0030080080032348633,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "r0_bounded_head_k34_vs_native_k34": {
+      "max_absolute_loss_difference": 0.003282785415649414,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "r0_bounded_decoder_k34_vs_native_k32": {
+      "max_absolute_loss_difference": 0.0026203393936157227,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "r0_bounded_decoder_k34_vs_native_k34": {
+      "max_absolute_loss_difference": 0.004030048847198486,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "r1_bounded_head_k34_vs_native_k32": {
+      "max_absolute_loss_difference": 0.002747833728790283,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "r1_bounded_head_k34_vs_native_k34": {
+      "max_absolute_loss_difference": 0.0015979409217834473,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "r1_bounded_decoder_k34_vs_native_k32": {
+      "max_absolute_loss_difference": 0.00456613302230835,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    },
+    "r1_bounded_decoder_k34_vs_native_k34": {
+      "max_absolute_loss_difference": 0.005063444375991821,
+      "atol": 0.0001,
+      "rtol": 1e-05,
+      "within_declared_loss_tolerance": false,
+      "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+    }
+  },
+  "memory_budget_gib": 40,
+  "default_changed": false,
+  "convergence_proven": false,
+  "original_42gib_study_replaced": false,
+  "scope": "Raw bounded-adapter40GiB study audit only; partial mode selects no winner; not arbitrary-gradient, convergence or global optimum proof"
+}

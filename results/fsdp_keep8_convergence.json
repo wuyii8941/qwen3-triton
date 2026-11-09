@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "scope": "Matched-protocol job-to-plateau observation on shared GPUs; single seed, not equal-quality causal speedup",
+  "baseline": {
+    "backend": "official", "updates": 1184, "validation_checks": 38,
+    "best_step": 1152, "best_validation": 2.1510522118286612,
+    "test_loss": 2.106290687017372, "test_tokens": 297913, "test_blocks": 583,
+    "elapsed_seconds": 10768.158271888271, "median_step_seconds": 7.0969497468322515,
+    "peak_allocated_gib": 35.171597480773926, "peak_reserved_gib": 43.8203125,
+    "source": "artifacts/fsdp_convergence_campaign_v2/official_full_protocol/result.json",
+    "sha256": "da8f9db6f151beaeedc9353121a15c8142472345eb26a973febe07d5833c753d"
+  },
+  "candidate": {
+    "backend": "official_keep8", "updates": 1152, "validation_checks": 37,
+    "complete": true, "converged": true, "stop_reason": "validation_plateau",
+    "best_parameters_restored": true, "best_step": 1152,
+    "best_validation": 2.150771277291434, "test_loss": 2.106298840253646,
+    "test_tokens": 297913, "test_blocks": 583,
+    "elapsed_seconds": 9664.108281381428, "median_step_seconds": 6.753399770706892,
+    "peak_allocated_gib": 35.170132637023926, "peak_reserved_gib": 46.501953125,
+    "source": "artifacts/fsdp_keep8_convergence_campaign_v2/official_keep8_full_protocol/result.json",
+    "sha256": "788610aa6deb4a1c9cdacd985dffd1858b54f025e8ae1729d3095ecedff53768"
+  },
+  "comparison": {
+    "candidate_over_baseline_job_time": 0.8974708615317148,
+    "candidate_minus_baseline_best_validation": -0.0002809345372272176,
+    "candidate_minus_baseline_test_loss": 0.000008153236274122122
+  },
+  "long_run_weights_exported": false
+}

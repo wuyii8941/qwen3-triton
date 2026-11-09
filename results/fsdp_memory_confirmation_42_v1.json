@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "workload_signature": [
+    "/data1/tzh/models/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+    4,
+    1,
+    512,
+    3,
+    12,
+    "FP32 master/AdamW/reduce, BF16 compute",
+    "forced Flash SDPA",
+    42.0,
+    "c9cdd61089a33690ff9e155f4a0b2aae542b7197eac2778293f063b37fe95eae",
+    "70192fd033e210cd8c32a7f9be57b24a9866424d780b743b27e7a0cc5c6f10d4",
+    "2.10.0+cu128",
+    "12.8",
+    "NVIDIA RTX A6000"
+  ],
+  "records": [
+    {
+      "case": "r0_native_k24",
+      "policy": "native_k24",
+      "source": "artifacts/fsdp_memory_confirmation_42_v1/r0_native_k24/result.json",
+      "sha256": "5be8ac0e799573e836afdefa79a42ef261e931a94fb70c19ffd606a426610aca",
+      "log_sha256": "b30ea1e61b35c3737eef52fd20caa735c3bb1e5146f02b500d7ec38edc8ecc5a",
+      "median_step_seconds": 6.785002385266125,
+      "tokens_per_second": 301.8421930767932,
+      "steady_step_seconds": [
+        6.780763953924179,
+        6.354970658197999,
+        6.077647304162383,
+        6.975507950410247,
+        6.927401078864932,
+        7.3143270611763,
+        6.288996273651719,
+        7.123076476156712,
+        7.001101600006223,
+        6.144553791731596,
+        6.789240816608071,
+        6.676290184259415
+      ],
+      "peak_allocated_gib": 39.651724338531494,
+      "peak_reserved_gib": 42.0,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "profile": {
+        "source": "artifacts/fsdp_memory_confirmation_42_v1/r0_native_k24/trace.json",
+        "sha256": "a637ca61777ed744bd1f54665bab56412e1bd8c948cbf583fc929e574092878f",
+        "kernel_count": 6705,
+        "all_gather_kernel_count": 54,
+        "reduce_scatter_kernel_count": 39,
+        "summed_kernel_work_ms": 6751.728403000012,
+        "comm_union_ms": 5949.727403320312,
+        "local_union_ms": 765.0161450195312,
+        "comm_local_overlap_ms": 536.1778330078125,
+        "gpu_kernel_union_ms": 6178.565715332032,
+        "cuda_malloc_calls": 201,
+        "cuda_free_calls": 200,
+        "allocation_api_summed_duration_ms": 2259.3433159999963,
+        "training_scoped_allocation_calls": 401,
+        "training_scoped_allocation_summed_duration_ms": 2259.3433159999963,
+        "virtual_memory_driver_calls": {
+          "cuMemCreate": 0,
+          "cuMemMap": 0,
+          "cuMemUnmap": 0,
+          "cuMemRelease": 0
+        },
+        "scope": "One extra rank0 untimed profile; sums are not critical-path savings; allocation API duration may include GPU waits/profiler overhead"
+      }
+    },
+    {
+      "case": "r0_native_k30",
+      "policy": "native_k30",
+      "source": "artifacts/fsdp_memory_confirmation_42_v1/r0_native_k30/result.json",
+      "sha256": "fd8f1ee5203e0cdcaa712c36f80d11f59b86a93f4a47471fd00189c1ae0ff724",
+      "log_sha256": "a2b0332def246ce3b245a622ac49f10e642129324a5575868bafe1a0f1050ea9",
+      "median_step_seconds": 5.952519441023469,
+      "tokens_per_second": 344.0559951615831,
+      "steady_step_seconds": [
+        5.879467686638236,
+        6.08883854188025,
+        5.940548036247492,
+        5.883004404604435,
+        6.062339777126908,
+        6.004777146503329,
+        5.907388724386692,
+        6.04171840660274,
+        5.944247493520379,
+        5.874737232923508,
+        6.07971877977252,
+        5.960791388526559
+      ],
+      "peak_allocated_gib": 41.80807161331177,
+      "peak_reserved_gib": 41.994140625,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "profile": {
+        "source": "artifacts/fsdp_memory_confirmation_42_v1/r0_native_k30/trace.json",
+        "sha256": "3fe275c72ccb7a0ef32868745231e258731d21249e239cc7104f18036aaa8f14",
+        "kernel_count": 6657,
+        "all_gather_kernel_count": 48,
+        "reduce_scatter_kernel_count": 39,
+        "summed_kernel_work_ms": 6120.055184000002,
+        "comm_union_ms": 5326.764471191406,
+        "local_union_ms": 761.2118940429688,
+        "comm_local_overlap_ms": 522.3855278320312,
+        "gpu_kernel_union_ms": 5565.590837402344,
+        "cuda_malloc_calls": 252,
+        "cuda_free_calls": 250,
+        "allocation_api_summed_duration_ms": 2573.113671999998,
+        "training_scoped_allocation_calls": 502,
+        "training_scoped_allocation_summed_duration_ms": 2573.113671999998,
+        "virtual_memory_driver_calls": {
+          "cuMemCreate": 0,
+          "cuMemMap": 0,
+          "cuMemUnmap": 0,
+          "cuMemRelease": 0
+        },
+        "scope": "One extra rank0 untimed profile; sums are not critical-path savings; allocation API duration may include GPU waits/profiler overhead"
+      }
+    },
+    {
+      "case": "r0_full_k35",
+      "policy": "full_k35",
+      "source": "artifacts/fsdp_memory_confirmation_42_v1/r0_full_k35/result.json",
+      "sha256": "eccbf84e1e2575edb5e900e8a79ea1ecf4b0c763fc21ad1b3f48db47e5946055",
+      "log_sha256": "293ba37c31653453e9a2df672477e71873b53cbdee52271d217eb5cf59d7edf3",
+      "median_step_seconds": 5.690605176612735,
+      "tokens_per_second": 359.8914239239222,
+      "steady_step_seconds": [
+        5.625423504039645,
+        5.654088804498315,
+        5.6438527796417475,
+        5.704376762732863,
+        5.755283305421472,
+        5.700046814978123,
+        5.751133542507887,
+        5.642849272117019,
+        5.650610741227865,
+        5.690102763473988,
+        5.771951472386718,
+        5.691107589751482
+      ],
+      "peak_allocated_gib": 41.651301860809326,
+      "peak_reserved_gib": 41.99609375,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "profile": {
+        "source": "artifacts/fsdp_memory_confirmation_42_v1/r0_full_k35/trace.json",
+        "sha256": "815db1589bcf0026d7e29b8c849e1a4a2c0dd13a01dd7db7e12f63f56cbc6f17",
+        "kernel_count": 7625,
+        "all_gather_kernel_count": 43,
+        "reduce_scatter_kernel_count": 39,
+        "summed_kernel_work_ms": 5893.33093100001,
+        "comm_union_ms": 5083.912389648437,
+        "local_union_ms": 783.5997836914063,
+        "comm_local_overlap_ms": 531.6111918945312,
+        "gpu_kernel_union_ms": 5335.900981445313,
+        "cuda_malloc_calls": 231,
+        "cuda_free_calls": 229,
+        "allocation_api_summed_duration_ms": 2478.579490000003,
+        "training_scoped_allocation_calls": 460,
+        "training_scoped_allocation_summed_duration_ms": 2478.579490000003,
+        "virtual_memory_driver_calls": {
+          "cuMemCreate": 0,
+          "cuMemMap": 0,
+          "cuMemUnmap": 0,
+          "cuMemRelease": 0
+        },
+        "scope": "One extra rank0 untimed profile; sums are not critical-path savings; allocation API duration may include GPU waits/profiler overhead"
+      }
+    },
+    {
+      "case": "r1_full_k35",
+      "policy": "full_k35",
+      "source": "artifacts/fsdp_memory_confirmation_42_v1/r1_full_k35/result.json",
+      "sha256": "0ec0868822ec9f5d1a3ab8574d8c01046bbd48da185a2e2c180d1c1900b98a4e",
+      "log_sha256": "a016d0d3d261cbb4198d265f9d38e699584d07a9a769c4e1e68da69db57e952b",
+      "median_step_seconds": 5.674757025204599,
+      "tokens_per_second": 360.89650903179614,
+      "steady_step_seconds": [
+        5.631294222548604,
+        5.619461122900248,
+        5.664008729159832,
+        5.686439523473382,
+        5.7385603450238705,
+        5.662124894559383,
+        5.759828144684434,
+        5.661565979942679,
+        5.665543699637055,
+        5.692470779642463,
+        5.759387580677867,
+        5.683970350772142
+      ],
+      "peak_allocated_gib": 41.651301860809326,
+      "peak_reserved_gib": 41.99609375,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      }
+    },
+    {
+      "case": "r1_native_k30",
+      "policy": "native_k30",
+      "source": "artifacts/fsdp_memory_confirmation_42_v1/r1_native_k30/result.json",
+      "sha256": "6d152f5069972fd604bc31ef1523cbded217d56b0a1f70591456f684fcb3625e",
+      "log_sha256": "1d51dfbc6b1cbf080a3d1ccb63b3db27045055ea47285d5f22174e3d9cef1a8e",
+      "median_step_seconds": 6.002916162833571,
+      "tokens_per_second": 341.16751666131506,
+      "steady_step_seconds": [
+        5.922066865488887,
+        6.033605398610234,
+        6.071262568235397,
+        5.903553957119584,
+        6.06978277862072,
+        5.925019396468997,
+        5.90485686250031,
+        6.067263441160321,
+        6.005623346194625,
+        5.91832716204226,
+        6.1265509109944105,
+        6.000208979472518
+      ],
+      "peak_allocated_gib": 41.80807161331177,
+      "peak_reserved_gib": 41.994140625,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      }
+    },
+    {
+      "case": "r1_native_k24",
+      "policy": "native_k24",
+      "source": "artifacts/fsdp_memory_confirmation_42_v1/r1_native_k24/result.json",
+      "sha256": "0dcaf8a115de893265bb38b1cbe2e582d82b014365c95105c636c56288479428",
+      "log_sha256": "dabf9b61cf1745bb63b8d63738a3ac5b032973087d0a38898a1fb35dc96c9b59",
+      "median_step_seconds": 6.403078417293727,
+      "tokens_per_second": 319.8461531360709,
+      "steady_step_seconds": [
+        6.340198580175638,
+        6.394556477665901,
+        6.403929490596056,
+        6.406797047704458,
+        6.405781272798777,
+        6.386706868186593,
+        6.4040584191679955,
+        6.447378184646368,
+        6.402077918872237,
+        6.30583781003952,
+        6.402227343991399,
+        6.4081266690045595
+      ],
+      "peak_allocated_gib": 39.651724338531494,
+      "peak_reserved_gib": 42.0,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      }
+    }
+  ],
+  "paired_comparisons": [
+    {
+      "repeat": 0,
+      "throughput_speedup_vs_native_k24": 1.1923164891409348,
+      "throughput_speedup_vs_native_k30": 1.0460257312327959
+    },
+    {
+      "repeat": 1,
+      "throughput_speedup_vs_native_k24": 1.1283440663369846,
+      "throughput_speedup_vs_native_k30": 1.0578278745982328
+    }
+  ],
+  "candidate_over_two_percent_in_both_orders": true,
+  "candidate_convergence_proven": false,
+  "scope": "Two-order fixed-workload confirmation; not statistical significance or convergence"
+}

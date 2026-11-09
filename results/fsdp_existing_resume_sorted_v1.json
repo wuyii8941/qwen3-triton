@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "synthetic_tiny": false,
+  "full_8b_resume_proven": true,
+  "parameters": 8190735360,
+  "records": [
+    {
+      "rank": 0,
+      "source": "artifacts/fsdp_existing_resume_sorted_v1/replay/rank0_result.json",
+      "sha256": "77049618614f6370f9871418f74abc5d7bc9acdc148de5de3398b2ec53eb0d27"
+    },
+    {
+      "rank": 1,
+      "source": "artifacts/fsdp_existing_resume_sorted_v1/replay/rank1_result.json",
+      "sha256": "d969c0450b81df0c2b258c143871e6c2fada4b8676c585ec65802ef2c3d07025"
+    },
+    {
+      "rank": 2,
+      "source": "artifacts/fsdp_existing_resume_sorted_v1/replay/rank2_result.json",
+      "sha256": "f7cc45519adae04324ecfe703cda97fb1c224c3aca460981bf9f09797c9bb68a"
+    },
+    {
+      "rank": 3,
+      "source": "artifacts/fsdp_existing_resume_sorted_v1/replay/rank3_result.json",
+      "sha256": "6b05657eb911f3a91cd781ecd6b032c48e2118519849e9e3c340e404625fc7cc"
+    }
+  ],
+  "scope": "All-rank replay-record consistency audit; equality asserted by replay worker, not independently rerun here"
+}

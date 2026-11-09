@@ -1,0 +1,110 @@
+{
+  "complete": true,
+  "partial_diagnostic_only": false,
+  "gate_sha256": "332eb56ca9fb3959c059355e52ace3e7de79a724b62451aae7fcf48d16370b39",
+  "raw_jobs_audited": 4,
+  "records": [
+    {
+      "case": "torch_a",
+      "result_sha256": "9ac376e8dae6bfe2bbd35d552297461ba098a71917b1481da2e51806a6b799ba",
+      "allocator_sha256": [
+        "2782d1aeac3864f740b3dd88b9286b59939415f3cbfc3fbcf8994d67d33be420",
+        "76de02abc00aad244aa00c8f44b00076d7041bc410de8dd49534c9845075a5ca",
+        "9960ddc9029e3b9e0695d8ca4381c793734d8ecad5903f40b2e4a43f1f1fba9e",
+        "a41b91e21510bffebc0b78c50c31a8dc4f945f3deb4bac76b4ee30980d2d65fa"
+      ],
+      "median_step_seconds": 5.5061334846541286,
+      "peak_allocated_gib": 38.61500406265259,
+      "peak_reserved_gib": 41.7890625,
+      "counter_medians": {
+        "num_alloc_retries": 3.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 3.0,
+        "num_device_alloc": 207.0,
+        "num_device_free": 15.0
+      },
+      "source": "artifacts/fsdp_decoder_backend_v1/torch_a",
+      "log_sha256": "478690d8d413cf8a94d264998b432322a2b3a87cc3c3e15b2bbf0dafe85effde",
+      "resource_sha256": "d55eaf49c7a03083e91c6731d4ea26329fa4f321da708731ae55e2c8d7bc7bea"
+    },
+    {
+      "case": "triton_a",
+      "result_sha256": "33e19fd32243cd183f0f76f21e70afbf103b8c87a8bcdff6ccdffffc381b088a",
+      "allocator_sha256": [
+        "2536346a98e69918265f99fe8dbad7d23ecc433d3da974a4cc59f99fdb60b5b6",
+        "76de02abc00aad244aa00c8f44b00076d7041bc410de8dd49534c9845075a5ca",
+        "9960ddc9029e3b9e0695d8ca4381c793734d8ecad5903f40b2e4a43f1f1fba9e",
+        "a41b91e21510bffebc0b78c50c31a8dc4f945f3deb4bac76b4ee30980d2d65fa"
+      ],
+      "median_step_seconds": 5.411586911417544,
+      "peak_allocated_gib": 38.61500406265259,
+      "peak_reserved_gib": 41.80859375,
+      "counter_medians": {
+        "num_alloc_retries": 3.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 3.0,
+        "num_device_alloc": 224.0,
+        "num_device_free": 15.0
+      },
+      "source": "artifacts/fsdp_decoder_backend_v1/triton_a",
+      "log_sha256": "c1ee37d06f730d67b2cab821c6e0103bc4f06eed29a1e8c1bacb1825d88cd7af",
+      "resource_sha256": "3137f54450e93bded65505965c6e534204765690696a466eaee838fded1ffcb4"
+    },
+    {
+      "case": "triton_b",
+      "result_sha256": "22062be2fcda548c71e004fbeddf37270d4bab891ecdb02ec9338e69a8f3a684",
+      "allocator_sha256": [
+        "dbf0646c84246881c81defab9cd5dbac3f99d0404d5195e5ef1adf6343b145ae",
+        "76de02abc00aad244aa00c8f44b00076d7041bc410de8dd49534c9845075a5ca",
+        "9960ddc9029e3b9e0695d8ca4381c793734d8ecad5903f40b2e4a43f1f1fba9e",
+        "a41b91e21510bffebc0b78c50c31a8dc4f945f3deb4bac76b4ee30980d2d65fa"
+      ],
+      "median_step_seconds": 5.342760460451245,
+      "peak_allocated_gib": 38.61500406265259,
+      "peak_reserved_gib": 41.80859375,
+      "counter_medians": {
+        "num_alloc_retries": 3.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 3.0,
+        "num_device_alloc": 224.0,
+        "num_device_free": 15.0
+      },
+      "source": "artifacts/fsdp_decoder_backend_v1/triton_b",
+      "log_sha256": "115626583758e5b1e05bacf68902152c09b1ce6cff170cc8ddaf2d2627cb1a22",
+      "resource_sha256": "4bf7ad65bff1d1c54dfc8205f692cd1b012351ea2d5d98b75f99d77b2ac82c01"
+    },
+    {
+      "case": "torch_b",
+      "result_sha256": "8ce32f9b9072e0a775a3770b2cbf61bfe49531b2c711842cacf4c8ccb882a905",
+      "allocator_sha256": [
+        "80e40c8eb34ccdee0b4113d3787ddca4b91ae0373cdcc95ec42bdfa7a0e94fa4",
+        "76de02abc00aad244aa00c8f44b00076d7041bc410de8dd49534c9845075a5ca",
+        "9960ddc9029e3b9e0695d8ca4381c793734d8ecad5903f40b2e4a43f1f1fba9e",
+        "a41b91e21510bffebc0b78c50c31a8dc4f945f3deb4bac76b4ee30980d2d65fa"
+      ],
+      "median_step_seconds": 5.184403249062598,
+      "peak_allocated_gib": 38.61500406265259,
+      "peak_reserved_gib": 41.7890625,
+      "counter_medians": {
+        "num_alloc_retries": 3.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 3.0,
+        "num_device_alloc": 207.0,
+        "num_device_free": 15.0
+      },
+      "source": "artifacts/fsdp_decoder_backend_v1/torch_b",
+      "log_sha256": "20e37ff44b5720c0130c574e88596f8f118ea25876aa627361ce83f1815e8ac1",
+      "resource_sha256": "744c720db355af4b0e3a825ec8d940ba085cc93d9c7a1252ad47b95c6aadca28"
+    }
+  ],
+  "selection": {
+    "time_reduction_fractions": [
+      0.01717113715097729,
+      -0.030544925574082393
+    ],
+    "worth_quality_validation": false
+  },
+  "full_quality_completed": false,
+  "defaults_changed": false,
+  "scope": "Fixed-K32 ABBA short performance screen plus tied/untied numerical gate; not convergence"
+}

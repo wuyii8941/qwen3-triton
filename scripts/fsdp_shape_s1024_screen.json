@@ -1,0 +1,6 @@
+{
+  "native_k0": [0, 0, "full"],
+  "full_k0": [0, 2, "full"],
+  "full_k16": [16, 2, "full"],
+  "full_k24": [24, 2, "full"]
+}

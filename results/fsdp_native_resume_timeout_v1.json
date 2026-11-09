@@ -1,0 +1,25 @@
+{
+  "checkpoint_committed": true,
+  "full_8b_resume_proven": false,
+  "attempt": "artifacts/fsdp_real_resume_8b_queue_v1",
+  "log_source": "artifacts/fsdp_real_resume_8b_queue_v1/replay.log",
+  "log_sha256": "d958c117ed13f652795e1414d7077ec78acfb5c303d16383d676b60f7d6e6a8b",
+  "checkpoint_manifest_source": "artifacts/fsdp_real_resume_8b_queue_v1/replay/step2/complete.json",
+  "checkpoint_manifest_sha256": "29a106053b53a843876c5db5905a10b3d2298e90cc3b09b0d920de043a76f88f",
+  "failure": {
+    "rank": 2,
+    "collective": "ALLGATHER",
+    "sequence": 367,
+    "numel_in": 1,
+    "numel_out": 4,
+    "timeout_ms": 600000,
+    "reported_elapsed_ms": 600042,
+    "other_ranks_last_enqueued_and_completed_sequence": 366
+  },
+  "cleanup": "Launcher terminated after watchdog timeout and diagnostic grace; all four worker exits confirmed",
+  "checkpoint_deleted": false,
+  "interpretation": "Consistent with observed file-I/O rank skew; not a demonstrated parameter/gradient mismatch. Replay did not complete, so no numerical or performance success claimed",
+  "replacement": "artifacts/fsdp_existing_resume_sorted_v1",
+  "replacement_reader": "offset_sorted",
+  "replacement_requires_exact_replay": true
+}

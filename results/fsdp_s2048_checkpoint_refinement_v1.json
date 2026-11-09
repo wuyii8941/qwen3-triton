@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "baseline_case": "full_k0",
+  "workload_signature": [
+    "/data1/tzh/models/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+    4,
+    1,
+    2048,
+    3,
+    6,
+    "FP32 master/AdamW/reduce, BF16 compute",
+    "forced Flash SDPA",
+    42.0,
+    "895483174bb100a2e213d9f72589796fcabf45747885a8369e732680f0094a66",
+    "1c14aa0fd40ad004bda23407ce99152ca40cecf8c0132cb2e7a743f5e66ce715",
+    "2.10.0+cu128",
+    "12.8",
+    "NVIDIA RTX A6000",
+    "{\"backend\": \"native\", \"environment\": {\"PYTORCH_ALLOC_CONF\": \"backend:native,expandable_segments:False\", \"PYTORCH_CUDA_ALLOC_CONF\": null}, \"settings\": {\"PYTORCH_CUDA_ALLOC_CONF\": \"backend:native,expandable_segments:False\", \"expandable_segments\": false, \"garbage_collection_threshold\": 0.0, \"graph_capture_record_stream_reuse\": false, \"max_split_size\": -1, \"pinned_num_register_threads\": 1, \"pinned_use_cuda_host_register\": false, \"release_lock_on_cudamalloc\": false, \"roundup_power2_divisions\": {\"1\": 0, \"1024\": 0, \"128\": 0, \"16\": 0, \"16384\": 0, \"2\": 0, \"2048\": 0, \"256\": 0, \"32\": 0, \"32768\": 0, \"4\": 0, \"4096\": 0, \"512\": 0, \"64\": 0, \"8\": 0, \"8192\": 0}}}"
+  ],
+  "records": [
+    {
+      "case": "full_k0",
+      "policy": {
+        "keep_full_layers": 0,
+        "checkpoint_every": 2,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/full_k0.log",
+      "log_sha256": "451064d3e173a605340e498b51fc799087f5804597cc88bebf434ab492cbba06",
+      "status": "passed",
+      "source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/full_k0/result.json",
+      "sha256": "7a4e2b2632f001b7765822a6a3dfeb84f35dc636201dd250aea0c7b089b8ffd8",
+      "median_step_seconds": 7.71724141202867,
+      "tokens_per_second": 1061.5192090830974,
+      "peak_allocated_gib": 35.404799461364746,
+      "peak_reserved_gib": 42.0,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_baseline": 1.0
+    },
+    {
+      "case": "full_k8",
+      "policy": {
+        "keep_full_layers": 8,
+        "checkpoint_every": 2,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/full_k8.log",
+      "log_sha256": "f16c2a262a80aba973653cf37a0475669ef3819a380f5f019545a2a6687440c5",
+      "status": "passed",
+      "source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/full_k8/result.json",
+      "sha256": "6dc14e8ab1dc9c38b0444e7251931b11d28090a5860a7566961e64d067ac2d19",
+      "median_step_seconds": 7.611369704827666,
+      "tokens_per_second": 1076.2846002348379,
+      "peak_allocated_gib": 38.27992916107178,
+      "peak_reserved_gib": 41.9921875,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_baseline": 1.0139096787183852
+    },
+    {
+      "case": "full_k12",
+      "policy": {
+        "keep_full_layers": 12,
+        "checkpoint_every": 2,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/full_k12.log",
+      "log_sha256": "e3b051f267d1b3dde15f97f52f765dd5b2635093363ef69ea3ded684269314db",
+      "status": "passed",
+      "source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/full_k12/result.json",
+      "sha256": "546025c4168cded6b440e811e63eb524194b4df2f484ca46f2cf7d7693a3fafa",
+      "median_step_seconds": 7.543753292411566,
+      "tokens_per_second": 1085.9315890195562,
+      "peak_allocated_gib": 39.71749401092529,
+      "peak_reserved_gib": 41.9921875,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_baseline": 1.0229975865981222
+    },
+    {
+      "case": "full_k14",
+      "policy": {
+        "keep_full_layers": 14,
+        "checkpoint_every": 2,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/full_k14.log",
+      "log_sha256": "a24a0fb6c3a273c78177e08c3eca8655a98c18b1b3edbbc036de778288e6484b",
+      "status": "passed",
+      "source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/full_k14/result.json",
+      "sha256": "b3c5681a697a68eb7d89c62ed989ab23a1b6787dd1ce120ca9d96ba03732eb44",
+      "median_step_seconds": 7.439577801153064,
+      "tokens_per_second": 1101.137755254111,
+      "peak_allocated_gib": 40.43529987335205,
+      "peak_reserved_gib": 41.994140625,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_baseline": 1.0373224957513814
+    },
+    {
+      "case": "full_k16",
+      "policy": {
+        "keep_full_layers": 16,
+        "checkpoint_every": 2,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 1,
+      "log_source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/full_k16.log",
+      "log_sha256": "83064a20cdeb8a2aac6043689053b7b2a730dfd9703b355e80582e4f9186ae25",
+      "status": "oom"
+    },
+    {
+      "case": "all_k20",
+      "policy": {
+        "keep_full_layers": 20,
+        "checkpoint_every": 1,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/all_k20.log",
+      "log_sha256": "ebf55db0bb5bd34ef411fb652c98ef893f883c8b12760aec82dcff8d7fb0c359",
+      "status": "passed",
+      "source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/all_k20/result.json",
+      "sha256": "16ee9e29e0bfca3894e26dfe3cde1dd55da0815ae66e844374b54d6c02d0a377",
+      "median_step_seconds": 7.025258776731789,
+      "tokens_per_second": 1166.0780421544825,
+      "peak_allocated_gib": 34.777756690979004,
+      "peak_reserved_gib": 41.904296875,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_baseline": 1.0984992378627791
+    },
+    {
+      "case": "all_k24",
+      "policy": {
+        "keep_full_layers": 24,
+        "checkpoint_every": 1,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/all_k24.log",
+      "log_sha256": "f258f9c42c242591e2712a1fd3e4d70d3f34e27d44b26b69bb932a45c28b00a0",
+      "status": "passed",
+      "source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/all_k24/result.json",
+      "sha256": "ce54078f6cb18e7f173cd32104fb171720792aab8d112e6f61324b7e94ada497",
+      "median_step_seconds": 6.716883098706603,
+      "tokens_per_second": 1219.613305697913,
+      "peak_allocated_gib": 36.21434497833252,
+      "peak_reserved_gib": 41.986328125,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_baseline": 1.1489319225333392
+    },
+    {
+      "case": "sparse_k8",
+      "policy": {
+        "keep_full_layers": 8,
+        "checkpoint_every": 3,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 1,
+      "log_source": "artifacts/fsdp_s2048_checkpoint_refinement_v1/sparse_k8.log",
+      "log_sha256": "e27a9b404c3eb510d8bc9ef61c1a9c62b06241f147f3b0b890e285bbf184b4e2",
+      "status": "oom"
+    }
+  ],
+  "screening_winner": "all_k24",
+  "scope": "Fixed-workload single-round screen; not ABBA confirmation, convergence or universal optimum"
+}

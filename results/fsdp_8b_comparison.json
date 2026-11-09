@@ -1,0 +1,46 @@
+{
+  "rounds": [
+    {
+      "source": "artifacts/fsdp_8b_comparison_v1/matrix.json",
+      "summary": {
+        "seconds": {
+          "official_checkpoint": 7.044173021800816,
+          "custom_avg": 7.463878663256764,
+          "official": 7.086818584240973,
+          "custom": 7.507320215925574
+        },
+        "peak_allocated_gib": {
+          "official_checkpoint": 34.01147270202637,
+          "custom_avg": 35.17726516723633,
+          "official": 34.01147270202637,
+          "custom": 35.75685501098633
+        },
+        "custom_speedup_vs_best_official": 0.9383072546789378,
+        "avg_speedup_vs_best_official": 0.9437684265257315,
+        "avg_speedup_vs_custom": 1.005820238327649,
+        "scope": "Steady-state only; not convergence and not a statistical significance test"
+      }
+    },
+    {
+      "source": "artifacts/fsdp_8b_comparison_reverse_v2/matrix.json",
+      "summary": {
+        "seconds": {
+          "custom": 7.760459080338478,
+          "custom_avg": 7.738091486506164,
+          "official": 7.0846116123721,
+          "official_checkpoint": 7.159202692098916
+        },
+        "peak_allocated_gib": {
+          "custom": 35.75687789916992,
+          "custom_avg": 35.17728805541992,
+          "official": 34.01149559020996,
+          "official_checkpoint": 34.01149559020996
+        },
+        "custom_speedup_vs_best_official": 0.9129114062750912,
+        "avg_speedup_vs_best_official": 0.9155502522458393,
+        "avg_speedup_vs_custom": 1.0028905827582058,
+        "scope": "Steady-state only; not convergence and not a statistical significance test"
+      }
+    }
+  ]
+}

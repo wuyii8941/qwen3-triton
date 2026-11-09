@@ -1,0 +1,211 @@
+{
+  "complete": true,
+  "policies": {
+    "native_k0": {
+      "paired_throughput_ratios": [
+        1.0,
+        1.0
+      ],
+      "median_seconds_by_order": [
+        1.3551667695865035,
+        1.3271770793944597
+      ],
+      "peak_allocated_gib": 14.765104293823242,
+      "loss_checks": [
+        {
+          "max_absolute_loss_difference": 0.0,
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "within_declared_loss_tolerance": true,
+          "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+        },
+        {
+          "max_absolute_loss_difference": 0.0,
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "within_declared_loss_tolerance": true,
+          "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+        }
+      ],
+      "candidate": false
+    },
+    "native_k14": {
+      "paired_throughput_ratios": [
+        1.1315137193862908,
+        1.1103547107465614
+      ],
+      "median_seconds_by_order": [
+        1.1976582752540708,
+        1.1952730659395456
+      ],
+      "peak_allocated_gib": 14.765104293823242,
+      "loss_checks": [
+        {
+          "max_absolute_loss_difference": 0.0018552541732788086,
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "within_declared_loss_tolerance": false,
+          "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+        },
+        {
+          "max_absolute_loss_difference": 0.003907203674316406,
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "within_declared_loss_tolerance": false,
+          "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+        }
+      ],
+      "candidate": false
+    },
+    "native_k28": {
+      "paired_throughput_ratios": [
+        1.2965732329422228,
+        1.264826995861755
+      ],
+      "median_seconds_by_order": [
+        1.0451910737901926,
+        1.0492953453212976
+      ],
+      "peak_allocated_gib": 15.227512836456299,
+      "loss_checks": [
+        {
+          "max_absolute_loss_difference": 0.005263328552246094,
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "within_declared_loss_tolerance": false,
+          "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+        },
+        {
+          "max_absolute_loss_difference": 0.003268718719482422,
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "within_declared_loss_tolerance": false,
+          "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+        }
+      ],
+      "candidate": false
+    },
+    "checkpoint_k28": {
+      "paired_throughput_ratios": [
+        1.33485738789849,
+        1.2463126889953664
+      ],
+      "median_seconds_by_order": [
+        1.0152146453037858,
+        1.0648829070851207
+      ],
+      "peak_allocated_gib": 14.765104293823242,
+      "loss_checks": [
+        {
+          "max_absolute_loss_difference": 0.0032548904418945312,
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "within_declared_loss_tolerance": false,
+          "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+        },
+        {
+          "max_absolute_loss_difference": 0.0034312009811401367,
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "within_declared_loss_tolerance": false,
+          "scope": "Recorded mean loss trajectory only, not full gradient/moment or convergence equivalence"
+        }
+      ],
+      "candidate": false
+    }
+  },
+  "performance_screening_winner": "checkpoint_k28",
+  "candidate_passing_short_loss_gate": null,
+  "screening_winner": "native_k0",
+  "frozen_content_sha256": "a8512bf9de2269b1ab6cf565883c559b25aed7c5fa851c72b84b4676cf3bb185",
+  "implementation_sources": {
+    "sha256": "910b351ffbad62ed0eb3e1ba0b6186f2de84277f686026e7fe04b3b4d2015c2e",
+    "files": {
+      "benchmarks/compare_fsdp_training.py": "666ca02f1b6ce3e84322a163cb20fd0f50f04801918f81aca8707ae59f4f24bc",
+      "model/__init__.py": "847e81e2883fed56bd8ca638461b6c2dab69c52c72fa5e6f3aac13f99afb74ab",
+      "model/block_skip.py": "4ccc84d1580e3a3c5816bdfeac813e4dcf6f1af7ee65c65d47a38dd904fab39b",
+      "model/config.py": "e308e3a569536acd02131873f72da34a38543d7c5fca6d67f529c370ced30ffd",
+      "model/frequency_sparse.py": "9e544d310a4152e4e839bd598f84d8dcdc2ab3089bed4498caae4532bd1850c1",
+      "model/hf_attention.py": "1392f6efe10fc306a45e6675674500dac1221cc49309e2cd1855c08b2298663f",
+      "model/hf_inference.py": "3bc5571da90bfcdf9224592d8863eaa5b1a4356bb1e9ca26c8694d1e4406cc89",
+      "model/hybrid_decode.py": "563fef1cec26b0bc6eda458ac399c6a61f914ea2bb948c00d777df8d9c3fce22",
+      "model/qwen_tiny.py": "f2fa96c71b98bd392faba0845bf705cb00fe4af0dd68652c01f8a73319e17adb",
+      "model/static_decode.py": "089a374c3549a71c86e56b96a65232a070b2c1f07dc7d15b5610d1f3b4a9b2b1",
+      "model/torch_static_reference.py": "2f98353a0549cca1a4b04d8386b4ce46cfdb3aca1b587ac065ec9e9c0e2d90d5",
+      "ops/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ops/compile_ops.py": "f7bd6bb5fb3bb5b97256c811418c8434850cebe7d9b8c6e600e0d52cfc52ac1c",
+      "ops/reference/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ops/reference/attention.py": "aa80b1228fb273c21cd52654a0e9243058cc0aa9f40aafe47fa9d98730d640fa",
+      "ops/reference/frequency_sparse.py": "dde7e74b7af899754a59c3851ec9478f865268e3e396831679bb86e75988d756",
+      "ops/reference/fused_qk_norm_rope.py": "d2c8272db6d40317981846358d198b68ddc5333e7b01eff287aa8d444f006a14",
+      "ops/reference/rms_norm.py": "358464d567302df32ac6c47b23208b4ed4685884238c8a3c89a090979444adfc",
+      "ops/reference/rope.py": "1eb4276b8b06f57cd7d0beb42527846a17bd6b79ff9baf0774a458acb4bc1ce1",
+      "ops/reference/swiglu.py": "60eb44a0f6f5db4551bc9dbb56c291d069521915dc9eec60b715d9fdef563202",
+      "ops/triton/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ops/triton/add_rms_norm.py": "c18991fee99ad37648ef8480fe0b479bf11813128eeac45fdbacd8775e70183e",
+      "ops/triton/attention.py": "7ea039aba9c8b97df6ce5bb9dae8f3e9c4473b06234df39db42e458ec87db449",
+      "ops/triton/attention_backward.py": "03d4980964b4239568bca4a31bc3ec73ed9a43d49d7891c49468205fc8bb0061",
+      "ops/triton/attention_pipeline.py": "cac56b3db1fb92ff21d7d047f4a4950fcdc846242b9394bc8f7c3a46a9b9b0e2",
+      "ops/triton/block_skip_decode.py": "5ec023652243939265675d6bcaf6d6c8f2734275c7c2f636d1a59ece311f3df6",
+      "ops/triton/ce_gradient.py": "4928ea5ca02209306c87da8d4607d08f0763a66e604ef78145fb2ff254520f53",
+      "ops/triton/decode_gate_up.py": "56144ea1414e60008a14e171f1b3daedb0b23a5c88d513b7db434713581c2720",
+      "ops/triton/decode_split_kv.py": "155e2d9f7b85fef6ccfc0feb1a82db58e1107f3b30aebb2ab2b8abf02d2e2ad7",
+      "ops/triton/frequency_sparse.py": "489fafac3a8288d82f77241eeb89b2f8a171134ddb1c9811a5f9ab681dcfe998",
+      "ops/triton/fused_qk_norm_rope.py": "bef48740e7b9d572fcec3c4c79ab2986bc13f353310993ee4bdd75d1ccc1ae19",
+      "ops/triton/gate_up_swiglu.py": "7d655a5e447b6e108810d128c5b0f5d0b3237d2b69e121a4fcb876017ca01527",
+      "ops/triton/gemm_tuning.py": "75cb75f41198d798fb75c34d9970eb9fc9fd79fc77c8acc8f4f5cf46540efbcd",
+      "ops/triton/hf_qk_norm_rope.py": "2575747a885cd06b1f873f5878fe44289a0625d144064f791843f6e4c2c0d6bb",
+      "ops/triton/hf_swiglu_backward.py": "61745d8508befa832ed4340195dc76320dc5b4fe20f5ef613cd41ed21c0410d0",
+      "ops/triton/linear_ce_forward.py": "d86fddfd662fcec9e3fbae60cf082cb8ffdd6ccbf09f4edf5b97ad528c843d65",
+      "ops/triton/linear_decode.py": "7d5c4120a8247056d740e99c58ebccdd10a2660025a4202eafadb6bd68d6a755",
+      "ops/triton/rms_norm.py": "fad5728bd60dba883fa3ffb8bba4fe6dfc9654a1ba1ccf5b9f96628dba960f25",
+      "ops/triton/rope.py": "a965410b803a135dc122929dcc010cfec39f32e1e5f04acad1c3cda3aecc53ff",
+      "ops/triton/rowwise_tuning.py": "8f2680733179899a1828b8826b69b9249e717cae38de98c4fc516f3a113d95c4",
+      "ops/triton/silu_and_mul.py": "edd55f23f6d91555ed9297c88eaee4fd32aee7ab5779c908e37cf9c04f40b0ed",
+      "ops/triton/weight_only_gemv.py": "3bd583ca8e6ca44f2fa97a8ec94ee34e0277d5a36a79d75a3a8cc62f8314ccdf",
+      "ops/triton/weight_only_tuning.py": "73cc6b662ff49a44ecd07c686371dd28f11e95a0d439040c17172c4af65bff3d",
+      "training/__init__.py": "51fb1109652aea75a2363755d29f09c492c8679353ba26cbc33e4d74bf59d9e7",
+      "training/allocator_metrics.py": "b5632476bc75718399347e747cbf6f35aae4118a5c97189e752885123d31e0bf",
+      "training/batching.py": "d2d23d0ca667250fe9a763e276358dcd3ac7b218fe4761495e5aad03c5871e35",
+      "training/block_fsdp.py": "f0e0669227ed53d070ccacad0086f2eb2cc4013af49944da370f1bea7161653b",
+      "training/ce_only_loss.py": "980b90524e332963dd661754d280b9b569aa0c345a6756e9ed6cb6b9acb817e3",
+      "training/chunked_loss.py": "35872338b4275a9ae310f925940c4ef5d5d18059e3b2b89f411a26b648682621",
+      "training/convergence_job.py": "38260a415f42e6e9300a7826f8bfa9d13aa1b3901529e65bcc2e9ddadc52bec0",
+      "training/convergence_rules.py": "d9df604e3728155ba57add1bb03f1e47864fa3a01f1509c3c787a051a1845dde",
+      "training/export_sharded_hf.py": "7296479dfddb1a1cf26887a1d9a4ad97f2c2c27a35cba155979ec5c13cae831e",
+      "training/flashoptim_convergence_job.py": "ddd05ec7d9b69bac58a54d03c6f37d58e77ecdddd9ea8c175b09a34f9b616fd7",
+      "training/fsdp_accumulation.py": "d3ffaf3edbbdba009adde48101e510c99f9bb0db2ea36131d8049a2b51f18d0f",
+      "training/fsdp_activation.py": "b7997d07c8d64092f4c7b9bb6340274047f7420b9bd9a6caeb50cf90319b522c",
+      "training/fsdp_best_parameters.py": "2e8f7674706a92a2365942948538918cd62d6928e1af2f0aa8c334e29fa9bb01",
+      "training/fsdp_checkpoint.py": "6ff6eddeca6447c621f2c6ce03e8610045a0b08efea12c8684bd5cdab81b14d3",
+      "training/fsdp_convergence_job.py": "8ad10d6e42a430b648b59b852dd973c8e2c14b94d7dbcd69580443ff464d6224",
+      "training/fsdp_convergence_policy.py": "1ec8b05abe4a82c82ff4f03ece85295fd0e566a4cd5322138f98bcea5f967c65",
+      "training/fsdp_loss.py": "c24cb75c2d86970649f00959ce516b6cb258e7f49000dd2f00595073cf025281",
+      "training/fsdp_loss_search.py": "0dc740555c376a616d69ba47914093fb4ebdabb5c20346168d48b6095af684da",
+      "training/fsdp_provenance.py": "95939bd279a2df0d15186bffff207ff42aca5f08dd343838a404ca72fb855798",
+      "training/fsdp_search.py": "5984e146a7c2e7abd190eb7f996d5d00a5a9241435bc268370856aaf336dac09",
+      "training/fsdp_validation.py": "a6b5147c86171d854d5e99b52e86dc376fe3de6d949ddea72217f3b0604e0a8d",
+      "training/fused_loss.py": "b6c7ecb658c5861422d70f5602b119ef7efcbea6d85a07b0b394a2ad75c38186",
+      "training/graphed_forward_backward.py": "1ba0fbd70f661ad1743caf6f2e00bba216efd989eaa12b9f2d1f23595f7ebe74",
+      "training/hf_operators.py": "1d617a5d40c30d96640186af305487b99b2460f5c2270f0c82df06df8a965e92",
+      "training/hf_rounded.py": "06563d0821588e075bb80162c7c0961d7d744f594c598ec0bfd9e29f0a97cc06",
+      "training/minimal_fsdp.py": "fd20513654bafd56a6d086479ea3519f8b67b7f90c517646c6da62ad8bb21280",
+      "training/multi_tensor_flashoptim.py": "38e5dd93485dcbb995bdd2df31652db37c9f0051ffed623095144f806a4cd624",
+      "training/native_gqa.py": "a5a03102594d31ff836484d52f1d8a2ded1727d3cb60e629580f011b99cce09e",
+      "training/official_fsdp.py": "b337b1667478413376374751308814eaa59e3ba4ca77f6cbe9dd86a6ea6d4ebf",
+      "training/optimization_policy.py": "b8e68931f90d17d516ba95e4de21dfc805787b28b029fa6ef7931b9501b1bb4b",
+      "training/owned_tied_loss.py": "62d2379ad33ea3855d14bd2b87ca9830c8506eb59efc6e0ca3eda41c0ce1b7fd",
+      "training/prefetch_fsdp.py": "18ddcd826c4eeb73e8ae59701ab3ca91f18a54542a4be8158f5d2f3a6b0b8454",
+      "training/run_sharded_qwen.py": "df30ef9d3e7d8b644b694cdeab9da12a7e0c8c2997e38602eef7f9258e3f0cb9",
+      "training/selective_checkpoint.py": "41582b6d74b212bfb2dd8d6c803a79b35293d33340289f779c22c8737a3394bd",
+      "training/sharded_checkpoint.py": "2d4be8c7c3bab63138a624418ddc82a8621da9fdf904a3c48999917e938069f9",
+      "training/tied_embedding.py": "dd992f85c953be33f3956a9804a0b072ae99ee81cdc3d2f86c508c946f1adacf",
+      "training/train_tiny.py": "d10668e18d0403225c66297803be6980ebb053f83e3725c255f66408b977e943",
+      "training/triton_adamw.py": "f7c581b8277efedd6838d1eaf6088a69952c4441a4344d01d6e70153f80281ae"
+    }
+  },
+  "raw_summary_sha256": "0cdae2fa362777973776a0c31f7cbb997d851d8c3ff4600fa5fb5d29d1f4b5bf",
+  "defaults_changed": false,
+  "convergence_proven": false,
+  "scope": "Real1.7B world2 GPU0/2 B1 S512 globalbatch2 24GiB, two ordered short runs; not 8B/scaling or long-quality proof"
+}

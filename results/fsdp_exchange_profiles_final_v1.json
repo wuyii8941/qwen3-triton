@@ -1,0 +1,114 @@
+{
+  "complete": true,
+  "raw_jobs_audited": 4,
+  "records": [
+    {
+      "case": "native_a",
+      "median_step_seconds": 6.169026406481862,
+      "peak_allocated_gib": 40.0525689125061,
+      "peak_reserved_gib": 41.8671875,
+      "counter_medians": {
+        "num_alloc_retries": 4.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 4.0,
+        "num_device_alloc": 238.5,
+        "num_device_free": 20.0
+      },
+      "trace_sha256": "44932eb398bc74569afe226f26a2b2adc9378a71f372e18894c60b8f2e0222a9",
+      "trace_intervals": {
+        "0": {
+          "communication_union_us": 5541689.809082031,
+          "local_union_us": 802782.9189453125,
+          "communication_local_overlap_us": 553259.2412109375,
+          "communication_without_local_us": 4988430.567871094,
+          "gpu_active_union_us": 5791213.486816406,
+          "observed_kernel_span_us": 6369688.384765625
+        }
+      },
+      "resource_sha256": "ebf67a518a0cc3949643be25415066f3e242840b7bb6ca06c2c996e06b92d0dc"
+    },
+    {
+      "case": "decoder_a",
+      "median_step_seconds": 5.687683832831681,
+      "peak_allocated_gib": 38.61500406265259,
+      "peak_reserved_gib": 41.7890625,
+      "counter_medians": {
+        "num_alloc_retries": 3.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 3.0,
+        "num_device_alloc": 207.0,
+        "num_device_free": 15.0
+      },
+      "trace_sha256": "3e1ccacc7b0566bf7d194831ab5c77c8b206006f1430026af2583f4bd9b380a5",
+      "trace_intervals": {
+        "0": {
+          "communication_union_us": 4723208.6533203125,
+          "local_union_us": 1179621.3125,
+          "communication_local_overlap_us": 695203.0424804688,
+          "communication_without_local_us": 4028005.6108398438,
+          "gpu_active_union_us": 5207626.923339844,
+          "observed_kernel_span_us": 5666503.8291015625
+        }
+      },
+      "resource_sha256": "e8dd27cb70c7a087ab3dbb2e8650222f492c6d7e4bc86c77084da8076d8114a0"
+    },
+    {
+      "case": "decoder_b",
+      "median_step_seconds": 5.643028751946986,
+      "peak_allocated_gib": 38.61500406265259,
+      "peak_reserved_gib": 41.7890625,
+      "counter_medians": {
+        "num_alloc_retries": 3.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 3.0,
+        "num_device_alloc": 207.0,
+        "num_device_free": 15.0
+      },
+      "trace_sha256": "910bccfd55a4fd63e6bd2ab39311831f40a2ac84ce2b54d69ce8a74f7f0f11f5",
+      "trace_intervals": {
+        "0": {
+          "communication_union_us": 4708135.087402344,
+          "local_union_us": 1192208.8354492188,
+          "communication_local_overlap_us": 714480.1801757812,
+          "communication_without_local_us": 3993654.9072265625,
+          "gpu_active_union_us": 5185863.742675781,
+          "observed_kernel_span_us": 5621981.519042969
+        }
+      },
+      "resource_sha256": "6ca41fa84e16e735999b7b338f93dd2a78ec7a95a997fed7ffd58481db875cf8"
+    },
+    {
+      "case": "native_b",
+      "median_step_seconds": 6.304436886683106,
+      "peak_allocated_gib": 40.0525689125061,
+      "peak_reserved_gib": 41.8671875,
+      "counter_medians": {
+        "num_alloc_retries": 4.0,
+        "num_ooms": 0.0,
+        "num_sync_all_streams": 4.0,
+        "num_device_alloc": 238.5,
+        "num_device_free": 20.0
+      },
+      "trace_sha256": "f7a9a75affe55a73cad0f613486ee1bb94064848d44cfea437e3127b92e0c9f5",
+      "trace_intervals": {
+        "0": {
+          "communication_union_us": 5870665.800292969,
+          "local_union_us": 791515.365234375,
+          "communication_local_overlap_us": 545044.57421875,
+          "communication_without_local_us": 5325621.226074219,
+          "gpu_active_union_us": 6117136.591308594,
+          "observed_kernel_span_us": 6671632.508300781
+        }
+      },
+      "resource_sha256": "763081e1a6f8cfd9c05ba12c71bfe4cebfa9e838ec9eaeab6c10fb5449cfe382"
+    }
+  ],
+  "decoder_time_reduction_fraction_by_order": [
+    0.07802569513147639,
+    0.10491153240556927
+  ],
+  "campaign_result_sha256": "4343330c54463f890e2cfd8da6139d6966ec52fc85c635a94622db776d99c4e2",
+  "statistical_significance_proven": false,
+  "causal_overlap_speedup_proven": false,
+  "scope": "Rank0 trace interval diagnostics and separate unprofiled step timing; not convergence or wire bandwidth"
+}

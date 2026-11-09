@@ -6,14 +6,15 @@ from training.chunked_loss import chunked_linear_cross_entropy
 
 @pytest.mark.parametrize('chunk',[1,7,64])
 @pytest.mark.parametrize('ignored',[False,True])
-def test_full_gradient_reference(chunk,ignored):
+@pytest.mark.parametrize('backward_impl',['default','native_ce','native_ce_padded'])
+def test_full_gradient_reference(chunk,ignored,backward_impl):
     torch.manual_seed(19)
     x=torch.randn(19,16,requires_grad=True)
     w=torch.randn(37,16,requires_grad=True)
     labels=torch.randint(37,(19,))
     if ignored: labels[::3]=-100
     expected=F.cross_entropy(F.linear(x,w).float(),labels)
-    actual=chunked_linear_cross_entropy(x,w,labels,chunk_size=chunk)
+    actual=chunked_linear_cross_entropy(x,w,labels,chunk_size=chunk,backward_impl=backward_impl)
     ge=torch.autograd.grad(expected,(x,w),torch.tensor(.37))
     ga=torch.autograd.grad(actual,(x,w),torch.tensor(.37))
     torch.testing.assert_close(actual,expected)
@@ -30,6 +31,21 @@ def test_tied_embedding_gradient():
     a,=torch.autograd.grad(actual,w,retain_graph=True)
     b,=torch.autograd.grad(expected,w)
     torch.testing.assert_close(a,b,atol=2e-6,rtol=2e-5)
+
+
+@pytest.mark.parametrize('backward_impl',['default','native_ce','native_ce_padded'])
+def test_partial_gradients_all_ignored_and_invalid_mode(backward_impl):
+    for requires_hidden, requires_weight in ((True,False),(False,True),(True,True)):
+        x=torch.randn(19,8,requires_grad=requires_hidden)
+        w=torch.randn(23,8,requires_grad=requires_weight)
+        labels=torch.full((19,),-100,dtype=torch.long)
+        loss=chunked_linear_cross_entropy(x,w,labels,chunk_size=7,backward_impl=backward_impl)
+        assert torch.isnan(loss)
+        loss.backward()
+        if requires_hidden:assert torch.count_nonzero(x.grad)==0
+        if requires_weight:assert torch.count_nonzero(w.grad)==0
+    with pytest.raises(ValueError):
+        chunked_linear_cross_entropy(x,w,labels,backward_impl='unknown')
 
 
 @pytest.mark.skipif(not torch.cuda.is_available(),reason='CUDA required')

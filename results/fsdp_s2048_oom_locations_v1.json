@@ -1,0 +1,25 @@
+{
+  "scope": "Recorded failure call stacks, not a full allocation-liveness trace",
+  "native_k0": {
+    "source": "artifacts/fsdp_shape_s2048_screen_v1/native_k0.log",
+    "sha256": "212372360204519cad7d09896b62b7072e1e1e6cf83f641e224861fd1d4e0e23",
+    "failure_stage": "Qwen forward -> lm_head -> F.linear output allocation, before loss callback",
+    "requested_mib": 594,
+    "rank2_allocated_gib_at_failure": 41.48,
+    "allocator_budget_gib": 42,
+    "physical_free_gib_at_failure": 4.04,
+    "implication": "CE-only loss cannot remove this preceding logits-output allocation"
+  },
+  "full_k16": {
+    "source": "artifacts/fsdp_shape_s2048_screen_v1/full_k16.log",
+    "sha256": "e201b381e222ba87aadef181184b2f9857b7b4a123790b6faea81b34ffedef37",
+    "failure_stage": "FSDP post_backward -> foreach_reduce -> reduce_scatter_comm.allocate(reduce_scatter_output)",
+    "requested_mib": 594,
+    "rank3_allocated_gib_at_failure": 40.57,
+    "rank3_reserved_unallocated_gib_at_failure": 1.17,
+    "allocator_budget_gib": 42,
+    "physical_free_gib_at_failure": 4.09,
+    "implication": "Communication-buffer allocation/allocator pressure, not CE temporary allocation; physical GPU capacity not exhausted"
+  },
+  "precision_policy": "Unchanged FP32 gradient reductions, masters and optimizer states"
+}

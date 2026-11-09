@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "workload_signature": [
+    "/data1/tzh/models/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+    4,
+    1,
+    512,
+    3,
+    6,
+    "FP32 master/AdamW/reduce, BF16 compute",
+    "forced Flash SDPA",
+    44.0,
+    "d9bc46af76b2bd228ccb677bce95e4b305e472f5487a145b2f5c2dcc3b94821c",
+    "70192fd033e210cd8c32a7f9be57b24a9866424d780b743b27e7a0cc5c6f10d4",
+    "2.10.0+cu128",
+    "12.8",
+    "NVIDIA RTX A6000"
+  ],
+  "records": [
+    {
+      "case": "native_k24",
+      "policy": {
+        "keep_full_layers": 24,
+        "checkpoint_every": 0,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "/data1/tzh/proj/qwen_operator_lab/artifacts/fsdp_memory_refinement_44_v1/native_k24.log",
+      "log_sha256": "2ddaeb7203f79f695f432b7b52acf03124b24c8d5e5f0bf1300eb2668b14c6c7",
+      "status": "passed",
+      "source": "/data1/tzh/proj/qwen_operator_lab/artifacts/fsdp_memory_refinement_44_v1/native_k24/result.json",
+      "sha256": "ac7389cf8bec0b7669ad5c30336221bddbbbb55fbcac8eb6408364cc2525d68b",
+      "median_step_seconds": 5.970329233445227,
+      "tokens_per_second": 343.0296588213754,
+      "peak_allocated_gib": 39.6517014503479,
+      "peak_reserved_gib": 43.98828125,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_native_k24": 1.0
+    },
+    {
+      "case": "native_k34",
+      "policy": {
+        "keep_full_layers": 34,
+        "checkpoint_every": 0,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "/data1/tzh/proj/qwen_operator_lab/artifacts/fsdp_memory_refinement_44_v1/native_k34.log",
+      "log_sha256": "71a52cf710f9cf625ed755ba33319e86f50c3979985dc5e911d6584e93620515",
+      "status": "passed",
+      "source": "/data1/tzh/proj/qwen_operator_lab/artifacts/fsdp_memory_refinement_44_v1/native_k34/result.json",
+      "sha256": "d67d7df32decbf64866910f0de033270985759a94141334dd9409c7df80e3343",
+      "median_step_seconds": 5.968096568249166,
+      "tokens_per_second": 343.15798623225237,
+      "peak_allocated_gib": 43.24561357498169,
+      "peak_reserved_gib": 43.998046875,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_native_k24": 1.0003741000452202
+    },
+    {
+      "case": "native_k36",
+      "policy": {
+        "keep_full_layers": 36,
+        "checkpoint_every": 0,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 1,
+      "log_source": "/data1/tzh/proj/qwen_operator_lab/artifacts/fsdp_memory_refinement_44_v1/native_k36.log",
+      "log_sha256": "d8a461d5fbd8d2de4c52d48ccf5946606e646065dea21c0a282bb16df5ce876c",
+      "status": "oom"
+    },
+    {
+      "case": "full_k36",
+      "policy": {
+        "keep_full_layers": 36,
+        "checkpoint_every": 2,
+        "checkpoint_mode": "full"
+      },
+      "returncode": 0,
+      "log_source": "/data1/tzh/proj/qwen_operator_lab/artifacts/fsdp_memory_refinement_44_v1/full_k36.log",
+      "log_sha256": "63d935b0cb1df4c35469eeb1bc38a9f40f023e7ddf08a3741f3dfabd0d78647e",
+      "status": "passed",
+      "source": "/data1/tzh/proj/qwen_operator_lab/artifacts/fsdp_memory_refinement_44_v1/full_k36/result.json",
+      "sha256": "2783b6f4f50eaaee57e9f1611cd7ef34f2bcbb7e5699460d71e31ae91b65ebaf",
+      "median_step_seconds": 6.094042998738587,
+      "tokens_per_second": 336.0658926141345,
+      "peak_allocated_gib": 42.01067018508911,
+      "peak_reserved_gib": 43.9921875,
+      "initial_hf_parity": {
+        "max_abs": 0.0
+      },
+      "throughput_speedup_vs_native_k24": 0.9796992299990388
+    }
+  ],
+  "screening_winner": "native_k34",
+  "scope": "Fixed-workload single-round screen; not ABBA confirmation, convergence or universal optimum"
+}
