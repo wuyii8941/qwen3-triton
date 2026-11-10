@@ -1,5 +1,7 @@
 # 真实 HF Qwen3 推理接入
 
+推理原型已统一移入 `experiments/legacy/`，不混入当前训练算子库。本文源码相对路径以归档为根，命令在仓库根目录通过 `scripts/legacy_python.sh` 启动。见 [目录导航](REPOSITORY_LAYOUT.md)。
+
 ## 接口
 
 model.hf_inference.qwen3_triton_inference 是可恢复的 scoped 替换。默认保留HF模型、Linear、attention与cache API，只替换norm、RoPE和SwiGLU。锁定Transformers4.51.0，CUDA FP16/BF16、同设备同dtype。
@@ -40,7 +42,7 @@ fuse_qk、compact_gqa、fuse_residual、multirow_norm、decode_mlp、packed_qkv�
 使用匹配的推理环境；不能将私有静态decode API直接视为Torch2.10已验证。
 
 ~~~bash
-python -m pytest -q tests/test_hf_inference.py
+bash scripts/legacy_python.sh -m pytest -q tests/test_hf_inference.py
 python benchmarks/benchmark_hf_inference.py --model /path/to/Qwen3-1.7B --dtype float16 --profile
 python benchmarks/benchmark_hf_inference.py --model /path/to/Qwen3-1.7B --dtype bfloat16 --profile
 ~~~

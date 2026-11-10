@@ -1,4 +1,7 @@
-"""Tiled forward-only Triton implementation of causal GQA attention."""
+"""Current causal GQA training operator: tiled forward and autograd bridge.
+
+Decode-only implementations are archived under experiments/legacy/ops/triton.
+"""
 
 from __future__ import annotations
 
@@ -10,7 +13,7 @@ import triton.language as tl
 
 
 @triton.autotune(
-    # MODIFIED: tune query-tile size, key-tile size, and warp count instead
+    # tune query-tile size, key-tile size, and warp count instead
     # of hard-coding the one-query-row launch configuration.
     configs=[
         triton.Config({"BLOCK_M": 16, "BLOCK_N": 32}, num_warps=4),
@@ -18,7 +21,7 @@ import triton.language as tl
         triton.Config({"BLOCK_M": 32, "BLOCK_N": 64}, num_warps=8),
         triton.Config({"BLOCK_M": 32, "BLOCK_N": 128}, num_warps=8),
     ],
-    # MODIFIED: different sequence lengths/head dimensions can prefer
+    # different sequence lengths/head dimensions can prefer
     # different tile configurations.
     key=["seq_len", "head_dim"],
 )
@@ -34,16 +37,16 @@ def _attention_forward_kernel(
     seq_len,
     head_dim,
     scale,
-    # MODIFIED: BLOCK_M lets one program process multiple query rows.
+    # BLOCK_M lets one program process multiple query rows.
     BLOCK_M: tl.constexpr,
-    # MODIFIED: BLOCK_N is the streamed K/V tile size.
+    # BLOCK_N is the streamed K/V tile size.
     BLOCK_N: tl.constexpr,
     BLOCK_D: tl.constexpr,
     MAX_SEQ_LEN: tl.constexpr,
 ):
     """Causal GQA attention for contiguous [B, H, S, D] tensors."""
     pid = tl.program_id(0)
-    # MODIFIED: the grid is now one program per (batch, q_head, query tile),
+    # the grid is now one program per (batch, q_head, query tile),
     # rather than one program per individual query row.
     num_query_blocks = tl.cdiv(seq_len, BLOCK_M)
     rows_per_batch = q_heads * num_query_blocks
@@ -56,7 +59,7 @@ def _attention_forward_kernel(
     kv_group = q_heads // kv_heads
     kv_head = q_head // kv_group
 
-    # MODIFIED: query positions are a BLOCK_M vector, so Q is [BLOCK_M, D].
+    # query positions are a BLOCK_M vector, so Q is [BLOCK_M, D].
     q_positions = q_block * BLOCK_M + tl.arange(0, BLOCK_M)
     query_mask = q_positions < seq_len
     d_offsets = tl.arange(0, BLOCK_D)
@@ -68,16 +71,16 @@ def _attention_forward_kernel(
         mask=query_mask[:, None] & d_mask[None, :],
         other=0.0,
     )
-    # MODIFIED: keep Q in the input dtype (BF16 on the target workload) so
+    # keep Q in the input dtype (BF16 on the target workload) so
     # the QK matmul can use Tensor Cores; scores are accumulated in FP32.
 
-    # MODIFIED: online-softmax state is now one value per query row and the
+    # online-softmax state is now one value per query row and the
     # accumulator is [BLOCK_M, D].
     row_max = tl.full((BLOCK_M,), -float("inf"), tl.float32)
     row_sum = tl.zeros((BLOCK_M,), dtype=tl.float32)
     acc = tl.zeros((BLOCK_M, BLOCK_D), dtype=tl.float32)
 
-    # MODIFIED: stream over K/V tiles.  No [S, S] score matrix is allocated.
+    # stream over K/V tiles.  No [S, S] score matrix is allocated.
     for key_start in range(0, MAX_SEQ_LEN, BLOCK_N):
         key_offsets = key_start + tl.arange(0, BLOCK_N)
         key_mask = key_offsets < seq_len
@@ -91,15 +94,15 @@ def _attention_forward_kernel(
             mask=key_mask[:, None] & d_mask[None, :],
             other=0.0,
         )
-        # MODIFIED: matrix multiplication computes [BLOCK_M, BLOCK_N] scores.
-        # MODIFIED: preserve Q/K dtype for the dot and request FP32 output.
+        # matrix multiplication computes [BLOCK_M, BLOCK_N] scores.
+        # preserve Q/K dtype for the dot and request FP32 output.
         scores = tl.dot(q, tl.trans(k), out_dtype=tl.float32) * scale
         scores = tl.where(valid, scores, -float("inf"))
 
         block_max = tl.max(scores, axis=1)
         new_max = tl.maximum(row_max, block_max)
         old_scale = tl.exp(row_max - new_max)
-        # MODIFIED: explicitly broadcast the per-query maximum across the
+        # explicitly broadcast the per-query maximum across the
         # BLOCK_N score columns.
         probs = tl.exp(scores - new_max[:, None])
 
@@ -109,20 +112,20 @@ def _attention_forward_kernel(
             mask=key_mask[:, None] & d_mask[None, :],
             other=0.0,
         ).to(tl.float32)
-        # MODIFIED: accumulate a whole query tile with a matrix product.
+        # accumulate a whole query tile with a matrix product.
         acc = acc * old_scale[:, None] + tl.dot(probs, v)
         row_sum = row_sum * old_scale + tl.sum(probs, axis=1)
         row_max = new_max
 
     output = acc / row_sum[:, None]
-    # MODIFIED: store the complete [BLOCK_M, D] output tile.
+    # store the complete [BLOCK_M, D] output tile.
     out_offsets = q_base + q_positions[:, None] * head_dim + d_offsets[None, :]
     tl.store(
         out_ptr + out_offsets,
         output,
         mask=query_mask[:, None] & d_mask[None, :],
     )
-    # MODIFIED: save the per-query log-sum-exp while online softmax state is
+    # save the per-query log-sum-exp while online softmax state is
     # already in registers. Backward can reuse this instead of rebuilding a
     # full QK^T matrix in PyTorch.
     lse = row_max + tl.log(row_sum)
@@ -166,16 +169,16 @@ def attention_triton(
     k = k.contiguous()
     v = v.contiguous()
     output = torch.empty_like(q)
-    # MODIFIED: LSE is a compact [B, Hq, S] backward context tensor.
+    # LSE is a compact [B, Hq, S] backward context tensor.
     lse = torch.empty((batch, q_heads, q_len), device=q.device, dtype=torch.float32)
-    # MODIFIED: BLOCK_D is the compile-time padded head dimension; BLOCK_M and
+    # BLOCK_D is the compile-time padded head dimension; BLOCK_M and
     # BLOCK_N are selected by the autotuner.
     block_d = triton.next_power_of_2(head_dim)
     if block_d > 256:
         raise ValueError("first attention kernel supports head_dim <= 256")
     if scale is None:
         scale = 1.0 / math.sqrt(head_dim)
-    # MODIFIED: the grid depends on the BLOCK_M selected by autotune.
+    # the grid depends on the BLOCK_M selected by autotune.
     grid = lambda meta: (batch * q_heads * triton.cdiv(q_len, meta["BLOCK_M"]),)
     _attention_forward_kernel[grid](
         q,
@@ -220,86 +223,8 @@ def attention_triton_qwen_prefill(
     return attention_triton(q, k, v, scale=scale, return_lse=return_lse)
 
 
-@triton.jit
-def _attention_decode_kernel(
-    q_ptr,
-    k_ptr,
-    v_ptr,
-    out_ptr,
-    q_heads,
-    kv_heads,
-    cache_len,
-    head_dim,
-    scale,
-    BLOCK_N: tl.constexpr,
-    BLOCK_D: tl.constexpr,
-):
-    """Single-token decode over a contiguous KV cache.
-
-    Grid is one program per ``(batch, query_head)``.  Unlike prefill there is
-    no causal tile mask: every cached position is visible to the new token.
-    """
-    pid = tl.program_id(0)
-    batch = pid // q_heads
-    q_head = pid % q_heads
-    kv_head = q_head // (q_heads // kv_heads)
-    d = tl.arange(0, BLOCK_D)
-    d_mask = d < head_dim
-    q_off = ((batch * q_heads + q_head) * head_dim) + d
-    q = tl.load(q_ptr + q_off, mask=d_mask, other=0.0)
-    kv_base = (batch * kv_heads + kv_head) * cache_len * head_dim
-    row_max = tl.full((), -float("inf"), tl.float32)
-    row_sum = tl.zeros((), tl.float32)
-    acc = tl.zeros((BLOCK_D,), tl.float32)
-    for start in range(0, cache_len, BLOCK_N):
-        pos = start + tl.arange(0, BLOCK_N)
-        mask = pos < cache_len
-        off = kv_base + pos[:, None] * head_dim + d[None, :]
-        k = tl.load(k_ptr + off, mask=mask[:, None] & d_mask[None, :], other=0.0)
-        v = tl.load(v_ptr + off, mask=mask[:, None] & d_mask[None, :], other=0.0)
-        scores = tl.sum(k * q[None, :], axis=1) * scale
-        scores = tl.where(mask, scores, -float("inf"))
-        block_max = tl.max(scores, axis=0)
-        new_max = tl.maximum(row_max, block_max)
-        old_scale = tl.exp(row_max - new_max)
-        probs = tl.exp(scores - new_max)
-        acc = acc * old_scale + tl.sum(probs[:, None] * v, axis=0)
-        row_sum = row_sum * old_scale + tl.sum(probs, axis=0)
-        row_max = new_max
-    tl.store(out_ptr + q_off, acc / row_sum, mask=d_mask)
 
 
-def attention_triton_decode(
-    q: torch.Tensor,
-    k_cache: torch.Tensor,
-    v_cache: torch.Tensor,
-    *,
-    scale: float | None = None,
-) -> torch.Tensor:
-    """Decode one token from a contiguous KV cache without KV replication."""
-    if not all(t.is_cuda for t in (q, k_cache, v_cache)):
-        raise ValueError("attention_triton_decode requires CUDA tensors")
-    if q.ndim != 4 or q.shape[2] != 1 or q.shape[-1] != 128:
-        raise ValueError("decode requires q with shape [B, Hq, 1, 128]")
-    if k_cache.ndim != 4 or v_cache.shape != k_cache.shape or k_cache.shape[-1] != 128:
-        raise ValueError("decode requires k/v cache with shape [B, Hkv, S, 128]")
-    batch, q_heads, _, head_dim = q.shape
-    if k_cache.shape[0] != batch or q_heads % k_cache.shape[1] != 0:
-        raise ValueError("incompatible batch or GQA head counts")
-    cache_len = k_cache.shape[2]
-    if cache_len <= 0:
-        raise ValueError("cache_len must be positive")
-    q, k_cache, v_cache = (t.contiguous() for t in (q, k_cache, v_cache))
-    out = torch.empty_like(q)
-    if scale is None:
-        scale = 1.0 / math.sqrt(head_dim)
-    block_d = 128
-    block_n = 64
-    _attention_decode_kernel[(batch * q_heads,)](
-        q, k_cache, v_cache, out, q_heads, k_cache.shape[1], cache_len,
-        head_dim, scale, BLOCK_N=block_n, BLOCK_D=block_d, num_warps=4,
-    )
-    return out
 
 
 def attention_triton_with_lse(
@@ -340,10 +265,10 @@ class _TritonAttentionFunction(torch.autograd.Function):
     @staticmethod
     def backward(ctx, grad_output):
         # Import lazily to keep the standalone forward module lightweight.
-        from ops.triton.attention_backward import attention_backward_triton_fused_kv
+        from ops.triton.attention_backward import attention_backward_triton
 
         q, k, v, lse = ctx.saved_tensors
-        grad_q, grad_k, grad_v = attention_backward_triton_fused_kv(
+        grad_q, grad_k, grad_v = attention_backward_triton(
             q,
             k,
             v,

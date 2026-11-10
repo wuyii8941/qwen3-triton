@@ -6,7 +6,6 @@ from ops.reference.attention import scaled_dot_product_attention_reference
 from ops.triton.attention import (
     attention_triton,
     attention_triton_autograd,
-    attention_triton_decode,
     attention_triton_qwen_prefill,
 )
 
@@ -82,13 +81,15 @@ def test_qwen_prefill_keeps_gqa_compact() -> None:
 
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="Triton attention requires CUDA")
-def test_decode_kernel_matches_compact_gqa_reference() -> None:
-    torch.manual_seed(15)
-    q = torch.randn(2, 16, 1, 128, device="cuda", dtype=torch.bfloat16)
-    k = torch.randn(2, 8, 257, 128, device="cuda", dtype=torch.bfloat16)
+def test_standalone_backward_compact_lse_matches_saved_lse():
+    from ops.triton.attention_backward import attention_backward_triton
+    torch.manual_seed(16)
+    q = torch.randn(1, 4, 17, 32, device='cuda', dtype=torch.bfloat16)
+    k = torch.randn(1, 2, 17, 32, device='cuda', dtype=torch.bfloat16)
     v = torch.randn_like(k)
-    actual = attention_triton_decode(q, k, v)
-    k_expanded = k.repeat_interleave(2, dim=1)
-    scores = torch.matmul(q.float(), k_expanded.float().transpose(-2, -1)) / (128 ** 0.5)
-    expected = torch.softmax(scores, dim=-1) @ v.repeat_interleave(2, dim=1).float()
-    torch.testing.assert_close(actual.float(), expected, rtol=6e-2, atol=6e-2)
+    grad_out = torch.randn_like(q)
+    _, lse = attention_triton(q, k, v, return_lse=True)
+    expected = attention_backward_triton(q, k, v, grad_out, lse=lse)
+    actual = attention_backward_triton(q, k, v, grad_out)
+    for observed, reference in zip(actual, expected):
+        torch.testing.assert_close(observed, reference, atol=3e-2, rtol=3e-2)

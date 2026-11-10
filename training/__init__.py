@@ -1,1 +1,1 @@
-"""Training entry points for the Tiny-Qwen baseline."""
+"""Current full-parameter Qwen training runtime; CLI: python -m training.train."""

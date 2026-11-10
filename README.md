@@ -1,8 +1,17 @@
 # Qwen3 / Triton GPU Kernel Lab
 
-基于真实 Qwen3 架构模型的算子、推理和多卡训练优化实验。当前文档对应 2026-11-09 的已验证状态，不包含阶段性排队日志。
+基于真实 Qwen3 架构模型的算子、推理和多卡训练优化实验。2026-11-10 已将当前训练运行时与历史实验分开；性能数字保留原始证据口径，不视为重构后的重测。
 
 本项目实现 PyTorch reference、Triton forward/backward、Tiny-Qwen、真实 HF 推理接入，以及官方 FSDP2 和自研分片原型。不是所有 kernel 都比成熟库快；默认保持可验证的原生路径，实验选项显式开启。
+
+## 先从哪里开始
+
+- [目录导航与新旧命名对照](REPOSITORY_LAYOUT.md)：推荐先读。
+- [当前训练运行时](training/README.md)：唯一入口 `python -m training.train`；后端为 `official` / `custom`，参数值不再编码进后端名。
+- [当前训练算子库](ops/README.md)：只保留训练实现；推理 decode 与旧 backward 基线已归档。
+- [历史实验归档](experiments/legacy/README.md)：筛选、监控、报告、单卡 FlashOptim、推理和恢复/导出原型均独立保存。
+
+`training`、`ops`、`model` 不导入实验目录。真实 8B 默认使用 HF 模型和 Flash SDPA，不意味着算子库中的所有 Triton 实现都默认启用。
 
 ## 已完成的工作
 
@@ -55,10 +64,12 @@ CUDA_VISIBLE_DEVICES=0 bash scripts/research_python.sh -m pytest -q \
   tests/test_rope.py tests/test_silu_and_mul_triton.py
 ~~~
 
-最终 CPU 回归：714 passed / 311 GPU skipped；独立核心 GPU 验证：52 passed，使用单卡 4 GiB allocator cap。这不是全仓 GPU 测试全部通过的声明。
+本次主目录测试：GPU 可用时 **106 passed**；关闭 CUDA 时 **45 passed / 61 skipped**。归档 CPU 回归仍为 **714 passed / 311 skipped**。另通过两卡 Tiny 的 native / exchange / custom 三条入口检查。GPU 使用每卡 4 GiB allocator cap；完整范围与限制见 [目录导航](REPOSITORY_LAYOUT.md)。没有重跑真实 8B 长训练。
+
+历史完整回归使用 `bash scripts/legacy_python.sh -m pytest -q tests`，与主目录测试分进程执行，避免同名模块混用。
 
 ## 发布范围
 
 发布源码、测试、配置及 results/ 中的小型最终证据。submission/、artifacts/、模型、语料、checkpoint、环境、缓存、密钥不发布。文档里的 artifacts 路径指本机原始记录，克隆仓库后并不存在；只有保留这些记录才能重新执行独立审计。
 
-保留的历史实现用于基线、反例和审计依赖，不代表推荐启用。过期阶段文档与中间结果已从发布树移除，当前说明以上述指南为准。
+保留的历史实现集中在 `experiments/legacy/`，用于基线、反例和审计依赖，不代表推荐启用。旧证据指南中的源码相对路径以归档为根，命令已改为 `scripts/legacy_python.sh`；当前主目录的使用以目录导航为准。

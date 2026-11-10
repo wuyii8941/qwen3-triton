@@ -17,5 +17,6 @@ export PYTHONDONTWRITEBYTECODE=1
 export TORCHINDUCTOR_CACHE_DIR="$lab_runtime_root/inductor"
 export TRITON_CACHE_DIR="$lab_runtime_root/triton"
 export CUDA_CACHE_PATH="$lab_runtime_root/cuda"
-export PYTHONPATH="$lab_project_dir${PYTHONPATH:+:$PYTHONPATH}"
+lab_source_root="${QWEN_LAB_SOURCE_ROOT:-$lab_project_dir}"
+export PYTHONPATH="$lab_source_root${PYTHONPATH:+:$PYTHONPATH}"
 exec "$lab_project_dir/.venv-research/bin/python" "$@"

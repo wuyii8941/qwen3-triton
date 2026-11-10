@@ -1,5 +1,7 @@
 # 自研分片原型与 HF 导出
 
+本文的部署、恢复、导出原型路径以 `experiments/legacy/` 为根，统一通过根目录 `scripts/legacy_python.sh` 启动。当前自研训练后端位于 `training/fsdp/custom.py`，不是这些旧 CLI 的兼容别名。见 [目录导航](REPOSITORY_LAYOUT.md)。
+
 这个原型用于理解参数分片、重算和collective生命周期，不是当前速度默认。官方FSDP2对照与完整质量结果见 [8B证据](FSDP_8B_RESULTS.md)，不再以初始原型发布状态描述当前仓库。
 
 ## 实现
@@ -19,7 +21,7 @@ training.block_fsdp.BlockFSDP / shard_qwen按embedding、decoder、final norm和
 需要本机匹配环境、权重、数据、足够CPU RAM和导出磁盘空间；先核对CLI与资源，使用新输出目录。
 
 ~~~bash
-bash scripts/research_python.sh scripts/deploy_sharded_8b.py \
+bash scripts/legacy_python.sh scripts/deploy_sharded_8b.py \
   --model /path/to/DeepSeek-R1-0528-Qwen3-8B \
   --seq 512 --steps 3 --output artifacts/deployment_new
 ~~~

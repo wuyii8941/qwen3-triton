@@ -1,5 +1,7 @@
 # 简历表述与证据
 
+以下收益对应重构前已验证实验；原始源码在 `experiments/legacy/`，不将其直接归因于当前精简入口。当前代码导航见 [目录说明](REPOSITORY_LAYOUT.md)。
+
 以下表述需结合自己实际完成和能解释的部分使用。不要把官方 FSDP、Flash SDPA 或 Torch 本地归约归为自研 Triton。
 
 ## 核心项目表述

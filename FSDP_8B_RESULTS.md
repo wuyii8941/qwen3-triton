@@ -1,5 +1,7 @@
 # 真实 8B 多卡训练结果
 
+以下数字属于重构前源码。原始代码及相对路径保存在 `experiments/legacy/`，用根目录 `scripts/legacy_python.sh` 复核；不代表当前重构入口重新取得相同速度。见 [目录导航](REPOSITORY_LAYOUT.md)。
+
 实际模型是 DeepSeek-R1-0528-Qwen3-8B：8,190,735,360 参数、36层、hidden4096、intermediate12288、Hq32/Hkv8、D128。不是原版 Qwen3-8B 或 7B，不是随机容量测试。
 
 ## 完整任务对照

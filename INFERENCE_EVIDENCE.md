@@ -1,5 +1,7 @@
 # 算子与推理性能证据
 
+以下为原始环境的历史证据；对应源码相对路径以 `experiments/legacy/` 为根。通过根目录 `scripts/legacy_python.sh` 复核，不与重构后的测试计数或性能混算。见 [目录导航](REPOSITORY_LAYOUT.md)。
+
 ## 三种口径不能混用
 
 - 单算子：固定shape的CUDA Graph GPU时间或非捕获wall time，首次JIT/autotune与steady-state分开。

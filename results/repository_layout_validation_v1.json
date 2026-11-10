@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-10",
+  "scope": "Repository layout refactor validation, not a new real-model performance result",
+  "archive_original_commit": "39d4e2e54db3bc6d6ea36f2c48bed2f57970d2a9",
+  "archived_source_files_byte_verified": 428,
+  "historical_training_source_sha256": "910b351ffbad62ed0eb3e1ba0b6186f2de84277f686026e7fe04b3b4d2015c2e",
+  "current_cpu": {"passed": 45, "skipped": 61},
+  "current_gpu_available": {"passed": 106, "skipped": 0, "allocator_cap_gib": 4},
+  "legacy_cpu": {"passed": 714, "skipped": 311},
+  "two_rank_tiny_training": {
+    "cases": ["official_native", "official_torch_decoder_exchange", "custom_average"],
+    "updates_per_case": 2,
+    "validation_checks_per_case": 3,
+    "allocator_cap_gib_per_rank": 4,
+    "completed": true,
+    "best_parameters_restored": true,
+    "converged": false,
+    "stop_reason": "preflight_cutoff",
+    "recorded_losses_equal_across_cases": true,
+    "recorded_losses": [4.896730422973633, 4.819428443908691],
+    "exchange_callback_counts_per_decoder_on_rank0": [2, 2],
+    "full_parameter_or_optimizer_hash_equivalence_checked": false
+  },
+  "legacy_full_quality_read_only_audit": {"complete": true, "raw_jobs_audited": 2},
+  "raw_local_outputs": "artifacts/layout_refactor_smoke_v1",
+  "real_8b_training_rerun": false,
+  "historical_speedups_revalidated_for_current_runtime": false,
+  "historical_result_manifests_modified": false,
+  "training_runtime_imports_experiments_or_benchmarks": false
+}

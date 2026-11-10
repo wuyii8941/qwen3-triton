@@ -1,5 +1,7 @@
 # 环境、资源与复现边界
 
+本文描述历史结果的冻结环境与门禁。旧源码/配置相对路径以 `experiments/legacy/` 为根；命令在仓库根目录通过 `scripts/legacy_python.sh` 启动。当前维护入口见 [目录导航](REPOSITORY_LAYOUT.md)。
+
 ## 环境
 
 当前FSDP研究：Python3.11.16、PyTorch2.10.0+cu128、Triton3.6.0、Transformers4.51.0、RTX A6000。版本观测见 results/fsdp_runtime_packages_v1.json。早期推理实验为Torch2.5.1/Triton3.1.0，不能直接混用私有API或性能数字。
@@ -28,16 +30,16 @@ scripts/research_python.sh 使用项目解释器，并把HF、Triton、Inductor�
 以下命令只读本机已保留artifacts，输出小型审计结果；克隆仓库后没有原始记录就不能执行这些复核。输出路径必须不存在。
 
 ~~~bash
-CUDA_VISIBLE_DEVICES='' bash scripts/research_python.sh -m scripts.audit_fsdp_exchange_expandable \
+CUDA_VISIBLE_DEVICES='' bash scripts/legacy_python.sh -m scripts.audit_fsdp_exchange_expandable \
   --root artifacts/fsdp_exchange_expandable_full_quality_v1 --output results/recheck_quality_new.json
 
-CUDA_VISIBLE_DEVICES='' bash scripts/research_python.sh -m scripts.audit_fsdp_profiles \
+CUDA_VISIBLE_DEVICES='' bash scripts/legacy_python.sh -m scripts.audit_fsdp_profiles \
   --root artifacts/fsdp_exchange_profiles_v1 --output results/recheck_profiles_new.json
 
-CUDA_VISIBLE_DEVICES='' bash scripts/research_python.sh -m scripts.audit_fsdp_retention_pressure \
+CUDA_VISIBLE_DEVICES='' bash scripts/legacy_python.sh -m scripts.audit_fsdp_retention_pressure \
   --root artifacts/fsdp_retention_pressure_v1 --output results/recheck_pressure_new.json
 
-CUDA_VISIBLE_DEVICES='' bash scripts/research_python.sh -m scripts.audit_fsdp_decoder_backend \
+CUDA_VISIBLE_DEVICES='' bash scripts/legacy_python.sh -m scripts.audit_fsdp_decoder_backend \
   --root artifacts/fsdp_decoder_backend_v1 --output results/recheck_backend_new.json
 ~~~
 
@@ -47,7 +49,7 @@ CUDA_VISIBLE_DEVICES='' bash scripts/research_python.sh -m scripts.audit_fsdp_de
 
 ~~~bash
 CUDA_VISIBLE_DEVICES='' GLOO_SOCKET_IFNAME=lo OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 \
-  bash scripts/research_python.sh -m pytest -q tests
+  bash scripts/legacy_python.sh -m pytest -q tests
 ~~~
 
 Gloo需要本地回环通信；受限沙盒可能禁止它。最终已在沙盒外使用相同CPU设置通过714项，311项GPU测试跳过；另用单卡4 GiB cap完成52项核心GPU测试。跳过项不是GPU通过证据。CPU/GPU日志不随仓库发布。

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Project-local research interpreter and caches; never modifies system Python.
+set -euo pipefail
+lab_project_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+lab_runtime_root="${QWEN_LAB_RUNTIME_ROOT:-$lab_project_dir/.runtime-research}"
+mkdir -p "$lab_runtime_root/tmp" "$lab_runtime_root/inductor" "$lab_runtime_root/triton" "$lab_runtime_root/cuda" \
+  "$lab_runtime_root/xdg" "$lab_runtime_root/huggingface" "$lab_runtime_root/torch" "$lab_runtime_root/extensions"
+export TMPDIR="$lab_runtime_root/tmp"
+export TMP="$TMPDIR"
+export TEMP="$TMPDIR"
+export XDG_CACHE_HOME="$lab_runtime_root/xdg"
+export HF_HOME="$lab_runtime_root/huggingface"
+export HF_HUB_CACHE="$HF_HOME/hub"
+export TORCH_HOME="$lab_runtime_root/torch"
+export TORCH_EXTENSIONS_DIR="$lab_runtime_root/extensions"
+export PYTHONDONTWRITEBYTECODE=1
+export TORCHINDUCTOR_CACHE_DIR="$lab_runtime_root/inductor"
+export TRITON_CACHE_DIR="$lab_runtime_root/triton"
+export CUDA_CACHE_PATH="$lab_runtime_root/cuda"
+export PYTHONPATH="$lab_project_dir${PYTHONPATH:+:$PYTHONPATH}"
+exec "$lab_project_dir/.venv-research/bin/python" "$@"

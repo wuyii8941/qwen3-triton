@@ -1,5 +1,7 @@
 # 官方 FSDP2 保存与恢复
 
+本文描述已归档的恢复/导出原型，源码相对路径以 `experiments/legacy/` 为根。通过根目录 `scripts/legacy_python.sh` 执行；当前 `training/train.py` 没有 optimizer checkpoint 恢复功能。见 [目录导航](REPOSITORY_LAYOUT.md)。
+
 ## 当前验证结论
 
 真实DeepSeek-R1-0528-Qwen3-8B、四卡A6000、S512/B1、K32/every1，BF16计算与FP32 master/AdamW/归约：step2 checkpoint恢复后两步重放的输入/loss、399参数条目/rank的master和optimizer状态、buffers/groups、Torch CPU/CUDA/Python/NumPy RNG精确一致。
@@ -42,11 +44,11 @@ metadata需包含一致的模型、数据和协议身份；data_state需保存�
 ~~~bash
 # CPU检查
 CUDA_VISIBLE_DEVICES='' GLOO_SOCKET_IFNAME=lo OMP_NUM_THREADS=1 \
-  bash scripts/research_python.sh -m pytest -q \
+  bash scripts/legacy_python.sh -m pytest -q \
   tests/test_fsdp_checkpoint.py tests/test_dcp_reader_adapter.py tests/test_dcp_sorted_reader.py
 
 # 仅做只读资源估算，不启动CUDA或保存大状态
-CUDA_VISIBLE_DEVICES='' bash scripts/research_python.sh benchmarks/verify_real_fsdp_resume.py \
+CUDA_VISIBLE_DEVICES='' bash scripts/legacy_python.sh benchmarks/verify_real_fsdp_resume.py \
   --resource-plan --output artifacts/resume_plan_new
 ~~~
 

@@ -1,5 +1,6 @@
 /submission/
 /artifacts/
+/experiments/legacy/artifacts
 .venv*/
 /torchinductor_tzh/
 /tmp*/
