@@ -1,0 +1,7 @@
+torch==2.10.0+cu128
+triton==3.6.0
+transformers==4.51.0
+safetensors==0.8.0
+numpy==2.4.6
+huggingface_hub==0.36.2
+pyarrow==26.0.0

@@ -1,0 +1,41 @@
+{
+  "complete": true,
+  "model": "Qwen/Qwen3-8B",
+  "stage": "reviewer_source_port_only",
+  "source": "artifacts/triton_qwen3_v1/review_8b_paired_quality_ablation_v9.py",
+  "source_sha256": "65862fd094c17c689433c5e2b970baef794ac5cc7239c945baac69638afabfed",
+  "destination": "scripts/review_qwen3_triton_suite.py",
+  "generated_sha256": "40c518fd3cdd93192d0754c4a6fc3a055ca256c674e88b0644f05a79b08148f6",
+  "previous_generated_sha256": "3e010b101d1642ff85e3b67d59f3feef3515ca95b8e2dae66460859d81f6bbe6",
+  "replacements": [
+    [
+      "import json,math,statistics",
+      "import argparse,json,math,statistics"
+    ],
+    [
+      "from gradient_archive import sha,load",
+      "from qwen3_triton.gradient_archive import sha,load"
+    ],
+    [
+      "R=Path(__file__).resolve().parent;D=R/'official_8b_paired_quality_ablation_v9_control';REFERENCE=R/'official_8b_paired_quality_ablation_control/hf_reference_r1'",
+      "D=None;REFERENCE=None"
+    ],
+    [
+      "def main():\n    torch.set_num_threads(2);manifest=json.loads((D/'manifest.json').read_text())",
+      "def main():\n    global D,REFERENCE\n    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output',type=Path,required=True)\n    args=parser.parse_args();D=args.output.resolve()\n    if D.is_relative_to(Path('/home/tzh')):parser.error('Output under /home/tzh is forbidden')\n    torch.set_num_threads(2);manifest=json.loads((D/'manifest.json').read_text())\n    REFERENCE=Path(manifest.get('reference_dir',str(D/'hf_reference_r1'))).resolve()"
+    ],
+    [
+      "    assert sha(REFERENCE/'result.json')==manifest['reference_result_sha256']",
+      "    if 'reference_result_sha256' in manifest:assert sha(REFERENCE/'result.json')==manifest['reference_result_sha256']"
+    ],
+    [
+      "            assert len(row['gradient_comparisons'])==1;comparison=row['gradient_comparisons'][0]",
+      "            if name=='hf_reference_r1' and not row['gradient_comparisons']:\n                assert REFERENCE==(D/name).resolve()\n                assert sha(REFERENCE/f'raw_rank{rank}.pt.gz')==row['reference_archive']['sha256']\n                continue\n            assert len(row['gradient_comparisons'])==1;comparison=row['gradient_comparisons'][0]"
+    ]
+  ],
+  "AST_reverse_checks_passed": true,
+  "builder_sha256": "dc2f6dcc1c767e75bb92486990518dd9c0dac530c9a3db1ec83009dec4a97960",
+  "GPU_executed": false,
+  "performance_adopted": false,
+  "published": false
+}

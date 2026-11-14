@@ -1,0 +1,169 @@
+{
+  "complete": true,
+  "model": "Qwen/Qwen3-8B",
+  "GPU_executed": false,
+  "CPU_audit_start_phase": {
+    "ready": true,
+    "stage": "running_fresh_V9_full8B_ablate_attention_r2",
+    "step": 0
+  },
+  "CPU_audit_end_phase": {
+    "ready": true,
+    "stage": "running_fresh_V9_full8B_ablate_attention_r2",
+    "step": 0
+  },
+  "rows": [
+    {
+      "role": "triton_base_r1",
+      "device_indices": [
+        0
+      ],
+      "kernel_count": 7605,
+      "first_to_last_kernel_span_seconds": 7.303836962890625,
+      "any_kernel_active_union_seconds": 7.302548245605469,
+      "groups": {
+        "framework_other": {
+          "kernel_count": 5060,
+          "summed_duration_seconds": 0.5710358198242188,
+          "active_interval_union_seconds": 0.5561383315429688,
+          "union_fraction_of_kernel_span": 0.07614331129906095
+        },
+        "NCCL": {
+          "kernel_count": 117,
+          "summed_duration_seconds": 7.206457579101563,
+          "active_interval_union_seconds": 7.206457579101563,
+          "union_fraction_of_kernel_span": 0.986667366168792
+        },
+        "Triton_model": {
+          "kernel_count": 2428,
+          "summed_duration_seconds": 1.3154755229492188,
+          "active_interval_union_seconds": 1.3154755229492188,
+          "union_fraction_of_kernel_span": 0.18010745990537494
+        }
+      },
+      "model_NCCL_overlap_seconds": 1.259957701171875,
+      "model_intervals_outside_NCCL_seconds": 0.05551782177734375,
+      "top_summed_kernel_durations_seconds": [
+        {
+          "name": "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+          "seconds": 3.7194647459999985
+        },
+        {
+          "name": "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+          "seconds": 3.4869928329999995
+        },
+        {
+          "name": "_gemm",
+          "seconds": 1.2342008380000027
+        },
+        {
+          "name": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)",
+          "seconds": 0.17858588400000028
+        },
+        {
+          "name": "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)",
+          "seconds": 0.09944819899999997
+        },
+        {
+          "name": "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)",
+          "seconds": 0.08163622400000001
+        },
+        {
+          "name": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)",
+          "seconds": 0.07910688600000003
+        },
+        {
+          "name": "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)",
+          "seconds": 0.059500669999999985
+        }
+      ],
+      "nonkernel_GPU_categories": [
+        "gpu_memcpy",
+        "gpu_user_annotation"
+      ],
+      "trace_sha256": "1eb6ad17f75c3ca9a1ec682961f08b12b2118556c2ba53a0f2a2c1be058b470e"
+    },
+    {
+      "role": "triton_optimized_r1",
+      "device_indices": [
+        0
+      ],
+      "kernel_count": 7065,
+      "first_to_last_kernel_span_seconds": 7.010310158203125,
+      "any_kernel_active_union_seconds": 7.0090312275390625,
+      "groups": {
+        "framework_other": {
+          "kernel_count": 4844,
+          "summed_duration_seconds": 0.5417817841796875,
+          "active_interval_union_seconds": 0.5241791245117188,
+          "union_fraction_of_kernel_span": 0.07477260102370074
+        },
+        "NCCL": {
+          "kernel_count": 117,
+          "summed_duration_seconds": 6.931088587890625,
+          "active_interval_union_seconds": 6.931088587890625,
+          "union_fraction_of_kernel_span": 0.9886992774178759
+        },
+        "Triton_model": {
+          "kernel_count": 2104,
+          "summed_duration_seconds": 0.6263716147460937,
+          "active_interval_union_seconds": 0.6263716147460937,
+          "union_fraction_of_kernel_span": 0.08935005735989357
+        }
+      },
+      "model_NCCL_overlap_seconds": 0.5891980493164063,
+      "model_intervals_outside_NCCL_seconds": 0.0371735654296875,
+      "top_summed_kernel_durations_seconds": [
+        {
+          "name": "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+          "seconds": 3.557117201
+        },
+        {
+          "name": "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+          "seconds": 3.373971389
+        },
+        {
+          "name": "_gemm",
+          "seconds": 0.4705079749999996
+        },
+        {
+          "name": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)",
+          "seconds": 0.16810072599999967
+        },
+        {
+          "name": "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)",
+          "seconds": 0.09962135900000003
+        },
+        {
+          "name": "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)",
+          "seconds": 0.08145914700000001
+        },
+        {
+          "name": "_gate_up",
+          "seconds": 0.08011904600000003
+        },
+        {
+          "name": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)",
+          "seconds": 0.07874979300000003
+        }
+      ],
+      "nonkernel_GPU_categories": [
+        "gpu_memcpy",
+        "gpu_user_annotation"
+      ],
+      "trace_sha256": "2733dce4b808a2a51cf387ede16fd300b20890db5bc337d5634390f8baa130af"
+    }
+  ],
+  "performance_adopted": false,
+  "critical_path_or_bandwidth_qualified": false,
+  "whole_optimizer_step_profiled": false,
+  "scope": "CPU-only interval analysis of existing, clean full8B training traces.\n\nOne profiled rank0 forward/backward after27updates; no optimizer step.\nGPU interval unions account for overlap. Kernel duration includes waits and\ninstrumentation effects; these measurements neither identify a critical path\nnor establish bandwidth saturation or whole-optimizer-step speedup limits.\n",
+  "sources": {
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/screen_public_v9_trace_overlap_v1.py": "1806f94a0e653a014a81a56cc005a998a5d47c092ada4c2e6e059708035e59fa",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/public_v9_first_order_review_v3.json": "0c2d7061f14896d0ddd0105abe7b48717759be8ec92c26278433004bafc4b7ba"
+  },
+  "finished_utc": "2026-11-14T13:45:38.611522+00:00",
+  "source_version": "public_qwen3_triton_V9",
+  "report_path": "artifacts/triton_qwen3_v1/profile_overlap_screen_v1.json",
+  "report_sha256": "b57735272d83be8534e1642139cc3001e39442e1c766e9ba531f05a3976a5375"
+}

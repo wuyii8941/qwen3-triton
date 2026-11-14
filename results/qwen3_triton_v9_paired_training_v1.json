@@ -1,0 +1,2476 @@
+{
+  "complete": true,
+  "model": "Qwen/Qwen3-8B",
+  "layers": 36,
+  "world_size": 4,
+  "comparisons": [
+    {
+      "variant": "hf",
+      "orders": [
+        {
+          "order": 1,
+          "median_step_seconds": 7.027332722209394,
+          "step_seconds": [
+            7.033530093729496,
+            7.025342959910631,
+            7.028941659256816,
+            7.031550645828247,
+            7.030052848160267,
+            7.022990802302957,
+            7.0149191450327635,
+            7.025723785161972
+          ],
+          "latency_reduction_vs_HF": 0.0,
+          "latency_reduction_vs_Triton_base": 0.05724418248428709,
+          "peak_allocated_gib": 34.20150423049927,
+          "peak_reserved_gib": 40.748046875,
+          "validation_loss_after16": 2.225849418900907,
+          "validation_loss_drift_after16": 0.0
+        },
+        {
+          "order": 2,
+          "median_step_seconds": 7.030358109623194,
+          "step_seconds": [
+            7.042694246396422,
+            7.008388768881559,
+            7.018694691359997,
+            7.042021527886391,
+            7.048823304474354,
+            7.005813775584102,
+            7.009251000359654,
+            7.050397835671902
+          ],
+          "latency_reduction_vs_HF": 0.0,
+          "latency_reduction_vs_Triton_base": 0.05891937692113536,
+          "peak_allocated_gib": 34.20150423049927,
+          "peak_reserved_gib": 40.748046875,
+          "validation_loss_after16": 2.225849418900907,
+          "validation_loss_drift_after16": 0.0
+        }
+      ],
+      "geometric_mean_latency_reduction_vs_HF": 0.0,
+      "geometric_mean_latency_reduction_vs_Triton_base": 0.058082152117865715
+    },
+    {
+      "variant": "triton_base",
+      "orders": [
+        {
+          "order": 1,
+          "median_step_seconds": 7.4540327321738005,
+          "step_seconds": [
+            7.4700353518128395,
+            7.450498778373003,
+            7.454960413277149,
+            7.446434713900089,
+            7.463222159072757,
+            7.447931533679366,
+            7.458240069448948,
+            7.453105051070452
+          ],
+          "latency_reduction_vs_HF": -0.060720052234875865,
+          "latency_reduction_vs_Triton_base": 0.0,
+          "peak_allocated_gib": 34.13900423049927,
+          "peak_reserved_gib": 40.68359375,
+          "validation_loss_after16": 2.2259274991229177,
+          "validation_loss_drift_after16": 7.808022201061249e-05
+        },
+        {
+          "order": 2,
+          "median_step_seconds": 7.470516273751855,
+          "step_seconds": [
+            7.485154490917921,
+            7.470362877473235,
+            7.467969622462988,
+            7.470669670030475,
+            7.487633865326643,
+            7.469049567356706,
+            7.471517762169242,
+            7.463998034596443
+          ],
+          "latency_reduction_vs_HF": -0.06260821387265758,
+          "latency_reduction_vs_Triton_base": 0.0,
+          "peak_allocated_gib": 34.13900423049927,
+          "peak_reserved_gib": 40.68359375,
+          "validation_loss_after16": 2.2259274991229177,
+          "validation_loss_drift_after16": 7.808022201061249e-05
+        }
+      ],
+      "geometric_mean_latency_reduction_vs_HF": -0.06166371329353315,
+      "geometric_mean_latency_reduction_vs_Triton_base": 0.0
+    },
+    {
+      "variant": "triton_optimized",
+      "orders": [
+        {
+          "order": 1,
+          "median_step_seconds": 7.15851940959692,
+          "step_seconds": [
+            7.165668087080121,
+            7.154301522299647,
+            7.145290216431022,
+            7.159028775990009,
+            7.165328899398446,
+            7.157778657972813,
+            7.158010043203831,
+            7.162143032997847
+          ],
+          "latency_reduction_vs_HF": -0.018668062631063354,
+          "latency_reduction_vs_Triton_base": 0.039644757837104416,
+          "peak_allocated_gib": 34.13998079299927,
+          "peak_reserved_gib": 40.68359375,
+          "validation_loss_after16": 2.225783216767013,
+          "validation_loss_drift_after16": 6.620213389396667e-05
+        },
+        {
+          "order": 2,
+          "median_step_seconds": 7.152858637273312,
+          "step_seconds": [
+            7.151471480727196,
+            7.145935917273164,
+            7.152586784213781,
+            7.155586848035455,
+            7.1559253837913275,
+            7.161364348605275,
+            7.149068828672171,
+            7.153130490332842
+          ],
+          "latency_reduction_vs_HF": -0.017424507505874987,
+          "latency_reduction_vs_Triton_base": 0.04252151054066422,
+          "peak_allocated_gib": 34.13998079299927,
+          "peak_reserved_gib": 40.68359375,
+          "validation_loss_after16": 2.225783216767013,
+          "validation_loss_drift_after16": 6.620213389396667e-05
+        }
+      ],
+      "geometric_mean_latency_reduction_vs_HF": -0.018046095191358802,
+      "geometric_mean_latency_reduction_vs_Triton_base": 0.04108421297254472
+    },
+    {
+      "variant": "ablate_attention",
+      "orders": [
+        {
+          "order": 1,
+          "median_step_seconds": 7.215976670384407,
+          "step_seconds": [
+            7.209922567009926,
+            7.2122796550393105,
+            7.217499265447259,
+            7.222098521888256,
+            7.219632305204868,
+            7.215216603130102,
+            7.216736737638712,
+            7.206830026581883
+          ],
+          "latency_reduction_vs_HF": -0.026844317130284345,
+          "latency_reduction_vs_Triton_base": 0.03193654634247489,
+          "peak_allocated_gib": 34.13998079299927,
+          "peak_reserved_gib": 40.68359375,
+          "validation_loss_after16": 2.225783216767013,
+          "validation_loss_drift_after16": 6.620213389396667e-05
+        },
+        {
+          "order": 2,
+          "median_step_seconds": 7.146937462501228,
+          "step_seconds": [
+            7.146855648607016,
+            7.14710639975965,
+            7.14360724017024,
+            7.139371961355209,
+            7.149751987308264,
+            7.149668889120221,
+            7.146547956392169,
+            7.14701927639544
+          ],
+          "latency_reduction_vs_HF": -0.01658227803765211,
+          "latency_reduction_vs_Triton_base": 0.04331411637339477,
+          "peak_allocated_gib": 34.13998079299927,
+          "peak_reserved_gib": 40.68359375,
+          "validation_loss_after16": 2.225783216767013,
+          "validation_loss_drift_after16": 6.620213389396667e-05
+        }
+      ],
+      "geometric_mean_latency_reduction_vs_HF": -0.02170041357450847,
+      "geometric_mean_latency_reduction_vs_Triton_base": 0.03764214526561238
+    },
+    {
+      "variant": "ablate_norm_rope",
+      "orders": [
+        {
+          "order": 1,
+          "median_step_seconds": 7.142027684487402,
+          "step_seconds": [
+            7.146693911403418,
+            7.139880510047078,
+            7.143703557550907,
+            7.149100182577968,
+            7.138794578611851,
+            7.139725925400853,
+            7.148725839331746,
+            7.140351811423898
+          ],
+          "latency_reduction_vs_HF": -0.016321265380750072,
+          "latency_reduction_vs_Triton_base": 0.04185721459736724,
+          "peak_allocated_gib": 34.13998079299927,
+          "peak_reserved_gib": 40.68359375,
+          "validation_loss_after16": 2.225783216767013,
+          "validation_loss_drift_after16": 6.620213389396667e-05
+        },
+        {
+          "order": 2,
+          "median_step_seconds": 7.154342990368605,
+          "step_seconds": [
+            7.1507218685001135,
+            7.153746400028467,
+            7.147395066916943,
+            7.154083734378219,
+            7.157781269401312,
+            7.155175376683474,
+            7.1553545743227005,
+            7.154602246358991
+          ],
+          "latency_reduction_vs_HF": -0.01763564228338521,
+          "latency_reduction_vs_Triton_base": 0.04232281569269125,
+          "peak_allocated_gib": 34.13998079299927,
+          "peak_reserved_gib": 40.68359375,
+          "validation_loss_after16": 2.225783216767013,
+          "validation_loss_drift_after16": 6.620213389396667e-05
+        }
+      ],
+      "geometric_mean_latency_reduction_vs_HF": -0.016978241488972312,
+      "geometric_mean_latency_reduction_vs_Triton_base": 0.04209004343374978
+    },
+    {
+      "variant": "ablate_mlp",
+      "orders": [
+        {
+          "order": 1,
+          "median_step_seconds": 7.16044616419822,
+          "step_seconds": [
+            7.174695247784257,
+            7.162575673311949,
+            7.162452025339007,
+            7.1611659321933985,
+            7.157137684524059,
+            7.153183337301016,
+            7.159726396203041,
+            7.156802413985133
+          ],
+          "latency_reduction_vs_HF": -0.01894224270442324,
+          "latency_reduction_vs_Triton_base": 0.03938627297789754,
+          "peak_allocated_gib": 34.13998079299927,
+          "peak_reserved_gib": 40.68359375,
+          "validation_loss_after16": 2.225783216767013,
+          "validation_loss_drift_after16": 6.620213389396667e-05
+        },
+        {
+          "order": 2,
+          "median_step_seconds": 7.141495563089848,
+          "step_seconds": [
+            7.144306316971779,
+            7.142537530511618,
+            7.139048436656594,
+            7.144349433481693,
+            7.148285683244467,
+            7.135519068688154,
+            7.1404535956680775,
+            7.129834024235606
+          ],
+          "latency_reduction_vs_HF": -0.01580822082370581,
+          "latency_reduction_vs_Triton_base": 0.04404256661859407,
+          "peak_allocated_gib": 34.13998079299927,
+          "peak_reserved_gib": 40.68359375,
+          "validation_loss_after16": 2.225783216767013,
+          "validation_loss_drift_after16": 6.620213389396667e-05
+        }
+      ],
+      "geometric_mean_latency_reduction_vs_HF": -0.017374024970018942,
+      "geometric_mean_latency_reduction_vs_Triton_base": 0.041717247909054955
+    },
+    {
+      "variant": "ablate_linear",
+      "orders": [
+        {
+          "order": 1,
+          "median_step_seconds": 7.606350434012711,
+          "step_seconds": [
+            7.625989072024822,
+            7.605917347595096,
+            7.6004341170191765,
+            7.6014991123229265,
+            7.623852964490652,
+            7.608836028724909,
+            7.6067835204303265,
+            7.592187408357859
+          ],
+          "latency_reduction_vs_HF": -0.08239508995687261,
+          "latency_reduction_vs_Triton_base": -0.020434267907284864,
+          "peak_allocated_gib": 34.13998079299927,
+          "peak_reserved_gib": 40.68359375,
+          "validation_loss_after16": 2.225783216767013,
+          "validation_loss_drift_after16": 6.620213389396667e-05
+        },
+        {
+          "order": 2,
+          "median_step_seconds": 7.522257132455707,
+          "step_seconds": [
+            7.53182965144515,
+            7.525513367727399,
+            7.517988560721278,
+            7.522761505097151,
+            7.519195329397917,
+            7.521752759814262,
+            7.532403815537691,
+            7.519523575901985
+          ],
+          "latency_reduction_vs_HF": -0.06996784732191652,
+          "latency_reduction_vs_Triton_base": -0.006926008432060593,
+          "peak_allocated_gib": 34.13998079299927,
+          "peak_reserved_gib": 38.365234375,
+          "validation_loss_after16": 2.225783216767013,
+          "validation_loss_drift_after16": 6.620213389396667e-05
+        }
+      ],
+      "geometric_mean_latency_reduction_vs_HF": -0.07616353048826507,
+      "geometric_mean_latency_reduction_vs_Triton_base": -0.013657636606746237
+    },
+    {
+      "variant": "ablate_loss",
+      "orders": [
+        {
+          "order": 1,
+          "median_step_seconds": 7.156774697825313,
+          "step_seconds": [
+            7.15818677842617,
+            7.163149701431394,
+            7.152761993929744,
+            7.16312201321125,
+            7.160779803991318,
+            7.153465228155255,
+            7.155362617224455,
+            7.151103036478162
+          ],
+          "latency_reduction_vs_HF": -0.018419787525760123,
+          "latency_reduction_vs_Triton_base": 0.039878820636973455,
+          "peak_allocated_gib": 34.13998079299927,
+          "peak_reserved_gib": 38.365234375,
+          "validation_loss_after16": 2.2259274991229177,
+          "validation_loss_drift_after16": 7.808022201061249e-05
+        },
+        {
+          "order": 2,
+          "median_step_seconds": 7.1584093030542135,
+          "step_seconds": [
+            7.173130052164197,
+            7.158603778108954,
+            7.157766621559858,
+            7.158247945830226,
+            7.159700138494372,
+            7.152595346793532,
+            7.156249238178134,
+            7.158570660278201
+          ],
+          "latency_reduction_vs_HF": -0.01821403567703661,
+          "latency_reduction_vs_Triton_base": 0.0417785008774092,
+          "peak_allocated_gib": 34.13998079299927,
+          "peak_reserved_gib": 40.68359375,
+          "validation_loss_after16": 2.2259274991229177,
+          "validation_loss_drift_after16": 7.808022201061249e-05
+        }
+      ],
+      "geometric_mean_latency_reduction_vs_HF": -0.01831690640485495,
+      "geometric_mean_latency_reduction_vs_Triton_base": 0.04082913105714625
+    }
+  ],
+  "ablations": [
+    {
+      "disabled": "attention",
+      "ablation_step_increase_fraction_by_order": [
+        0.008026416846821371,
+        -0.0008278053673853591
+      ],
+      "interpretation": "mixed_between_orders",
+      "individual_ablation_does_not_establish_optimal_combination": true
+    },
+    {
+      "disabled": "norm_rope",
+      "ablation_step_increase_fraction_by_order": [
+        -0.0023037899551419105,
+        0.00020751886351533244
+      ],
+      "interpretation": "mixed_between_orders",
+      "individual_ablation_does_not_establish_optimal_combination": true
+    },
+    {
+      "disabled": "mlp",
+      "ablation_step_increase_fraction_by_order": [
+        0.0002691554623315273,
+        -0.0015886060049127293
+      ],
+      "interpretation": "mixed_between_orders",
+      "individual_ablation_does_not_establish_optimal_combination": true
+    },
+    {
+      "disabled": "linear",
+      "ablation_step_increase_fraction_by_order": [
+        0.06255916884368795,
+        0.051643477652063785
+      ],
+      "interpretation": "benefit_in_both_orders",
+      "individual_ablation_does_not_establish_optimal_combination": true
+    },
+    {
+      "disabled": "loss",
+      "ablation_step_increase_fraction_by_order": [
+        -0.00024372522749160908,
+        0.0007760066376787389
+      ],
+      "interpretation": "mixed_between_orders",
+      "individual_ablation_does_not_establish_optimal_combination": true
+    }
+  ],
+  "isolated_module_summary": {
+    "attention": {
+      "cases": 6,
+      "median_sum_of_separate_fwd_bwd_medians_ms": 4.523775994777679,
+      "median_latency_reduction_vs_HF": 0.1506267577272416,
+      "median_latency_reduction_vs_Triton_base": 0.08221147348088714
+    },
+    "norm_rope": {
+      "cases": 6,
+      "median_sum_of_separate_fwd_bwd_medians_ms": 1.0839039981365204,
+      "median_latency_reduction_vs_HF": 0.5934672847969027,
+      "median_latency_reduction_vs_Triton_base": 0.284779298889952
+    },
+    "mlp": {
+      "cases": 6,
+      "median_sum_of_separate_fwd_bwd_medians_ms": 7.627264022827148,
+      "median_latency_reduction_vs_HF": -0.5392647057106965,
+      "median_latency_reduction_vs_Triton_base": 0.5176626563442924
+    },
+    "lm_head": {
+      "cases": 2,
+      "median_sum_of_separate_fwd_bwd_medians_ms": 39.654911279678345,
+      "median_latency_reduction_vs_HF": -1.204646401810499,
+      "median_latency_reduction_vs_Triton_base": 0.5564129521716792
+    },
+    "loss": {
+      "cases": 2,
+      "median_sum_of_separate_fwd_bwd_medians_ms": 0.9272320121526718,
+      "median_latency_reduction_vs_HF": 0.8679643953902217,
+      "median_latency_reduction_vs_Triton_base": -0.003324433034249008
+    }
+  },
+  "numerical_checks": {
+    "hf_reference_r1": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.0,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.0,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.0,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.0,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "triton_base_r1": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006999644698257829,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006971470576429119,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.0068498003190169765,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007912866266687765,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "triton_optimized_r1": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006873786314739065,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006727580720173675,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006733802496689557,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007700089525925375,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "ablate_attention_r1": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006873786314739065,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006727580720173675,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006733802496689557,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007700089525925375,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "ablate_norm_rope_r1": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006873786314739065,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006727580720173675,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006733802496689557,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007700089525925375,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "ablate_mlp_r1": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006873786314739065,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006727580720173675,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006733802496689557,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007700089525925375,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "ablate_linear_r1": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006873786314739065,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006727580720173675,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006733802496689557,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007700089525925375,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "ablate_loss_r1": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006999644698257829,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006971470576429119,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.0068498003190169765,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007912866266687765,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "ablate_loss_r2": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006999644698257829,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006971470576429119,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.0068498003190169765,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007912866266687765,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "ablate_linear_r2": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006873786314739065,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006727580720173675,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006733802496689557,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007700089525925375,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "ablate_mlp_r2": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006873786314739065,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006727580720173675,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006733802496689557,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007700089525925375,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "ablate_norm_rope_r2": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006873786314739065,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006727580720173675,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006733802496689557,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007700089525925375,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "ablate_attention_r2": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006873786314739065,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006727580720173675,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006733802496689557,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007700089525925375,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "triton_optimized_r2": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006873786314739065,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006727580720173675,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006733802496689557,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007700089525925375,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "triton_base_r2": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006999644698257829,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.006971470576429119,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.0068498003190169765,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 4.76837158203125e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.007912866266687765,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 2.384185791015625e-07,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ],
+    "hf_reference_r2": [
+      {
+        "rank": 0,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.0,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 1,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.0,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 2,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.0,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      },
+      {
+        "rank": 3,
+        "gradient_failure_count": 0,
+        "all_parameter_gradient_gate_passed": true,
+        "global_gradient_relative_l2": 0.0,
+        "logits_relative_l2": 0.0,
+        "loss_abs_error": 0.0,
+        "forward_gate_passed": true,
+        "failures": []
+      }
+    ]
+  },
+  "short_training_quality": {
+    "hf_reference_r1": {
+      "training_mean_abs_loss_drift": 0.0,
+      "training_max_abs_loss_drift": 0.0,
+      "training_loss_drifts": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6059892484918237,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 0.0,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225849418900907,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 0.0,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "triton_base_r1": {
+      "training_mean_abs_loss_drift": 0.0009172186255455017,
+      "training_max_abs_loss_drift": 0.0018000602722167969,
+      "training_loss_drifts": [
+        4.76837158203125e-07,
+        0.0014181137084960938,
+        0.0007429122924804688,
+        0.0012743473052978516,
+        0.0011792182922363281,
+        0.00038743019104003906,
+        0.00018167495727539062,
+        0.0013415813446044922,
+        0.0018000602722167969,
+        0.0007841587066650391,
+        0.0017092227935791016,
+        0.0010700225830078125,
+        0.0005252361297607422,
+        0.0006377696990966797,
+        0.0011762380599975586,
+        0.0004470348358154297
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.605893261730671,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.598676115274429e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.2259274991229177,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 7.808022201061249e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "triton_optimized_r1": {
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "training_loss_drifts": [
+        2.384185791015625e-07,
+        0.000904083251953125,
+        0.0004870891571044922,
+        0.0017137527465820312,
+        0.0006628036499023438,
+        0.0014278888702392578,
+        0.00023889541625976562,
+        0.0010372400283813477,
+        0.0011947154998779297,
+        0.0006341934204101562,
+        0.0021219253540039062,
+        0.00040149688720703125,
+        2.574920654296875e-05,
+        0.0013964176177978516,
+        0.0005009174346923828,
+        7.748603820800781e-05
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "ablate_attention_r1": {
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "training_loss_drifts": [
+        2.384185791015625e-07,
+        0.000904083251953125,
+        0.0004870891571044922,
+        0.0017137527465820312,
+        0.0006628036499023438,
+        0.0014278888702392578,
+        0.00023889541625976562,
+        0.0010372400283813477,
+        0.0011947154998779297,
+        0.0006341934204101562,
+        0.0021219253540039062,
+        0.00040149688720703125,
+        2.574920654296875e-05,
+        0.0013964176177978516,
+        0.0005009174346923828,
+        7.748603820800781e-05
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "ablate_norm_rope_r1": {
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "training_loss_drifts": [
+        2.384185791015625e-07,
+        0.000904083251953125,
+        0.0004870891571044922,
+        0.0017137527465820312,
+        0.0006628036499023438,
+        0.0014278888702392578,
+        0.00023889541625976562,
+        0.0010372400283813477,
+        0.0011947154998779297,
+        0.0006341934204101562,
+        0.0021219253540039062,
+        0.00040149688720703125,
+        2.574920654296875e-05,
+        0.0013964176177978516,
+        0.0005009174346923828,
+        7.748603820800781e-05
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "ablate_mlp_r1": {
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "training_loss_drifts": [
+        2.384185791015625e-07,
+        0.000904083251953125,
+        0.0004870891571044922,
+        0.0017137527465820312,
+        0.0006628036499023438,
+        0.0014278888702392578,
+        0.00023889541625976562,
+        0.0010372400283813477,
+        0.0011947154998779297,
+        0.0006341934204101562,
+        0.0021219253540039062,
+        0.00040149688720703125,
+        2.574920654296875e-05,
+        0.0013964176177978516,
+        0.0005009174346923828,
+        7.748603820800781e-05
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "ablate_linear_r1": {
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "training_loss_drifts": [
+        2.384185791015625e-07,
+        0.000904083251953125,
+        0.0004870891571044922,
+        0.0017137527465820312,
+        0.0006628036499023438,
+        0.0014278888702392578,
+        0.00023889541625976562,
+        0.0010372400283813477,
+        0.0011947154998779297,
+        0.0006341934204101562,
+        0.0021219253540039062,
+        0.00040149688720703125,
+        2.574920654296875e-05,
+        0.0013964176177978516,
+        0.0005009174346923828,
+        7.748603820800781e-05
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "ablate_loss_r1": {
+      "training_mean_abs_loss_drift": 0.0009172186255455017,
+      "training_max_abs_loss_drift": 0.0018000602722167969,
+      "training_loss_drifts": [
+        4.76837158203125e-07,
+        0.0014181137084960938,
+        0.0007429122924804688,
+        0.0012743473052978516,
+        0.0011792182922363281,
+        0.00038743019104003906,
+        0.00018167495727539062,
+        0.0013415813446044922,
+        0.0018000602722167969,
+        0.0007841587066650391,
+        0.0017092227935791016,
+        0.0010700225830078125,
+        0.0005252361297607422,
+        0.0006377696990966797,
+        0.0011762380599975586,
+        0.0004470348358154297
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.605893261730671,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.598676115274429e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.2259274991229177,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 7.808022201061249e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "ablate_loss_r2": {
+      "training_mean_abs_loss_drift": 0.0009172186255455017,
+      "training_max_abs_loss_drift": 0.0018000602722167969,
+      "training_loss_drifts": [
+        4.76837158203125e-07,
+        0.0014181137084960938,
+        0.0007429122924804688,
+        0.0012743473052978516,
+        0.0011792182922363281,
+        0.00038743019104003906,
+        0.00018167495727539062,
+        0.0013415813446044922,
+        0.0018000602722167969,
+        0.0007841587066650391,
+        0.0017092227935791016,
+        0.0010700225830078125,
+        0.0005252361297607422,
+        0.0006377696990966797,
+        0.0011762380599975586,
+        0.0004470348358154297
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.605893261730671,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.598676115274429e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.2259274991229177,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 7.808022201061249e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "ablate_linear_r2": {
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "training_loss_drifts": [
+        2.384185791015625e-07,
+        0.000904083251953125,
+        0.0004870891571044922,
+        0.0017137527465820312,
+        0.0006628036499023438,
+        0.0014278888702392578,
+        0.00023889541625976562,
+        0.0010372400283813477,
+        0.0011947154998779297,
+        0.0006341934204101562,
+        0.0021219253540039062,
+        0.00040149688720703125,
+        2.574920654296875e-05,
+        0.0013964176177978516,
+        0.0005009174346923828,
+        7.748603820800781e-05
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "ablate_mlp_r2": {
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "training_loss_drifts": [
+        2.384185791015625e-07,
+        0.000904083251953125,
+        0.0004870891571044922,
+        0.0017137527465820312,
+        0.0006628036499023438,
+        0.0014278888702392578,
+        0.00023889541625976562,
+        0.0010372400283813477,
+        0.0011947154998779297,
+        0.0006341934204101562,
+        0.0021219253540039062,
+        0.00040149688720703125,
+        2.574920654296875e-05,
+        0.0013964176177978516,
+        0.0005009174346923828,
+        7.748603820800781e-05
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "ablate_norm_rope_r2": {
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "training_loss_drifts": [
+        2.384185791015625e-07,
+        0.000904083251953125,
+        0.0004870891571044922,
+        0.0017137527465820312,
+        0.0006628036499023438,
+        0.0014278888702392578,
+        0.00023889541625976562,
+        0.0010372400283813477,
+        0.0011947154998779297,
+        0.0006341934204101562,
+        0.0021219253540039062,
+        0.00040149688720703125,
+        2.574920654296875e-05,
+        0.0013964176177978516,
+        0.0005009174346923828,
+        7.748603820800781e-05
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "ablate_attention_r2": {
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "training_loss_drifts": [
+        2.384185791015625e-07,
+        0.000904083251953125,
+        0.0004870891571044922,
+        0.0017137527465820312,
+        0.0006628036499023438,
+        0.0014278888702392578,
+        0.00023889541625976562,
+        0.0010372400283813477,
+        0.0011947154998779297,
+        0.0006341934204101562,
+        0.0021219253540039062,
+        0.00040149688720703125,
+        2.574920654296875e-05,
+        0.0013964176177978516,
+        0.0005009174346923828,
+        7.748603820800781e-05
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "triton_optimized_r2": {
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "training_loss_drifts": [
+        2.384185791015625e-07,
+        0.000904083251953125,
+        0.0004870891571044922,
+        0.0017137527465820312,
+        0.0006628036499023438,
+        0.0014278888702392578,
+        0.00023889541625976562,
+        0.0010372400283813477,
+        0.0011947154998779297,
+        0.0006341934204101562,
+        0.0021219253540039062,
+        0.00040149688720703125,
+        2.574920654296875e-05,
+        0.0013964176177978516,
+        0.0005009174346923828,
+        7.748603820800781e-05
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "triton_base_r2": {
+      "training_mean_abs_loss_drift": 0.0009172186255455017,
+      "training_max_abs_loss_drift": 0.0018000602722167969,
+      "training_loss_drifts": [
+        4.76837158203125e-07,
+        0.0014181137084960938,
+        0.0007429122924804688,
+        0.0012743473052978516,
+        0.0011792182922363281,
+        0.00038743019104003906,
+        0.00018167495727539062,
+        0.0013415813446044922,
+        0.0018000602722167969,
+        0.0007841587066650391,
+        0.0017092227935791016,
+        0.0010700225830078125,
+        0.0005252361297607422,
+        0.0006377696990966797,
+        0.0011762380599975586,
+        0.0004470348358154297
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.605893261730671,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 9.598676115274429e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.2259274991229177,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 7.808022201061249e-05,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    },
+    "hf_reference_r2": {
+      "training_mean_abs_loss_drift": 0.0,
+      "training_max_abs_loss_drift": 0.0,
+      "training_loss_drifts": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "full_validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6059892484918237,
+          "reference_loss": 2.6059892484918237,
+          "absolute_drift": 0.0,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225849418900907,
+          "reference_loss": 2.225849418900907,
+          "absolute_drift": 0.0,
+          "passed": true
+        }
+      ],
+      "short_quality_contract_passed": true
+    }
+  },
+  "training_CUDA_traces": {
+    "hf_reference_r1": {
+      "reference": true,
+      "native_Flash_kernels": {
+        "void pytorch_flash::flash_fwd_kernel<Flash_fwd_kernel_traits<128, 64, 64, 4, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 4, cutlass::bfloat16_t> >, false, true, false, false, true, true, false, false>(pytorch_flash::Flash_fwd_params)": 72,
+        "void pytorch_flash::flash_bwd_dot_do_o_kernel<false, Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params)": 36,
+        "void pytorch_flash::flash_bwd_dq_dk_dv_loop_seqk_parallel_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> >, false, true, false, false, true, true, false>(pytorch_flash::Flash_bwd_params)": 36,
+        "void pytorch_flash::flash_bwd_convert_dq_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params, int)": 36
+      },
+      "trace_sha256": "37333f383c0ee59415cc40057c86a0f4b461f5b3daab6aadf8ddbd97af8a6551"
+    },
+    "triton_base_r1": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 1011,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 289,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 147,
+        "_add": 108,
+        "_apply": 216,
+        "_hf_swiglu_forward": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2903,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 180
+      },
+      "trace_sha256": "1eb6ad17f75c3ca9a1ec682961f08b12b2118556c2ba53a0f2a2c1be058b470e"
+    },
+    "triton_optimized_r1": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 867,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 145,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 75,
+        "_add": 144,
+        "_hf_norm_rope_forward": 144,
+        "_norm_rope_backward": 72,
+        "_gate_up": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2723,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 144
+      },
+      "trace_sha256": "2733dce4b808a2a51cf387ede16fd300b20890db5bc337d5634390f8baa130af"
+    },
+    "ablate_attention_r1": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 867,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 145,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 75,
+        "_add": 144,
+        "_hf_norm_rope_forward": 144,
+        "_norm_rope_backward": 72,
+        "_gate_up": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2723,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 144
+      },
+      "trace_sha256": "58658262b2e0bd80e1e1560aa3d5f6cdfd7004f00920755bc3a1171ac5814da6"
+    },
+    "ablate_norm_rope_r1": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 867,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 289,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 147,
+        "_add": 144,
+        "_apply": 216,
+        "_gate_up": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2939,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 144
+      },
+      "trace_sha256": "0bc627f0ba1476af827b7529c1cadbdbe33c16563d99a8bc9d8ff28e1fd3d419"
+    },
+    "ablate_mlp_r1": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 1011,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 145,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 75,
+        "_add": 108,
+        "_hf_norm_rope_forward": 144,
+        "_norm_rope_backward": 72,
+        "_hf_swiglu_forward": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2687,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 180
+      },
+      "trace_sha256": "12bc6e5b248a743338b5c59de0c26f55d49be25563474172acb7244e14717598"
+    },
+    "ablate_linear_r1": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 867,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 145,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 75,
+        "_add": 144,
+        "_hf_norm_rope_forward": 144,
+        "_norm_rope_backward": 72,
+        "_gate_up": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2723,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 144
+      },
+      "trace_sha256": "495fec66c08b14483c259b7b41d607c1a959a1be57521ae38c87880b5f84307d"
+    },
+    "ablate_loss_r1": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 867,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 145,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 75,
+        "_add": 144,
+        "_hf_norm_rope_forward": 144,
+        "_norm_rope_backward": 72,
+        "_gate_up": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2723,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 144
+      },
+      "trace_sha256": "8ef4cabfae20301631996a2fc4d2be4b8b5a382104b21ec367e9e8cc07ef870d"
+    },
+    "ablate_loss_r2": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 867,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 145,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 75,
+        "_add": 144,
+        "_hf_norm_rope_forward": 144,
+        "_norm_rope_backward": 72,
+        "_gate_up": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2723,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 144
+      },
+      "trace_sha256": "29418050475fc8ddd07237fb04d7b4f5dfd426314efe464ed30c0e7dabe14030"
+    },
+    "ablate_linear_r2": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 867,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 145,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 75,
+        "_add": 144,
+        "_hf_norm_rope_forward": 144,
+        "_norm_rope_backward": 72,
+        "_gate_up": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2723,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 144
+      },
+      "trace_sha256": "e03ceb5bef4df7add5f0c245da6371f736d6bf057703a5eb2a1ec5d77a406424"
+    },
+    "ablate_mlp_r2": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 1011,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 145,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 75,
+        "_add": 108,
+        "_hf_norm_rope_forward": 144,
+        "_norm_rope_backward": 72,
+        "_hf_swiglu_forward": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2687,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 180
+      },
+      "trace_sha256": "7f1e95fde16f585b2c60ab75372b7110e93d3574475ecce4c09a0bb5a329e941"
+    },
+    "ablate_norm_rope_r2": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 867,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 289,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 147,
+        "_add": 144,
+        "_apply": 216,
+        "_gate_up": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2939,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 144
+      },
+      "trace_sha256": "20a818017039437d03b2cd7f21553d851440fae1960338fa6a23f6a75f882957"
+    },
+    "ablate_attention_r2": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 867,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 145,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 75,
+        "_add": 144,
+        "_hf_norm_rope_forward": 144,
+        "_norm_rope_backward": 72,
+        "_gate_up": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2723,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 144
+      },
+      "trace_sha256": "3826cc37ded7fcac791f57719142c4c678d441918e6931dc6322e896e7f9612a"
+    },
+    "triton_optimized_r2": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 867,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 145,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 75,
+        "_add": 144,
+        "_hf_norm_rope_forward": 144,
+        "_norm_rope_backward": 72,
+        "_gate_up": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2723,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 144
+      },
+      "trace_sha256": "e636ddbfdd679d3218dfa97cb742c46cd2ec6a54400ff5904c183c19690da277"
+    },
+    "triton_base_r2": {
+      "reference": false,
+      "coverage_passed": true,
+      "observed_expected_kernels": {
+        "_gemm": 1011,
+        "_native_precision_forward": 72,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_native_order_delta": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_hf_norm_forward": 289,
+        "_hf_swiglu_backward": 36,
+        "_reduce_rows": 290,
+        "_lookup": 1,
+        "_zero": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_partials": 1,
+        "_rows": 1,
+        "_mean": 1,
+        "_backward": 147,
+        "_add": 108,
+        "_apply": 216,
+        "_hf_swiglu_forward": 72
+      },
+      "count_discrepancies": {},
+      "forbidden_library_kernels": {},
+      "unclassified_kernels": {},
+      "framework_kernels": {
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)": 2903,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)": 250,
+        "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)": 250,
+        "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 78,
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)": 118,
+        "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)": 78,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)": 809,
+        "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})": 432,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)": 1,
+        "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)": 39,
+        "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)": 39,
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)": 180
+      },
+      "trace_sha256": "bb2816b2579199291d389a84325023c01bee81a3afd848a3b5e66517de44af45"
+    },
+    "hf_reference_r2": {
+      "reference": true,
+      "native_Flash_kernels": {
+        "void pytorch_flash::flash_fwd_kernel<Flash_fwd_kernel_traits<128, 64, 64, 4, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 4, cutlass::bfloat16_t> >, false, true, false, false, true, true, false, false>(pytorch_flash::Flash_fwd_params)": 72,
+        "void pytorch_flash::flash_bwd_dot_do_o_kernel<false, Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params)": 36,
+        "void pytorch_flash::flash_bwd_dq_dk_dv_loop_seqk_parallel_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> >, false, true, false, false, true, true, false>(pytorch_flash::Flash_bwd_params)": 36,
+        "void pytorch_flash::flash_bwd_convert_dq_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params, int)": 36
+      },
+      "trace_sha256": "11b7cfc383baf74db8256f4e57c42b43913aadc86e57b654280bcd8221de97ef"
+    }
+  },
+  "parameter_tensors_per_rank": 399,
+  "actual_updates_per_role": 27,
+  "candidate_gradient_gate": "L2_error < 0.06 * max(reference_L2, 1e-8) + 1e-6 per parameter shard",
+  "native_gradient_control_gate": "L2_error < 0.0001 * max(reference_L2, 1e-8) + 1e-7; bitwise forward",
+  "dense_candidate_gradient_replay": false,
+  "gradient_evidence_scope": "All-coordinate runtime comparisons on the first update; independent CPU review replays native archives and candidate gate arithmetic. Dense candidate vectors are not archived.",
+  "paired_quality_and_coverage_passed": true,
+  "performance_adopted": false,
+  "convergence_or_inference_speedup_claimed": false,
+  "interrupted_cohort": true,
+  "cohort_recovery": [
+    {
+      "manifest": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/official_8b_paired_quality_ablation_v9_control/recovery_001/manifest.json",
+      "manifest_sha256": "7b47450f75082969323c6e400884ec215a5c28a6ce6bfa2a0cb32bddf57d829e",
+      "retained_clean_roles": [
+        "hf_reference_r1",
+        "triton_base_r1",
+        "triton_optimized_r1",
+        "ablate_attention_r1",
+        "ablate_norm_rope_r1",
+        "ablate_mlp_r1",
+        "ablate_linear_r1",
+        "ablate_loss_r1",
+        "ablate_loss_r2",
+        "ablate_linear_r2"
+      ],
+      "subsequent_roles": [
+        "ablate_mlp_r2",
+        "ablate_norm_rope_r2",
+        "ablate_attention_r2",
+        "triton_optimized_r2",
+        "triton_base_r2",
+        "hf_reference_r2"
+      ],
+      "rejected_attempt_directory": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/official_8b_paired_quality_ablation_v9_control/recovery_001/rejected_attempt",
+      "reason": "Confirmed foreign GPU3 context in reverseMLP; original strict ownership gate rejected the role",
+      "training_or_protocol_changed": false,
+      "original_relative_order_preserved": true
+    }
+  ],
+  "scope": "Summarize independently reviewed full Qwen3-8B comparisons and ablations.\n\nThis consumes completed evidence, never runs a GPU or adopts a configuration.\nTwo opposite-order runs provide descriptive comparisons, not a significance\ntest or proof that combining individually useful choices is globally optimal.\n",
+  "inputs": {
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/official_8b_paired_quality_ablation_v9_control/independent_review.json": "2b02077aa6e9b8e3066c5f974c18ec227b116746c1a71d891a0161182aa47676",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/official_8b_public_v9_modules_v2/measurements/independent_review.json": "f52938ae9fa470512d2fd0a13624e32b853a5e78b3816c08e9d039fd127a9462",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/official_8b_paired_quality_ablation_v9_control/recovery_001/manifest.json": "7b47450f75082969323c6e400884ec215a5c28a6ce6bfa2a0cb32bddf57d829e"
+  },
+  "summarizer_sha256": "d65458814ff2c9c01c16803b9d7a9a74c10bad9d65b9fd1e3c275e89c897a328",
+  "source_version": "public_qwen3_triton_V9",
+  "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "primary_review_sha256": "2b02077aa6e9b8e3066c5f974c18ec227b116746c1a71d891a0161182aa47676",
+  "agent_final_requirement_audit_pending": true
+}

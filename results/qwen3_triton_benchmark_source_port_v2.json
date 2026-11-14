@@ -1,0 +1,65 @@
+{
+  "complete": true,
+  "files": [
+    {
+      "source": "artifacts/optimization_v7/research_gpu_lease_v50.py",
+      "source_sha256": "25ee1cd8cd4edffa2d24202f8fac979463846c4cc9f8dfdbc2ca65a4af522dbc",
+      "destination": "qwen3_triton/benchmark_utils/gpu_lease.py",
+      "generated_sha256": "25ee1cd8cd4edffa2d24202f8fac979463846c4cc9f8dfdbc2ca65a4af522dbc",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/optimization_v7/stable_idle_lease_v230.py",
+      "source_sha256": "5ffaf86e47900d41ac2d29c747e1f0099f209acd2f8c5e3d7d7b5fe068e63ffa",
+      "destination": "qwen3_triton/benchmark_utils/stable_idle.py",
+      "generated_sha256": "5a4c62706c07b8a51a82dcdb123a9f1409b62188e588a9fe00088ff02d2dfd93",
+      "replacements": [
+        [
+          "from research_gpu_lease_v50 import lease_when_idle,apps",
+          "from .gpu_lease import lease_when_idle,apps"
+        ]
+      ]
+    },
+    {
+      "source": "artifacts/continuous_optimization_v6/monitor_candidate_job.py",
+      "source_sha256": "a7a3c6e72a60feee9997c993a6e11c3238bea71e209328355ea51e1c1bd68884",
+      "destination": "qwen3_triton/benchmark_utils/monitor.py",
+      "generated_sha256": "a7a3c6e72a60feee9997c993a6e11c3238bea71e209328355ea51e1c1bd68884",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/review_8b_paired_quality_ablation_v9.py",
+      "source_sha256": "65862fd094c17c689433c5e2b970baef794ac5cc7239c945baac69638afabfed",
+      "destination": "scripts/review_qwen3_triton_suite.py",
+      "generated_sha256": "40c518fd3cdd93192d0754c4a6fc3a055ca256c674e88b0644f05a79b08148f6",
+      "replacements": [
+        [
+          "import json,math,statistics",
+          "import argparse,json,math,statistics"
+        ],
+        [
+          "from gradient_archive import sha,load",
+          "from qwen3_triton.gradient_archive import sha,load"
+        ],
+        [
+          "R=Path(__file__).resolve().parent;D=R/'official_8b_paired_quality_ablation_v9_control';REFERENCE=R/'official_8b_paired_quality_ablation_control/hf_reference_r1'",
+          "D=None;REFERENCE=None"
+        ],
+        [
+          "def main():\n    torch.set_num_threads(2);manifest=json.loads((D/'manifest.json').read_text())",
+          "def main():\n    global D,REFERENCE\n    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output',type=Path,required=True)\n    args=parser.parse_args();D=args.output.resolve()\n    if D.is_relative_to(Path('/home/tzh')):parser.error('Output under /home/tzh is forbidden')\n    torch.set_num_threads(2);manifest=json.loads((D/'manifest.json').read_text())\n    REFERENCE=Path(manifest.get('reference_dir',str(D/'hf_reference_r1'))).resolve()"
+        ],
+        [
+          "    assert sha(REFERENCE/'result.json')==manifest['reference_result_sha256']",
+          "    if 'reference_result_sha256' in manifest:assert sha(REFERENCE/'result.json')==manifest['reference_result_sha256']"
+        ],
+        [
+          "            assert len(row['gradient_comparisons'])==1;comparison=row['gradient_comparisons'][0]",
+          "            if name=='hf_reference_r1' and not row['gradient_comparisons']:\n                assert REFERENCE==(D/name).resolve()\n                assert sha(REFERENCE/f'raw_rank{rank}.pt.gz')==row['reference_archive']['sha256']\n                continue\n            assert len(row['gradient_comparisons'])==1;comparison=row['gradient_comparisons'][0]"
+        ]
+      ]
+    }
+  ],
+  "scope": "V9 source port of unchanged GPU admission/monitor helpers and updated paired-reviewer, including fresh or reused native-reference support. AST reverse checks pass; GPU cohort outcome recorded separately.",
+  "previous_manifest_sha256": "fbdf7c52cff2798bfa234d152a80108b0f8d43c20b331b29a99f6c39c419ee16"
+}

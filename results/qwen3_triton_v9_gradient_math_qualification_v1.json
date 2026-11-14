@@ -1,0 +1,75 @@
+{
+  "complete": true,
+  "model": "Qwen/Qwen3-8B",
+  "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "layers": 36,
+  "parameters": 399,
+  "source_version": "artifact_V9_selected_precision",
+  "scope": "Four actual training inputs evaluated serially at frozen initial weights; BF16 leaf gradients averaged in CPU FP32. Full gradient vectors compared at runtime against native FSDP archives, conditional on strict native serial control. Does not execute FSDP/optimizer or qualify performance.",
+  "math_numerical_gate_passed": true,
+  "rows": [
+    {
+      "variant": "hf",
+      "parameters": 399,
+      "gradient_shard_checks": 1596,
+      "failed_gradient_shards": 0,
+      "global_gradient_relative_L2": 2.2499635955922356e-09,
+      "forward_passed": true,
+      "worst_shard_by_gate_utilization": {
+        "name": "lm_head.weight",
+        "rank": 1,
+        "relative_L2": 3.9826019007199997e-08,
+        "absolute_error_norm": 2.8589740352913395e-08,
+        "threshold": 7.188658843040467e-05,
+        "gate_utilization": 0.0003977061782614971
+      }
+    },
+    {
+      "variant": "triton_base",
+      "parameters": 399,
+      "gradient_shard_checks": 1596,
+      "failed_gradient_shards": 0,
+      "global_gradient_relative_L2": 0.007152566123363459,
+      "forward_passed": true,
+      "worst_shard_by_gate_utilization": {
+        "name": "model.layers.21.self_attn.k_norm.weight",
+        "rank": 1,
+        "relative_L2": 0.05831999593241338,
+        "absolute_error_norm": 0.0006281279493123293,
+        "threshold": 0.0006472222151458263,
+        "gate_utilization": 0.9704981297201072
+      }
+    },
+    {
+      "variant": "triton_optimized",
+      "parameters": 399,
+      "gradient_shard_checks": 1596,
+      "failed_gradient_shards": 0,
+      "global_gradient_relative_L2": 0.006979024477393633,
+      "forward_passed": true,
+      "worst_shard_by_gate_utilization": {
+        "name": "model.layers.0.self_attn.q_norm.weight",
+        "rank": 1,
+        "relative_L2": 0.06001912577415357,
+        "absolute_error_norm": 0.0008818754577077925,
+        "threshold": 0.0008825944381058216,
+        "gate_utilization": 0.9991853785079678
+      }
+    }
+  ],
+  "candidate_gate": "L2_error < 0.06*max(reference_L2,1e-8)+1e-6 for each399parameter x4shards",
+  "native_control_gate": "L2_error < 0.0001*max(reference_L2,1e-8)+1e-7 and bitwise logits/loss on all4inputs",
+  "full_logits_replayed": true,
+  "bounded_gradient_samples_replayed": true,
+  "all399_shard_gate_arithmetic_replayed": true,
+  "dense_candidate_gradient_replay": false,
+  "original_GPU_controller_status": "RESOURCE_GATE_FAILED",
+  "original_GPU_controller_resource_gate_passed": false,
+  "foreign_context_sample_count": 80,
+  "performance_eligible": false,
+  "FSDP_or_optimizer_qualified": false,
+  "public_package_GPU_qualified": false,
+  "report_path": "artifacts/triton_qwen3_v1/official_8b_serial_gradients_v9_scoped_v1/independent_math_review.json",
+  "report_sha256": "c2ec8ad1444edf914c96446ebd5551c56769802cac973cdfa71e16b7bd27f595",
+  "raw_worker_result_sha256": "31ed446d834b6af8e2c28dbe82ca236fb69194c7bb8b9236668a703b3b401e16"
+}

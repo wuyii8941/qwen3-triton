@@ -1,0 +1,23 @@
+{
+  "complete": true,
+  "passed": true,
+  "model": "Qwen/Qwen3-8B",
+  "export": "artifacts/triton_qwen3_v1/opensource_source_candidate_v2",
+  "source_files": 69,
+  "source_manifest_sha256": "aeacdefae475d166a03a8475cb79110a882b6d5a7dabc8de75f89cb66d2a05b3",
+  "model_training_code_sha256": "af33f52c58d6caeb6c047b21efba32ed73959f29262474461cc5808a72a23c01",
+  "CLI_checks": 10,
+  "actual8B_meta_variants": 7,
+  "all_repo_imports_local_to_export": true,
+  "original_artifact_sources_present": false,
+  "GPU_executed": false,
+  "fresh_environment_install_tested": false,
+  "paired_update_at_start": 3,
+  "paired_update_at_observed_completion": 16,
+  "started_utc": "2026-11-14T11:39:16.893955+00:00",
+  "finished_utc": "2026-11-14T11:40:03.902595+00:00",
+  "timed_updates_begin_at": 20,
+  "scope": "Cold CPU code/CLI/import/meta checks on69-file V9 export using existing pinned interpreter and official8B config. The checks completed during untimed first-HF training; no GPU or fresh-install claim.",
+  "report_path": "artifacts/triton_qwen3_v1/opensource_candidate_cpu_check_v2/result.json",
+  "report_sha256": "1cf6da3a9b0947e45294439d1d3ea1b2e40bad85b4fe781a669e1cfdee6236ca"
+}

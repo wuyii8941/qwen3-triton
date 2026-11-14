@@ -1,0 +1,8 @@
+{
+  "complete": true,
+  "source": "artifacts/triton_qwen3_v1/review_8b_module_benchmark.py",
+  "source_sha256": "1b47c7d2de0fb7b8291b3e82b8b76398a3f9296eae8f5bd0ccbaf3902901edd1",
+  "destination": "scripts/review_qwen3_triton_modules.py",
+  "generated_sha256": "65fa6695698965762b06c15551b523ae0fde6ef86c0a9da8bb935a8b22ad62e1",
+  "scope": "Source-only port of96case timingreview withadditional freshfull8Bcapturechecks. GPU evidencepending."
+}

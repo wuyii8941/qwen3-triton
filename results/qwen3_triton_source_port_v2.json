@@ -1,0 +1,263 @@
+{
+  "complete": true,
+  "stage": "V9_source_port_actual_FSDP_artifact_math_passed_public_CUDA_pending",
+  "model": "Qwen/Qwen3-8B",
+  "attention_precision_options": {
+    "xor_sum": true,
+    "lse_fma": true,
+    "native_delta": true,
+    "native_dq": true,
+    "sum_fma": true
+  },
+  "files": [
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/audit.py",
+      "source_sha256": "9e43654bcd96a1e70d02fa47bb6c71ea95614bd66ab36e0994eacaf171108a33",
+      "destination": "qwen3_triton/audit.py",
+      "generated_sha256": "9e43654bcd96a1e70d02fa47bb6c71ea95614bd66ab36e0994eacaf171108a33",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/__init__.py",
+      "source_sha256": "010fffaff857eb0a9acd6945e2943e2a9823b4898aff1a6778126267c5253d6b",
+      "destination": "qwen3_triton/kernels/__init__.py",
+      "generated_sha256": "010fffaff857eb0a9acd6945e2943e2a9823b4898aff1a6778126267c5253d6b",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/activation.py",
+      "source_sha256": "0411c9bfe9074832f048f1d94c4920f7e0b487dfad9f1ac6cae8d8596134207b",
+      "destination": "qwen3_triton/kernels/activation.py",
+      "generated_sha256": "0411c9bfe9074832f048f1d94c4920f7e0b487dfad9f1ac6cae8d8596134207b",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/attention.py",
+      "source_sha256": "d4554e1da9265ced8bc2e1a256a636bd68c2c337165cdf548870f345266706b7",
+      "destination": "qwen3_triton/kernels/attention.py",
+      "generated_sha256": "d4554e1da9265ced8bc2e1a256a636bd68c2c337165cdf548870f345266706b7",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/attention_kernels.py",
+      "source_sha256": "269bd044cd4f1924a1901431b0c36e30bcfa45b34647a6658f76f9bd8deba545",
+      "destination": "qwen3_triton/kernels/attention_kernels.py",
+      "generated_sha256": "269bd044cd4f1924a1901431b0c36e30bcfa45b34647a6658f76f9bd8deba545",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/attention_native_precision_v9.py",
+      "source_sha256": "15117285d8bb2c5a33ed48541fbb41c0011cfa889ee5efde723f131a5eea3566",
+      "destination": "qwen3_triton/kernels/attention_precision.py",
+      "generated_sha256": "197e39a90e5c5b8b96827c6e2a512cf0cc9a79a11f048388dd21345d8bc79568",
+      "replacements": [
+        [
+          "triton_qwen3",
+          "qwen3_triton"
+        ]
+      ]
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/embedding.py",
+      "source_sha256": "977c2b687ba8f76859a324dd9d5d30a25c6d0e8eac1a0d5ff72269ab4ca08564",
+      "destination": "qwen3_triton/kernels/embedding.py",
+      "generated_sha256": "977c2b687ba8f76859a324dd9d5d30a25c6d0e8eac1a0d5ff72269ab4ca08564",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/hf_reduction.py",
+      "source_sha256": "58588abf318473a79d671787831df67e8387a4a4ebd2ddaa7d53742c775e16ac",
+      "destination": "qwen3_triton/kernels/hf_reduction.py",
+      "generated_sha256": "58588abf318473a79d671787831df67e8387a4a4ebd2ddaa7d53742c775e16ac",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/linear.py",
+      "source_sha256": "ff6ec12c260ed8dc4f1d871eb82e49f810fc99ffa9c91d15cb17043d23050d64",
+      "destination": "qwen3_triton/kernels/linear.py",
+      "generated_sha256": "ff6ec12c260ed8dc4f1d871eb82e49f810fc99ffa9c91d15cb17043d23050d64",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/loss.py",
+      "source_sha256": "33b060986fe9d418b9a9b80ed0cb77529b28079f1a31480a2be28254bbdb06d0",
+      "destination": "qwen3_triton/kernels/loss.py",
+      "generated_sha256": "33b060986fe9d418b9a9b80ed0cb77529b28079f1a31480a2be28254bbdb06d0",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/math_precision.py",
+      "source_sha256": "580b334930eebb4c359a90b27007458b6f03673c37a5000a07e4c9ade6b56493",
+      "destination": "qwen3_triton/kernels/math_precision.py",
+      "generated_sha256": "ae594164416c54b6ca989178bb7920c7cb0d0afc5e8d59d8021e2542daf6c917",
+      "replacements": [
+        [
+          "triton_qwen3",
+          "qwen3_triton"
+        ]
+      ]
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/mlp.py",
+      "source_sha256": "2726296b9a1d8de7768a8c1658be8ff64a3c3afdd244a839e8416fbeed0d401b",
+      "destination": "qwen3_triton/kernels/mlp.py",
+      "generated_sha256": "2726296b9a1d8de7768a8c1658be8ff64a3c3afdd244a839e8416fbeed0d401b",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/mlp_precision.py",
+      "source_sha256": "e3a3067f8d9e4082a4b14ad4600c605c9fc22731e802208c518721743c599a52",
+      "destination": "qwen3_triton/kernels/mlp_precision.py",
+      "generated_sha256": "113f6d68f448a97476b16ac1932103e51800dcd6cf882018bc666d4cbf3f35cf",
+      "replacements": [
+        [
+          "triton_qwen3",
+          "qwen3_triton"
+        ]
+      ]
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/norm.py",
+      "source_sha256": "3e9824da12a6cdd2f65b4964557acb2b195660b1748c35f4ca7075e8200756ef",
+      "destination": "qwen3_triton/kernels/norm.py",
+      "generated_sha256": "3e9824da12a6cdd2f65b4964557acb2b195660b1748c35f4ca7075e8200756ef",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/norm_rope.py",
+      "source_sha256": "d1fab3c87817d84044af9bbb50e8f6067ce1bd1e3806b84be95f6b07713d4cd6",
+      "destination": "qwen3_triton/kernels/norm_rope.py",
+      "generated_sha256": "d1fab3c87817d84044af9bbb50e8f6067ce1bd1e3806b84be95f6b07713d4cd6",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/residual.py",
+      "source_sha256": "d002f65b293dcff45dee8e3042fd350a1a67b4d039792c0fd65a5f18ad45427e",
+      "destination": "qwen3_triton/kernels/residual.py",
+      "generated_sha256": "d002f65b293dcff45dee8e3042fd350a1a67b4d039792c0fd65a5f18ad45427e",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/kernels/rotary.py",
+      "source_sha256": "cd4f0157e2e15c7da2db7c9867d9453c847988716ddd436d1d6769a8362d5c6f",
+      "destination": "qwen3_triton/kernels/rotary.py",
+      "generated_sha256": "cd4f0157e2e15c7da2db7c9867d9453c847988716ddd436d1d6769a8362d5c6f",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/model.py",
+      "source_sha256": "834df2b111e010bb8250dd8231979d14b47cb0de906b9e2f8bf6d911cc0f31b8",
+      "destination": "qwen3_triton/_model.py",
+      "generated_sha256": "834df2b111e010bb8250dd8231979d14b47cb0de906b9e2f8bf6d911cc0f31b8",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/source_candidate_001/triton_qwen3/model_optimized.py",
+      "source_sha256": "0413717220db80c024557b86056e4d3c5a39b8f9a12ed903465f781406222a21",
+      "destination": "qwen3_triton/_model_optimized.py",
+      "generated_sha256": "fb0eae20df4e6e07a2239ac09c55221d0834edb2e676c26c7ec47d9c9ec78149",
+      "replacements": [
+        [
+          "from .model import",
+          "from ._model import"
+        ]
+      ]
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/model_precision_candidate_v9.py",
+      "source_sha256": "14c11bf72c3e76e95d9b1980e5acffe534cd460add986c53f5d690e72c82f4a9",
+      "destination": "qwen3_triton/model.py",
+      "generated_sha256": "9d43c81d60c6745f1f366ecbcb0ae997155474331a51df8dd0b59f659c5fe986",
+      "replacements": [
+        [
+          "triton_qwen3",
+          "qwen3_triton"
+        ],
+        [
+          "qwen3_triton.model_optimized",
+          "qwen3_triton._model_optimized"
+        ],
+        [
+          "qwen3_triton.model import",
+          "qwen3_triton._model import"
+        ],
+        [
+          "from attention_native_precision_v9 import",
+          "from .kernels.attention_precision import"
+        ],
+        [
+          "from math_native_precision import",
+          "from .kernels.math_precision import"
+        ],
+        [
+          "from mlp_native_precision import",
+          "from .kernels.mlp_precision import"
+        ],
+        [
+          "*,precision_options,",
+          "*,precision_options=None,"
+        ],
+        [
+          "*,precision_options):",
+          "*,precision_options=None):"
+        ],
+        [
+          "        if set(precision_options)",
+          "        if precision_options is None:precision_options=dict(xor_sum=True,lse_fma=True,native_delta=True,native_dq=True,sum_fma=True)\n        if set(precision_options)"
+        ]
+      ]
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/gradient_archive.py",
+      "source_sha256": "a7ec43bc6269c13681d0a2348c67a57ed4d74a260480069660ee40355c367e08",
+      "destination": "qwen3_triton/gradient_archive.py",
+      "generated_sha256": "a7ec43bc6269c13681d0a2348c67a57ed4d74a260480069660ee40355c367e08",
+      "replacements": []
+    },
+    {
+      "source": "artifacts/triton_qwen3_v1/train_8b_precision_suite_v9.py",
+      "source_sha256": "eba4217c22e8ee81d44381053f757041c198fb280547aaf4e9683516c34caa5b",
+      "destination": "scripts/train_qwen3_triton_8b.py",
+      "generated_sha256": "7aff7968344e2e7c6f4341a7a060cebbe57088a9e58ac1e4beb2b924bfe55f14",
+      "replacements": [
+        [
+          "from triton_qwen3.audit import NoFallback",
+          "from qwen3_triton.audit import NoFallback"
+        ],
+        [
+          "from triton_qwen3.model_optimized import VARIANTS,OptimizationOptions",
+          "from qwen3_triton._model_optimized import VARIANTS,OptimizationOptions"
+        ],
+        [
+          "from model_precision_v9_harness import model_for_variant,PrecisionQwen3ForCausalLM as OptimizedTritonQwen3ForCausalLM",
+          "from qwen3_triton.model import model_for_variant,PrecisionQwen3ForCausalLM as OptimizedTritonQwen3ForCausalLM"
+        ],
+        [
+          "from gradient_archive import load as load_archive,save as save_archive",
+          "from qwen3_triton.gradient_archive import load as load_archive,save as save_archive"
+        ],
+        [
+          "ROOT=Path(__file__).resolve().parents[2]",
+          "ROOT=Path(__file__).resolve().parents[1]"
+        ],
+        [
+          "Path(__file__).with_name('model_precision_candidate_v9.py'),Path(__file__).with_name('model_precision_v9_harness.py'),Path(__file__).with_name('precision_choice_v9_001.json'),Path(__file__).with_name('attention_native_precision_v9.py'),Path(__file__).with_name('math_native_precision.py'),Path(__file__).with_name('mlp_native_precision.py'),Path(__file__).with_name('gradient_archive.py'),ROOT/'ops/triton/hf_reduction.py',*sorted((ROOT/'triton_qwen3').rglob('*.py'))",
+          "*sorted((ROOT/'qwen3_triton').rglob('*.py'))"
+        ]
+      ]
+    }
+  ],
+  "generated_init": {
+    "path": "qwen3_triton/__init__.py",
+    "sha256": "82e9fd47b9a2e5763702a6eabc12aa41f0f80c082b9076b28da9adfb77530507"
+  },
+  "previous_manifest": "results/qwen3_triton_source_port_v1.json",
+  "previous_manifest_sha256": "53c396a6d084b7aab4b9f8ab919580add7027ebcdf1bffcef29dd4a7ce4e50b5",
+  "qualification_evidence": {
+    "artifacts/triton_qwen3_v1/official_8b_precision_forward_suite_v9_scoped_v6/independent_review.json": "6010b80a5f10d4b5f13ab2461b3e25af397a11f149802314418e6f0ba57d0e1e",
+    "artifacts/triton_qwen3_v1/official_8b_fsdp_v9_control/independent_review.json": "92afe0cb90066818dfd9cd53d594697c58a380e3891a72ab5beee109eb9410dd"
+  },
+  "builder_sha256": "07628b3b794e22f8b0c26ba2f41ba7935f623d673b38b2d23dc939075463cb1d",
+  "performance_adopted": false,
+  "published": false
+}

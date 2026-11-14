@@ -1,7 +1,9 @@
 {
   "schema_version": 1,
-  "status": "current_runtime_task_protocol_derived_from_39d4e2e",
-  "model": "/data1/tzh/models/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+  "status": "official_qwen3_weights_pending_real_model_revalidation",
+  "model": "/data1/tzh/models/Qwen/Qwen3-8B",
+  "model_repo": "Qwen/Qwen3-8B",
+  "model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
   "corpus": "artifacts/convergence_corpus_v1",
   "seed": 20261106,
   "world_size": 4,

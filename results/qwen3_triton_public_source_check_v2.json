@@ -1,0 +1,108 @@
+{
+  "complete": true,
+  "passed": true,
+  "model": "Qwen/Qwen3-8B",
+  "layers": 36,
+  "variants": [
+    {
+      "variant": "triton_base",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360,
+      "HF_order_norm_modules": 145,
+      "options": {
+        "linear_optimized": false,
+        "attention_optimized": false,
+        "loss_optimized": false,
+        "norm_rope_fusion": false,
+        "mlp_fusion": false
+      }
+    },
+    {
+      "variant": "triton_optimized",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360,
+      "HF_order_norm_modules": 145,
+      "options": {
+        "linear_optimized": true,
+        "attention_optimized": true,
+        "loss_optimized": true,
+        "norm_rope_fusion": true,
+        "mlp_fusion": true
+      }
+    },
+    {
+      "variant": "ablate_attention",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360,
+      "HF_order_norm_modules": 145,
+      "options": {
+        "linear_optimized": true,
+        "attention_optimized": false,
+        "loss_optimized": true,
+        "norm_rope_fusion": true,
+        "mlp_fusion": true
+      }
+    },
+    {
+      "variant": "ablate_norm_rope",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360,
+      "HF_order_norm_modules": 145,
+      "options": {
+        "linear_optimized": true,
+        "attention_optimized": true,
+        "loss_optimized": true,
+        "norm_rope_fusion": false,
+        "mlp_fusion": true
+      }
+    },
+    {
+      "variant": "ablate_mlp",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360,
+      "HF_order_norm_modules": 145,
+      "options": {
+        "linear_optimized": true,
+        "attention_optimized": true,
+        "loss_optimized": true,
+        "norm_rope_fusion": true,
+        "mlp_fusion": false
+      }
+    },
+    {
+      "variant": "ablate_linear",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360,
+      "HF_order_norm_modules": 145,
+      "options": {
+        "linear_optimized": false,
+        "attention_optimized": true,
+        "loss_optimized": true,
+        "norm_rope_fusion": true,
+        "mlp_fusion": true
+      }
+    },
+    {
+      "variant": "ablate_loss",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360,
+      "HF_order_norm_modules": 145,
+      "options": {
+        "linear_optimized": true,
+        "attention_optimized": true,
+        "loss_optimized": false,
+        "norm_rope_fusion": true,
+        "mlp_fusion": true
+      }
+    }
+  ],
+  "generated_source_identity_passed": true,
+  "source_transformation_replayed": false,
+  "GPU_executed": false,
+  "scope": "Check published source identity and actual Qwen3-8B architecture on CPU/meta.\n\nThis standalone check needs no original artifact sources. It checks generated\nsource hashes and every official parameter shape. Import-transformation AST\nreplay is a separate historical audit; this check does not replay it, load\nweights, run CUDA, qualify BF16 numerics or time training.\n",
+  "sources": {
+    "scripts/check_qwen3_triton.py": "faeb73c457edfc49d8f80e37fcc98ac7e810fada79b7d06a612484423382493f",
+    "results/qwen3_triton_source_port_v2.json": "217c62ecc71f0f0f60cba5a06ce06a6ebe09bdf915f74b575f79458bb30e9354",
+    "configs/fsdp_8b.json": "d8c40270236054a35f8e1274910991368ce943af15eab23cbbb221beb192a815"
+  }
+}

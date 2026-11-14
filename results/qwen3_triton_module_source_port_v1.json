@@ -1,0 +1,14 @@
+{
+  "complete": true,
+  "source": "artifacts/triton_qwen3_v1/benchmark_8b_modules.py",
+  "source_sha256": "ed21daa7eeeb90f43785098fbacece6a8a21ca8f669a4a46f3c04cc0b85cec9a",
+  "destination": "scripts/benchmark_qwen3_triton_modules.py",
+  "generated_sha256": "da55e634335870cf60f2155cc9f8057dbd575070bb3a4a940edf6f20721aea70",
+  "unchanged_timing_AST": [
+    "NormPair",
+    "Loss",
+    "measure"
+  ],
+  "scope": "Port module timing with a fresh full8B reference capture, no artifact inputs.\n\nThe timing body is preserved from the original experiment; only imports,\ninput preparation and source/provenance reporting change. CPU source checks\nand actual8B GPU verification are recorded separately.\n",
+  "GPU_executed": false
+}

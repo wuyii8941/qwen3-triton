@@ -1,0 +1,162 @@
+{
+  "complete": true,
+  "model": "Qwen/Qwen3-8B",
+  "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "layers": 36,
+  "parameter_tensors": 399,
+  "batch": 1,
+  "sequence": 512,
+  "distinct_training_inputs": 4,
+  "source_version": "artifact_V9_selected_precision",
+  "public_package_GPU_qualified": false,
+  "forward_numerical_passed": true,
+  "first_input_variants": [
+    {
+      "variant": "triton_base",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 0.0,
+      "forward_gate_passed": true,
+      "logits_bitwise_equal_to_base": true
+    },
+    {
+      "variant": "triton_optimized",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 2.384185791015625e-07,
+      "forward_gate_passed": true,
+      "logits_bitwise_equal_to_base": true
+    },
+    {
+      "variant": "ablate_attention",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 2.384185791015625e-07,
+      "forward_gate_passed": true,
+      "logits_bitwise_equal_to_base": true
+    },
+    {
+      "variant": "ablate_norm_rope",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 2.384185791015625e-07,
+      "forward_gate_passed": true,
+      "logits_bitwise_equal_to_base": true
+    },
+    {
+      "variant": "ablate_mlp",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 2.384185791015625e-07,
+      "forward_gate_passed": true,
+      "logits_bitwise_equal_to_base": true
+    },
+    {
+      "variant": "ablate_linear",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 2.384185791015625e-07,
+      "forward_gate_passed": true,
+      "logits_bitwise_equal_to_base": true
+    },
+    {
+      "variant": "ablate_loss",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 0.0,
+      "forward_gate_passed": true,
+      "logits_bitwise_equal_to_base": true
+    },
+    {
+      "variant": "fusion_only",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 0.0,
+      "forward_gate_passed": true,
+      "logits_bitwise_equal_to_base": true
+    }
+  ],
+  "extra_training_inputs": [
+    {
+      "rank": 1,
+      "variant": "triton_base",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 0.0,
+      "forward_gate_passed": true,
+      "HF_policy_equal": true
+    },
+    {
+      "rank": 1,
+      "variant": "triton_optimized",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 2.384185791015625e-07,
+      "forward_gate_passed": true,
+      "HF_policy_equal": true
+    },
+    {
+      "rank": 2,
+      "variant": "triton_base",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 4.76837158203125e-07,
+      "forward_gate_passed": true,
+      "HF_policy_equal": true
+    },
+    {
+      "rank": 2,
+      "variant": "triton_optimized",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 4.76837158203125e-07,
+      "forward_gate_passed": true,
+      "HF_policy_equal": true
+    },
+    {
+      "rank": 3,
+      "variant": "triton_base",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 2.384185791015625e-07,
+      "forward_gate_passed": true,
+      "HF_policy_equal": true
+    },
+    {
+      "rank": 3,
+      "variant": "triton_optimized",
+      "logits_relative_l2_vs_HF": 0.0,
+      "loss_abs_error_vs_HF": 0.0,
+      "forward_gate_passed": true,
+      "HF_policy_equal": true
+    }
+  ],
+  "worst_logits_relative_L2": 0.0,
+  "worst_loss_absolute_error": 4.76837158203125e-07,
+  "observed_forward_model_kernels": {
+    "_gemm": 253,
+    "_hf_norm_forward": 145,
+    "_native_precision_forward": 36,
+    "_add": 72,
+    "_lookup": 1,
+    "_positions": 1,
+    "_tables": 1,
+    "_hf_swiglu_forward": 36,
+    "_apply": 72,
+    "_mean": 1,
+    "_rows": 1,
+    "_partials": 1
+  },
+  "precision_options": {
+    "xor_sum": true,
+    "lse_fma": true,
+    "native_delta": true,
+    "native_dq": true,
+    "sum_fma": true
+  },
+  "math_policy": {
+    "compute": "BF16",
+    "TF32": false,
+    "allow_bf16_reduced_precision_reduction": false,
+    "reference_backend": "HF_Flash_SDPA"
+  },
+  "performance_eligible": false,
+  "whole_model_backward_qualified": false,
+  "FSDP_or_optimizer_qualified": false,
+  "report_path": "artifacts/triton_qwen3_v1/official_8b_precision_forward_suite_v9_scoped_v6/independent_review.json",
+  "report_sha256": "6010b80a5f10d4b5f13ab2461b3e25af397a11f149802314418e6f0ba57d0e1e",
+  "source_identity": {
+    "artifacts/triton_qwen3_v1/model_precision_candidate_v9.py": "14c11bf72c3e76e95d9b1980e5acffe534cd460add986c53f5d690e72c82f4a9",
+    "artifacts/triton_qwen3_v1/model_precision_v9_harness.py": "d606ba227e55cdb1c3635010fb96de171a22d930147f3cc11938c1dbfd453807",
+    "artifacts/triton_qwen3_v1/attention_native_precision_v9.py": "15117285d8bb2c5a33ed48541fbb41c0011cfa889ee5efde723f131a5eea3566",
+    "artifacts/triton_qwen3_v1/precision_choice_v9_001.json": "78d0b49d49403168748d520152ca91df7fe8fc6b61c784f0d24502c6e943ac00"
+  },
+  "scope": "Full36-layer official8B forward and actual CUDA kernel coverage. No backward, FSDP, optimizer, multiupdate quality or performance qualification."
+}

@@ -1,75 +1,61 @@
-# Qwen3 / Triton GPU Kernel Lab
+# Complete Triton Qwen3-8B
 
-基于真实 Qwen3 架构模型的算子、推理和多卡训练优化实验。2026-11-10 已将当前训练运行时与历史实验分开；性能数字保留原始证据口径，不视为重构后的重测。
+官方 **Qwen/Qwen3-8B（36 层）**的可训练 Triton 模型。
+Embedding、所有 Linear、RMSNorm、QK-Norm/RoPE、causal GQA attention、
+SwiGLU、residual 和交叉熵的模型计算及反向均由 Triton 实现。
+参数、autograd、分配器、FSDP2/NCCL 和 AdamW 使用共同的 PyTorch 基础设施。
 
-本项目实现 PyTorch reference、Triton forward/backward、Tiny-Qwen、真实 HF 推理接入，以及官方 FSDP2 和自研分片原型。不是所有 kernel 都比成熟库快；默认保持可验证的原生路径，实验选项显式开启。
+本次发布固定已验收的 V9 实现与小型证据；后续优化以此为基线。
+这不是完整预训练框架，也不包含推理/KV cache 接口。
 
-## 先从哪里开始
+## 实测结果
 
-- [目录导航与新旧命名对照](REPOSITORY_LAYOUT.md)：推荐先读。
-- [当前训练运行时](training/README.md)：唯一入口 `python -m training.train`；后端为 `official` / `custom`，参数值不再编码进后端名。
-- [当前训练算子库](ops/README.md)：只保留训练实现；推理 decode 与旧 backward 基线已归档。
-- [历史实验归档](experiments/legacy/README.md)：筛选、监控、报告、单卡 FlashOptim、推理和恢复/导出原型均独立保存。
+官方 8B 权重，4×RTX A6000，每卡 batch=1、sequence=512，
+BF16 计算、FP32 master/梯度/AdamW state，相同 FSDP2 和逐层重计算协议。
+数字是两种运行顺序下的完整 optimizer step 中位数，编译和验证不计入。
 
-`training`、`ops`、`model` 不导入实验目录。真实 8B 默认使用 HF 模型和 Flash SDPA，不意味着算子库中的所有 Triton 实现都默认启用。
+| 实现 | 顺序一（秒/步） | 顺序二（秒/步） |
+|---|---:|---:|
+| HF + Flash | 7.0273 | 7.0304 |
+| 完整 Triton 基础版 | 7.4540 | 7.4705 |
+| 完整 Triton 优化版 | 7.1585 | 7.1529 |
 
-## 已完成的工作
+优化版相对 Triton 基础版耗时减少 **3.96% / 4.25%**，
+仍比 HF + Flash 慢 **1.87% / 1.74%**，整步 allocated 峰值约 34.14 GiB/卡。
+五项双顺序消融中，Linear/GEMM tiling 的整体收益最明确；
+其他四项的整步变化很小且方向不一致，不将模块加速当作整体收益。
 
-- RMSNorm、Qwen split-half RoPE、SwiGLU 和 QK-Norm+RoPE 融合；支持低精度数值验证与随机上游梯度检查。
-- attention 分块、GQA、prefill/decode、GEMM fusion、静态 KV cache 和 CUDA Graph 实验；保留未加速或未通过精度门槛的结果。
-- Qwen3-1.7B 的 HF 推理替换和训练优化；对比 eager、torch.compile 与 Triton，区分单算子和完整模型。
-- 真实 DeepSeek-R1-0528-Qwen3-8B 的四卡全参数续训、最佳参数恢复、全量 test、HF 导出/重新加载，以及同 world size 的训练状态恢复。
-- profiler、正反顺序性能对照、资源守卫与独立原始记录审计。
+16 组有效运行均完成 27 次实际更新；全部 399 参数的梯度容差检查、
+初末全量验证和模型 CUDA 内核覆盖检查通过。受外部作业干扰的一次记录
+已排除，结果披露中断及恢复。数值容差通过不等于与 HF 梯度逐位相同，
+短程质量检查不代表完整训练收敛。
 
-## 主要结果
+## 代码与复现
 
-| 工作负载 | 已观察结果 | 限制 |
-|---|---|---|
-| 8B，四卡 A6000，S512/B1，实际 cap 41.875 GiB/卡 | 官方 FSDP2 native K36/every1 对 Torch decoder exchange K32/every1：完整任务耗时 8408.48→7705.41 秒，少 8.36%；记录 step 中位耗时少 13.92% | test loss 2.10615081→2.10707202；单种子共享硬件，不能称质量无损或单 kernel 因果加速 |
-| 8B，40 GiB/卡，K34/every1 | bounded decoder / Triton 通信扩展完整任务耗时少 6.40%，step 中位耗时少 8.44% | 独立配置，allocated 峰值相同；不能与上一行叠加 |
-| 1.7B，compiled HF + FlashOptim，BF16/no-master | 共享 embedding/head 梯度生命周期优化，两轮完整 step 少约 5.5–6.6%，allocated 少约 1.29 GiB | 不是 FP32 master FSDP 协议，也不是收敛时间结论 |
-| 最终配置后的两项增量尝试 | 降低驻留到 K24、本地归约换 Triton 均未证明稳定额外 step 收益 | 不切换默认，不隐藏负结果 |
+- [实现、协议、消融和限制](TRITON_QWEN3.md)
+- [环境、权重、语料和运行命令](QWEN3_TRITON_REPRODUCE.md)
+- [模型](qwen3_triton/model.py)；[算子](qwen3_triton/kernels/)
+- [训练入口](scripts/train_qwen3_triton_8b.py)
+- [三组整体对照与五项消融](scripts/run_qwen3_triton_suite.py)
+- [模块对照](scripts/run_qwen3_triton_module_benchmark.py)
+- [整体结果](results/qwen3_triton_v9_paired_training_v1.json)
+- [模块结果](results/qwen3_triton_v9_module_benchmark_v1.json)
+- [数据及运行验收](results/qwen3_triton_v9_data_acceptance_v1.json)
 
-K 表示 forward 后保留完整参数的最后 K 个 decoder 单元；every1 表示每层 activation checkpoint。这里的“完整任务”指冻结 WikiText 续训协议达到验证平台期，不是原始预训练收敛。
+验收环境：Python 3.11.16、PyTorch 2.10.0+cu128、Triton 3.6.0、
+Transformers 4.51.0。依赖版本见 [版本清单](requirements-qwen3-triton.txt)；
+克隆后需自行准备匹配环境、官方 8B 权重和语料，不能直接使用本机绝对路径。
 
-8B 的准确 checkpoint 名称是 DeepSeek-R1-0528-Qwen3-8B，不是原版 Qwen3-8B 或 7B。候选使用官方 FSDP2 的实验性通信扩展，不称自研 FSDP 胜过官方。
+仓库同时保留早期 Tiny-Qwen、训练和推理实验，以及
+[历史源码](experiments/legacy/README.md)。其性能数字使用各自的协议；
+本次完整 Triton 8B 的入口和验收以以上链接为准。
 
-## 使用与文档
+## 源码与数据范围
 
-- [架构与完成状态](PROJECT_PLAN.md)
-- [优化结论与取舍](OPTIMIZATION_SUMMARY.md)
-- [真实 HF 推理接口](HF_INFERENCE.md)
-- [算子和推理性能口径](INFERENCE_EVIDENCE.md)
-- [分片原型、导出与部署](MINIMAL_FSDP.md)
-- [8B 完整结果与证据](FSDP_8B_RESULTS.md)
-- [环境、资源限制和复现入口](FSDP_REPRODUCIBILITY.md)
-- [训练复现流程](TRAINING_REPLICATION_PLAN.md)
-- [checkpoint 保存与恢复](CHECKPOINT_RESUME.md)
-- [可用于简历的表述](RESUME_NOTES.md)
+只提交源码、配置、文档和小型结果。权重、语料、环境、缓存、checkpoint、
+原始梯度及 profiler trace 不上传。报告中的本机 artifacts 路径不会随 Git 分发，
+复核原始记录需要另行提供这些文件。
 
-## 环境与测试
-
-当前多卡研究环境：RTX A6000、Python 3.11.16、PyTorch 2.10.0+cu128、Triton 3.6.0、Transformers 4.51.0。早期推理/私有 Flash varlen 实验使用 Torch 2.5.1 / Triton 3.1.0，结果不能跨环境直接混算。pyproject.toml 不是完整 GPU 栈锁文件。
-
-本机研究入口使用已配置的 .venv-research，不安装依赖或修改系统 Python；缓存和临时文件放到项目 .runtime-research。克隆仓库需要自行准备独立环境、模型和数据，不能直接使用本机路径。
-
-~~~bash
-# CPU；Gloo 测试需要可用的本地回环网络
-CUDA_VISIBLE_DEVICES='' GLOO_SOCKET_IFNAME=lo OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 \
-  bash scripts/research_python.sh -m pytest -q tests
-
-# GPU 空闲时单独验证核心 kernel
-CUDA_VISIBLE_DEVICES=0 bash scripts/research_python.sh -m pytest -q \
-  tests/test_operator_contract_matrix.py tests/test_rms_norm.py \
-  tests/test_rope.py tests/test_silu_and_mul_triton.py
-~~~
-
-本次主目录测试：GPU 可用时 **106 passed**；关闭 CUDA 时 **45 passed / 61 skipped**。归档 CPU 回归仍为 **714 passed / 311 skipped**。另通过两卡 Tiny 的 native / exchange / custom 三条入口检查。GPU 使用每卡 4 GiB allocator cap；完整范围与限制见 [目录导航](REPOSITORY_LAYOUT.md)。没有重跑真实 8B 长训练。
-
-历史完整回归使用 `bash scripts/legacy_python.sh -m pytest -q tests`，与主目录测试分进程执行，避免同名模块混用。
-
-## 发布范围
-
-发布源码、测试、配置及 results/ 中的小型最终证据。submission/、artifacts/、模型、语料、checkpoint、环境、缓存、密钥不发布。文档里的 artifacts 路径指本机原始记录，克隆仓库后并不存在；只有保留这些记录才能重新执行独立审计。
-
-保留的历史实现集中在 `experiments/legacy/`，用于基线、反例和审计依赖，不代表推荐启用。旧证据指南中的源码相对路径以归档为根，命令已改为 `scripts/legacy_python.sh`；当前主目录的使用以目录导航为准。
+第三方来源和许可证保存在 [PROVENANCE](qwen3_triton/PROVENANCE.md)
+及 [第三方目录](qwen3_triton/third_party/)。项目自有源码的许可证尚未选定；
+本次是代码快照发布，不宣称已完成开源许可配置。

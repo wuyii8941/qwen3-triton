@@ -1,0 +1,403 @@
+{
+  "complete": true,
+  "model": "Qwen/Qwen3-8B",
+  "source_version": "public_V9",
+  "public_primary_arms_training_entries_passed": true,
+  "world_size": 4,
+  "layers": 36,
+  "parameters": 399,
+  "clean_completed_roles": 6,
+  "rows": [
+    {
+      "role": "hf_reference_r1",
+      "variant": "hf",
+      "actual_updates": 27,
+      "all_FP32_states_finite": true,
+      "gradient_shards": [
+        {
+          "rank": 0,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.0
+        },
+        {
+          "rank": 1,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.0
+        },
+        {
+          "rank": 2,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.0
+        },
+        {
+          "rank": 3,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.0
+        }
+      ],
+      "validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6059892484918237,
+          "HF_loss": 2.6059892484918237,
+          "absolute_drift": 0.0,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225849418900907,
+          "HF_loss": 2.225849418900907,
+          "absolute_drift": 0.0,
+          "passed": true
+        }
+      ],
+      "training_mean_abs_loss_drift": 0.0,
+      "training_max_abs_loss_drift": 0.0,
+      "short_quality_contract_passed": true,
+      "first_order_only_timing": {
+        "seconds": [
+          7.033530093729496,
+          7.025342959910631,
+          7.028941659256816,
+          7.031550645828247,
+          7.030052848160267,
+          7.022990802302957,
+          7.0149191450327635,
+          7.025723785161972
+        ],
+        "median_seconds": 7.027332722209394
+      }
+    },
+    {
+      "role": "triton_base_r1",
+      "variant": "triton_base",
+      "actual_updates": 27,
+      "all_FP32_states_finite": true,
+      "gradient_shards": [
+        {
+          "rank": 0,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006999644698257829
+        },
+        {
+          "rank": 1,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006971470576429119
+        },
+        {
+          "rank": 2,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.0068498003190169765
+        },
+        {
+          "rank": 3,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.007912866266687765
+        }
+      ],
+      "validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.605893261730671,
+          "HF_loss": 2.6059892484918237,
+          "absolute_drift": 9.598676115274429e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.2259274991229177,
+          "HF_loss": 2.225849418900907,
+          "absolute_drift": 7.808022201061249e-05,
+          "passed": true
+        }
+      ],
+      "training_mean_abs_loss_drift": 0.0009172186255455017,
+      "training_max_abs_loss_drift": 0.0018000602722167969,
+      "short_quality_contract_passed": true,
+      "first_order_only_timing": {
+        "seconds": [
+          7.4700353518128395,
+          7.450498778373003,
+          7.454960413277149,
+          7.446434713900089,
+          7.463222159072757,
+          7.447931533679366,
+          7.458240069448948,
+          7.453105051070452
+        ],
+        "median_seconds": 7.4540327321738005
+      }
+    },
+    {
+      "role": "triton_optimized_r1",
+      "variant": "triton_optimized",
+      "actual_updates": 27,
+      "all_FP32_states_finite": true,
+      "gradient_shards": [
+        {
+          "rank": 0,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006873786314739065
+        },
+        {
+          "rank": 1,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006727580720173675
+        },
+        {
+          "rank": 2,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006733802496689557
+        },
+        {
+          "rank": 3,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.007700089525925375
+        }
+      ],
+      "validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "HF_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "HF_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "short_quality_contract_passed": true,
+      "first_order_only_timing": {
+        "seconds": [
+          7.165668087080121,
+          7.154301522299647,
+          7.145290216431022,
+          7.159028775990009,
+          7.165328899398446,
+          7.157778657972813,
+          7.158010043203831,
+          7.162143032997847
+        ],
+        "median_seconds": 7.15851940959692
+      }
+    },
+    {
+      "role": "ablate_attention_r1",
+      "variant": "ablate_attention",
+      "actual_updates": 27,
+      "all_FP32_states_finite": true,
+      "gradient_shards": [
+        {
+          "rank": 0,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006873786314739065
+        },
+        {
+          "rank": 1,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006727580720173675
+        },
+        {
+          "rank": 2,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006733802496689557
+        },
+        {
+          "rank": 3,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.007700089525925375
+        }
+      ],
+      "validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "HF_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "HF_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "short_quality_contract_passed": true,
+      "first_order_only_timing": {
+        "seconds": [
+          7.209922567009926,
+          7.2122796550393105,
+          7.217499265447259,
+          7.222098521888256,
+          7.219632305204868,
+          7.215216603130102,
+          7.216736737638712,
+          7.206830026581883
+        ],
+        "median_seconds": 7.215976670384407
+      }
+    },
+    {
+      "role": "ablate_norm_rope_r1",
+      "variant": "ablate_norm_rope",
+      "actual_updates": 27,
+      "all_FP32_states_finite": true,
+      "gradient_shards": [
+        {
+          "rank": 0,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006873786314739065
+        },
+        {
+          "rank": 1,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006727580720173675
+        },
+        {
+          "rank": 2,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006733802496689557
+        },
+        {
+          "rank": 3,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.007700089525925375
+        }
+      ],
+      "validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "HF_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "HF_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "short_quality_contract_passed": true,
+      "first_order_only_timing": {
+        "seconds": [
+          7.146693911403418,
+          7.139880510047078,
+          7.143703557550907,
+          7.149100182577968,
+          7.138794578611851,
+          7.139725925400853,
+          7.148725839331746,
+          7.140351811423898
+        ],
+        "median_seconds": 7.142027684487402
+      }
+    },
+    {
+      "role": "ablate_mlp_r1",
+      "variant": "ablate_mlp",
+      "actual_updates": 27,
+      "all_FP32_states_finite": true,
+      "gradient_shards": [
+        {
+          "rank": 0,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006873786314739065
+        },
+        {
+          "rank": 1,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006727580720173675
+        },
+        {
+          "rank": 2,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.006733802496689557
+        },
+        {
+          "rank": 3,
+          "checks": 399,
+          "failures": 0,
+          "global_relative_L2": 0.007700089525925375
+        }
+      ],
+      "validation": [
+        {
+          "after_updates": 0,
+          "loss": 2.6058932468295097,
+          "HF_loss": 2.6059892484918237,
+          "absolute_drift": 9.600166231393814e-05,
+          "passed": true
+        },
+        {
+          "after_updates": 16,
+          "loss": 2.225783216767013,
+          "HF_loss": 2.225849418900907,
+          "absolute_drift": 6.620213389396667e-05,
+          "passed": true
+        }
+      ],
+      "training_mean_abs_loss_drift": 0.0008015558123588562,
+      "training_max_abs_loss_drift": 0.0021219253540039062,
+      "short_quality_contract_passed": true,
+      "first_order_only_timing": {
+        "seconds": [
+          7.174695247784257,
+          7.162575673311949,
+          7.162452025339007,
+          7.1611659321933985,
+          7.157137684524059,
+          7.153183337301016,
+          7.159726396203041,
+          7.156802413985133
+        ],
+        "median_seconds": 7.16044616419822
+      }
+    }
+  ],
+  "all_training_traces_passed": true,
+  "paired_order_complete": false,
+  "all16_roles_complete": false,
+  "performance_adopted": false,
+  "scope": "Audit the first six clean public8B roles, retaining the unpaired scope.\n\nChecks native-reference identity, all399 shard-gate arithmetic, FP32 states,\n27 updates/full validation and actual training kernel coverage. Runtime dense\ngradient comparisons are worker evidence; candidate vectors are not archived.\nThis prefix cannot establish the final opposite-order performance result.\n",
+  "report_path": "artifacts/triton_qwen3_v1/public_v9_first_six_roles_review_v2.json",
+  "report_sha256": "96cb685fdc646ecc731bdf6e17479b69a88e2ac8864e5f1439f6c4c69e784be8"
+}

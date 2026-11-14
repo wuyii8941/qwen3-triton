@@ -1,0 +1,31 @@
+{
+  "complete": true,
+  "passed": true,
+  "model": "Qwen/Qwen3-8B",
+  "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "splits": {
+    "train": {
+      "tokens": 124253184,
+      "token_sha256": "a1fb3edae67d453ec86bd9fa311857bda0718f1d2dfeaa5ef9c116c09cb49b49",
+      "text_sha256": "41804ed6e092c369f049a4a29114eea709e848b076cbb716d7a14e6945c336c1",
+      "all_bytes_match": true
+    },
+    "validation": {
+      "tokens": 262228,
+      "token_sha256": "2fb50cad8963d8721fddd32c0747c4da3afc29e6037b5b29a58bc2243c82900f",
+      "text_sha256": "a42356f6a8ff1d25daf25ec9db49e10a537c265581b61c74604bb63231dee719",
+      "all_bytes_match": true
+    },
+    "test": {
+      "tokens": 298958,
+      "token_sha256": "8e28c76b7129f5c74fbfb98d21260e975cc2887e7c0fd875ead7a0b8438071c9",
+      "text_sha256": "bfe9eb16ab9987fb88bde4ea9a30a00f2a45db01dfc14bad78d05325789c4f12",
+      "all_bytes_match": true
+    }
+  },
+  "tokenizer_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+  "replay_report_sha256": "eecba3b4e4051f4fc4ec8b3a172bfa4e39ebfeb0e9781760567381f3fee7d4ba",
+  "recipe_sha256": "2e81d415573bd154df0b1340a0e89cbdf797c6c7e93439d363b692b78c523613",
+  "verified_at_utc": "2026-11-14T09:43:25.351640+00:00",
+  "scope": "IndependentstreamingCPUhash/countreview ofcompleted all3split replay usingofficial8Btokenizer andverifiedexportedtext. No1.7Bfile dependency; noGPU/modelnumeric/performanceclaim. Validationparquet-to-text path separatelyreplayedbyteexact."
+}

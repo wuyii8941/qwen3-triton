@@ -1,0 +1,69 @@
+{
+  "complete": true,
+  "agent_data_and_runtime_audit_passed": true,
+  "model": "Qwen/Qwen3-8B",
+  "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "layers": 36,
+  "world_size": 4,
+  "parameter_tensors": 399,
+  "accepted_GPU_roles": 16,
+  "updates_per_role": 27,
+  "gradient_parameter_shard_checks": 25536,
+  "worst_recorded_gradient_gate_utilization": 0.9991853785079678,
+  "current_weight_and_corpus_fingerprints_revalidated": true,
+  "input_manifest_identity": "02bd3b9257c92692c755c5fdfce9697189afe580883def0b5cacbf7b25d295a7",
+  "all_per_parameter_and_global_gradient_arithmetic_recomputed": true,
+  "all_short_quality_and_training_CUDA_checks_passed": true,
+  "shared_framework": {
+    "input_manifest_sha256": "02bd3b9257c92692c755c5fdfce9697189afe580883def0b5cacbf7b25d295a7",
+    "math_policy": {
+      "compute": "BF16",
+      "master_gradient_moments": "FP32",
+      "TF32": false,
+      "allow_bf16_reduced_precision_reduction": false
+    },
+    "common_framework": {
+      "checkpoint_every": 1,
+      "keep_full_layers": 0,
+      "vocab_parallel": false,
+      "custom_collectives": false,
+      "optimizer": "native_fused_AdamW",
+      "batch_per_rank": 1,
+      "sequence": 512
+    }
+  },
+  "module_timing_cases": 96,
+  "source_port_and_actual8B_meta_checks_passed": true,
+  "public_fresh_reference_CPU_routing_check_passed": true,
+  "new_GPU_run_for_routing_fixture": false,
+  "cold_source_CLI_checks": 11,
+  "cold_actual8B_meta_variants": 7,
+  "cold_runtime_difference_limited_to_packaging_helper": [
+    "scripts/export_qwen3_triton_candidate.py"
+  ],
+  "interrupted_cohort_explicitly_disclosed": true,
+  "rejected_attempts_preserved_and_excluded": true,
+  "strongest_measured_operator_choice": "Linear/GEMM tiling",
+  "globally_optimal_combination_proven": false,
+  "HF_remains_faster_than_complete_Triton": true,
+  "dense_candidate_gradient_replay": false,
+  "bitwise_candidate_gradient_equivalence_claimed": false,
+  "convergence_or_inference_speedup_claimed": false,
+  "performance_adopted": false,
+  "own_source_license_selected": false,
+  "published": false,
+  "final_source_distribution_check": "Separate final copy/manifest check follows this data/runtime acceptance",
+  "paired_report_agent_pending_field_scope": "Historical state at report creation; this receipt completes its data/runtime audit without rewriting that immutable report",
+  "sources": {
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/official_8b_paired_quality_ablation_v9_control/independent_review.json": "2b02077aa6e9b8e3066c5f974c18ec227b116746c1a71d891a0161182aa47676",
+    "/data1/tzh/proj/qwen_operator_lab/results/qwen3_triton_v9_paired_training_v1.json": "7a865fdf4fe705db51e5d92e91dccc8d7b1c43d797a8072a4b3f324bfabd9fac",
+    "/data1/tzh/proj/qwen_operator_lab/results/qwen3_triton_fresh_reference_review_v1.json": "4e737995a236f1e29242ce4a8e42a953f48095508041949461f853e59ae727db",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/official_8b_paired_quality_ablation_v9_control/recovery_001/manifest.json": "7b47450f75082969323c6e400884ec215a5c28a6ce6bfa2a0cb32bddf57d829e",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/opensource_candidate_cpu_check_v3/result.json": "d49dc744d27b88f2c4462265bdc43e629c217c466dc303f1e47e383f8bbc49eb",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/final_data_acceptance_v1.py": "aba895a201e75fd1e01bad83c173ac8e0f83e379a7a48e506cf33c08985e3e4e",
+    "/data1/tzh/proj/qwen_operator_lab/results/qwen3_triton_v9_module_benchmark_v1.json": "34de240499b3ce56afda75a0c394ae40be243dc86f74aa65209cfe652c4ec106",
+    "/data1/tzh/proj/qwen_operator_lab/results/qwen3_triton_corpus_replay_v1.json": "3089a988dedfdc778e71658ecd691e643c9ca1f2ff5efaceac3592e1f1807f3e"
+  },
+  "finished_utc": "2026-11-14T14:46:31.072862+00:00",
+  "scope": "Final current-input, source, numeric, quality and provenance acceptance.\n\nRead-only validation of the actual16-role data, followed by a small acceptance\nreceipt. Dense candidate vectors are runtime evidence, not archived replay.\nDistribution copying and its final manifest check are a separate last step.\n"
+}

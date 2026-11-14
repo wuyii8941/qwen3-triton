@@ -20,7 +20,7 @@ def reshard_official_parameters(model):
 
 
 def shard_official_qwen(model, *, checkpoint=False, keep_full_layers=0,
-        checkpoint_every=0,checkpoint_mode='full'):
+        checkpoint_every=0,checkpoint_mode='full',vocab_parallel_head=False,vocab_parallel_embedding=False):
     mp = MixedPrecisionPolicy(param_dtype=torch.bfloat16,reduce_dtype=torch.float32)
     body = model.model
     if not 0<=keep_full_layers<=len(body.layers):
@@ -29,14 +29,24 @@ def shard_official_qwen(model, *, checkpoint=False, keep_full_layers=0,
     checkpointed=checkpoint_layer_indices(len(body.layers),all_layers=checkpoint,every=checkpoint_every)
     if checkpoint_mode!='full':raise ValueError('Only full checkpoint mode is supported')
     tied = body.embed_tokens.weight is model.lm_head.weight
+    if (vocab_parallel_head or vocab_parallel_embedding) and tied:raise ValueError("Untied vocabulary head required")
+    ignored=set()
+    if vocab_parallel_head:
+        from training.fsdp.vocab_head import VocabParallelHead
+        model.lm_head=VocabParallelHead(model.lm_head.weight.detach().cpu())
+        ignored.add(model.lm_head.weight)
+    if vocab_parallel_embedding:
+        from training.fsdp.vocab_embedding import VocabParallelEmbedding
+        body.embed_tokens=VocabParallelEmbedding(body.embed_tokens.weight.detach().cpu(),body.embed_tokens.padding_idx)
+        ignored.add(body.embed_tokens.weight)
     # Convert and shard one unit at a time rather than materializing an entire
     # FP32 GPU model. fully_shard moves CPU parameter shards to current CUDA.
     if tied:
         body.embed_tokens.float(); model.lm_head.float()
         fully_shard([body.embed_tokens,model.lm_head],mp_policy=mp,reshard_after_forward=True)
     else:
-        fully_shard(body.embed_tokens.float(),mp_policy=mp,reshard_after_forward=True)
-        fully_shard(model.lm_head.float(),mp_policy=mp,reshard_after_forward=True)
+        if not vocab_parallel_embedding:fully_shard(body.embed_tokens.float(),mp_policy=mp,reshard_after_forward=True)
+        if not vocab_parallel_head:fully_shard(model.lm_head.float(),mp_policy=mp,reshard_after_forward=True)
     for index in range(len(body.layers)):
         layer = body.layers[index].float()
         if index in checkpointed:
@@ -48,6 +58,6 @@ def shard_official_qwen(model, *, checkpoint=False, keep_full_layers=0,
         fully_shard(layer,mp_policy=mp,reshard_after_forward=not retain)
     fully_shard(body.norm.float(),mp_policy=mp,reshard_after_forward=True)
     body.rotary_emb.cuda()
-    fully_shard(model,mp_policy=mp,reshard_after_forward=True)
+    fully_shard(model,mp_policy=mp,reshard_after_forward=True,ignored_params=ignored)
     model.config.use_cache = False
     return model
