@@ -19,6 +19,7 @@ def main():
     parser.add_argument('--cohort',type=Path,required=True)
     parser.add_argument('--policy',type=Path,required=True)
     parser.add_argument('--destination',type=Path,required=True)
+    parser.add_argument('--recovery',type=Path,action='append',default=[],help='Every discovered recovery manifest must be disclosed')
     args=parser.parse_args();root=args.cohort.resolve()
     assert not args.destination.resolve().is_relative_to(Path('/home/tzh'))
     manifest_path=root/'manifest.json';review_path=root/'independent_review.json'
@@ -37,6 +38,38 @@ def main():
             assert not (event.get('event')=='optimizer_update' and event.get('measured'))
     for record in (manifest,review):
         for path,h in record['sources'].items():assert sha(path)==h,path
+    discovered={p.resolve() for p in root.glob('recovery_*/manifest.json')}
+    assert {p.resolve() for p in args.recovery}==discovered,'Disclose every recovery manifest'
+    recoveries=[];recovery_evidence={}
+    for path in sorted(discovered):
+        recovered=json.loads(path.read_text())
+        assert recovered['original_manifest_sha256']==sha(manifest_path)
+        assert recovered['interrupted_cohort'] and recovered['no_rejected_timing_adopted']
+        count=len(recovered['kept_clean_prefix'])
+        assert recovered['kept_clean_prefix']==[r['name'] for r in manifest['roles'][:count]]
+        assert recovered['pending_roles']==manifest['roles'][count:]
+        assert recovered['preserve_original_remaining_order'] and recovered['selection_policy_unchanged']
+        rejected=(root/recovered['rejected_location']).resolve()
+        assert rejected.is_relative_to(root) and rejected!=root
+        for name,h in recovered['kept_files_sha256'].items():assert sha(root/name)==h,name
+        for name,h in recovered['rejected_files_sha256'].items():assert sha(rejected/name)==h,name
+        source_record=path.parent/'resumer_source.json'
+        source=json.loads(source_record.read_text())
+        assert source['manifest_sha256']==sha(path)
+        assert source['original_manifest_sha256']==sha(manifest_path)
+        archived_source=path.parent/'resumer_source.py'
+        assert sha(archived_source)==source['source_sha256']
+        rejected_monitor_files=list(rejected.glob('*.gpu.json'))
+        assert rejected_monitor_files
+        for monitor_path in rejected_monitor_files:
+            bad=json.loads(monitor_path.read_text())
+            assert bad['foreign_process_seen'] or bad['observation_errors'] or bad['returncode']!=0
+        recoveries.append(dict(path=str(path),sha256=sha(path),reason=recovered['reason'],
+            kept_clean_prefix=recovered['kept_clean_prefix'],rejected_location=str(rejected),
+            pending_role_order=[r['name'] for r in recovered['pending_roles']],
+            foreign_pids=recovered.get('foreign_pids',[]),all_rejected_files_preserved=True))
+        recovery_evidence[str(path)]=sha(path);recovery_evidence[str(source_record)]=sha(source_record)
+        recovery_evidence[str(archived_source)]=sha(archived_source)
     assert len(manifest['roles'])==8
     assert review['roles']==manifest['roles']
     timing={};qualified={};evidence={str(manifest_path):sha(manifest_path),str(review_path):sha(review_path),str(args.policy):sha(args.policy)}
@@ -95,11 +128,12 @@ def main():
     winner=max(eligible,key=lambda c:(c['observed_faster_than_HF_both_orders'],min(r['reduction_vs_V9'] for r in c['orders']),-c['entries'])) if eligible else None
     report=dict(complete=True,audit_passed=True,model='Qwen/Qwen3-8B',layers=36,world_size=4,
         controls_passed=controls_passed,raw_all_acceptance_gates_passed=review['all_acceptance_gates_passed'],
+        interrupted_cohort=bool(recoveries),recoveries=recoveries,
         numerical_quality_coverage_by_role=qualified,timing=timing,candidates=candidates,
         recommended_candidate=winner['arm'] if winner else None,
         default_changed=False,convergence_claimed=False,inference_claimed=False,
         limitation='Two orders and eight measured updates per role are descriptive. No statistical significance or global-optimum claim. All gradients were compared at runtime; dense candidate gradients are not archived.',
-        sources={**evidence,str(Path(__file__)):sha(Path(__file__))},scope=__doc__)
+        sources={**evidence,**recovery_evidence,str(Path(__file__)):sha(Path(__file__))},scope=__doc__)
     with args.destination.open('x') as f:f.write(json.dumps(report,indent=2)+'\n')
     print(json.dumps(dict(complete=True,recommended_candidate=report['recommended_candidate'],candidates=candidates),indent=2),flush=True)
 

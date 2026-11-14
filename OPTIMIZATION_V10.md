@@ -180,3 +180,19 @@ larger worst-order reduction against V9, then fewer entries for an exact tie.
 If neither qualifies, keep V9. These are engineering acceptance rules, not
 statistical significance or a global-optimum claim. Operator/module screening
 was already available when choosing the two candidate plans.
+
+The restarted cohort completed a clean `hf_r1` (27 updates; all four ranks'
+399-parameter strict native controls passed). The first `v9_r1` also completed
+all 27 updates and numerical gates, but two non-rank CUDA contexts appeared on
+GPU0 during the role. Its entire timing record was rejected under the existing
+whole-role resource policy. `recovery_001` preserves those files and keeps the
+clean HF prefix unchanged; the remaining seven roles restart in their original
+order. This is an interrupted cohort, not an uninterrupted eight-run session.
+The original manifest and pre-timing selection policy remain unchanged.
+
+For this cohort the summarizer requires every `recovery_*/manifest.json` via
+`--recovery`, verifies the kept/rejected file hashes and remaining role order,
+and discloses the recovery in its output. The recovery controller also records
+process ancestry after update27 to diagnose any further short CUDA probes;
+those extra GPU queries occur after all measured optimizer updates and do not
+relax the resource gate.
