@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "created_utc": "2026-11-14T17:26:21.333686+00:00",
+  "cohort": "paired_training_002",
+  "manifest_sha256": "c7d8e6d21d7b9d589c95b59e7be7378a1237ae1b8d7ea6054ffcd44de2c8e43e",
+  "declared_before_any_measured_optimizer_update": true,
+  "log_prefix_anchors": {
+    "hf_r1": {
+      "log_prefix_bytes": 784,
+      "log_prefix_sha256": "cc837774dae206ce5dae7bdc6fb9ee97bd55a7a354a92afd2f191f8789e0dd7e",
+      "events_at_registration": [
+        {
+          "event": "full_validation",
+          "after_updates": 0
+        }
+      ]
+    }
+  },
+  "operator_and_module_screening_already_observed": true,
+  "controls": [
+    "hf_r1",
+    "hf_r2",
+    "v9_r1",
+    "v9_r2"
+  ],
+  "candidates": [
+    "v10_all",
+    "v10"
+  ],
+  "orders": [
+    1,
+    2
+  ],
+  "require_controls_and_candidate_numerical_quality_and_CUDA_gates": true,
+  "minimum_latency_reduction_vs_V9_each_order": 0.01,
+  "maximum_extra_allocated_GiB_vs_V9": 0.01,
+  "memory_cap_GiB": 41.875,
+  "ranking": [
+    "Prefer an eligible candidate with lower median than HF in both orders",
+    "Maximize the smaller of the two latency reductions versus V9",
+    "For exact ties prefer fewer tuning-table entries"
+  ],
+  "fallback": "Keep V9 when neither candidate satisfies the rule; preserve all negative results",
+  "scope": "Engineering choice for this fixed SM86 B1/rank S512 protocol. Two orders are descriptive, not statistical significance or a global optimality claim. A recommendation does not change model defaults."
+}

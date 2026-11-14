@@ -1,0 +1,47 @@
+{
+  "complete": true,
+  "GPU_executed": false,
+  "CUDA_initialized": false,
+  "performance_proven": false,
+  "numerical_equivalence_proven": false,
+  "rows": [
+    {
+      "name": "v9",
+      "shared_bytes": 24576,
+      "mma_count": 32,
+      "total_scalar_fp32_adds": 64,
+      "float_add_IR": [
+        "%silu_98 = arith.addf %silu_97, %cst : tensor<64x64xf32, #mma> loc(#loc121)"
+      ],
+      "dot_IR": [
+        "%gate_130 = tt.dot %a_125, %gw_127, %arg7 : tensor<64x32xbf16, #ttg.dot_op<{opIdx = 0, parent = #mma, kWidth = 2}>> * tensor<32x64xbf16, #ttg.dot_op<{opIdx = 1, parent = #mma, kWidth = 2}>> -> tensor<64x64xf32, #mma> loc(#loc112)",
+        "%up_131 = tt.dot %a_125, %uw_129, %arg8 : tensor<64x32xbf16, #ttg.dot_op<{opIdx = 0, parent = #mma, kWidth = 2}>> * tensor<32x64xbf16, #ttg.dot_op<{opIdx = 1, parent = #mma, kWidth = 2}>> -> tensor<64x64xf32, #mma> loc(#loc113)"
+      ],
+      "ptx_sha256": "a6f88dbc8435752d3df89af5620b755ca29fb49fc4fa195d0a52fb064d2acd77"
+    },
+    {
+      "name": "explicit_accum",
+      "shared_bytes": 24576,
+      "mma_count": 32,
+      "total_scalar_fp32_adds": 64,
+      "float_add_IR": [
+        "%silu_98 = arith.addf %silu_97, %cst : tensor<64x64xf32, #mma> loc(#loc121)"
+      ],
+      "dot_IR": [
+        "%gate_130 = tt.dot %a_125, %gw_127, %arg7 : tensor<64x32xbf16, #ttg.dot_op<{opIdx = 0, parent = #mma, kWidth = 2}>> * tensor<32x64xbf16, #ttg.dot_op<{opIdx = 1, parent = #mma, kWidth = 2}>> -> tensor<64x64xf32, #mma> loc(#loc112)",
+        "%up_131 = tt.dot %a_125, %uw_129, %arg8 : tensor<64x32xbf16, #ttg.dot_op<{opIdx = 0, parent = #mma, kWidth = 2}>> * tensor<32x64xbf16, #ttg.dot_op<{opIdx = 1, parent = #mma, kWidth = 2}>> -> tensor<64x64xf32, #mma> loc(#loc113)"
+      ],
+      "ptx_sha256": "d702de9a854752079885fc8fbfeccf3d894fa48249e95761d7b6ef19fd0cc014"
+    }
+  ],
+  "shape": {
+    "M": 512,
+    "N": 12288,
+    "K": 4096,
+    "BM": 64,
+    "BN": 64,
+    "BK": 32,
+    "GROUP": 8
+  },
+  "scope": "CPU-only comparison of fused MLP dot accumulation forms on SM86."
+}

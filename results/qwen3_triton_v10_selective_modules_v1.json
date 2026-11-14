@@ -1,0 +1,205 @@
+{
+  "complete": true,
+  "audit_passed": true,
+  "source_root": "/data1/tzh/proj/qwen3-triton-opt-v10",
+  "plan": {
+    "path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/gemm_plan_002.json",
+    "sha256": "0df5562cf9db2cb391ce569d7189618a76feb29e14fb13f0ed648d48ac40d272",
+    "entries": 10
+  },
+  "selected_device_clean": true,
+  "local_VJP_groups": 7,
+  "timed_cases": 42,
+  "maximum_relative_l2_vs_V9": 0.0,
+  "groups": [
+    {
+      "layer": 0,
+      "module": "attention",
+      "times_ms": {
+        "hf": [
+          5.082111954689026,
+          5.071871995925903
+        ],
+        "v9": [
+          4.338688015937805,
+          4.406271934509277
+        ],
+        "v10": [
+          4.386815965175629,
+          4.423680007457733
+        ]
+      },
+      "reduction_vs_V9": [
+        -0.011092742566653602,
+        -0.00395074866172429
+      ],
+      "reduction_vs_HF": [
+        0.13681241100402763,
+        0.1278013303547182
+      ]
+    },
+    {
+      "layer": 0,
+      "module": "mlp",
+      "times_ms": {
+        "hf": [
+          4.956160008907318,
+          5.008384048938751
+        ],
+        "v9": [
+          7.617535948753357,
+          7.615487813949585
+        ],
+        "v10": [
+          5.229567885398865,
+          5.181951999664307
+        ]
+      },
+      "reduction_vs_V9": [
+        0.31348300545208374,
+        0.31955087759810685
+      ],
+      "reduction_vs_HF": [
+        -0.05516526423686319,
+        -0.03465547949788994
+      ]
+    },
+    {
+      "layer": 17,
+      "module": "attention",
+      "times_ms": {
+        "hf": [
+          5.066752076148987,
+          5.145087957382202
+        ],
+        "v9": [
+          4.372480034828186,
+          4.313088059425354
+        ],
+        "v10": [
+          4.386303901672363,
+          4.355072021484375
+        ]
+      },
+      "reduction_vs_V9": [
+        -0.0031615620275142753,
+        -0.009734084136602261
+      ],
+      "reduction_vs_HF": [
+        0.1342967179467368,
+        0.15354760549123514
+      ]
+    },
+    {
+      "layer": 17,
+      "module": "mlp",
+      "times_ms": {
+        "hf": [
+          4.9203200340271,
+          4.983295917510986
+        ],
+        "v9": [
+          7.603711724281311,
+          7.625727891921997
+        ],
+        "v10": [
+          5.274623990058899,
+          5.235199928283691
+        ]
+      },
+      "reduction_vs_V9": [
+        0.30630931559186025,
+        0.31348193871048213
+      ],
+      "reduction_vs_HF": [
+        -0.07200831522778306,
+        -0.050549679357296595
+      ]
+    },
+    {
+      "layer": 35,
+      "module": "attention",
+      "times_ms": {
+        "hf": [
+          5.1420159339904785,
+          5.254143953323364
+        ],
+        "v9": [
+          4.438015997409821,
+          4.3924479484558105
+        ],
+        "v10": [
+          4.32588791847229,
+          4.440576076507568
+        ]
+      },
+      "reduction_vs_V9": [
+        0.025265361594679292,
+        -0.010957017275225134
+      ],
+      "reduction_vs_HF": [
+        0.15871751974226767,
+        0.15484308843521422
+      ]
+    },
+    {
+      "layer": 35,
+      "module": "mlp",
+      "times_ms": {
+        "hf": [
+          5.001727938652039,
+          4.965376019477844
+        ],
+        "v9": [
+          7.657983899116516,
+          7.649791836738586
+        ],
+        "v10": [
+          5.284351944923401,
+          5.286911964416504
+        ]
+      },
+      "reduction_vs_V9": [
+        0.3099552030224242,
+        0.3088815908655461
+      ],
+      "reduction_vs_HF": [
+        -0.05650527372496983,
+        -0.06475560837232863
+      ]
+    },
+    {
+      "layer": null,
+      "module": "lm_head",
+      "times_ms": {
+        "hf": [
+          17.96403169631958,
+          18.227200269699097
+        ],
+        "v9": [
+          40.263680934906006,
+          39.95955276489258
+        ],
+        "v10": [
+          20.434943914413452,
+          20.348416090011597
+        ]
+      },
+      "reduction_vs_V9": [
+        0.49247203832529685,
+        0.49077467884252235
+      ],
+      "reduction_vs_HF": [
+        -0.13754775430507094,
+        -0.11637639291421009
+      ]
+    }
+  ],
+  "whole_training_numerically_qualified": false,
+  "sources": {
+    "/data1/tzh/proj/qwen3-triton-opt-v10/scripts/review_qwen3_tuned_modules.py": "fadefcd0b6748f068f3dd37f4a63e1279d2e9c9e60ff0e121744a6a584821e89",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/module_check_002/measurements/result.json": "476d0756df3198e394c931b1a9990b47d1ee083a96df06d3e69fcdaf49f29736",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/module_check_002/gpu.json": "2e47be85950ca1343e57e2542e1d9b864910c9edf148bbb5947485a07237df4c"
+  },
+  "scope": "Recompute module numerical/timing checks and selected-GPU ownership evidence.\n\nModule latency below means the sum of separate forward/backward medians.\nIt excludes FSDP/NCCL/AdamW and does not establish a whole-training gain.\n"
+}

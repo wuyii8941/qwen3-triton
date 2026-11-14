@@ -1,0 +1,93 @@
+{
+  "complete": true,
+  "passed": true,
+  "GPU_executed": false,
+  "CUDA_initialized": false,
+  "baseline_commit": "13dbdf984201a70ca4bba5fb38c72606cd33fbeb",
+  "changed_existing_model_files": [
+    "qwen3_triton/kernels/linear.py",
+    "qwen3_triton/kernels/mlp_precision.py",
+    "scripts/train_qwen3_triton_8b.py"
+  ],
+  "GEMM_kernel_AST_unchanged": true,
+  "gate_up_kernel_AST_unchanged": true,
+  "backward_and_autograd_AST_unchanged": true,
+  "variants": [
+    {
+      "variant": "triton_base",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360
+    },
+    {
+      "variant": "triton_optimized",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360
+    },
+    {
+      "variant": "ablate_attention",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360
+    },
+    {
+      "variant": "ablate_norm_rope",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360
+    },
+    {
+      "variant": "ablate_mlp",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360
+    },
+    {
+      "variant": "ablate_linear",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360
+    },
+    {
+      "variant": "ablate_loss",
+      "parameter_tensors": 399,
+      "parameter_elements": 8190735360
+    }
+  ],
+  "plan": {
+    "path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/gemm_plan_002.json",
+    "sha256": "0df5562cf9db2cb391ce569d7189618a76feb29e14fb13f0ed648d48ac40d272",
+    "entries": 10
+  },
+  "training_update_and_timing_loop_AST_unchanged": true,
+  "historical_V9_manifest_unchanged": true,
+  "sources": {
+    "qwen3_triton/audit.py": "9e43654bcd96a1e70d02fa47bb6c71ea95614bd66ab36e0994eacaf171108a33",
+    "qwen3_triton/kernels/__init__.py": "010fffaff857eb0a9acd6945e2943e2a9823b4898aff1a6778126267c5253d6b",
+    "qwen3_triton/kernels/activation.py": "0411c9bfe9074832f048f1d94c4920f7e0b487dfad9f1ac6cae8d8596134207b",
+    "qwen3_triton/kernels/attention.py": "d4554e1da9265ced8bc2e1a256a636bd68c2c337165cdf548870f345266706b7",
+    "qwen3_triton/kernels/attention_kernels.py": "269bd044cd4f1924a1901431b0c36e30bcfa45b34647a6658f76f9bd8deba545",
+    "qwen3_triton/kernels/attention_precision.py": "197e39a90e5c5b8b96827c6e2a512cf0cc9a79a11f048388dd21345d8bc79568",
+    "qwen3_triton/kernels/embedding.py": "977c2b687ba8f76859a324dd9d5d30a25c6d0e8eac1a0d5ff72269ab4ca08564",
+    "qwen3_triton/kernels/hf_reduction.py": "58588abf318473a79d671787831df67e8387a4a4ebd2ddaa7d53742c775e16ac",
+    "qwen3_triton/kernels/linear.py": "8a62d2c11873137735fa798d29f9ae76bcc81d8c6693b8fff0c7c7cb383ce84d",
+    "qwen3_triton/kernels/loss.py": "33b060986fe9d418b9a9b80ed0cb77529b28079f1a31480a2be28254bbdb06d0",
+    "qwen3_triton/kernels/math_precision.py": "ae594164416c54b6ca989178bb7920c7cb0d0afc5e8d59d8021e2542daf6c917",
+    "qwen3_triton/kernels/mlp.py": "2726296b9a1d8de7768a8c1658be8ff64a3c3afdd244a839e8416fbeed0d401b",
+    "qwen3_triton/kernels/mlp_precision.py": "c9bc7021dc0d54ae0dad588a37f9f7ed4ee864fea365c6689ed47f31e5a71e92",
+    "qwen3_triton/kernels/norm.py": "3e9824da12a6cdd2f65b4964557acb2b195660b1748c35f4ca7075e8200756ef",
+    "qwen3_triton/kernels/norm_rope.py": "d1fab3c87817d84044af9bbb50e8f6067ce1bd1e3806b84be95f6b07713d4cd6",
+    "qwen3_triton/kernels/residual.py": "d002f65b293dcff45dee8e3042fd350a1a67b4d039792c0fd65a5f18ad45427e",
+    "qwen3_triton/kernels/rotary.py": "cd4f0157e2e15c7da2db7c9867d9453c847988716ddd436d1d6769a8362d5c6f",
+    "qwen3_triton/_model.py": "834df2b111e010bb8250dd8231979d14b47cb0de906b9e2f8bf6d911cc0f31b8",
+    "qwen3_triton/_model_optimized.py": "fb0eae20df4e6e07a2239ac09c55221d0834edb2e676c26c7ec47d9c9ec78149",
+    "qwen3_triton/model.py": "9d43c81d60c6745f1f366ecbcb0ae997155474331a51df8dd0b59f659c5fe986",
+    "qwen3_triton/gradient_archive.py": "a7ec43bc6269c13681d0a2348c67a57ed4d74a260480069660ee40355c367e08",
+    "scripts/train_qwen3_triton_8b.py": "af905d0a94bd93d4a8223e0053eee6c07c259a522a923428d1b7c45b3b3f5928",
+    "qwen3_triton/__init__.py": "82e9fd47b9a2e5763702a6eabc12aa41f0f80c082b9076b28da9adfb77530507",
+    "qwen3_triton/benchmark_utils/__init__.py": "9ab63ec588821328df6922899f68077a28ee5584e970b9e31363fee13b6d6985",
+    "qwen3_triton/benchmark_utils/gpu_lease.py": "25ee1cd8cd4edffa2d24202f8fac979463846c4cc9f8dfdbc2ca65a4af522dbc",
+    "qwen3_triton/benchmark_utils/monitor.py": "a7a3c6e72a60feee9997c993a6e11c3238bea71e209328355ea51e1c1bd68884",
+    "qwen3_triton/benchmark_utils/stable_idle.py": "5a4c62706c07b8a51a82dcdb123a9f1409b62188e588a9fe00088ff02d2dfd93",
+    "qwen3_triton/kernels/gemm_experiments.py": "354108f718e778a501baad50ef989c30e35def6f134d2584d4fe1c723dd5698c",
+    "qwen3_triton/kernels/gemm_tuning.py": "839976b5b2da0430210b69c727d8f792deefc1cb4a1d02db6e807afcdcd22150"
+  },
+  "scope": "Check V10's explicit source delta and full 8B parameter contract on CPU/meta.\n\nThe historical V9 hash checker deliberately rejects modified kernels. This\ncheck keeps that evidence immutable and verifies the new delta separately.\nNo BF16 numerical or GPU performance qualification is implied.\n",
+  "checker_sha256": "8b307d5184f63a07ee2d44d16206fbae3fe28d550c3d351ee57a503a90bfd53f",
+  "protocol_sha256": "d8c40270236054a35f8e1274910991368ce943af15eab23cbbb221beb192a815"
+}

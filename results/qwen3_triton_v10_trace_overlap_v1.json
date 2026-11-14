@@ -1,0 +1,138 @@
+{
+  "complete": true,
+  "roles": {
+    "v9_r1": {
+      "trace_sha256": "acf051b9a31237dc3df4138a30bd053ab0ff77a4a79d32f4c62154f5b3f1405b",
+      "monitor_sha256": "3062ad1c37e378f9f04731968deb2b50ab6fc7b06b6d0cb3c51407e6f629a71f",
+      "profiled_GPU_window_seconds": 7.011165714355469,
+      "union_seconds": {
+        "GPU_busy": 7.010618257324219,
+        "GPU_idle": 0.00054745703125,
+        "model": 0.6249199184570312,
+        "NCCL": 6.932742969238281,
+        "framework": 0.5382418911132812,
+        "NCCL_without_model": 6.344002017578125,
+        "NCCL_only": 5.921379499023438,
+        "model_and_NCCL": 0.5887409516601563
+      },
+      "kernel_duration_sums_seconds": {
+        "model": 0.6249199209999986,
+        "NCCL": 6.932742967999999,
+        "framework": 0.5557793559999994
+      },
+      "event_count": 7182
+    },
+    "v10_all_r1": {
+      "trace_sha256": "23c6bcaa5b11b2862eba06f80a50e97bee4e3d01d85f9d0f500b68c4272f8f43",
+      "monitor_sha256": "842d9eb01122c2945d22a08ff77ef982291b68411702db40621a7208010fc494",
+      "profiled_GPU_window_seconds": 6.971676620117187,
+      "union_seconds": {
+        "GPU_busy": 6.971085255371094,
+        "GPU_idle": 0.00059136474609375,
+        "model": 0.43980517138671876,
+        "NCCL": 6.910498479492188,
+        "framework": 0.5299014194335937,
+        "NCCL_without_model": 6.490577110839844,
+        "NCCL_only": 6.05986180859375,
+        "model_and_NCCL": 0.41992136865234375
+      },
+      "kernel_duration_sums_seconds": {
+        "model": 0.43980516599999936,
+        "NCCL": 6.910498480000001,
+        "framework": 0.5491534749999996
+      },
+      "event_count": 7182
+    },
+    "v10_r1": {
+      "trace_sha256": "091720a41692083a6a9b1bf693afd14bceefba3eece5090ce7f992eae42b3c5b",
+      "monitor_sha256": "daad769d9979c1019b61a9690fc0d7d7bb310e85de45168387fc8732acf4f3c2",
+      "profiled_GPU_window_seconds": 7.018021760253906,
+      "union_seconds": {
+        "GPU_busy": 7.0174911923828125,
+        "GPU_idle": 0.00053056787109375,
+        "model": 0.4950515791015625,
+        "NCCL": 6.954712888671875,
+        "framework": 0.5313827094726562,
+        "NCCL_without_model": 6.480797312011719,
+        "NCCL_only": 6.067389298339844,
+        "model_and_NCCL": 0.47391557666015627
+      },
+      "kernel_duration_sums_seconds": {
+        "model": 0.4950515759999996,
+        "NCCL": 6.954712886999998,
+        "framework": 0.548483203000001
+      },
+      "event_count": 7182
+    },
+    "v9_r2": {
+      "trace_sha256": "29587178ca0f656da813199881da3e9705428e5a9e0b1fd1de4b2aa4a9c7537b",
+      "monitor_sha256": "823e49af401e82be25b619be4ea6653a07efa9b5962114a41d65f9d17197ba2a",
+      "profiled_GPU_window_seconds": 7.004028226074219,
+      "union_seconds": {
+        "GPU_busy": 7.003497656738281,
+        "GPU_idle": 0.0005305693359375,
+        "model": 0.624600046875,
+        "NCCL": 6.925323525878906,
+        "framework": 0.5369582690429687,
+        "NCCL_without_model": 6.337314413085937,
+        "NCCL_only": 5.9150397124023435,
+        "model_and_NCCL": 0.5880091127929687
+      },
+      "kernel_duration_sums_seconds": {
+        "model": 0.6246000550000008,
+        "NCCL": 6.925323526,
+        "framework": 0.5540994989999988
+      },
+      "event_count": 7182
+    },
+    "v10_all_r2": {
+      "trace_sha256": "ced7f08a7384bb6055db3cf21ae5046afd2f49cdbac269d3638d7c5e1d7584cf",
+      "monitor_sha256": "71198a27bb7c7c846f031af1592ed24bba7703d91c6712e724052995cdffc544",
+      "profiled_GPU_window_seconds": 6.93905137109375,
+      "union_seconds": {
+        "GPU_busy": 6.938521733886719,
+        "GPU_idle": 0.00052963720703125,
+        "model": 0.44377340625,
+        "NCCL": 6.876679550292969,
+        "framework": 0.5258963139648437,
+        "NCCL_without_model": 6.452111734375,
+        "NCCL_only": 6.025385363769531,
+        "model_and_NCCL": 0.42456781591796877
+      },
+      "kernel_duration_sums_seconds": {
+        "model": 0.4437734070000001,
+        "NCCL": 6.8766795489999994,
+        "framework": 0.5459636379999984
+      },
+      "event_count": 7182
+    },
+    "v10_r2": {
+      "trace_sha256": "8af0f1cdaa34fff422352b449efd15487eea105678daef32c949691d396f63de",
+      "monitor_sha256": "73a17d0a4f865d362b0f6cdc3f8a4b0e38f27f5a6d9b075a9b05069220e7b2dc",
+      "profiled_GPU_window_seconds": 7.054314134277344,
+      "union_seconds": {
+        "GPU_busy": 7.053793034179687,
+        "GPU_idle": 0.00052110009765625,
+        "model": 0.49422920166015627,
+        "NCCL": 6.989129969726562,
+        "framework": 0.532622458984375,
+        "NCCL_without_model": 6.51791864453125,
+        "NCCL_only": 6.10190908984375,
+        "model_and_NCCL": 0.4712113251953125
+      },
+      "kernel_duration_sums_seconds": {
+        "model": 0.4942292050000005,
+        "NCCL": 6.989129970999998,
+        "framework": 0.5489608460000003
+      },
+      "event_count": 7182
+    }
+  },
+  "scope": "Describe overlap in untimed complete-model forward/backward CUDA traces.\n\nThis is a diagnostic, not optimizer-step timing or transport-cost attribution.\nNCCL kernels can wait on dependencies; category unions can overlap.\n",
+  "limitation": "Rank0 untimed post-update27 forward/backward only; excludes optimizer. NCCL durations include possible dependency waits, not just transport. Category unions overlap; do not add them to estimate a step.",
+  "sources": {
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/paired_training_002/manifest.json": "c7d8e6d21d7b9d589c95b59e7be7378a1237ae1b8d7ea6054ffcd44de2c8e43e",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/scripts/summarize_qwen3_trace_overlap.py": "f6110bf99aa3363e3788fa5cfb0dc98cd225973e327bac4544d81a22705a5cd6",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/scripts/review_qwen3_triton_suite.py": "40c518fd3cdd93192d0754c4a6fc3a055ca256c674e88b0644f05a79b08148f6"
+  }
+}

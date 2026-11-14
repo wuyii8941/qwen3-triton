@@ -1,0 +1,652 @@
+{
+  "schema": 1,
+  "hardware_capability": [
+    8,
+    6
+  ],
+  "compute_dtype": "bfloat16",
+  "accumulation_dtype": "float32",
+  "entries": [
+    {
+      "kind": "gemm",
+      "M": 512,
+      "N": 4096,
+      "K": 4096,
+      "strides": [
+        [
+          4096,
+          1
+        ],
+        [
+          1,
+          4096
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        128,
+        128,
+        32,
+        4,
+        4,
+        3
+      ],
+      "splits": 1,
+      "source_module": "q_proj",
+      "source_direction": "forward",
+      "latency_reductions": [
+        0.3481780942410351,
+        0.375886505791972
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gemm",
+      "M": 512,
+      "N": 4096,
+      "K": 4096,
+      "strides": [
+        [
+          4096,
+          1
+        ],
+        [
+          4096,
+          1
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        128,
+        128,
+        32,
+        8,
+        8,
+        3
+      ],
+      "splits": 1,
+      "source_module": "q_proj",
+      "source_direction": "dx",
+      "latency_reductions": [
+        0.33744855104545335,
+        0.3405797124372897
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gemm",
+      "M": 4096,
+      "N": 4096,
+      "K": 512,
+      "strides": [
+        [
+          1,
+          4096
+        ],
+        [
+          4096,
+          1
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        128,
+        128,
+        32,
+        4,
+        4,
+        3
+      ],
+      "splits": 1,
+      "source_module": "q_proj",
+      "source_direction": "dw",
+      "latency_reductions": [
+        0.33936647412485044,
+        0.3587785988193397
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gemm",
+      "M": 512,
+      "N": 1024,
+      "K": 4096,
+      "strides": [
+        [
+          4096,
+          1
+        ],
+        [
+          1,
+          4096
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        8,
+        3
+      ],
+      "splits": 1,
+      "source_module": "k_proj",
+      "source_direction": "forward",
+      "latency_reductions": [
+        0.18333333939663154,
+        0.18333333939663154
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gemm",
+      "M": 512,
+      "N": 4096,
+      "K": 1024,
+      "strides": [
+        [
+          1024,
+          1
+        ],
+        [
+          4096,
+          1
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        128,
+        128,
+        32,
+        8,
+        8,
+        3
+      ],
+      "splits": 1,
+      "source_module": "k_proj",
+      "source_direction": "dx",
+      "latency_reductions": [
+        0.16949157767852197,
+        0.22413793860459308
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gemm",
+      "M": 512,
+      "N": 12288,
+      "K": 4096,
+      "strides": [
+        [
+          4096,
+          1
+        ],
+        [
+          1,
+          4096
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        128,
+        128,
+        32,
+        4,
+        4,
+        3
+      ],
+      "splits": 1,
+      "source_module": "gate_proj",
+      "source_direction": "forward",
+      "latency_reductions": [
+        0.44936710959257065,
+        0.3722721416638485
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gemm",
+      "M": 512,
+      "N": 4096,
+      "K": 12288,
+      "strides": [
+        [
+          12288,
+          1
+        ],
+        [
+          4096,
+          1
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        128,
+        128,
+        32,
+        8,
+        8,
+        3
+      ],
+      "splits": 1,
+      "source_module": "gate_proj",
+      "source_direction": "dx",
+      "latency_reductions": [
+        0.47090517112957797,
+        0.394825633684334
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gemm",
+      "M": 12288,
+      "N": 4096,
+      "K": 512,
+      "strides": [
+        [
+          1,
+          12288
+        ],
+        [
+          4096,
+          1
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        128,
+        128,
+        32,
+        8,
+        8,
+        3
+      ],
+      "splits": 1,
+      "source_module": "gate_proj",
+      "source_direction": "dw",
+      "latency_reductions": [
+        0.5109488826253101,
+        0.3964194324857395
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gemm",
+      "M": 512,
+      "N": 4096,
+      "K": 12288,
+      "strides": [
+        [
+          12288,
+          1
+        ],
+        [
+          1,
+          12288
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        128,
+        128,
+        32,
+        4,
+        4,
+        3
+      ],
+      "splits": 1,
+      "source_module": "down_proj",
+      "source_direction": "forward",
+      "latency_reductions": [
+        0.47952586348836124,
+        0.4026996437612651
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gemm",
+      "M": 512,
+      "N": 12288,
+      "K": 4096,
+      "strides": [
+        [
+          4096,
+          1
+        ],
+        [
+          12288,
+          1
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        128,
+        128,
+        32,
+        8,
+        8,
+        3
+      ],
+      "splits": 1,
+      "source_module": "down_proj",
+      "source_direction": "dx",
+      "latency_reductions": [
+        0.5017836045422739,
+        0.4444444444444444
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gemm",
+      "M": 4096,
+      "N": 12288,
+      "K": 512,
+      "strides": [
+        [
+          1,
+          4096
+        ],
+        [
+          12288,
+          1
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        128,
+        128,
+        32,
+        8,
+        8,
+        3
+      ],
+      "splits": 1,
+      "source_module": "down_proj",
+      "source_direction": "dw",
+      "latency_reductions": [
+        0.4754521979370273,
+        0.3891752349196772
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gemm",
+      "M": 512,
+      "N": 151936,
+      "K": 4096,
+      "strides": [
+        [
+          4096,
+          1
+        ],
+        [
+          1,
+          4096
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        128,
+        128,
+        32,
+        4,
+        4,
+        3
+      ],
+      "splits": 1,
+      "source_module": "lm_head",
+      "source_direction": "forward",
+      "latency_reductions": [
+        0.4191743099328584,
+        0.39942254216896267
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gemm",
+      "M": 512,
+      "N": 4096,
+      "K": 151936,
+      "strides": [
+        [
+          151936,
+          1
+        ],
+        [
+          4096,
+          1
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        64,
+        256,
+        32,
+        8,
+        8,
+        3
+      ],
+      "splits": 1,
+      "source_module": "lm_head",
+      "source_direction": "dx",
+      "latency_reductions": [
+        0.6137074829039738,
+        0.6154654533445859
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gemm",
+      "M": 151936,
+      "N": 4096,
+      "K": 512,
+      "strides": [
+        [
+          1,
+          151936
+        ],
+        [
+          4096,
+          1
+        ]
+      ],
+      "family": "tiled",
+      "config": [
+        128,
+        128,
+        32,
+        8,
+        8,
+        3
+      ],
+      "splits": 1,
+      "source_module": "lm_head",
+      "source_direction": "dw",
+      "latency_reductions": [
+        0.3968139579314034,
+        0.386172523325362
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    },
+    {
+      "kind": "gate_up",
+      "M": 512,
+      "N": 12288,
+      "K": 4096,
+      "strides": null,
+      "family": "tiled",
+      "config": [
+        128,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "splits": 1,
+      "source_module": "gate_up_fused",
+      "source_direction": "fused_forward",
+      "latency_reductions": [
+        0.2291666472330185,
+        0.1769479889016129
+      ],
+      "numerical": [
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        },
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        },
+        {
+          "finite": true,
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "differing_elements": 0,
+          "passed": true
+        }
+      ],
+      "partial_workspace_bytes": 0
+    }
+  ],
+  "source_report_sha256": "f1b131559669dc8ca59f4dc8a2facd2616ea546fcc0fffc8092255d3d7331fd1",
+  "resource_monitor_sha256": "f8c14b5aa940226beb619d8278ea1b4d09c73a82216d0a7bf46666822d200d3f",
+  "minimum_reduction_in_each_order": 0.02,
+  "complete_model_numerically_qualified": false,
+  "whole_step_performance_qualified": false,
+  "scope": "Build an explicit SM86 tuning plan from a clean completed operator screen.\n\nRequire improvements in both confirmation orders; never infer a training gain.\nAll rejected candidates remain in the input report. No GPU is initialized.\n"
+}

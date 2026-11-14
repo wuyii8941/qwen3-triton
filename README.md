@@ -5,7 +5,7 @@ Embedding、所有 Linear、RMSNorm、QK-Norm/RoPE、causal GQA attention、
 SwiGLU、residual 和交叉熵的模型计算及反向均由 Triton 实现。
 参数、autograd、分配器、FSDP2/NCCL 和 AdamW 使用共同的 PyTorch 基础设施。
 
-本次发布固定已验收的 V9 实现与小型证据；后续优化以此为基线。
+GitHub main 的首次发布固定已验收的 V9 实现与小型证据；本研究分支继续以此优化。
 这不是完整预训练框架，也不包含推理/KV cache 接口。
 
 ## 实测结果
@@ -29,6 +29,17 @@ BF16 计算、FP32 master/梯度/AdamW state，相同 FSDP2 和逐层重计算�
 初末全量验证和模型 CUDA 内核覆盖检查通过。受外部作业干扰的一次记录
 已排除，结果披露中断及恢复。数值容差通过不等于与 HF 梯度逐位相同，
 短程质量检查不代表完整训练收敛。
+
+## V10：SM86 GEMM 调优研究
+
+本分支增加按形状和布局选择 GEMM 配置的可选路径，并完成 8 组整模型对照。
+全量调优相对 V9 两轮快 **0.51% / 0.88%**，仍比同轮 HF 慢 **1.45% / 0.87%**；
+仅调优 MLP/head 的方案没有稳定整步收益。数值、短程质量和内核检查全部通过，
+两种方案均未达到事先设定的性能采用门槛，**V9 仍为默认配置**。
+
+详见 [实验、2026 年方法评估与复现](OPTIMIZATION_V10.md) 和
+[证据索引](results/qwen3_triton_v10_evidence_index_v1.json)。配置保持显式启用；
+原 V9 校验器固定历史源码哈希，本分支使用 `scripts/check_qwen3_tuned_source.py`。
 
 ## 代码与复现
 

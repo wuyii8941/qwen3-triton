@@ -1,0 +1,2304 @@
+{
+  "complete": true,
+  "GPU_executed": false,
+  "CUDA_initialized": false,
+  "target": "SM86",
+  "rows": [
+    {
+      "case": "head_forward",
+      "config": [
+        64,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 16384,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 20,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        64,
+        128,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        32,
+        128,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 38,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        128,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        128,
+        64,
+        64,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        128,
+        128,
+        32,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 20,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        128,
+        128,
+        64,
+        8,
+        8,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 22,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        32,
+        64,
+        64,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 36864,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 34,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        64,
+        64,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        64,
+        64,
+        128,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 38,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        32,
+        128,
+        128,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 46,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        32,
+        256,
+        64,
+        8,
+        8,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 36864,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 24,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        64,
+        256,
+        32,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 23,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 30,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 73728,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 58,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        64,
+        128,
+        64,
+        1,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        64,
+        128,
+        64,
+        4,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        128,
+        128,
+        32,
+        4,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        32,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 12288,
+      "tensorcore_instructions": 8,
+      "async_copy_instructions": 17,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        64,
+        64,
+        32,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        32,
+        128,
+        32,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 30720,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 30,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_forward",
+      "config": [
+        64,
+        64,
+        64,
+        1,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        64,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 16384,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 20,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        64,
+        128,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        32,
+        128,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 38,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        128,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        128,
+        64,
+        64,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        128,
+        128,
+        32,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 20,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        128,
+        128,
+        64,
+        8,
+        8,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 22,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        32,
+        64,
+        64,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 36864,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 34,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        64,
+        64,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        64,
+        64,
+        128,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 38,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        32,
+        128,
+        128,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 46,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        32,
+        256,
+        64,
+        8,
+        8,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 36864,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 24,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        64,
+        256,
+        32,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 23,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 30,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 73728,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 58,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        64,
+        128,
+        64,
+        1,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        64,
+        128,
+        64,
+        4,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        128,
+        128,
+        32,
+        4,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        32,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 12288,
+      "tensorcore_instructions": 8,
+      "async_copy_instructions": 17,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        64,
+        64,
+        32,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        32,
+        128,
+        32,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 30720,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 30,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dx",
+      "config": [
+        64,
+        64,
+        64,
+        1,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        64,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 16384,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 20,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        64,
+        128,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        32,
+        128,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 38,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        128,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        128,
+        64,
+        64,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        128,
+        128,
+        32,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 20,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        128,
+        128,
+        64,
+        8,
+        8,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 22,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        32,
+        64,
+        64,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 36864,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 34,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        64,
+        64,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        64,
+        64,
+        128,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 38,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        32,
+        128,
+        128,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 46,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        32,
+        256,
+        64,
+        8,
+        8,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 36864,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 24,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        64,
+        256,
+        32,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 23,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 30,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 73728,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 58,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        64,
+        128,
+        64,
+        1,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        64,
+        128,
+        64,
+        4,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        128,
+        128,
+        32,
+        4,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        32,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 12288,
+      "tensorcore_instructions": 8,
+      "async_copy_instructions": 17,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        64,
+        64,
+        32,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        32,
+        128,
+        32,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 30720,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 30,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "head_dw",
+      "config": [
+        64,
+        64,
+        64,
+        1,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        64,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 16384,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 20,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        64,
+        128,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        32,
+        128,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 38,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        128,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        128,
+        64,
+        64,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        128,
+        128,
+        32,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 20,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        128,
+        128,
+        64,
+        8,
+        8,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 22,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        32,
+        64,
+        64,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 36864,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 34,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        64,
+        64,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        64,
+        64,
+        128,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 38,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        32,
+        128,
+        128,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 46,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        32,
+        256,
+        64,
+        8,
+        8,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 36864,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 24,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        64,
+        256,
+        32,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 23,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 30,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 73728,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 58,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        64,
+        128,
+        64,
+        1,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        64,
+        128,
+        64,
+        4,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        128,
+        128,
+        32,
+        4,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        32,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 12288,
+      "tensorcore_instructions": 8,
+      "async_copy_instructions": 17,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        64,
+        64,
+        32,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        32,
+        128,
+        32,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 30720,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 30,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dx",
+      "config": [
+        64,
+        64,
+        64,
+        1,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        64,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 16384,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 20,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        64,
+        128,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        32,
+        128,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 38,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        128,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        128,
+        64,
+        64,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        128,
+        128,
+        32,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 20,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        128,
+        128,
+        64,
+        8,
+        8,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 22,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        32,
+        64,
+        64,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 36864,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 34,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        64,
+        64,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        64,
+        64,
+        128,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 38,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        32,
+        128,
+        128,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 46,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        32,
+        256,
+        64,
+        8,
+        8,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 36864,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 24,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        64,
+        256,
+        32,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 23,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 30,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 73728,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 58,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        64,
+        128,
+        64,
+        1,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        64,
+        128,
+        64,
+        4,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 44,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        128,
+        128,
+        32,
+        4,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        32,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 12288,
+      "tensorcore_instructions": 8,
+      "async_copy_instructions": 17,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        64,
+        64,
+        32,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        32,
+        128,
+        32,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 30720,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 30,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "mlp_dw",
+      "config": [
+        64,
+        64,
+        64,
+        1,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 0,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        64,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 24576,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 29,
+      "scalar_fp32_adds": 64,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        64,
+        128,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 41,
+      "scalar_fp32_adds": 128,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        128,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 32768,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 35,
+      "scalar_fp32_adds": 128,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        128,
+        64,
+        64,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 65536,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 35,
+      "scalar_fp32_adds": 64,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        128,
+        128,
+        32,
+        8,
+        8,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 29,
+      "scalar_fp32_adds": 128,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        128,
+        128,
+        64,
+        8,
+        8,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 128,
+      "async_copy_instructions": 32,
+      "scalar_fp32_adds": 128,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        32,
+        64,
+        64,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 61440,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 54,
+      "scalar_fp32_adds": 32,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        64,
+        64,
+        64,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 47,
+      "scalar_fp32_adds": 64,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        64,
+        64,
+        128,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 128,
+      "async_copy_instructions": 56,
+      "scalar_fp32_adds": 64,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        64,
+        128,
+        64,
+        8,
+        4,
+        2
+      ],
+      "compiled": true,
+      "shared_bytes": 40960,
+      "tensorcore_instructions": 128,
+      "async_copy_instructions": 48,
+      "scalar_fp32_adds": 128,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        128,
+        128,
+        32,
+        4,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 128,
+      "async_copy_instructions": 47,
+      "scalar_fp32_adds": 256,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        32,
+        64,
+        32,
+        8,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 20480,
+      "tensorcore_instructions": 16,
+      "async_copy_instructions": 26,
+      "scalar_fp32_adds": 32,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        64,
+        64,
+        32,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 36864,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 38,
+      "scalar_fp32_adds": 64,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        32,
+        128,
+        32,
+        8,
+        4,
+        4
+      ],
+      "compiled": true,
+      "shared_bytes": 55296,
+      "tensorcore_instructions": 32,
+      "async_copy_instructions": 50,
+      "scalar_fp32_adds": 64,
+      "local_memory_in_ptx": false
+    },
+    {
+      "case": "gate_up",
+      "config": [
+        64,
+        64,
+        64,
+        1,
+        4,
+        3
+      ],
+      "compiled": true,
+      "shared_bytes": 49152,
+      "tensorcore_instructions": 64,
+      "async_copy_instructions": 47,
+      "scalar_fp32_adds": 64,
+      "local_memory_in_ptx": false
+    }
+  ],
+  "scope": "CPU-only SM86 resource/code-generation screen. No GPU timing or quality claim."
+}

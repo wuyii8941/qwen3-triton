@@ -1,0 +1,159 @@
+{
+  "schema": 1,
+  "created_utc": "2026-11-14T17:44:29.405752+00:00",
+  "original_manifest_sha256": "c7d8e6d21d7b9d589c95b59e7be7378a1237ae1b8d7ea6054ffcd44de2c8e43e",
+  "original_controller_pid": 1943853,
+  "original_controller_terminal": true,
+  "interrupted_cohort": true,
+  "reason": "Foreign CUDA contexts during v9_r1; entire role rejected despite normal worker completion",
+  "foreign_pids": [
+    1981012,
+    1981286
+  ],
+  "bad_samples": [
+    {
+      "utc": "2026-11-14T17:38:35.415095+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-56488a1d-fbbe-af5f-56e4-23f6f983d9b0",
+          "pid": 1967040,
+          "memory_mib": 39712
+        },
+        {
+          "gpu_uuid": "GPU-56488a1d-fbbe-af5f-56e4-23f6f983d9b0",
+          "pid": 1981012,
+          "memory_mib": 326
+        },
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1967041,
+          "memory_mib": 39728
+        },
+        {
+          "gpu_uuid": "GPU-8ed8fdd7-cd60-7271-c8e8-1684f55cd9ea",
+          "pid": 1967042,
+          "memory_mib": 39712
+        },
+        {
+          "gpu_uuid": "GPU-860f949a-7709-0357-5681-d784e5abea66",
+          "pid": 1967044,
+          "memory_mib": 42102
+        }
+      ],
+      "foreign_pids": [
+        1981012
+      ]
+    },
+    {
+      "utc": "2026-11-14T17:38:44.589715+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-56488a1d-fbbe-af5f-56e4-23f6f983d9b0",
+          "pid": 1967040,
+          "memory_mib": 39712
+        },
+        {
+          "gpu_uuid": "GPU-56488a1d-fbbe-af5f-56e4-23f6f983d9b0",
+          "pid": 1981286,
+          "memory_mib": 326
+        },
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1967041,
+          "memory_mib": 39728
+        },
+        {
+          "gpu_uuid": "GPU-8ed8fdd7-cd60-7271-c8e8-1684f55cd9ea",
+          "pid": 1967042,
+          "memory_mib": 39712
+        },
+        {
+          "gpu_uuid": "GPU-860f949a-7709-0357-5681-d784e5abea66",
+          "pid": 1967044,
+          "memory_mib": 42102
+        }
+      ],
+      "foreign_pids": [
+        1981286
+      ]
+    }
+  ],
+  "kept_clean_prefix": [
+    "hf_r1"
+  ],
+  "kept_files_sha256": {
+    "hf_r1/rank0.json": "55e280a59c7bca78ed0fa5871fdcc277680645e9ab3e48473107a4488ee39fa6",
+    "hf_r1/rank1.json": "08e99bcc5dbf07217d897a99088560fd1fc0ccd644653e062ab1fdee98bfa4ed",
+    "hf_r1/rank2.json": "4c2a819fc9caef49c18457be457ab1c155d716a48d87dbf1e0538f514f6d3f1a",
+    "hf_r1/rank3.json": "88960c7865d71078d5ad2995e7fc8389c78a4b70bc64c3375f9e7c18d3f8c856",
+    "hf_r1/result.json": "96becb47b8c05abb7a6b30b02760c302bc8260c8183f1f5be21cfb99bc1429dd",
+    "hf_r1/training_trace.json": "345d8340032019869b8fb0fd4d990d43dfa88bb661976056437bfec861cea25d",
+    "hf_r1.log": "ada650b54c34810c7b7252a06cd801c188351eb4f51647a879343d3a55f2ceb9",
+    "hf_r1.gpu.json": "3d314307e1f70c1bbcb83d91396830db8e9bf2e46b90f5e9aaa99e60118c5d34"
+  },
+  "rejected_files_sha256": {
+    "v9_r1/rank0.json": "bd488b12a461d431abd8eb8aaebde27e55fbd3df42b5e8dcc968824dcbf47b75",
+    "v9_r1/rank1.json": "2b636652f7920b2d22d5f02ca20b8dee7eb681707010d24462bb5cb6f25806d0",
+    "v9_r1/rank2.json": "efb64d1273e8463f06390ad75d6478fd189adfee9224f8196d7af8324d937e9d",
+    "v9_r1/rank3.json": "22280521ca75b20246b1e1a4c9745ec583427fb7de2ebbee3cd1d9af7144bd42",
+    "v9_r1/result.json": "602b7b1b4949b565b7ee287eb5ccb62470102dcda2a66506620608c40a1d2e47",
+    "v9_r1/training_trace.json": "bf0bedef254b6cdcc7f716ac5985e06f0c109121b148012b4f80d779d941f39e",
+    "v9_r1.log": "a4727523c99be4add3efc2c84c188e280b1b2f278668fb3af1738227388c6b55",
+    "v9_r1.gpu.json": "90c80c778497bee1464488bcf10e88019437cd9faa7b22eb4838011c6a0d3590"
+  },
+  "rejected_location": "recovery_001/rejected_attempt",
+  "pending_roles": [
+    {
+      "name": "v9_r1",
+      "arm": "v9",
+      "order": 1,
+      "variant": "triton_optimized",
+      "tuned": false
+    },
+    {
+      "name": "v10_all_r1",
+      "arm": "v10_all",
+      "order": 1,
+      "variant": "triton_optimized",
+      "tuned": true
+    },
+    {
+      "name": "v10_r1",
+      "arm": "v10",
+      "order": 1,
+      "variant": "triton_optimized",
+      "tuned": true
+    },
+    {
+      "name": "v10_r2",
+      "arm": "v10",
+      "order": 2,
+      "variant": "triton_optimized",
+      "tuned": true
+    },
+    {
+      "name": "v10_all_r2",
+      "arm": "v10_all",
+      "order": 2,
+      "variant": "triton_optimized",
+      "tuned": true
+    },
+    {
+      "name": "v9_r2",
+      "arm": "v9",
+      "order": 2,
+      "variant": "triton_optimized",
+      "tuned": false
+    },
+    {
+      "name": "hf_r2",
+      "arm": "hf",
+      "order": 2,
+      "variant": "hf",
+      "tuned": false
+    }
+  ],
+  "preserve_original_remaining_order": true,
+  "selection_policy_unchanged": true,
+  "no_rejected_timing_adopted": true
+}

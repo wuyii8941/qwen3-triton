@@ -3,14 +3,16 @@
 The accepted V9 baseline is GitHub commit
 `13dbdf984201a70ca4bba5fb38c72606cd33fbeb` on `main`.
 New work lives on `research/ampere-gemm-v10`; the original research workspace
-and the qualified V9 kernels are preserved. Operator and module screening has
-completed; whole-step qualification is still pending. No new default is adopted.
+and the qualified V9 kernels are preserved. Operator screening, module checks and
+the eight-role whole-step comparison are complete. All numerical, short-quality
+and CUDA coverage gates pass. Neither candidate meets the predeclared performance
+adoption rule, so V9 remains the default.
 
 The target remains complete Triton model training on official Qwen3-8B,
 4×RTX A6000, BF16 compute and FP32 masters/gradients/optimizer state. Keep
 the same FSDP2, checkpointing, data, precision and optimizer protocol when
-comparing with HF+Flash. The V9 optimized path remains 1.74–1.87% slower
-than HF+Flash under that protocol.
+comparing with HF+Flash. The previously published V9 cohort was 1.74–1.87% slower
+than HF+Flash under that protocol. The new cohort is reported below.
 
 ## Current evidence and priorities
 
@@ -114,12 +116,12 @@ GPU ownership monitoring and completed all 16 cases. Fifteen configurations
 passed the opposite-order improvement requirement; all are ordinary tiled GEMM.
 Split-K and the explicit-accumulator negative control were not selected.
 
-Two explicit plans are being compared:
+Two explicit plans were compared:
 
 - Plan 001 applies all 15 selected shape/layout configurations. One configuration
   concerns separate gate/up forward GEMMs and is unused when gate/up fusion is on.
 - Plan 002 removes the five attention-only configurations, retaining MLP/LM-head
-  tuning. It is a selection candidate, not a proven whole-step winner.
+  tuning. The complete-model comparison did not establish a useful step reduction.
 
 The initial integrated module run (`module_check_001`) passed all seven local VJP
 groups and selected-GPU monitoring. Relative to V9, MLP's separate-forward/backward
@@ -129,7 +131,7 @@ so a selective plan was added. These are isolated BF16-parameter module results,
 not FP32-master FSDP gradient or whole-step claims.
 
 The host dispatcher then changed to check the shape table before querying device
-properties and to cache device capabilities. Plans 001/002 are both retested
+properties and to cache device capabilities. Plans 001/002 were both retested
 under this same dispatcher (`module_check_003` / `module_check_002`). The earlier
 run's exact source files are archived with its result; its hashes are not changed.
 Plan 002 has passed independent checks of 42 timing cases and seven local VJPs.
@@ -141,7 +143,7 @@ The original lossless native archive is reused and both fresh HF arms have tight
 native-control thresholds and bitwise forward checks. No dense archives are
 regenerated. The trace reviewer additionally verifies GEMM/gate-up launch grids
 and warp counts against each plan; an original V9 trace fails the new-plan
-geometry contract, as expected. The queue waits for all four GPUs to be idle.
+geometry contract, as expected. Admission required all four GPUs to be idle.
 
 The unchanged historical `scripts/check_qwen3_triton.py` intentionally verifies
 V9 hashes and rejects a modified model source tree. For this branch use
@@ -213,26 +215,44 @@ process ancestry after update27 to diagnose any further short CUDA probes;
 those extra GPU queries occur after all measured optimizer updates and do not
 relax the resource gate.
 
-## First-order results; reverse-order qualification pending
+## Final whole-step results
 
-The first four clean roles completed with all 399 parameter comparisons on each
+All eight accepted roles completed, with all 399 parameter comparisons on each
 of four ranks passing. Both candidate plans have the same 27 recorded global
-losses and before/after validation losses as V9. Actual full-model CUDA kernel
-counts and plan-specific launch geometries passed. These partial checks do not
-replace the final eight-role reference replay and quality review.
+losses and before/after validation losses as V9 in both orders. The CPU reviewer
+replayed all four original native archives and checked the recorded numerical
+arithmetic, short-quality contract, actual full-model CUDA kernel counts and
+plan-specific launch geometries. Both fresh HF controls pass the tighter native
+thresholds and bitwise forward checks. The earlier resource-rejected V9 attempt
+supplies no accepted timing; this remains an interrupted cohort.
 
-| Role | Median optimizer step (s) | Latency reduction against V9 |
-| --- | ---: | ---: |
-| HF + Flash | 7.017468 | 1.928% |
-| V9 | 7.155400 | — |
-| Plan 001: all selected GEMMs | 7.119030 | 0.508% |
-| Plan 002: MLP/head only | 7.153963 | 0.020% |
+| Role | First-order median (s) | Reverse-order median (s) | Reduction against V9, first / reverse |
+| --- | ---: | ---: | ---: |
+| HF + Flash | 7.017468 | 7.023537 | — |
+| V9 | 7.155400 | 7.147384 | — |
+| Plan 001: all selected GEMMs | 7.119030 | 7.084660 | 0.508% / 0.878% |
+| Plan 002: MLP/head only | 7.153963 | 7.198019 | 0.020% / −0.708% |
 
-Plan 001 remains 1.447% slower than HF in this order. Neither candidate meets
-the predeclared 1% reduction against V9 in this order. Keep the existing default
-and complete the reverse-order controls before reporting a final recommendation.
+Plan 001 remains 1.447% / 0.870% slower than HF. Neither candidate meets the
+predeclared 1% reduction against V9 in each order. The selection-rule summarizer
+therefore recommends no candidate, and model defaults remain unchanged. These
+two orders are descriptive; they do not establish statistical significance or
+a global optimum. In the isolated module checks, MLP latency fell about 32% and
+LM-head latency about 49% against V9, but this did not yield a large step reduction.
 
-`trace_overlap_diagnostic_002.json` describes the untimed rank-0 forward/backward
+All Triton roles have a 34.140 GiB measured allocated peak. Plan 001's reserved
+pool peak is 38.365 GiB versus V9's 40.684 GiB in both orders; this is not a claim
+of reduced activation storage. All roles satisfy the 41.875 GiB cap. This work
+changes explicit GEMM configurations and their host dispatch, with no additional
+checkpointing, FSDP or optimizer changes between the compared arms.
+
+The short-quality gate uses 16 updates and complete 512-block validation before
+and after those updates; no convergence or inference-performance claim is made.
+Candidate gradient coordinates were compared at runtime; dense candidate vectors
+are not archived, so independent replay verifies the reference and recorded gate
+arithmetic rather than re-comparing unavailable candidate vectors.
+
+`trace_overlap_diagnostic_003.json` describes the untimed rank-0 forward/backward
 profile after update 27. V9's model-kernel interval union is 0.625 s; Plan 001's
 is 0.440 s. Their NCCL interval unions are 6.933 s and 6.910 s, respectively,
 inside profiled GPU windows of 7.011 s and 6.972 s. Most model computation overlaps
@@ -252,5 +272,43 @@ CUDA_VISIBLE_DEVICES='' bash scripts/research_python.sh \
   scripts/summarize_qwen3_trace_overlap.py \
   --cohort /data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/paired_training_002 \
   --role v9_r1 --role v10_all_r1 --role v10_r1 \
+  --role v9_r2 --role v10_all_r2 --role v10_r2 \
   --destination /data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/trace_overlap_reproduction.json
 ```
+
+## Checked-in evidence and configuration reuse
+
+- [Evidence index and original-file hashes](results/qwen3_triton_v10_evidence_index_v1.json).
+- [Final selection summary](results/qwen3_triton_v10_paired_training_v1.json) and
+  [independent training review](results/qwen3_triton_v10_training_review_v1.json).
+- [Frozen cohort manifest](results/qwen3_triton_v10_cohort_manifest_v1.json),
+  [pre-timing policy](results/qwen3_triton_v10_selection_policy_v1.json) and
+  [recovery disclosure](results/qwen3_triton_v10_recovery_v1.json).
+- [Raw operator screen](results/qwen3_triton_v10_operator_screen_v1.json) and
+  [its ownership monitor](results/qwen3_triton_v10_operator_resource_v1.json).
+- [CPU code generation](results/qwen3_triton_v10_cpu_codegen_v1.json) and
+  [accumulation-spelling negative control](results/qwen3_triton_v10_accumulation_control_v1.json).
+- [All-plan module review](results/qwen3_triton_v10_all_modules_v1.json),
+  [selective-plan module review](results/qwen3_triton_v10_selective_modules_v1.json),
+  [source/meta checks](results/qwen3_triton_v10_source_meta_v1.json) and
+  [trace overlap](results/qwen3_triton_v10_trace_overlap_v1.json).
+
+These are byte-identical copies of the corresponding local evidence. The raw
+training logs, traces, rejected attempts, reference gradients and input corpus
+remain under the original artifact paths; models, data and caches are not part
+of this bundle. Hashes in the reports refer to those original files.
+
+Both plans remain available for explicit experiments:
+`--gemm-plan results/qwen3_triton_v10_gemm_plan_001.json` for all selected GEMMs,
+or `--gemm-plan results/qwen3_triton_v10_gemm_plan_002.json` for MLP/head only.
+Their hashes match the measured plans. Their qualification flags record the
+selection-time state; the later numerical and performance decisions are in the
+final summary. Missing shapes use the original Triton configuration. These
+SM86/BF16 plans were measured at batch 1 per rank and sequence length 512;
+they are not a portable performance guarantee for other shapes or GPUs.
+
+The most useful next experiment is to distinguish exposed transfer time from
+dependency waits and then test a compatible communication/compute schedule.
+Syncopate provides a 2026 design reference, but neither its H100 speedups nor
+FSDP integration have been reproduced here. Further isolated GEMM search has
+lower priority under this measured profile.

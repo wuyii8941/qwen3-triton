@@ -1,0 +1,168 @@
+{
+  "sources": {
+    "/data1/tzh/proj/qwen3-triton-opt-v10/scripts/run_qwen3_tuned_suite.py": "6ead9ba700d9e7c0d6ad4bcf60802872564883c1c754e92c8a335f4515fe2e8f",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/scripts/train_qwen3_triton_8b.py": "af905d0a94bd93d4a8223e0053eee6c07c259a522a923428d1b7c45b3b3f5928",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/scripts/review_qwen3_tuned_suite.py": "649c1edf4d7859d9f77b93265c813a9c80c79872d890986071f2457e411483fd",
+    "/data1/tzh/proj/qwen_operator_lab/configs/fsdp_8b.json": "d8c40270236054a35f8e1274910991368ce943af15eab23cbbb221beb192a815",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/official_qwen3_inputs_v1.json": "02bd3b9257c92692c755c5fdfce9697189afe580883def0b5cacbf7b25d295a7",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/gemm_plan_002.json": "0df5562cf9db2cb391ce569d7189618a76feb29e14fb13f0ed648d48ac40d272",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/official_8b_paired_quality_ablation_control/hf_reference_r1/result.json": "663ed0b3769f19afbc0d664067b008224212e29184ff9c4bd9c1ef6d8dd517d6",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/module_check_002/measurements/result.json": "476d0756df3198e394c931b1a9990b47d1ee083a96df06d3e69fcdaf49f29736",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/module_check_002/gpu.json": "2e47be85950ca1343e57e2542e1d9b864910c9edf148bbb5947485a07237df4c",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/__init__.py": "82e9fd47b9a2e5763702a6eabc12aa41f0f80c082b9076b28da9adfb77530507",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/_model.py": "834df2b111e010bb8250dd8231979d14b47cb0de906b9e2f8bf6d911cc0f31b8",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/_model_optimized.py": "fb0eae20df4e6e07a2239ac09c55221d0834edb2e676c26c7ec47d9c9ec78149",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/audit.py": "9e43654bcd96a1e70d02fa47bb6c71ea95614bd66ab36e0994eacaf171108a33",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/benchmark_utils/__init__.py": "9ab63ec588821328df6922899f68077a28ee5584e970b9e31363fee13b6d6985",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/benchmark_utils/gpu_lease.py": "25ee1cd8cd4edffa2d24202f8fac979463846c4cc9f8dfdbc2ca65a4af522dbc",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/benchmark_utils/monitor.py": "a7a3c6e72a60feee9997c993a6e11c3238bea71e209328355ea51e1c1bd68884",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/benchmark_utils/stable_idle.py": "5a4c62706c07b8a51a82dcdb123a9f1409b62188e588a9fe00088ff02d2dfd93",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/gradient_archive.py": "a7ec43bc6269c13681d0a2348c67a57ed4d74a260480069660ee40355c367e08",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/__init__.py": "010fffaff857eb0a9acd6945e2943e2a9823b4898aff1a6778126267c5253d6b",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/activation.py": "0411c9bfe9074832f048f1d94c4920f7e0b487dfad9f1ac6cae8d8596134207b",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/attention.py": "d4554e1da9265ced8bc2e1a256a636bd68c2c337165cdf548870f345266706b7",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/attention_kernels.py": "269bd044cd4f1924a1901431b0c36e30bcfa45b34647a6658f76f9bd8deba545",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/attention_precision.py": "197e39a90e5c5b8b96827c6e2a512cf0cc9a79a11f048388dd21345d8bc79568",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/embedding.py": "977c2b687ba8f76859a324dd9d5d30a25c6d0e8eac1a0d5ff72269ab4ca08564",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/gemm_experiments.py": "354108f718e778a501baad50ef989c30e35def6f134d2584d4fe1c723dd5698c",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/gemm_tuning.py": "839976b5b2da0430210b69c727d8f792deefc1cb4a1d02db6e807afcdcd22150",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/hf_reduction.py": "58588abf318473a79d671787831df67e8387a4a4ebd2ddaa7d53742c775e16ac",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/linear.py": "8a62d2c11873137735fa798d29f9ae76bcc81d8c6693b8fff0c7c7cb383ce84d",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/loss.py": "33b060986fe9d418b9a9b80ed0cb77529b28079f1a31480a2be28254bbdb06d0",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/math_precision.py": "ae594164416c54b6ca989178bb7920c7cb0d0afc5e8d59d8021e2542daf6c917",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/mlp.py": "2726296b9a1d8de7768a8c1658be8ff64a3c3afdd244a839e8416fbeed0d401b",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/mlp_precision.py": "c9bc7021dc0d54ae0dad588a37f9f7ed4ee864fea365c6689ed47f31e5a71e92",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/norm.py": "3e9824da12a6cdd2f65b4964557acb2b195660b1748c35f4ca7075e8200756ef",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/norm_rope.py": "d1fab3c87817d84044af9bbb50e8f6067ce1bd1e3806b84be95f6b07713d4cd6",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/residual.py": "d002f65b293dcff45dee8e3042fd350a1a67b4d039792c0fd65a5f18ad45427e",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/kernels/rotary.py": "cd4f0157e2e15c7da2db7c9867d9453c847988716ddd436d1d6769a8362d5c6f",
+    "/data1/tzh/proj/qwen3-triton-opt-v10/qwen3_triton/model.py": "9d43c81d60c6745f1f366ecbcb0ae997155474331a51df8dd0b59f659c5fe986",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/gemm_plan_001.json": "1ecb1538bb6c0881613a56f1dc0ac665aca52d2d8c718d8cb83cc70ca92bba15",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/module_check_003/measurements/result.json": "9d3965c0cd9a3dc91769ec023af76e9960ca865affd5c4c2665823d6011c058e",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/module_check_003/gpu.json": "3325e7b9397b47ccb51d99f0910850b9d5fda9e0dd1cae25b2854c5ce0d66ec9"
+  },
+  "core_snapshot": {
+    "sha256": "03fbf1139be45b9ad3dc6c09e99bda386323e3a3110aea5b4ec6649406dcf7b1",
+    "files": {
+      "configs/fsdp_8b.json": "d8c40270236054a35f8e1274910991368ce943af15eab23cbbb221beb192a815",
+      "model/__init__.py": "847e81e2883fed56bd8ca638461b6c2dab69c52c72fa5e6f3aac13f99afb74ab",
+      "model/config.py": "e308e3a569536acd02131873f72da34a38543d7c5fca6d67f529c370ced30ffd",
+      "model/qwen_tiny.py": "f2fa96c71b98bd392faba0845bf705cb00fe4af0dd68652c01f8a73319e17adb",
+      "ops/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ops/reference/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ops/reference/attention.py": "aa80b1228fb273c21cd52654a0e9243058cc0aa9f40aafe47fa9d98730d640fa",
+      "ops/reference/fused_qk_norm_rope.py": "d2c8272db6d40317981846358d198b68ddc5333e7b01eff287aa8d444f006a14",
+      "ops/reference/rms_norm.py": "358464d567302df32ac6c47b23208b4ed4685884238c8a3c89a090979444adfc",
+      "ops/reference/rope.py": "1eb4276b8b06f57cd7d0beb42527846a17bd6b79ff9baf0774a458acb4bc1ce1",
+      "ops/reference/swiglu.py": "60eb44a0f6f5db4551bc9dbb56c291d069521915dc9eec60b715d9fdef563202",
+      "ops/triton/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ops/triton/attention.py": "f818040044d377543c35126e7a68bcb3d8e5eca0e65209340e883a430f99ae2f",
+      "ops/triton/attention_backward.py": "f0c9814367b7f07064dcfb07df1dd262f647ab3fcf12dcf56d6de0ab37911c3e",
+      "ops/triton/fused_qk_norm_rope.py": "bef48740e7b9d572fcec3c4c79ab2986bc13f353310993ee4bdd75d1ccc1ae19",
+      "ops/triton/gate_up_swiglu.py": "7d655a5e447b6e108810d128c5b0f5d0b3237d2b69e121a4fcb876017ca01527",
+      "ops/triton/gradient_transport.py": "f359280887b226a7be158197020c3815d7bc4d02d6f347093af2e3a70210a4a6",
+      "ops/triton/rms_norm.py": "fad5728bd60dba883fa3ffb8bba4fe6dfc9654a1ba1ccf5b9f96628dba960f25",
+      "ops/triton/rope.py": "a965410b803a135dc122929dcc010cfec39f32e1e5f04acad1c3cda3aecc53ff",
+      "ops/triton/silu_and_mul.py": "edd55f23f6d91555ed9297c88eaee4fd32aee7ab5779c908e37cf9c04f40b0ed",
+      "training/__init__.py": "51ccaa273fc8d2f2d4e079220daad1af3faa59d45237a991038e301bc1236097",
+      "training/best_state.py": "2e8f7674706a92a2365942948538918cd62d6928e1af2f0aa8c334e29fa9bb01",
+      "training/data.py": "b27df49108d7729514053406e7cc261cd177612c7f001fe5918ff3dc475964e6",
+      "training/evaluation.py": "a6b5147c86171d854d5e99b52e86dc376fe3de6d949ddea72217f3b0604e0a8d",
+      "training/fsdp/__init__.py": "15668fafeed64e351c63c6d78b5002f46b3e888a7d91ce6f435f2d835943ed64",
+      "training/fsdp/activation_checkpoint.py": "8d614a743fe57ae2ebbe95d0f0968325202802fe63234af5cf359cc18ba0f9d3",
+      "training/fsdp/communication.py": "629f53d80f228212241d7c1a90797a29c6b60569361d567c185be14f09c8111f",
+      "training/fsdp/custom.py": "d428986825c94b31302028ad740e6107329e0d3acc85b5365f83648f3ed39c5d",
+      "training/fsdp/official.py": "95382eaf3f5fabe291c0c38b817a90c19607848dcd316df9fb07e5999784d83d",
+      "training/fsdp/primitives.py": "51c8bf47dcd33fe0c52cc5e632a9c0083a1dcaf7253f5b10fb4929e544de6be7",
+      "training/fsdp/vocab_embedding.py": "f8c66d4fd9847849520799b4aa7dbe46e7ae6ed43ea3031602a742f10dbc65e8",
+      "training/fsdp/vocab_head.py": "6a6516103b457cc65bfccba63fccd4f5c8793452e42cad333404a62329f86b94",
+      "training/input_manifest.py": "d910c7c6c291ac0716f6e57c28134d88b11d22cf8ca6d1b76310b6ba39d85dce",
+      "training/policy.py": "5a916dc02cf6b77644174a285ed0d212ecc8eb227fe07b9b41bb760eaaae3997",
+      "training/provenance.py": "28cc8cfabc8fed53463281b053a549947defa0ea335eaad2f4b3bd9eb8ecd5a5",
+      "training/stopping.py": "d9df604e3728155ba57add1bb03f1e47864fa3a01f1509c3c787a051a1845dde",
+      "training/train.py": "a1d0bb71379327c1a3d03eb0a630534cc8e659fc9298a993741d8a6ca3f40c49"
+    }
+  },
+  "roles": [
+    {
+      "name": "hf_r1",
+      "arm": "hf",
+      "order": 1,
+      "variant": "hf",
+      "tuned": false
+    },
+    {
+      "name": "v9_r1",
+      "arm": "v9",
+      "order": 1,
+      "variant": "triton_optimized",
+      "tuned": false
+    },
+    {
+      "name": "v10_all_r1",
+      "arm": "v10_all",
+      "order": 1,
+      "variant": "triton_optimized",
+      "tuned": true
+    },
+    {
+      "name": "v10_r1",
+      "arm": "v10",
+      "order": 1,
+      "variant": "triton_optimized",
+      "tuned": true
+    },
+    {
+      "name": "v10_r2",
+      "arm": "v10",
+      "order": 2,
+      "variant": "triton_optimized",
+      "tuned": true
+    },
+    {
+      "name": "v10_all_r2",
+      "arm": "v10_all",
+      "order": 2,
+      "variant": "triton_optimized",
+      "tuned": true
+    },
+    {
+      "name": "v9_r2",
+      "arm": "v9",
+      "order": 2,
+      "variant": "triton_optimized",
+      "tuned": false
+    },
+    {
+      "name": "hf_r2",
+      "arm": "hf",
+      "order": 2,
+      "variant": "hf",
+      "tuned": false
+    }
+  ],
+  "reference_dir": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/official_8b_paired_quality_ablation_control/hf_reference_r1",
+  "reference_result_sha256": "663ed0b3769f19afbc0d664067b008224212e29184ff9c4bd9c1ef6d8dd517d6",
+  "plans": {
+    "v10": {
+      "path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/gemm_plan_002.json",
+      "sha256": "0df5562cf9db2cb391ce569d7189618a76feb29e14fb13f0ed648d48ac40d272",
+      "selection": "MLP and LM head"
+    },
+    "v10_all": {
+      "path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/gemm_plan_001.json",
+      "sha256": "1ecb1538bb6c0881613a56f1dc0ac665aca52d2d8c718d8cb83cc70ca92bba15",
+      "selection": "All selected operator shapes"
+    }
+  },
+  "input_root": "/data1/tzh/proj/qwen_operator_lab",
+  "input_manifest_sha256": "02bd3b9257c92692c755c5fdfce9697189afe580883def0b5cacbf7b25d295a7",
+  "gemm_plan": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/gemm_plan_002.json",
+  "gemm_plan_sha256": "0df5562cf9db2cb391ce569d7189618a76feb29e14fb13f0ed648d48ac40d272",
+  "quality_steps": 16,
+  "warmup_steps": 3,
+  "measure_steps": 8,
+  "original_V9_commit": "13dbdf984201a70ca4bba5fb38c72606cd33fbeb",
+  "performance_adopted": false,
+  "scope": "Compare HF+Flash, accepted V9 and explicit GEMM plans in both orders.\n\nSix runs (or eight with a second plan) preserve V9's 27-update/full-validation protocol.\nReuse the original lossless native first-gradient archive and require a strict\nnative control in each new HF arm. No new dense archive is generated.\n"
+}

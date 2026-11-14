@@ -1,0 +1,130 @@
+{
+  "complete": true,
+  "generated_utc": "2026-11-14T19:02:01.490423+00:00",
+  "publication": {
+    "complete": true,
+    "commit": "13dbdf984201a70ca4bba5fb38c72606cd33fbeb",
+    "tree": "9f812fa5fa7a56195fe6fc725034e653844253f2",
+    "url": "https://github.com/wuyii8941/qwen3-triton/commit/13dbdf984201a70ca4bba5fb38c72606cd33fbeb",
+    "parents": [
+      "91cfe87194bec0cbffa1318c033de6e245891e8a"
+    ],
+    "verified_via": "GitHub connector fetch of exact published commit",
+    "verified_utc": "2026-11-14T18:48:32.582609+00:00",
+    "local_git_tree_matched": true
+  },
+  "implementation_commit": "4ddc775283bc6274961c4b2add6e82e3a64946cd",
+  "profile": {
+    "model": "Qwen/Qwen3-8B",
+    "layers": 36,
+    "hardware": "4 x RTX A6000 SM86",
+    "compute": "BF16",
+    "master_gradient_moments": "FP32",
+    "batch_per_rank": 1,
+    "sequence": 512
+  },
+  "checks": {
+    "byte_identical_artifact_copies": true,
+    "JSON_parse": true,
+    "all8_roles_numerics_quality_CUDA_passed": true,
+    "recovery_disclosed": true,
+    "missing_recovery_negative_probe_passed": true,
+    "neither_candidate_meets_predeclared_performance_rule": true,
+    "model_default_unchanged": true,
+    "CPU_codegen_135_TensorCore_async_copy_configs": true,
+    "interval_hand_cases_and_manual_reproduction_passed": true
+  },
+  "files": [
+    {
+      "path": "results/qwen3_triton_v10_operator_screen_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/gemm_screen_004/measurements/result.json",
+      "sha256": "f1b131559669dc8ca59f4dc8a2facd2616ea546fcc0fffc8092255d3d7331fd1",
+      "bytes": 635470
+    },
+    {
+      "path": "results/qwen3_triton_v10_gemm_plan_001.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/gemm_plan_001.json",
+      "sha256": "1ecb1538bb6c0881613a56f1dc0ac665aca52d2d8c718d8cb83cc70ca92bba15",
+      "bytes": 12098
+    },
+    {
+      "path": "results/qwen3_triton_v10_gemm_plan_002.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/gemm_plan_002.json",
+      "sha256": "0df5562cf9db2cb391ce569d7189618a76feb29e14fb13f0ed648d48ac40d272",
+      "bytes": 8728
+    },
+    {
+      "path": "results/qwen3_triton_v10_selective_modules_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/module_check_002/independent_review.json",
+      "sha256": "353ce22068e50f4129cf8da5917c19a64614885e12ca338cd1c56e9728c88985",
+      "bytes": 4940
+    },
+    {
+      "path": "results/qwen3_triton_v10_all_modules_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/module_check_003/independent_review.json",
+      "sha256": "e9a5f1528ae98284f187e32087fdaa84be8b628d525a7346e94023d8b93b44d4",
+      "bytes": 4941
+    },
+    {
+      "path": "results/qwen3_triton_v10_paired_training_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/paired_training_summary_001.json",
+      "sha256": "9cd569df8b14e1e8f2561e83c7526f321a7f3423af5b6d2aad2351bd6c80ec84",
+      "bytes": 13666
+    },
+    {
+      "path": "results/qwen3_triton_v10_training_review_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/paired_training_002/independent_review.json",
+      "sha256": "39e053fc4c3caf3c62d0a54e99fd12de062aaf3deced38f8acd74954551ca15b",
+      "bytes": 59791
+    },
+    {
+      "path": "results/qwen3_triton_v10_trace_overlap_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/trace_overlap_diagnostic_003.json",
+      "sha256": "0da16f9cd50a7fd712dedd445d09150386847b4f64bb2d04c73e649a58faac00",
+      "bytes": 5833
+    },
+    {
+      "path": "results/qwen3_triton_v10_selection_policy_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/selection_policy_001.json",
+      "sha256": "749cc38e5e9bfc8e46f81625c6b7483752886f2e3c739584ac378beafd5b6984",
+      "bytes": 1501
+    },
+    {
+      "path": "results/qwen3_triton_v10_cohort_manifest_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/paired_training_002/manifest.json",
+      "sha256": "c7d8e6d21d7b9d589c95b59e7be7378a1237ae1b8d7ea6054ffcd44de2c8e43e",
+      "bytes": 12561
+    },
+    {
+      "path": "results/qwen3_triton_v10_recovery_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/paired_training_002/recovery_001/manifest.json",
+      "sha256": "c318f61ef5dfd703a48f93cff22dbb5fa9a94ec63f16f3aea2b3b2c5d1ab16b2",
+      "bytes": 4852
+    },
+    {
+      "path": "results/qwen3_triton_v10_source_meta_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/input_root_source_meta_004.json",
+      "sha256": "b07739afae7715d0d494ae0aa7554a08152bfc859c822e51c031077cf4d7ec54",
+      "bytes": 5277
+    },
+    {
+      "path": "results/qwen3_triton_v10_operator_resource_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/gemm_screen_004/gpu.json",
+      "sha256": "f8c14b5aa940226beb619d8278ea1b4d09c73a82216d0a7bf46666822d200d3f",
+      "bytes": 5747
+    },
+    {
+      "path": "results/qwen3_triton_v10_cpu_codegen_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/cpu_compile_002/result.json",
+      "sha256": "13f49dc2a9d72f420dbc3dc969d280f3fda7e05ed03f93fe09504171d037c674",
+      "bytes": 44160
+    },
+    {
+      "path": "results/qwen3_triton_v10_accumulation_control_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/gate_up_accum_codegen_001/result.json",
+      "sha256": "eda84b8c40fd4ee4d14532f08b1aada5e7619d447fbf5eabd1ec5217da3352c2",
+      "bytes": 2042
+    }
+  ],
+  "scope": "Curated local-research evidence. Original raw inputs, reference archives, logs, CUDA traces and rejected attempts remain at the recorded artifact paths; no claim those payloads are included in this bundle."
+}

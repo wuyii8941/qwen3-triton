@@ -1,0 +1,242 @@
+{
+  "returncode": 0,
+  "selected_device_clean": true,
+  "samples": [
+    {
+      "utc": "2026-11-14T15:48:22.133462+00:00",
+      "apps": [],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:24.195759+00:00",
+      "apps": [],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:26.262456+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 428
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:28.310768+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 472
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:30.380310+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 562
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:32.447326+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 590
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:34.515600+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 716
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:36.584477+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 2062
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:38.651303+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 2062
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:40.699161+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 2062
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:42.744561+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 1762
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:44.791538+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 1762
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:46.838839+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 1762
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:48.887277+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 1930
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:50.932833+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 1994
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:53.000397+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 1994
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:55.065889+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 4182
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:57.128896+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 4182
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:48:59.192089+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 4182
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:49:01.260468+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 4182
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:49:03.327285+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 4182
+        }
+      ],
+      "foreign_selected_pids": []
+    },
+    {
+      "utc": "2026-11-14T15:49:05.396213+00:00",
+      "apps": [
+        {
+          "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+          "pid": 1707469,
+          "memory_mib": 880
+        }
+      ],
+      "foreign_selected_pids": []
+    }
+  ],
+  "owned_pids": [
+    1707469
+  ],
+  "gpu_uuid": "GPU-57936391-3548-4e9b-3a76-171251751d17",
+  "controller_pid": 1703585,
+  "launcher_sha256": "a633870c9c2eda5ae92e9603257b920c67f4180d1044a6cad8349e65a8a7cebf"
+}
