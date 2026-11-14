@@ -147,6 +147,8 @@ Controllers and CLI tools:
   `--dry-run` prints commands without initializing CUDA.
 - `review_qwen3_tuned_suite.py`: archived-reference replay, numerical/short-quality
   contracts, timing/memory, and actual CUDA kernel/launch-geometry review.
+- `summarize_qwen3_tuned_suite.py`: hash-verified summary and profile-specific
+  recommendation under the recorded selection policy, with model defaults unchanged.
 
 All new model paths remain opt-in via `--gemm-plan`. Without a plan the original
 configuration choices remain in effect. The source code and comparison results
@@ -167,3 +169,14 @@ performance results. Its logs, manifest and changed launcher sources are
 preserved. `paired_training_002` restarts all eight roles with explicit input-root
 binding; the model math, data identity, quality contract and timing protocol
 remain the same.
+
+Before the first measured optimizer update in the restarted cohort, the choice
+rule was recorded separately in `selection_policy_001.json`. A candidate needs
+passing native/V9 controls and its own numerical, short-quality and CUDA gates,
+at least 1% lower median latency than V9 in each order, no more than 0.01 GiB
+extra allocated peak, and compliance with the original 41.875 GiB cap. Among
+eligible candidates, prefer a median lower than HF in both orders, then the
+larger worst-order reduction against V9, then fewer entries for an exact tie.
+If neither qualifies, keep V9. These are engineering acceptance rules, not
+statistical significance or a global-optimum claim. Operator/module screening
+was already available when choosing the two candidate plans.
