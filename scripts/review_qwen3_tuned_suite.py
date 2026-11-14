@@ -78,6 +78,8 @@ def main():
         assert monitor['returncode']==0 and not monitor['foreign_process_seen'] and not monitor['observation_errors']
         result=json.loads((root/name/'result.json').read_text())
         assert result['complete'] and result['model']=='Qwen/Qwen3-8B' and result['layers']==36 and result['world_size']==4
+        assert result['input_root']==manifest['input_root']
+        assert result['input_manifest_sha256']==manifest['input_manifest_sha256']
         assert result['variant']==role['variant']
         assert result['performance_adopted'] is False and result['numerical_equivalence_qualified'] is False
         assert result['math_policy']==dict(compute='BF16',master_gradient_moments='FP32',TF32=False,allow_bf16_reduced_precision_reduction=False)

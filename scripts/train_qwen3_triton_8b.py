@@ -88,6 +88,7 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--protocol',type=Path,default=ROOT/'configs/fsdp_8b.json')
     parser.add_argument('--input-manifest',type=Path,default=ROOT/'artifacts/official_qwen3_inputs_v1.json')
+    parser.add_argument('--input-root',type=Path,help='Working directory for frozen relative input paths')
     parser.add_argument('--quality-steps',type=int,default=16)
     parser.add_argument('--warmup-steps',type=int,default=3)
     parser.add_argument('--measure-steps',type=int,default=8)
@@ -97,6 +98,13 @@ def main():
     parser.add_argument('--save-reference',action='store_true')
     parser.add_argument('--gemm-plan',type=Path,help='Explicit experimental SM86 plan; optimized variant only')
     args=parser.parse_args()
+    if args.input_root:
+        args.protocol=args.protocol.resolve();args.input_manifest=args.input_manifest.resolve()
+        args.output=args.output.resolve()
+        if args.gemm_plan:args.gemm_plan=args.gemm_plan.resolve()
+        args.reference_raw_dir=[p.resolve() for p in args.reference_raw_dir]
+        if not args.input_root.is_dir():parser.error('Input root must be an existing directory')
+        os.chdir(args.input_root.resolve())
     if args.gemm_plan and args.variant!='triton_optimized':parser.error('A GEMM plan requires --variant triton_optimized')
     from qwen3_triton.kernels.gemm_tuning import load_plan,identity as gemm_plan_identity
     if args.gemm_plan:load_plan(args.gemm_plan)
@@ -203,7 +211,7 @@ def main():
         if rank==0:
             files=[Path(__file__),args.protocol,args.input_manifest,ROOT/'training/fsdp/official.py',ROOT/'training/fsdp/activation_checkpoint.py',*sorted((ROOT/'qwen3_triton').rglob('*.py'))]
             if args.gemm_plan:files.append(args.gemm_plan)
-            result=dict(complete=True,numerical_equivalence_qualified=False,performance_adopted=False,model='Qwen/Qwen3-8B',variant=args.variant,gemm_plan=gemm_plan_identity(),world_size=4,layers=36,ranks=reports,input_manifest_sha256=checked[0]['identity'],math_policy=dict(compute='BF16',master_gradient_moments='FP32',TF32=False,allow_bf16_reduced_precision_reduction=False),common_framework=dict(checkpoint_every=1,keep_full_layers=0,vocab_parallel=False,custom_collectives=False,optimizer='native_fused_AdamW',batch_per_rank=1,sequence=512),sources={str(p):sha(p) for p in files},scope=__doc__)
+            result=dict(complete=True,numerical_equivalence_qualified=False,performance_adopted=False,model='Qwen/Qwen3-8B',variant=args.variant,input_root=str(Path.cwd()),gemm_plan=gemm_plan_identity(),world_size=4,layers=36,ranks=reports,input_manifest_sha256=checked[0]['identity'],math_policy=dict(compute='BF16',master_gradient_moments='FP32',TF32=False,allow_bf16_reduced_precision_reduction=False),common_framework=dict(checkpoint_every=1,keep_full_layers=0,vocab_parallel=False,custom_collectives=False,optimizer='native_fused_AdamW',batch_per_rank=1,sequence=512),sources={str(p):sha(p) for p in files},scope=__doc__)
             (args.output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     finally:dist.destroy_process_group()
 if __name__=='__main__':main()

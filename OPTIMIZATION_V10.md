@@ -151,3 +151,19 @@ Controllers and CLI tools:
 All new model paths remain opt-in via `--gemm-plan`. Without a plan the original
 configuration choices remain in effect. The source code and comparison results
 must be read separately from the accepted V9 reports bundled in this branch.
+
+When the frozen protocol contains relative corpus paths, pass `--input-root`
+to bind them to the directory used when the manifest was created. All CLI file
+arguments are resolved before changing the worker's directory. The controller
+now validates every frozen input byte on CPU before GPU admission and requires
+the original native-reference input identity. This preserves the original
+manifest and reference archives. A CPU regression checks directory/path binding
+before the first CUDA call, and the update/timing-loop AST check still passes.
+
+The first whole-step attempt (`paired_training_001`) stopped in input validation
+because its relocated working directory disagreed with the frozen relative
+corpus path. It performed no model loading or optimizer updates and supplies no
+performance results. Its logs, manifest and changed launcher sources are
+preserved. `paired_training_002` restarts all eight roles with explicit input-root
+binding; the model math, data identity, quality contract and timing protocol
+remain the same.

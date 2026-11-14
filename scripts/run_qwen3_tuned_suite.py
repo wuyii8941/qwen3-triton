@@ -11,6 +11,7 @@ from qwen3_triton.benchmark_utils.gpu_lease import apps
 from qwen3_triton.benchmark_utils.stable_idle import stable_lease
 from qwen3_triton.benchmark_utils.monitor import run
 from training.provenance import source_snapshot
+from training.input_manifest import validate
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -27,6 +28,7 @@ def command(args,role):
         '--standalone','--nproc_per_node=4',str(ROOT/'scripts/train_qwen3_triton_8b.py'),
         '--variant',role['variant'],'--output',str(args.output/role['name']),
         '--protocol',str(args.protocol),'--input-manifest',str(args.input_manifest),
+        '--input-root',str(args.input_root),
         '--quality-steps','16','--warmup-steps','3','--measure-steps','8',
         '--full-validation','--trace','--reference-raw-dir',str(args.reference)]
     if role['tuned']:
@@ -39,6 +41,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--protocol',type=Path,required=True)
     parser.add_argument('--input-manifest',type=Path,required=True)
+    parser.add_argument('--input-root',type=Path,default=ROOT)
     parser.add_argument('--reference',type=Path,required=True)
     parser.add_argument('--gemm-plan',type=Path,required=True)
     parser.add_argument('--module-check',type=Path,required=True)
@@ -48,7 +51,7 @@ def main():
     parser.add_argument('--dry-run',action='store_true')
     args=parser.parse_args()
     if bool(args.compare_gemm_plan)!=bool(args.compare_module_check):parser.error('Both comparison arguments are required together')
-    for key in ('protocol','input_manifest','reference','gemm_plan','module_check','output'):
+    for key in ('protocol','input_manifest','input_root','reference','gemm_plan','module_check','output'):
         setattr(args,key,getattr(args,key).resolve())
     if args.compare_gemm_plan:
         args.compare_gemm_plan=args.compare_gemm_plan.resolve()
@@ -57,6 +60,13 @@ def main():
     assert not args.output.is_relative_to(Path('/home/tzh'))
     if args.dry_run:
         print(json.dumps(dict(GPU_started=False,roles=[dict(**role,command=command(args,role)) for role in queue]),indent=2));return
+    # Check relative path binding and every frozen model/token byte on CPU,
+    # before admission or allocating CUDA contexts on the four workers.
+    previous_cwd=Path.cwd()
+    try:
+        os.chdir(args.input_root)
+        input_identity=validate(args.input_manifest,args.protocol,json.loads(args.protocol.read_text()))
+    finally:os.chdir(previous_cwd)
     modules=[(args.gemm_plan,args.module_check)]
     if args.compare_gemm_plan:modules.append((args.compare_gemm_plan,args.compare_module_check))
     for plan_path,module_path in modules:
@@ -68,6 +78,7 @@ def main():
         assert module['plan']['sha256']==sha(plan_path)
         for path,h in module['sources'].items():assert sha(ROOT/path)==h
     reference=json.loads((args.reference/'result.json').read_text())
+    assert input_identity==reference['input_manifest_sha256']
     assert reference['variant']=='hf' and reference['world_size']==4 and reference['layers']==36
     assert reference['math_policy']['allow_bf16_reduced_precision_reduction'] is False
     for rank in range(4):assert sha(args.reference/f'raw_rank{rank}.pt.gz')==reference['ranks'][rank]['reference_archive']['sha256']
@@ -83,7 +94,7 @@ def main():
     if args.compare_gemm_plan:plan_map['v10_all']=dict(path=str(args.compare_gemm_plan),sha256=sha(args.compare_gemm_plan),selection='All selected operator shapes')
     manifest=dict(sources={str(p):sha(p) for p in files},core_snapshot=source_snapshot(ROOT),
         roles=queue,reference_dir=str(args.reference),reference_result_sha256=sha(args.reference/'result.json'),
-        plans=plan_map,
+        plans=plan_map,input_root=str(args.input_root),input_manifest_sha256=input_identity,
         gemm_plan=str(args.gemm_plan),gemm_plan_sha256=sha(args.gemm_plan),
         quality_steps=16,warmup_steps=3,measure_steps=8,original_V9_commit='13dbdf984201a70ca4bba5fb38c72606cd33fbeb',
         performance_adopted=False,scope=__doc__)
