@@ -58,6 +58,20 @@ the original research admission lock.
 - [Correct but Slow, July 2026](https://arxiv.org/abs/2607.04454):
   use library-relative efficiency as well as correctness to reject slow kernels.
   Native BF16 matmul timings are recorded during the operator screen.
+- [Syncopate, OSDI 2026, July camera-ready](https://arxiv.org/html/2601.20595v4):
+  chunk-level communication schedules and tile scheduling expose finer overlap
+  than separate collective/compute kernels. Its evaluation uses H100/NVLink and
+  includes tensor/sequence-parallel GEMM and attention; it does not establish a
+  drop-in optimization for our FSDP weight sharding on SM86. This is a follow-up
+  candidate motivated by the profiled communication window, not an
+  implemented or measured gain. First establish a suitable communication backend
+  and the exact parameter-shard dependencies; TMA paths do not apply to A6000.
+  Changing native FSDP/NCCL would require a separate controlled comparison.
+- [Triton-distributed build guide](https://triton-distributed.readthedocs.io/en/latest/build.html):
+  related fine-grained collective/GEMM infrastructure, originating before 2026.
+  Its source build replaces the installed Triton and adds NVSHMEM dependencies;
+  no such environment change is made during this frozen cohort. Platform/backend
+  suitability and integration remain untested here.
 - [tritonBLAS, December 2025](https://arxiv.org/abs/2512.04226):
   related resource/topology-aware parameter selection; this is prior-year work,
   not a new 2026 technique.
@@ -149,6 +163,8 @@ Controllers and CLI tools:
   contracts, timing/memory, and actual CUDA kernel/launch-geometry review.
 - `summarize_qwen3_tuned_suite.py`: hash-verified summary and profile-specific
   recommendation under the recorded selection policy, with model defaults unchanged.
+- `summarize_qwen3_trace_overlap.py`: reproducible interval-union diagnostics for
+  the separate untimed rank-0 forward/backward traces; no transport-cost claim.
 
 All new model paths remain opt-in via `--gemm-plan`. Without a plan the original
 configuration choices remain in effect. The source code and comparison results
@@ -196,3 +212,45 @@ and discloses the recovery in its output. The recovery controller also records
 process ancestry after update27 to diagnose any further short CUDA probes;
 those extra GPU queries occur after all measured optimizer updates and do not
 relax the resource gate.
+
+## First-order results; reverse-order qualification pending
+
+The first four clean roles completed with all 399 parameter comparisons on each
+of four ranks passing. Both candidate plans have the same 27 recorded global
+losses and before/after validation losses as V9. Actual full-model CUDA kernel
+counts and plan-specific launch geometries passed. These partial checks do not
+replace the final eight-role reference replay and quality review.
+
+| Role | Median optimizer step (s) | Latency reduction against V9 |
+| --- | ---: | ---: |
+| HF + Flash | 7.017468 | 1.928% |
+| V9 | 7.155400 | — |
+| Plan 001: all selected GEMMs | 7.119030 | 0.508% |
+| Plan 002: MLP/head only | 7.153963 | 0.020% |
+
+Plan 001 remains 1.447% slower than HF in this order. Neither candidate meets
+the predeclared 1% reduction against V9 in this order. Keep the existing default
+and complete the reverse-order controls before reporting a final recommendation.
+
+`trace_overlap_diagnostic_002.json` describes the untimed rank-0 forward/backward
+profile after update 27. V9's model-kernel interval union is 0.625 s; Plan 001's
+is 0.440 s. Their NCCL interval unions are 6.933 s and 6.910 s, respectively,
+inside profiled GPU windows of 7.011 s and 6.972 s. Most model computation overlaps
+NCCL activity. This supports investigating exposed communication and dependency
+waits before expecting more isolated GEMM speedups to yield large whole-step
+gains. NCCL kernels can spin on dependencies: these durations do not establish
+transport cost or causal attribution. The profile excludes the optimizer and
+is separate from the measured step samples. Its categories overlap, and their
+durations must not be added to estimate a training step.
+
+Reproduce this diagnostic with the CPU-only invocation below. Hand-calculated
+nested/overlapping intervals and an idle gap verify the interval arithmetic;
+the resulting real-trace statistics match the initial manual diagnostic exactly.
+
+```bash
+CUDA_VISIBLE_DEVICES='' bash scripts/research_python.sh \
+  scripts/summarize_qwen3_trace_overlap.py \
+  --cohort /data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/paired_training_002 \
+  --role v9_r1 --role v10_all_r1 --role v10_r1 \
+  --destination /data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v10/trace_overlap_reproduction.json
+```
