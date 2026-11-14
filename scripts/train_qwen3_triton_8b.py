@@ -95,7 +95,11 @@ def main():
     parser.add_argument('--trace',action='store_true')
     parser.add_argument('--reference-raw-dir',type=Path,action='append',default=[])
     parser.add_argument('--save-reference',action='store_true')
+    parser.add_argument('--gemm-plan',type=Path,help='Explicit experimental SM86 plan; optimized variant only')
     args=parser.parse_args()
+    if args.gemm_plan and args.variant!='triton_optimized':parser.error('A GEMM plan requires --variant triton_optimized')
+    from qwen3_triton.kernels.gemm_tuning import load_plan,identity as gemm_plan_identity
+    if args.gemm_plan:load_plan(args.gemm_plan)
     if args.save_reference and args.variant!='hf':parser.error('Only nativeHF reference exports dense gradients')
     if args.quality_steps<1 or args.warmup_steps<1 or args.measure_steps<2:parser.error('Need quality>=1, warmup>=1 and measured>=2 updates')
     rank=int(os.environ['RANK']);device=int(os.environ['LOCAL_RANK']);torch.cuda.set_device(device);torch.set_num_threads(2)
@@ -193,12 +197,13 @@ def main():
             dist.barrier()
         reshard_official_parameters(model)
         archive=save_archive(dict({'1':raw_first}),args.output/f'raw_rank{rank}.pt.gz',max_bytes=6*2**30) if args.save_reference else None
-        rank_result=dict(reference_archive=archive,measured_training_peak=training_peak,rank=rank,complete=True,parameter_count=399,optimizer_state_count=len(optimizer.state),updates=total,rows=rows,full_validation=validation_rows,gradient_comparisons=comparisons,all_master_grad_moment_finite_fp32=True,peak_allocated_gib=torch.cuda.max_memory_allocated()/2**30,peak_reserved_gib=torch.cuda.max_memory_reserved()/2**30)
+        rank_result=dict(reference_archive=archive,gemm_plan=gemm_plan_identity(),measured_training_peak=training_peak,rank=rank,complete=True,parameter_count=399,optimizer_state_count=len(optimizer.state),updates=total,rows=rows,full_validation=validation_rows,gradient_comparisons=comparisons,all_master_grad_moment_finite_fp32=True,peak_allocated_gib=torch.cuda.max_memory_allocated()/2**30,peak_reserved_gib=torch.cuda.max_memory_reserved()/2**30)
         (args.output/f'rank{rank}.json').write_text(json.dumps(rank_result,indent=2)+'\n')
         reports=[None]*4;dist.all_gather_object(reports,rank_result)
         if rank==0:
             files=[Path(__file__),args.protocol,args.input_manifest,ROOT/'training/fsdp/official.py',ROOT/'training/fsdp/activation_checkpoint.py',*sorted((ROOT/'qwen3_triton').rglob('*.py'))]
-            result=dict(complete=True,numerical_equivalence_qualified=False,performance_adopted=False,model='Qwen/Qwen3-8B',variant=args.variant,world_size=4,layers=36,ranks=reports,input_manifest_sha256=checked[0]['identity'],math_policy=dict(compute='BF16',master_gradient_moments='FP32',TF32=False,allow_bf16_reduced_precision_reduction=False),common_framework=dict(checkpoint_every=1,keep_full_layers=0,vocab_parallel=False,custom_collectives=False,optimizer='native_fused_AdamW',batch_per_rank=1,sequence=512),sources={str(p):sha(p) for p in files},scope=__doc__)
+            if args.gemm_plan:files.append(args.gemm_plan)
+            result=dict(complete=True,numerical_equivalence_qualified=False,performance_adopted=False,model='Qwen/Qwen3-8B',variant=args.variant,gemm_plan=gemm_plan_identity(),world_size=4,layers=36,ranks=reports,input_manifest_sha256=checked[0]['identity'],math_policy=dict(compute='BF16',master_gradient_moments='FP32',TF32=False,allow_bf16_reduced_precision_reduction=False),common_framework=dict(checkpoint_every=1,keep_full_layers=0,vocab_parallel=False,custom_collectives=False,optimizer='native_fused_AdamW',batch_per_rank=1,sequence=512),sources={str(p):sha(p) for p in files},scope=__doc__)
             (args.output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     finally:dist.destroy_process_group()
 if __name__=='__main__':main()

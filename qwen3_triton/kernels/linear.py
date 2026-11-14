@@ -6,6 +6,7 @@ cuBLAS, torch.compile or FlashAttention implementation is called here.
 import torch
 import triton
 import triton.language as tl
+from .gemm_tuning import gemm_entry
 
 
 @triton.jit
@@ -56,10 +57,21 @@ def matmul(a, b, *, optimized=False, output_dtype=None):
     m, k = a.shape
     n = b.shape[1]
     out = torch.empty((m, n), device=a.device, dtype=dtype)
-    bm, bn, bk, group = (64, 64, 32, 8) if optimized else (32, 64, 32, 1)
+    entry = gemm_entry(a, b, dtype) if optimized else None
+    if entry is not None and entry['family'] == 'split_k':
+        from .gemm_experiments import split_matmul_into
+        splits = entry['splits']
+        partials = torch.empty((splits, m, n), device=a.device, dtype=torch.float32)
+        split_matmul_into(a, b, out, partials, entry['config'], splits)
+        return out
+    if entry is not None:
+        bm, bn, bk, group, warps, stages = entry['config']
+    else:
+        bm, bn, bk, group = (64, 64, 32, 8) if optimized else (32, 64, 32, 1)
+        warps, stages = 4, 3
     _gemm[(triton.cdiv(m, bm) * triton.cdiv(n, bn),)](
         a, b, out, m, n, k, *a.stride(), *b.stride(), bm, bn, bk, group,
-        num_warps=4)
+        num_warps=warps, num_stages=stages)
     return out
 
 

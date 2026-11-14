@@ -2,6 +2,7 @@
 /artifacts/
 /experiments/legacy/artifacts
 .venv*/
+.venv-research
 /torchinductor_tzh/
 /tmp*/
 .pytest_cache/
@@ -25,4 +26,5 @@ build/
 *.egg-info/
 __pycache__/
 .runtime-research/
+.runtime-research
 .runtime-wave2-*/
