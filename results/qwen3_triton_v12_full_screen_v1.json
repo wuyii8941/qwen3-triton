@@ -1,0 +1,226 @@
+{
+  "complete": true,
+  "full_model_qualified": false,
+  "results": {
+    "candidate": {
+      "median": 4.900033151730895,
+      "samples": [
+        5.022352879866958,
+        4.7770166508853436,
+        5.024733455851674,
+        4.777713423594832
+      ],
+      "trace": {
+        "trace_sha256": "82a222ec9c10d0bf39a44f869a5476b1fd80b0196b28f38547736d224fe2ab99",
+        "collectives": {
+          "observed": {
+            "AllGather": 42,
+            "ReduceScatter": 39,
+            "AllReduce": 2
+          },
+          "expected": {
+            "AllGather": 42,
+            "ReduceScatter": 39,
+            "AllReduce": 2
+          },
+          "passed": true
+        },
+        "vocab_ce": true,
+        "fused_dw": true,
+        "fused_DW_geometry_passed": true,
+        "native_decoder": false,
+        "model_kernel_counts_passed": true,
+        "discrepancies": {},
+        "unclassified_kernels": {},
+        "forbidden_library_kernels": {},
+        "launch_geometry_passed": true,
+        "passed": true
+      },
+      "losses": [
+        2.536628007888794,
+        2.543581008911133,
+        2.529205322265625,
+        2.210129499435425,
+        2.2807962894439697,
+        2.4814462661743164,
+        2.6807937622070312,
+        1.9185149669647217,
+        2.385159492492676
+      ],
+      "allocated_GiB": 37.46648693084717,
+      "reserved_GiB": 41.818359375,
+      "result_sha256": "5ac030a211eaf245c4c1c565b122e8de8f828ffb7e4bdd2603fa8f997c017bb3",
+      "monitor_sha256": "a319745af6ceecc26e72845883ffb8d134ba9244f52606e66b3f6eb0c8508c03"
+    },
+    "head_unfused": {
+      "median": 4.908672919496894,
+      "samples": [
+        5.050726562738419,
+        4.768356563523412,
+        5.048324074596167,
+        4.769021764397621
+      ],
+      "trace": {
+        "trace_sha256": "579b2a6cfe9b8849ab0987a23befd7d5a3f44de012ed03cc587de3ddb6464eb8",
+        "collectives": {
+          "observed": {
+            "AllGather": 42,
+            "ReduceScatter": 39,
+            "AllReduce": 2
+          },
+          "expected": {
+            "AllGather": 42,
+            "ReduceScatter": 39,
+            "AllReduce": 2
+          },
+          "passed": true
+        },
+        "vocab_ce": true,
+        "fused_dw": false,
+        "fused_DW_geometry_passed": true,
+        "native_decoder": false,
+        "model_kernel_counts_passed": true,
+        "discrepancies": {},
+        "unclassified_kernels": {},
+        "forbidden_library_kernels": {},
+        "launch_geometry_passed": true,
+        "passed": true
+      },
+      "losses": [
+        2.536628007888794,
+        2.543581008911133,
+        2.529205322265625,
+        2.210129499435425,
+        2.2807962894439697,
+        2.4814462661743164,
+        2.6807937622070312,
+        1.9185149669647217,
+        2.385159492492676
+      ],
+      "allocated_GiB": 37.768590450286865,
+      "reserved_GiB": 41.81640625,
+      "result_sha256": "35a7a0c4c75767e1ec287f9d42e24c9144b855a4d71893dff7197d14d2001a5e",
+      "monitor_sha256": "07dc69d03ebb1236a8341103d0e5da68e4e1407e649fa1a4a93ce219c5b88e1a"
+    },
+    "triton_control": {
+      "median": 5.27042302954942,
+      "samples": [
+        5.369508324190974,
+        5.175940243527293,
+        5.3649058155715466,
+        5.100444393232465
+      ],
+      "trace": {
+        "trace_sha256": "4a962d19f4d9927e3f496c1e174856a3d44e068b62716869a622369e3988a745",
+        "collectives": {
+          "passed": true,
+          "expected_all_gather": 40,
+          "observed_all_gather": 40,
+          "expected_reduce_scatter": 39,
+          "observed_reduce_scatter": 39
+        },
+        "reference": false,
+        "recomputed_layers": 36,
+        "model_kernel_counts_passed": true,
+        "discrepancies": {},
+        "forbidden_library_kernels": {},
+        "unclassified_kernels": {},
+        "launch_geometry_passed": true,
+        "passed": true
+      },
+      "losses": [
+        2.536628007888794,
+        2.5426206588745117,
+        2.5303280353546143,
+        2.2086524963378906,
+        2.281966209411621,
+        2.483497381210327,
+        2.6808090209960938,
+        1.917862057685852,
+        2.38124942779541
+      ],
+      "allocated_GiB": 40.178120136260986,
+      "reserved_GiB": 41.84375,
+      "result_sha256": "db7da34e8240e6817fad6309e6c6630cfa7699fbb1b27b201035a0f5aa672784",
+      "monitor_sha256": "f8cf9924f09db0f5d043684017173967a0ac1752af85f0903d5733b30ec5b548"
+    },
+    "HF_custom_head": {
+      "median": 4.900984444655478,
+      "samples": [
+        5.0237670708447695,
+        4.786228397861123,
+        5.015740491449833,
+        4.780668081715703
+      ],
+      "trace": {
+        "trace_sha256": "29b173435806a31241694e829ccb75c17fa4f8da81d80b210e213690bff55996",
+        "collectives": {
+          "observed": {
+            "AllGather": 42,
+            "ReduceScatter": 39,
+            "AllReduce": 2
+          },
+          "expected": {
+            "AllGather": 42,
+            "ReduceScatter": 39,
+            "AllReduce": 2
+          },
+          "passed": true
+        },
+        "vocab_ce": true,
+        "fused_dw": true,
+        "fused_DW_geometry_passed": true,
+        "native_decoder": true,
+        "custom_Triton_head": true,
+        "native_Flash_kernels": {
+          "void pytorch_flash::flash_fwd_kernel<Flash_fwd_kernel_traits<128, 64, 64, 4, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 4, cutlass::bfloat16_t> >, false, true, false, false, true, true, false, false>(pytorch_flash::Flash_fwd_params)": 72,
+          "void pytorch_flash::flash_bwd_dot_do_o_kernel<false, Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params)": 36,
+          "void pytorch_flash::flash_bwd_dq_dk_dv_loop_seqk_parallel_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> >, false, true, false, false, true, true, false>(pytorch_flash::Flash_bwd_params)": 36,
+          "void pytorch_flash::flash_bwd_convert_dq_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params, int)": 36
+        },
+        "discrepancies": {},
+        "passed": true
+      },
+      "losses": [
+        2.536628007888794,
+        2.5410521030426025,
+        2.528251886367798,
+        2.2092654705047607,
+        2.2813878059387207,
+        2.4824299812316895,
+        2.681274890899658,
+        1.917794942855835,
+        2.380805492401123
+      ],
+      "allocated_GiB": 37.553279876708984,
+      "reserved_GiB": 41.8515625,
+      "result_sha256": "8b2ae6ac07ac06b0910bfb2ad8b1d2a122f56eeffb055254c5412e219629d742",
+      "monitor_sha256": "945b121fced09050a50e91610723ccb7e0e7c0662be6e399e1cdb72a89bd45bd"
+    }
+  },
+  "quality": {
+    "candidate": {
+      "mean": 0.0012621482213338215,
+      "maximum": 0.003910064697265625,
+      "passed": true
+    },
+    "head_unfused": {
+      "mean": 0.0012621482213338215,
+      "maximum": 0.003910064697265625,
+      "passed": true
+    },
+    "triton_control": {
+      "mean": 0.0,
+      "maximum": 0.0,
+      "passed": true
+    },
+    "HF_custom_head": {
+      "mean": 0.0007644891738891602,
+      "maximum": 0.0020761489868164062,
+      "passed": true
+    }
+  },
+  "reduction_vs_triton_control": 0.07027706803455402,
+  "eligible_for_formal": true,
+  "limitations": "Nine-update feasibility screen, no archived-reference gradient comparison or full validation yet. Not an adoption or HF speedup claim."
+}

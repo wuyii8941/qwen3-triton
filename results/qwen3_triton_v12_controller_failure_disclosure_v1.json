@@ -1,0 +1,20 @@
+{
+  "complete": true,
+  "old_cohort": "formal_001",
+  "old_controller_pid": 3532113,
+  "old_top_pipeline_pid": 3518959,
+  "old_controllers_confirmed_terminal": true,
+  "observed_tool_returncode": 1,
+  "failure": "Frozen source verification caught a transient edit to review_vocab_full_v12.py during GPU admission.",
+  "old_GPU_roles_started": 0,
+  "old_completed_updates": 0,
+  "no_training_or_timing_discarded": true,
+  "correction": "Two files restored to exact committed hashes; verified all sources; fresh controller/cohort formal_002 with byte-identical manifest.",
+  "new_cohort": "formal_002",
+  "new_controller_pid": 3548339,
+  "new_controller_confirmed_live": true,
+  "manifest_byte_identical": true,
+  "manifest_sha256": "96ccf4e056ee1fdf91329d3e0bb8f79b61397f84de4df1b3ac772dbe4f8d1ba9",
+  "original_prospective_recommendation_policy_still_binds": true,
+  "disclosed_utc": "2026-11-15T08:09:56.200340+00:00"
+}

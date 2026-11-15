@@ -1,0 +1,94 @@
+{
+  "complete": true,
+  "qualified_training_improvement": true,
+  "default_changed": false,
+  "recommended_arm": "candidate",
+  "recommended_fused_DW": true,
+  "fusion_consistently_faster_each_order": true,
+  "entry": "scripts/train_qwen3_vocab_v12.py",
+  "model": "Qwen/Qwen3-8B",
+  "layers": 36,
+  "world_size": 4,
+  "batch_per_rank": 1,
+  "sequence": 512,
+  "hardware": "RTX A6000 SM86",
+  "compute": "BF16",
+  "master_gradient_moments": "FP32",
+  "memory_cap_GiB": 41.875,
+  "input_identity": "02bd3b9257c92692c755c5fdfce9697189afe580883def0b5cacbf7b25d295a7",
+  "comparisons": [
+    {
+      "order": 1,
+      "seconds": 4.9025879902765155,
+      "native_HF_seconds": 5.285977276973426,
+      "triton_V11_seconds": 5.212517503648996,
+      "reduction_vs_native_HF": 0.07252949958128208,
+      "reduction_vs_triton_V11": 0.059458699784800007
+    },
+    {
+      "order": 2,
+      "seconds": 4.887279977090657,
+      "native_HF_seconds": 5.249323530122638,
+      "triton_V11_seconds": 5.208927264437079,
+      "reduction_vs_native_HF": 0.06896956359318218,
+      "reduction_vs_triton_V11": 0.061749237610286056
+    }
+  ],
+  "extra_flags": {
+    "triton_optimized": [
+      "--vocab-ce",
+      "--keep-full-layers",
+      "36",
+      "--checkpoint-every",
+      "1",
+      "--skip-embedding-backward-gather",
+      "--fused-vocab-dw",
+      "--gemm-plan",
+      "results/qwen3_triton_v10_gemm_plan_001.json"
+    ]
+  },
+  "auxiliary_HF_port": {
+    "qualified": false,
+    "performance_eligible": false,
+    "scope": "Auxiliary experiment, not a recommended HF configuration when its gradient gate fails."
+  },
+  "measured_training_peak": {
+    "r1": {
+      "median_seconds": 4.9025879902765155,
+      "samples_seconds": [
+        4.777214769273996,
+        5.021722216159105,
+        4.783453764393926,
+        5.0307635720819235,
+        4.779267825186253,
+        5.02957608550787,
+        4.780288130044937,
+        5.0295190289616585
+      ],
+      "allocated_GiB": 37.46831798553467,
+      "reserved_GiB": 41.806640625
+    },
+    "r2": {
+      "median_seconds": 4.887279977090657,
+      "samples_seconds": [
+        4.755315691232681,
+        5.009903807193041,
+        4.768136151134968,
+        5.011401288211346,
+        4.767577353864908,
+        5.0095700323581696,
+        4.762497847899795,
+        5.006423803046346
+      ],
+      "allocated_GiB": 37.46831798553467,
+      "reserved_GiB": 41.806640625
+    }
+  },
+  "recommendation_policy_sha256": "6dbf97975c021d0f9fde16580d1fc8917fd1e12ab078c25b9cc27fedf5772403",
+  "review_sha256": "e8806aacc48bc30728fd7ceb97b4a681c9c4030d2c27197090d5cc8870dd841d",
+  "whole_cohort_all_profiles_passed": false,
+  "excluded_from_performance_claims": [
+    "HF_custom_head"
+  ],
+  "scope": "Descriptor, not a CLI loader. Supply original protocol/input/full-quality/reference arguments. Loss-only labeled training/evaluation; diagnostic logits only outside timing. Head graph, ownership and collective schedule are customized. HF can port the same operator; native HF does not use that custom path. No inference/convergence claim."
+}

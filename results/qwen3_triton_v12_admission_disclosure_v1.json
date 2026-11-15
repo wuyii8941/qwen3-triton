@@ -1,0 +1,11 @@
+{
+  "complete": true,
+  "stage_when_detected": {
+    "pid": 3532113,
+    "stage": "waiting_stable_four_GPU_lease"
+  },
+  "incident": "Two audit/controller files were briefly edited after the full manifest was frozen, while GPU admission was pending.",
+  "resolution": "Restored their exact already-committed bytes and verified all frozen source hashes. No numerical or performance policy was loosened.",
+  "no_GPU_job_restarted": true,
+  "restored_before_first_role": true
+}

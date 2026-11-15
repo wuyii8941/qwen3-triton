@@ -1,0 +1,113 @@
+{
+  "complete": true,
+  "rows": [
+    {
+      "profile": {
+        "name": "cp1_control",
+        "checkpoint_every": 1
+      },
+      "completed": true,
+      "median": 4.909808028489351,
+      "samples": [
+        5.055400935932994,
+        4.766498934477568,
+        5.052496276795864,
+        4.767119780182838
+      ],
+      "losses": [
+        2.536628007888794,
+        2.543581008911133,
+        2.529205322265625,
+        2.210129499435425,
+        2.2807962894439697,
+        2.4814462661743164,
+        2.6807937622070312,
+        1.9185149669647217,
+        2.385159492492676
+      ],
+      "allocated_GiB": 37.768590450286865,
+      "reserved_GiB": 41.81640625,
+      "result_sha256": "5a4a9e4a879f4f99aa2e49e1d9aa9d53cc6c6c30c4029f560caeaec1489b7234",
+      "monitor_sha256": "d5c103e5372f6d802c3008b71776d11ae55d1cc4036004ea5128d57479d11f73",
+      "quality": {
+        "mean": 0.0,
+        "maximum": 0.0
+      },
+      "reduction": 0.0,
+      "eligible": false
+    },
+    {
+      "profile": {
+        "name": "cp2",
+        "checkpoint_every": 2
+      },
+      "completed": true,
+      "median": 4.810394852422178,
+      "samples": [
+        4.8108353856951,
+        4.804943181574345,
+        4.811433477327228,
+        4.809954319149256
+      ],
+      "losses": [
+        2.536628007888794,
+        2.543581008911133,
+        2.529205322265625,
+        2.210129499435425,
+        2.2807962894439697,
+        2.4814462661743164,
+        2.6807937622070312,
+        1.9185149669647217,
+        2.385159492492676
+      ],
+      "allocated_GiB": 38.94886541366577,
+      "reserved_GiB": 41.853515625,
+      "result_sha256": "9b296f80e5534f28d79376b554a958747a7d904910415d046f0cdbc81f5fb56d",
+      "monitor_sha256": "3a3aa024d04cefaa67cdf8d4454a6cd3286e4e63c02865b1bc7d8ea28a17d4c7",
+      "quality": {
+        "mean": 0.0,
+        "maximum": 0.0
+      },
+      "reduction": 0.020247874354827,
+      "eligible": false
+    },
+    {
+      "profile": {
+        "name": "cp0",
+        "checkpoint_every": 0
+      },
+      "completed": true,
+      "median": 4.9370264215394855,
+      "samples": [
+        4.928844090551138,
+        4.933342017233372,
+        4.940710825845599,
+        4.94872697070241
+      ],
+      "losses": [
+        2.536628007888794,
+        2.543581008911133,
+        2.529205322265625,
+        2.210129499435425,
+        2.2807962894439697,
+        2.4814462661743164,
+        2.6807937622070312,
+        1.9185149669647217,
+        2.385159492492676
+      ],
+      "allocated_GiB": 40.12914037704468,
+      "reserved_GiB": 41.869140625,
+      "result_sha256": "b7717ce5cdf64901fc181b7a7a9d0efab0f1ee506628f014593f1ad5cee79ac6",
+      "monitor_sha256": "a58a5af1b10d411066e41ab32ffdd7e80f63579b8bb950b9347cb0431ac3816e",
+      "quality": {
+        "mean": 0.0,
+        "maximum": 0.0
+      },
+      "reduction": -0.005543677653423229,
+      "eligible": false
+    }
+  ],
+  "selected_checkpoint_every": 1,
+  "full_model_qualified": false,
+  "scope": "Short feasibility screen, no full validation or reference gradient comparison."
+}

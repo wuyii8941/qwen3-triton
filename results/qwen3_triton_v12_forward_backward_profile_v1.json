@@ -1,0 +1,252 @@
+{
+  "complete": true,
+  "trace_sha256": "9864d03519ba20570ee637f1bb159b454d214fd047d6e279f2edbc1ed9ef38e4",
+  "source_trace": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0005_candidate_r1/run/training_trace.json",
+  "kernel_count": 6621,
+  "kernel_span_seconds": 4.63150125390625,
+  "any_kernel_active_seconds": 4.466658344238281,
+  "kernel_summed_seconds": 5.082239680000001,
+  "kernels": [
+    {
+      "name": "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+      "count": 39,
+      "summed_seconds": 2.809626750488281,
+      "union_seconds": 2.809626750488281
+    },
+    {
+      "name": "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+      "count": 42,
+      "summed_seconds": 1.4824396108398437,
+      "union_seconds": 1.4824396108398437
+    },
+    {
+      "name": "_gemm",
+      "count": 866,
+      "summed_seconds": 0.27160617578125,
+      "union_seconds": 0.27160617578125
+    },
+    {
+      "name": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)",
+      "count": 2646,
+      "summed_seconds": 0.11997730029296876,
+      "union_seconds": 0.116485560546875
+    },
+    {
+      "name": "_gate_up",
+      "count": 72,
+      "summed_seconds": 0.08148776220703124,
+      "union_seconds": 0.08148776220703124
+    },
+    {
+      "name": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)",
+      "count": 815,
+      "summed_seconds": 0.06816493701171875,
+      "union_seconds": 0.06816493701171875
+    },
+    {
+      "name": "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)",
+      "count": 38,
+      "summed_seconds": 0.06762273583984375,
+      "union_seconds": 0.06762273583984375
+    },
+    {
+      "name": "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)",
+      "count": 39,
+      "summed_seconds": 0.046481068359375,
+      "union_seconds": 0.046481068359375
+    },
+    {
+      "name": "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)",
+      "count": 118,
+      "summed_seconds": 0.0227816513671875,
+      "union_seconds": 0.0227816513671875
+    },
+    {
+      "name": "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::UnaryOpFunctor<c10::BFloat16, 2, 1, 1>, at::native::Copy<c10::BFloat16, c10::BFloat16>)",
+      "count": 118,
+      "summed_seconds": 0.0185898984375,
+      "union_seconds": 0.0185898984375
+    },
+    {
+      "name": "_native_precision_forward",
+      "count": 72,
+      "summed_seconds": 0.012873287109375,
+      "union_seconds": 0.012873287109375
+    },
+    {
+      "name": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})",
+      "count": 432,
+      "summed_seconds": 0.0116001630859375,
+      "union_seconds": 0.0116001630859375
+    },
+    {
+      "name": "_native_precision_dkdv",
+      "count": 36,
+      "summed_seconds": 0.00891942724609375,
+      "union_seconds": 0.00891942724609375
+    },
+    {
+      "name": "_vocab_dw_mean",
+      "count": 1,
+      "summed_seconds": 0.00762303515625,
+      "union_seconds": 0.00762303515625
+    },
+    {
+      "name": "_reduce_rows",
+      "count": 290,
+      "summed_seconds": 0.00630306103515625,
+      "union_seconds": 0.00630306103515625
+    },
+    {
+      "name": "_hf_norm_forward",
+      "count": 145,
+      "summed_seconds": 0.0062296875,
+      "union_seconds": 0.0062296875
+    },
+    {
+      "name": "_hf_norm_rope_forward",
+      "count": 144,
+      "summed_seconds": 0.005466259765625,
+      "union_seconds": 0.005466259765625
+    },
+    {
+      "name": "_add",
+      "count": 144,
+      "summed_seconds": 0.00538656640625,
+      "union_seconds": 0.00538656640625
+    },
+    {
+      "name": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)",
+      "count": 144,
+      "summed_seconds": 0.00494857568359375,
+      "union_seconds": 0.00494857568359375
+    },
+    {
+      "name": "_backward",
+      "count": 74,
+      "summed_seconds": 0.00412425830078125,
+      "union_seconds": 0.00412425830078125
+    },
+    {
+      "name": "_native_split_dq",
+      "count": 36,
+      "summed_seconds": 0.003840064453125,
+      "union_seconds": 0.003840064453125
+    },
+    {
+      "name": "_hf_swiglu_backward",
+      "count": 36,
+      "summed_seconds": 0.00383068603515625,
+      "union_seconds": 0.00383068603515625
+    },
+    {
+      "name": "_norm_rope_backward",
+      "count": 72,
+      "summed_seconds": 0.00239669580078125,
+      "union_seconds": 0.00239669580078125
+    },
+    {
+      "name": "_dq_split_reduce",
+      "count": 36,
+      "summed_seconds": 0.00219720068359375,
+      "union_seconds": 0.00219720068359375
+    },
+    {
+      "name": "_zero",
+      "count": 1,
+      "summed_seconds": 0.001789837890625,
+      "union_seconds": 0.001789837890625
+    },
+    {
+      "name": "_native_order_delta",
+      "count": 36,
+      "summed_seconds": 0.00170010595703125,
+      "union_seconds": 0.00170010595703125
+    },
+    {
+      "name": "_attention_kv_head_reduce_kernel",
+      "count": 36,
+      "summed_seconds": 0.001636716796875,
+      "union_seconds": 0.001636716796875
+    },
+    {
+      "name": "_cast",
+      "count": 2,
+      "summed_seconds": 0.001395498046875,
+      "union_seconds": 0.001395498046875
+    },
+    {
+      "name": "_grad",
+      "count": 1,
+      "summed_seconds": 0.00046336376953125,
+      "union_seconds": 0.00046336376953125
+    },
+    {
+      "name": "_partials",
+      "count": 1,
+      "summed_seconds": 0.000228162109375,
+      "union_seconds": 0.000228162109375
+    },
+    {
+      "name": "_lookup",
+      "count": 1,
+      "summed_seconds": 0.0002068818359375,
+      "union_seconds": 0.0002068818359375
+    },
+    {
+      "name": "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)",
+      "count": 79,
+      "summed_seconds": 0.00017401123046875,
+      "union_seconds": 0.00017401123046875
+    },
+    {
+      "name": "ncclDevKernel_AllReduce_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+      "count": 2,
+      "summed_seconds": 5.3537109375e-05,
+      "union_seconds": 5.3537109375e-05
+    },
+    {
+      "name": "_tables",
+      "count": 1,
+      "summed_seconds": 3.247998046875e-05,
+      "union_seconds": 3.247998046875e-05
+    },
+    {
+      "name": "_positions",
+      "count": 1,
+      "summed_seconds": 3.219189453125e-05,
+      "union_seconds": 3.219189453125e-05
+    },
+    {
+      "name": "_local_rows",
+      "count": 1,
+      "summed_seconds": 4.4482421875e-06,
+      "union_seconds": 4.4482421875e-06
+    },
+    {
+      "name": "_means",
+      "count": 1,
+      "summed_seconds": 1.88818359375e-06,
+      "union_seconds": 1.88818359375e-06
+    },
+    {
+      "name": "_finish",
+      "count": 1,
+      "summed_seconds": 1.31103515625e-06,
+      "union_seconds": 1.31103515625e-06
+    },
+    {
+      "name": "_pack",
+      "count": 1,
+      "summed_seconds": 1.27978515625e-06,
+      "union_seconds": 1.27978515625e-06
+    },
+    {
+      "name": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)",
+      "count": 1,
+      "summed_seconds": 1.1201171875e-06,
+      "union_seconds": 1.1201171875e-06
+    }
+  ],
+  "scope": "Rank0 post-update forward/backward only, no AdamW. Duration sums can overlap; not whole-step fractions, speedup predictions, or critical-path attribution."
+}

@@ -1,0 +1,242 @@
+{
+  "complete": true,
+  "qualified_training_improvement": true,
+  "default_changed": false,
+  "copies": [
+    {
+      "path": "qwen3_triton_v12_cohort_review_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/independent_review.json",
+      "sha256": "90e1fe162d1e5db34c2a8fd45731046a7fd62a63a59c2f9a575b0a572a5df35f",
+      "bytes": 30169
+    },
+    {
+      "path": "qwen3_triton_v12_method_review_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/per_method_review.json",
+      "sha256": "e8806aacc48bc30728fd7ceb97b4a681c9c4030d2c27197090d5cc8870dd841d",
+      "bytes": 13697
+    },
+    {
+      "path": "qwen3_triton_v12_cohort_manifest_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/manifest.json",
+      "sha256": "9dbd7f0cb69eae83fb97d6935f893e1fa14aabecba51fd5feb7fbaec6101c483",
+      "bytes": 16583
+    },
+    {
+      "path": "qwen3_triton_v12_resource_review_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/resource_review.json",
+      "sha256": "3368c29947d136954cfc1388c2e891a73bed56f8895cebfaf525be031fc98a6f",
+      "bytes": 4225
+    },
+    {
+      "path": "qwen3_triton_v12_attempt_history_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts.json",
+      "sha256": "f2b59e6079d7823210cf6a96472595b2171aa7ea55de72426d1d2578c60fdafe",
+      "bytes": 6052
+    },
+    {
+      "path": "qwen3_triton_v12_full_screen_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/full_screen_003/result.json",
+      "sha256": "65056f645df85dc81c09a3d686c6092aadd4531b7d27965ac8cc1e9957ee4695",
+      "bytes": 7645
+    },
+    {
+      "path": "qwen3_triton_v12_full_screen_manifest_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/full_screen_003/manifest.json",
+      "sha256": "4d7021b32249c68dccf9a97124ff2bb75da360ad7b1f4b94d2aa66dac58ed0b1",
+      "bytes": 10812
+    },
+    {
+      "path": "qwen3_triton_v12_fused_head_module_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/module_002/module/result.json",
+      "sha256": "0d8e68f093e3e476a31412f9ef63bbc3ad29fa42d427c2ad543d70fc726c2066",
+      "bytes": 10707
+    },
+    {
+      "path": "qwen3_triton_v12_fused_head_module_manifest_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/module_002/manifest.json",
+      "sha256": "5015003a99bda79d2126ff53383296dd8564be758faff81c4663c44564d9777a",
+      "bytes": 5005
+    },
+    {
+      "path": "qwen3_triton_v12_unfused_head_module_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/module_001/module/result.json",
+      "sha256": "59da664e04ed968bfe538279f134951d328a972c525a7f8e071fc67c2c461ab4",
+      "bytes": 10687
+    },
+    {
+      "path": "qwen3_triton_v12_unfused_head_module_manifest_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/module_001/manifest.json",
+      "sha256": "d0a5c93ec30d861b7b7b224115c09a60ba3c5b5821d92da374eb266531dc5e19",
+      "bytes": 4860
+    },
+    {
+      "path": "qwen3_triton_v12_DW_fusion_screen_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/dw_fusion_screen_001/result.json",
+      "sha256": "2b35856251ed93a4584df69ae72f5d15595c5fda89ffd858287669b0337fabda",
+      "bytes": 5077
+    },
+    {
+      "path": "qwen3_triton_v12_DW_fusion_manifest_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/dw_fusion_screen_001/manifest.json",
+      "sha256": "54e7cfd97be0f2fef48ace5e2b872abed21860804606104c51f4bc2e63b1f8a1",
+      "bytes": 1064
+    },
+    {
+      "path": "qwen3_triton_v12_checkpoint_screen_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/checkpoint_screen_001/result.json",
+      "sha256": "fdc7a40e7439b96155e0c218ab2a00d3e3f13f6364a1c1949d3a8182fef2fd6e",
+      "bytes": 3066
+    },
+    {
+      "path": "qwen3_triton_v12_checkpoint_manifest_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/checkpoint_screen_001/manifest.json",
+      "sha256": "329ae30264b751c1d8064f633353b501eaf81a6eebc432df8e32b3cca236ef8f",
+      "bytes": 10351
+    },
+    {
+      "path": "qwen3_triton_v12_checkpoint_source_archive_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/pre_fusion_source_archive_001.json",
+      "sha256": "f1e55ab5c07506bd8da53f457ea6c5812e531516f63f1a231bad79a90c3d624a",
+      "bytes": 15631
+    },
+    {
+      "path": "qwen3_triton_v12_integration_disclosure_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/integration_fix_001.json",
+      "sha256": "639e9b021418b93e3162d7b319cfd3aa4f62cf0fa26724ea6b4feb5bb3e3d199",
+      "bytes": 555
+    },
+    {
+      "path": "qwen3_triton_v12_admission_disclosure_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/pre_admission_audit_edit_disclosure_001.json",
+      "sha256": "c2cb0571f34d044d9a1dcc07001756fea6e427068c6dd0deaa32e74d330f2d0a",
+      "bytes": 475
+    },
+    {
+      "path": "qwen3_triton_v12_controller_failure_disclosure_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/admission_controller_failure_001.json",
+      "sha256": "84f92c2fc1760c08419ee8b06148486c4d57801d699ea9db2e09c52061fccab7",
+      "bytes": 921
+    },
+    {
+      "path": "qwen3_triton_v12_resource_exclusion_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/resource_exclusion_001.json",
+      "sha256": "d908339e83fbae6c615792e910f2a3b252ebd4a7c7d0b4310580383f3314018f",
+      "bytes": 878
+    },
+    {
+      "path": "qwen3_triton_v12_HF_custom_rejection_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/HF_custom_rejection_001.json",
+      "sha256": "660defe5cf392011a09f5b940aea837ff8e2eb02fde882b7acba3cf7bfbca599",
+      "bytes": 749
+    },
+    {
+      "path": "qwen3_triton_v12_method_adoption_policy_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/per_method_adoption_policy_001.json",
+      "sha256": "7ef718386a99a59f2a6e3f5b285d63d2543181b322ec9daff3bb8ef27a0a2901",
+      "bytes": 1004
+    },
+    {
+      "path": "qwen3_triton_v12_CPU_checks_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/CPU_preflight_003.json",
+      "sha256": "12496c73a8df9789d6118594f5d42356cf03dd1fa782a950538c2a93e0b00468",
+      "bytes": 2305
+    },
+    {
+      "path": "qwen3_triton_v12_resource_policy_checks_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/CPU_resource_policy_checks_001.json",
+      "sha256": "8aa0b8ece7b2882ec24e7cee185cb84321f2d1465cec953818b197685c09ae2c",
+      "bytes": 455
+    },
+    {
+      "path": "qwen3_triton_v12_recommendation_policy_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/fusion_recommendation_policy_002.json",
+      "sha256": "6dbf97975c021d0f9fde16580d1fc8917fd1e12ab078c25b9cc27fedf5772403",
+      "bytes": 1064
+    },
+    {
+      "path": "qwen3_triton_v12_environment_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/environment_001.json",
+      "sha256": "77a66414a9c8dea09790db85ab3401f7694a9b74b8488901ee7e946b1ff3fd8e",
+      "bytes": 237
+    },
+    {
+      "path": "qwen3_triton_v12_communication_model_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/communication_model_001.json",
+      "sha256": "6c616b39d7b7faf011752f86627bf8ab992c73497f10e5d8f8e8ea9ab6ca46cb",
+      "bytes": 876
+    }
+  ],
+  "strategy": {
+    "path": "qwen3_triton_v12_strategy_v1.json",
+    "sha256": "39817c9e27a567c37e0eba2c87c17082a04634dad8f4733fdce88cf611ce0683"
+  },
+  "raw_evidence_sha256": {
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/native_r1/result.json": "2c9f43142169dd2ea948fb8a7da0b1a2aaf1e29c2dfcc69e07b885fa289345bd",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/native_r1.gpu.json": "48578a888159c74f7c3e5c34a502c828a3b573285638aee4b5021f928f6a403b",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/native_r1/training_trace.json": "405310e0475d7cdb26d91a3806bae8e45840b4db954f056c4e742b3acd186b73",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/triton_control_r1/result.json": "54c4b7882df68ce9b1dad908e0963dff0bbd29587984911ee8db5aba2d9051c2",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/triton_control_r1.gpu.json": "67fa039edb4ec3795946be1e818357a32bc43b5fed925c7043ea3855c3acbd67",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/triton_control_r1/training_trace.json": "61b8eb28c419c213748c3a8d266cfddcb8c0b8f051ec962b7a423418c9c498e5",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/head_unfused_r1/result.json": "160c2a62dcb57472013d44c871a483614a999da188b71bde2ff50ec9100435a8",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/head_unfused_r1.gpu.json": "d7167bc8e8530710aed2aee01a6e87e34228bd11caacdbad52effc79db387524",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/head_unfused_r1/training_trace.json": "1cb98ec576ec8257e226dd31bf8ddc8091092d8dcf6d7d0bb4215b039ef01a26",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/HF_custom_head_r1/result.json": "9bd9716cf8f4a8e4608a6b168867b34b342ad825fca902eba57f27f7116d6ea5",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/HF_custom_head_r1.gpu.json": "2a650ab83806ecafdc6b90c7e5a57e959710c12136268a66ff6e033d85fe1552",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/HF_custom_head_r1/training_trace.json": "18bdc88c994ef0596c7442a18fcecc4bd5640e465314ba0f4f21844f043e71f6",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/candidate_r1/result.json": "c8ab3f25ebf2825d30cef3b080bf2748bbc498e1d0f32107fa368529b1d6db28",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/candidate_r1.gpu.json": "5d5fa5dc47b4828ce22afaf91cb666bf0d55992c96dc6c1c7fbf3e025cfb1c84",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/candidate_r1/training_trace.json": "9864d03519ba20570ee637f1bb159b454d214fd047d6e279f2edbc1ed9ef38e4",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/candidate_r2/result.json": "cc33b128b88b9c15c29668d0ceed52ab4934b99197584fc1de60793b156425cc",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/candidate_r2.gpu.json": "96acec03cc69de14d16129d539335468683d25f2e660058dd1cf321d79cf91ab",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/candidate_r2/training_trace.json": "5d9f23f1ce0a58cbef10e8e5d9b5cdfd9c33999a51aebe4d840751c77124351a",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/HF_custom_head_r2/result.json": "c271272e08298216a1acaa11c4c7ee531d1d2d96dd063231492719daf9c7e206",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/HF_custom_head_r2.gpu.json": "ecd5f9523225faa776a122bfc6476816cfc3b3d51691a6fc996952ad57ca8aa7",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/HF_custom_head_r2/training_trace.json": "e39dad71503e6e26de60fff4b34324a770f813fa2eabe3bae39faf540918adc3",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/head_unfused_r2/result.json": "829a3148a28692029f1925ca68b57f3fb03e899b9cf8694a5f6b5ad6d805d43c",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/head_unfused_r2.gpu.json": "d9e0c50e578921c5d677ac74bb12e7cbdf2401c7a011e7fa239dfa42722a6dd4",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/head_unfused_r2/training_trace.json": "73473c263525bb5e1c3106dbf68cd2683cd4278b79682770b978e155079ad210",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/triton_control_r2/result.json": "1a2639a98e09ac4dfb1790828cdad0986c0fddb9f01e8b1e93a276cdaef15a80",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/triton_control_r2.gpu.json": "c4bbec3afa58bac256c1b7adf7e404006a45c0d887c2521240cd0a338d7901cd",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/triton_control_r2/training_trace.json": "d81d1df0a5816933dfb0a5bb93b64e8e58d59ef2fc175782cbbb60629d7845ca",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/native_r2/result.json": "d6f863c96e7ab8cf5d3af8b3dd6d95702e8d1320bf6785773687754f55a2f61e",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/native_r2.gpu.json": "72b51e2de1aa10c6e4d062676318acd31d326a50b7ba39ebfc27df68a8dbaad4",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/native_r2/training_trace.json": "64640a89bc74f5122a613fe6e95a5128dda067edbae354d1f36321b02205e9cc",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0001_native_r1/monitor.json": "48578a888159c74f7c3e5c34a502c828a3b573285638aee4b5021f928f6a403b",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0001_native_r1/worker.log": "5b11bfcaaac5007e2a31414b640f3e4629885535d4a1cd51c463e2f7d0d1c9af",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0002_triton_control_r1/monitor.json": "67fa039edb4ec3795946be1e818357a32bc43b5fed925c7043ea3855c3acbd67",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0002_triton_control_r1/worker.log": "34c7f3d8499774e495913173f522c7209676294e356fa569b207b70b9e9b3c36",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0003_head_unfused_r1/monitor.json": "d7167bc8e8530710aed2aee01a6e87e34228bd11caacdbad52effc79db387524",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0003_head_unfused_r1/worker.log": "501cd61f0c28d232f5138bc1a367a5bb43b166603a39ddec9e4a36382ba9ed9e",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0004_HF_custom_head_r1/monitor.json": "2a650ab83806ecafdc6b90c7e5a57e959710c12136268a66ff6e033d85fe1552",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0004_HF_custom_head_r1/worker.log": "81b07638821a564cb814b80bc33552847ce41cd516e24ffd629d265d16a6528d",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0005_candidate_r1/monitor.json": "5d5fa5dc47b4828ce22afaf91cb666bf0d55992c96dc6c1c7fbf3e025cfb1c84",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0005_candidate_r1/worker.log": "3518d71c036411b2fe71dc97635d17cb3a330b9a1f3f5e13a7fd7896af48b34b",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0006_candidate_r2/monitor.json": "96acec03cc69de14d16129d539335468683d25f2e660058dd1cf321d79cf91ab",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0006_candidate_r2/worker.log": "33db0ffafd0ed5e59513d3a298dbd3c59a4bab0b621acf56546c966834520396",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0007_HF_custom_head_r2/monitor.json": "ecd5f9523225faa776a122bfc6476816cfc3b3d51691a6fc996952ad57ca8aa7",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0007_HF_custom_head_r2/worker.log": "3340747cb8b32571e237a7915dc3e005e105d3522bc54092c609f5b2294de43a",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0008_head_unfused_r2/monitor.json": "fa50b5880e5416cf7fc6daa9af225bbc523efa4e34470574665b70f0023f2d91",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0008_head_unfused_r2/worker.log": "1d1bc9817840572e1762b39ae1ef190158c34255228d0853392cff8433be98ae",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0009_head_unfused_r2/monitor.json": "57490dade7152ab7466a5a82350f20a29081b27a73e9ce018ec9efdb8e49317f",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0009_head_unfused_r2/worker.log": "1ee89b6cea2c496d11405240ef2147229132997e9ca4442a853f48dbdd836074",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0010_head_unfused_r2/monitor.json": "d9e0c50e578921c5d677ac74bb12e7cbdf2401c7a011e7fa239dfa42722a6dd4",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0010_head_unfused_r2/worker.log": "f02318f5db4580dd113c6e97f28ec300717aced6077a5ace02a8db62abf8c2c0",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0011_triton_control_r2/monitor.json": "c4bbec3afa58bac256c1b7adf7e404006a45c0d887c2521240cd0a338d7901cd",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0011_triton_control_r2/worker.log": "c62d0695c34f5b221c6f6dcc5e281261c0320dfdb9cb158dafb9bdf1294fd8a9",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0012_native_r2/monitor.json": "72b51e2de1aa10c6e4d062676318acd31d326a50b7ba39ebfc27df68a8dbaad4",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/formal_003/attempts/0012_native_r2/worker.log": "dbe730611ec9b51cd7483ce9316b6d3ef1c573d42a081ff73d12026835eb1c79",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/full_screen_003/triton_control.gpu.json": "f8cf9924f09db0f5d043684017173967a0ac1752af85f0903d5733b30ec5b548",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/full_screen_003/HF_custom_head.gpu.json": "945b121fced09050a50e91610723ccb7e0e7c0662be6e399e1cdb72a89bd45bd",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/full_screen_003/head_unfused.gpu.json": "07dc69d03ebb1236a8341103d0e5da68e4e1407e649fa1a4a93ce219c5b88e1a",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/full_screen_003/candidate.gpu.json": "a319745af6ceecc26e72845883ffb8d134ba9244f52606e66b3f6eb0c8508c03",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/module_002/gpu.json": "8d7e892f41f44de1851b952365b182ca579cedf5061ce88217952beeda4d5353",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/dw_fusion_screen_001/gpu.json": "9e217c52622dbbc4d722604a88bd7df17afaccf64dd35e09ef1d5c45be2e398c",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/checkpoint_screen_001/cp2.gpu.json": "3a3aa024d04cefaa67cdf8d4454a6cd3286e4e63c02865b1bc7d8ea28a17d4c7",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/checkpoint_screen_001/cp1_control.gpu.json": "d5c103e5372f6d802c3008b71776d11ae55d1cc4036004ea5128d57479d11f73",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v12/checkpoint_screen_001/cp0.gpu.json": "a58a5af1b10d411066e41ab32ffdd7e80f63579b8bb950b9347cb0431ac3816e"
+  },
+  "collector_sha256": "c08c97783ba290ba501c83db65aae08f98dfdf863e07a409e6c92a191dd90cca",
+  "limitations": "Two orders are descriptive, not statistical significance. Dense candidate gradients were compared at runtime, not archived. Independent CPU replay verifies reference archives and recorded error arithmetic. Sixteen quality updates do not prove convergence. HF custom head requires the same bespoke Triton loss, parameter ownership and collective schedule. No inference claim.",
+  "original_whole_cohort_all_profiles_passed": false,
+  "scope": "Byte-identical small evidence copies. No weights, corpus, caches, raw gradient archives, logs, traces or source-archive payloads. Historical source paths/hashes and preserved Git history identify earlier screening implementations."
+}

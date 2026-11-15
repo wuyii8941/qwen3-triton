@@ -1,0 +1,25 @@
+{
+  "complete": true,
+  "syntax_passed": 14,
+  "comparator_and_full_validation_AST_unchanged": true,
+  "unchanged_real_trace_passed": true,
+  "wrong_vocab_and_fusion_labels_rejected": true,
+  "five_formal_arm_commands_passed": true,
+  "sources": {
+    "/data1/tzh/proj/qwen3-triton-opt-v12/scripts/run_vocab_full_v12.py": "b2389caf4a33995cb4a0ac1b6542c71ddf8644b80d344d8493ded1da7bc55883",
+    "/data1/tzh/proj/qwen3-triton-opt-v12/scripts/train_qwen3_vocab_v12.py": "9a29ecd6e6802b161e842aabb44c67b8f38b7edf31330b1af4b909165fa619b6",
+    "/data1/tzh/proj/qwen3-triton-opt-v12/scripts/vocab_model_v12.py": "4bd8e59da570fa755965365e8454c63cb1229d9540474d62b14386eadaff54c0",
+    "/data1/tzh/proj/qwen3-triton-opt-v12/scripts/benchmark_vocab_dw_v12.py": "3ae36b0db904056f43679a0d759aa09b5036568ccd70b355598c6da911fe3193",
+    "/data1/tzh/proj/qwen3-triton-opt-v12/scripts/review_vocab_full_v12.py": "f22e66a1e8892eecc3b92e53d5efe144b0941340753ae38e56aeb20350012c24",
+    "/data1/tzh/proj/qwen3-triton-opt-v12/scripts/continue_vocab_v12.py": "fceac5c7ef9f129443e027febe9d426e2aa06f884ca1a6094763184cb3ea7bae",
+    "/data1/tzh/proj/qwen3-triton-opt-v12/scripts/run_vocab_screen_v12.py": "dcc812b9b86a67d79573d1ece55d11baefb21bb009196f7f35d1026d6442d681",
+    "/data1/tzh/proj/qwen3-triton-opt-v12/scripts/benchmark_vocab_ce_v12.py": "7c2a926410c2a7f2cf8a8fe785b3dc53046c6d00fc226841828bfb258cf1532f",
+    "/data1/tzh/proj/qwen3-triton-opt-v12/scripts/screen_vocab_dw_v12.py": "d53d181cd15d64acc7401716e0e0f78dda8ae6e6faad7cb487457fd756ae5cdf",
+    "/data1/tzh/proj/qwen3-triton-opt-v12/scripts/screen_vocab_ce_v12.py": "cdb24ea2c50e55f08c2529c5bcfb1a5d09e3dac485d90c3e82660278310c9113",
+    "/data1/tzh/proj/qwen3-triton-opt-v12/scripts/screen_vocab_checkpoint_v12.py": "d290190c4703e118c7ff93d3124e55956c8d93f75ee66a56559dfdf0757fa058",
+    "/data1/tzh/proj/qwen3-triton-opt-v12/qwen3_triton/kernels/vocab_ce.py": "74d0ac60473a6eaf5813733291b6598c5445e3fac09bbd98108c59b5052caa39",
+    "/data1/tzh/proj/qwen3-triton-opt-v12/qwen3_triton/kernels/vocab_dw.py": "1359a03f272dd3496fc9a788b47b42cbd6f182f2141793be353ba9a8c422e153",
+    "/data1/tzh/proj/qwen3-triton-opt-v12/qwen3_triton/vocab_parallel.py": "a99e0ec8635fd1d3a4714a3b5e8116960dc2bf2f3007f8e05a87f4ea22a9a4a1"
+  },
+  "full_model_qualified": false
+}

@@ -1,0 +1,19 @@
+{
+  "complete": true,
+  "variant": "HF decoder with bespoke vocabCE/fusedDW",
+  "qualified": false,
+  "performance_eligible": false,
+  "failed_gradients": [
+    {
+      "rank": 1,
+      "name": "model.layers.8.self_attn.k_norm.weight",
+      "absolute_error_norm": 0.00020067724108230323,
+      "reference_norm": 0.002531506586819887,
+      "relative_l2": 0.07927186211053738,
+      "threshold": 0.00015289039520919323,
+      "passed": false
+    }
+  ],
+  "result_sha256": "9bd9716cf8f4a8e4608a6b168867b34b342ad825fca902eba57f27f7116d6ea5",
+  "scope": "Auxiliary porting experiment rejected at original candidate gradient threshold. Preserve full-cohort audit including this failure; do not use this profile for speed claims or loosen tolerances."
+}

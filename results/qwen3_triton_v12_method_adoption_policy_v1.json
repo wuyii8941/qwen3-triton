@@ -1,0 +1,12 @@
+{
+  "declared_utc": "2026-11-15T09:19:30.153767+00:00",
+  "objective": "Find a custom optimization that is valid and faster than native HF and V11 Triton under the original full8B gates.",
+  "original_full_cohort_report_preserved": true,
+  "rule": "Audit each method with its same-order qualified nativeHF and V11 controls. A rejected auxiliary HF-custom port cannot support speed claims and does not certify or invalidate another method. Every recommended Triton method must independently pass all399 gradient checks, full validation, unchanged quality/memory/CUDA gates and >=3% lower complete step time vs both controls in both orders.",
+  "thresholds_unchanged": true,
+  "HF_custom_failure_disclosed": true,
+  "source_manifest_sha256": "9dbd7f0cb69eae83fb97d6935f893e1fa14aabecba51fd5feb7fbaec6101c483",
+  "existing_recommendation_policy_sha256": "6dbf97975c021d0f9fde16580d1fc8917fd1e12ab078c25b9cc27fedf5772403",
+  "candidate_r1_complete_at_declaration": false,
+  "no_final_adoption_claim": true
+}

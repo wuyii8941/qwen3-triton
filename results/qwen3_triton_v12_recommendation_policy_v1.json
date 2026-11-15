@@ -1,0 +1,17 @@
+{
+  "complete": true,
+  "declared_utc": "2026-11-15T08:37:24.332174+00:00",
+  "formal_state_when_declared": {
+    "pid": 3605360,
+    "stage": "running_native_r1",
+    "attempt": 1,
+    "accepted_roles": 0
+  },
+  "formal_manifest_sha256": "9dbd7f0cb69eae83fb97d6935f893e1fa14aabecba51fd5feb7fbaec6101c483",
+  "qualification": "Unchanged: >=3% lower median vs both same-order native HF and V11 Triton, in both orders; original numerical/quality/memory/CUDA gates.",
+  "recommendation": "Use fused head if its median is no slower than unfused in both orders, or unfused fails the same primary >=3% rule. Otherwise recommend the qualified unfused head. Module speedup alone does not select full-model flags.",
+  "default_changed": false,
+  "no_formal_candidate_timing_observed": true,
+  "parent_policy_sha256": "632cd69cfc9feb0eef0c881b971df4100d6170cc88193862ff9028c6d941b6fd",
+  "protocol_change": "Only resource attempt selection/monitoring: first clean attempt per fixed role. Model math, numerical/quality/memory thresholds and recommendation text unchanged."
+}

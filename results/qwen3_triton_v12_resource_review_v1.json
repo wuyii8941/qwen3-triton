@@ -1,0 +1,95 @@
+{
+  "complete": true,
+  "first_clean_attempt_policy_passed": true,
+  "fixed_role_order_passed": true,
+  "accepted": [
+    {
+      "role": "native_r1",
+      "attempt": 1,
+      "result_sha256": "2c9f43142169dd2ea948fb8a7da0b1a2aaf1e29c2dfcc69e07b885fa289345bd",
+      "trace_sha256": "405310e0475d7cdb26d91a3806bae8e45840b4db954f056c4e742b3acd186b73",
+      "monitor_sha256": "48578a888159c74f7c3e5c34a502c828a3b573285638aee4b5021f928f6a403b"
+    },
+    {
+      "role": "triton_control_r1",
+      "attempt": 2,
+      "result_sha256": "54c4b7882df68ce9b1dad908e0963dff0bbd29587984911ee8db5aba2d9051c2",
+      "trace_sha256": "61b8eb28c419c213748c3a8d266cfddcb8c0b8f051ec962b7a423418c9c498e5",
+      "monitor_sha256": "67fa039edb4ec3795946be1e818357a32bc43b5fed925c7043ea3855c3acbd67"
+    },
+    {
+      "role": "head_unfused_r1",
+      "attempt": 3,
+      "result_sha256": "160c2a62dcb57472013d44c871a483614a999da188b71bde2ff50ec9100435a8",
+      "trace_sha256": "1cb98ec576ec8257e226dd31bf8ddc8091092d8dcf6d7d0bb4215b039ef01a26",
+      "monitor_sha256": "d7167bc8e8530710aed2aee01a6e87e34228bd11caacdbad52effc79db387524"
+    },
+    {
+      "role": "HF_custom_head_r1",
+      "attempt": 4,
+      "result_sha256": "9bd9716cf8f4a8e4608a6b168867b34b342ad825fca902eba57f27f7116d6ea5",
+      "trace_sha256": "18bdc88c994ef0596c7442a18fcecc4bd5640e465314ba0f4f21844f043e71f6",
+      "monitor_sha256": "2a650ab83806ecafdc6b90c7e5a57e959710c12136268a66ff6e033d85fe1552"
+    },
+    {
+      "role": "candidate_r1",
+      "attempt": 5,
+      "result_sha256": "c8ab3f25ebf2825d30cef3b080bf2748bbc498e1d0f32107fa368529b1d6db28",
+      "trace_sha256": "9864d03519ba20570ee637f1bb159b454d214fd047d6e279f2edbc1ed9ef38e4",
+      "monitor_sha256": "5d5fa5dc47b4828ce22afaf91cb666bf0d55992c96dc6c1c7fbf3e025cfb1c84"
+    },
+    {
+      "role": "candidate_r2",
+      "attempt": 6,
+      "result_sha256": "cc33b128b88b9c15c29668d0ceed52ab4934b99197584fc1de60793b156425cc",
+      "trace_sha256": "5d9f23f1ce0a58cbef10e8e5d9b5cdfd9c33999a51aebe4d840751c77124351a",
+      "monitor_sha256": "96acec03cc69de14d16129d539335468683d25f2e660058dd1cf321d79cf91ab"
+    },
+    {
+      "role": "HF_custom_head_r2",
+      "attempt": 7,
+      "result_sha256": "c271272e08298216a1acaa11c4c7ee531d1d2d96dd063231492719daf9c7e206",
+      "trace_sha256": "e39dad71503e6e26de60fff4b34324a770f813fa2eabe3bae39faf540918adc3",
+      "monitor_sha256": "ecd5f9523225faa776a122bfc6476816cfc3b3d51691a6fc996952ad57ca8aa7"
+    },
+    {
+      "role": "head_unfused_r2",
+      "attempt": 10,
+      "result_sha256": "829a3148a28692029f1925ca68b57f3fb03e899b9cf8694a5f6b5ad6d805d43c",
+      "trace_sha256": "73473c263525bb5e1c3106dbf68cd2683cd4278b79682770b978e155079ad210",
+      "monitor_sha256": "d9e0c50e578921c5d677ac74bb12e7cbdf2401c7a011e7fa239dfa42722a6dd4"
+    },
+    {
+      "role": "triton_control_r2",
+      "attempt": 11,
+      "result_sha256": "1a2639a98e09ac4dfb1790828cdad0986c0fddb9f01e8b1e93a276cdaef15a80",
+      "trace_sha256": "d81d1df0a5816933dfb0a5bb93b64e8e58d59ef2fc175782cbbb60629d7845ca",
+      "monitor_sha256": "c4bbec3afa58bac256c1b7adf7e404006a45c0d887c2521240cd0a338d7901cd"
+    },
+    {
+      "role": "native_r2",
+      "attempt": 12,
+      "result_sha256": "d6f863c96e7ab8cf5d3af8b3dd6d95702e8d1320bf6785773687754f55a2f61e",
+      "trace_sha256": "64640a89bc74f5122a613fe6e95a5128dda067edbae354d1f36321b02205e9cc",
+      "monitor_sha256": "72b51e2de1aa10c6e4d062676318acd31d326a50b7ba39ebfc27df68a8dbaad4"
+    }
+  ],
+  "rejected": [
+    {
+      "number": 8,
+      "role": "head_unfused_r2",
+      "monitor_sha256": "fa50b5880e5416cf7fc6daa9af225bbc523efa4e34470574665b70f0023f2d91",
+      "reason": "foreign_GPU_process"
+    },
+    {
+      "number": 9,
+      "role": "head_unfused_r2",
+      "monitor_sha256": "57490dade7152ab7466a5a82350f20a29081b27a73e9ce018ec9efdb8e49317f",
+      "reason": "foreign_GPU_process"
+    }
+  ],
+  "no_timing_based_attempt_selection": true,
+  "manifest_sha256": "9dbd7f0cb69eae83fb97d6935f893e1fa14aabecba51fd5feb7fbaec6101c483",
+  "attempt_history_sha256": "f2b59e6079d7823210cf6a96472595b2171aa7ea55de72426d1d2578c60fdafe",
+  "reviewer_sha256": "2f8301b90b4047fed31f0d62c1791d3bf4bbc51580912a61f9684e0c199b93d8"
+}
