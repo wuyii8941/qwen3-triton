@@ -1,5 +1,11 @@
 # Reproduce complete Qwen3-8B experiments
 
+V14 extends model arithmetic to the complete training GPU data path. Its
+five-update actual8B and full512-block feasibility checks have passed;
+the eight-role16-quality-update cohort is still running. The
+[V14 entry and controls](#v14-full-training-gpu-runtime) below describe this
+extension. V9-V13 results retain their original protocols and scope.
+
 The public V9 implementation has completed all sixteen accepted four-rank
 official Qwen3-8B roles: HF + Flash, complete Triton base/optimized and five
 ablations in opposite orders. The independent review passes all 399-parameter
@@ -191,3 +197,96 @@ changed retained measurements and changed rejected-attempt evidence. The
 local V9 run required such recovery after a reverse-MLP ownership failure;
 that attempt is excluded from performance and remains preserved. A fresh
 reproduction uses the normal sixteen-role command above.
+
+## V14 full training GPU runtime
+
+`scripts/train_qwen3_runtime_v14.py` defaults to `--runtime full` and
+`--variant triton_optimized`. It uses the official untied36-layer8B layout,
+localB1/S512 and four canonical local ranks. All runtime GPU arithmetic,
+copy/cast/fill, gradient accumulation, AdamW, GPU tensor collectives and
+mailbox barriers are Triton. FSDP2/autograd CPU orchestration, CUDA driver
+allocation/IPC mapping/streams/events, CPU data preparation and host-device
+DMA remain host services. The loss-only graph does not expose generation
+or a KV-cache interface.
+
+The runtime uses the same pinned environment, official weights, corpus and
+input rebinding procedure above. The local research entry deliberately
+requires output paths under `/data1/tzh`; its benchmark controllers also
+refer to the author's fixed input/artifact root. The model and runtime
+modules themselves do not depend on original gradient/trace archives.
+Supply an existing `.venv-research` and invoke Python through the wrapper
+so that caches and temporary files stay under `.runtime-research`.
+
+For a new all399-gradient reference, launch the native HF reference exporter
+against your newly rebound protocol and manifest. This creates dense first
+gradients only once; the storage requirement in the V9 instructions applies.
+Run within an exclusive four-GPU allocation. The example assumes a clone
+at `/data1/tzh/proj/qwen3-triton-runtime-v14` and rebound inputs in that clone:
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 \
+  CUBLAS_WORKSPACE_CONFIG=:4096:8 \
+  bash scripts/research_python.sh -m torch.distributed.run \
+  --standalone --nproc_per_node=4 scripts/train_qwen3_vocab_v12.py \
+  --variant hf --save-reference \
+  --input-root /data1/tzh/proj/qwen3-triton-runtime-v14 \
+  --protocol artifacts/reproduced_inputs/protocol.json \
+  --input-manifest artifacts/reproduced_inputs/input_manifest.json \
+  --output /data1/tzh/proj/qwen3-triton-runtime-v14/artifacts/runtime_reference \
+  --quality-steps 1 --warmup-steps 1 --measure-steps 2 \
+  --keep-full-layers 36 --checkpoint-every 1 \
+  --skip-embedding-backward-gather --retain-lm-head
+```
+
+The input identity in this reference must match the candidate's manifest.
+Author-machine archived gradients are not included in Git and cannot be
+substituted for a fresh reference with different paths/identity. Native
+reference export is a control operation, not a hidden full-runtime fallback.
+
+Launch the full GPU path with the same inputs and the new reference:
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 \
+  GLOO_SOCKET_IFNAME=lo CUBLAS_WORKSPACE_CONFIG=:4096:8 \
+  PYTORCH_ALLOC_CONF=backend:native,expandable_segments:False \
+  bash scripts/research_python.sh -m torch.distributed.run \
+  --standalone --nproc_per_node=4 scripts/train_qwen3_runtime_v14.py \
+  --input-root /data1/tzh/proj/qwen3-triton-runtime-v14 \
+  --protocol artifacts/reproduced_inputs/protocol.json \
+  --input-manifest artifacts/reproduced_inputs/input_manifest.json \
+  --reference-raw-dir artifacts/runtime_reference \
+  --output /data1/tzh/proj/qwen3-triton-runtime-v14/artifacts/runtime_full \
+  --full-validation --trace
+```
+
+Defaults are16quality+3warmup+8timed+1real profiled updates:28actual
+optimizer updates. Validation covers512complete blocks/261632shifted tokens
+at0/16 with batch4/rank. Every master, gradient and moment is FP32. Effective
+memory is capped at41.875GiB, including a512MiB external peer reserve; full
+mode keeps its IPC buffers active during validation and caps Torch at41.375GiB.
+The number of actual optimizer updates is checked from GPU state counters.
+
+The explicitly labeled controls share this entry:
+
+| Runtime/variant flags | GPU computation represented |
+| --- | --- |
+| `--runtime native --variant hf` | Official HF+Flash, native FSDP/NCCL/fused AdamW |
+| `--runtime v13 --variant triton_optimized` | Triton model, V13 peer RS, native remaining runtime/AdamW |
+| `--runtime adam --variant triton_optimized` | V13 plus Triton AdamW; remaining runtime native |
+| `--runtime full --variant triton_optimized` | Entire supported training GPU data path Triton |
+
+On the author's fixed input root, the source-frozen controllers are
+`run_qwen3_runtime_pilot_v14.py`, `run_qwen3_runtime_validation_v14.py` and
+`run_qwen3_runtime_full_v14.py`. They use the shared120s-idle GPU lease,
+retain every contaminated attempt and accept the first clean result only.
+The formal controller fixes HF/V13/AdamW/full order and then its reverse;
+its CPU reviewer rechecks original archive hashes/norms, all399 recorded
+error contracts, full validation, memory and raw GPU events.
+
+Raw runs always report `full_runtime_qualified=false`; only the independent
+whole-cohort review can qualify the feature. That is separate from
+`performance_adopted`: the full implementation may be numerically qualified
+without meeting the two-order speed rule. The current in-progress status,
+component evidence and retained failures are in
+[TRITON_RUNTIME_V14.md](TRITON_RUNTIME_V14.md). Exact native addition-order
+matching is qualified only for the measured4A6000/versions/message shapes.
