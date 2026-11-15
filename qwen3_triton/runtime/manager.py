@@ -29,7 +29,7 @@ class TrainingRuntime:
         self.kind=kind;self.cpu_group=cpu_group;self.full=kind=='full'
         self.mode=TritonRuntimeMode() if self.full else None
         self.communication=None;self.hooks=None;self.observed_extra_bytes=0
-        self.validation_cycles=[]
+        self.validation_cycles=[];self.phase_peaks=[]
         if self.full:
             if os.environ.get('CUDA_VISIBLE_DEVICES') not in (None,'0,1,2,3'):raise ValueError('Identity device mapping required for accounting')
             warm=zeros((1,),device='cuda',dtype=torch.int32);torch.cuda.synchronize();del warm;torch.cuda.empty_cache()
@@ -78,6 +78,14 @@ class TrainingRuntime:
     @property
     def extra_bytes(self):return RESERVE if self.kind in ['v13','adam','full'] else 0
 
+    def record_peak(self,phase,*,external_bytes=None,reset=False):
+        extra=self.extra_bytes if external_bytes is None else external_bytes
+        peak=dict(allocated_gib=torch.cuda.max_memory_allocated()/2**30,reserved_gib=torch.cuda.max_memory_reserved()/2**30)
+        row=dict(phase=phase,torch=peak,external_budget_bytes=extra,effective={k:v+extra/2**30 for k,v in peak.items()})
+        self.phase_peaks.append(row)
+        if reset:torch.cuda.reset_peak_memory_stats()
+        return row
+
     def report(self):
         comm=self.communication.report() if self.communication is not None else dict(mode='native')
         if self.full:
@@ -85,6 +93,6 @@ class TrainingRuntime:
                 torch_allocator_cap_GiB=CAP_GIB-RESERVE/2**30,total_effective_cap_GiB=CAP_GIB,
                 FSDP_host_units=self.hooks['units'],FSDP_AG_calls=self.hooks['all_gather'].calls,FSDP_RS_calls=self.hooks['reduce_scatter'].calls,
                 validation_cycles=self.validation_cycles)
-        return dict(kind=self.kind,communication=comm,strict_GPU_dispatch=self.mode.report() if self.mode is not None else None,
+        return dict(kind=self.kind,communication=comm,phase_memory_ledger=self.phase_peaks,strict_GPU_dispatch=self.mode.report() if self.mode is not None else None,
             CPU_bootstrap_and_metadata_backend=dist.get_backend(self.cpu_group),
             host_services='FSDP/autograd metadata, CUDA allocator/peer mappings/streams/events, CPU file IO and host-device DMA; no GPU arithmetic exemption in full mode.')

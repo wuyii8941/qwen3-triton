@@ -22,6 +22,8 @@ from qwen3_triton.model import model_for_variant
 from qwen3_triton.kernels.gemm_tuning import load_plan,identity as gemm_identity
 from qwen3_triton.runtime.manager import TrainingRuntime,CAP_GIB
 from qwen3_triton.runtime.adamw import TritonAdamW,local
+from qwen3_triton.runtime.memory import zeros as runtime_zeros
+from qwen3_triton.runtime.metrics import accumulate_validation
 from train_qwen3_vocab_v12 import compare_first_gradients,sha
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -32,11 +34,12 @@ def profiler(enabled):
 
 
 @torch.no_grad()
-def evaluate(model,dataset,runtime,*,trace_path=None):
+def evaluate(model,dataset,runtime,*,phase,trace_path=None):
     # Data order, batch4, full coverage and token weighting match V13. Only
     # explicit data-path operations/collectives and tracing differ.
     was_training=model.training;model.eval();model.zero_grad(set_to_none=True)
-    rank=dist.get_rank();world=dist.get_world_size();nll=0.;count=0
+    rank=dist.get_rank();world=dist.get_world_size()
+    totals=runtime_zeros((2,),device='cuda',dtype=torch.float64)
     try:
         with runtime.validation_memory():
             with profiler(trace_path is not None) as trace:
@@ -45,13 +48,17 @@ def evaluate(model,dataset,runtime,*,trace_path=None):
                     with sdpa_kernel(SDPBackend.FLASH_ATTENTION):out=model(ids,labels=labels,use_cache=False)
                     valid_count=int(valid.sum())
                     if valid_count:
-                        value=float(out.loss);assert torch.isfinite(out.loss)
-                        tokens=valid_count*(dataset.seq-1);nll+=value*tokens;count+=tokens
+                        assert torch.isfinite(out.loss)
+                        tokens=valid_count*(dataset.seq-1);accumulate_validation(totals,out.loss,tokens)
                     del out
-                totals=torch.tensor([nll,count],dtype=torch.float64,device='cuda');runtime.reduce(totals)
+                runtime.reduce(totals)
                 expected=len(dataset)*(dataset.seq-1);assert int(totals[1])==expected
                 loss=float(totals[0]/totals[1]);reshard_official_parameters(model);torch.cuda.synchronize()
             if trace_path is not None:trace.export_chrome_trace(str(trace_path))
+        # V13 controls physically release peer scratch during validation;
+        # full mode needs peer AG/AR buffers and keeps its reserve active.
+        extra=0 if runtime.kind in ['v13','adam'] else runtime.extra_bytes
+        runtime.record_peak(phase,external_bytes=extra,reset=True)
         return dict(loss=loss,tokens=expected,blocks=len(dataset),batch_per_rank=4)
     finally:
         reshard_official_parameters(model);model.train(was_training)
@@ -133,11 +140,12 @@ def main():
             path=args.output/'setup_trace.json';setup_trace.export_chrome_trace(str(path));setup_traces[path.name]=sha(path)
         dist.barrier(group=cpu_group)  # host model construction/profile export complete
         with runtime.scope():
+            runtime.record_peak('setup',reset=True)
             train=Blocks(Path(protocol['corpus'])/'train.bin',512,training=True,seed=protocol['seed'])
             validation=Blocks(Path(protocol['corpus'])/protocol['validation']['split'],512)
             rows=[];validation_rows=[];comparisons=[];traces=setup_traces;quality_warm_timed=args.quality_steps+args.warmup_steps+args.measure_steps
             if args.full_validation:
-                value=evaluate(model,validation,runtime);validation_rows.append(dict(after_updates=0,**value))
+                value=evaluate(model,validation,runtime,phase='validation_0');validation_rows.append(dict(after_updates=0,**value))
                 if rank==0:print(json.dumps(dict(event='full_validation',runtime=args.runtime,after_updates=0,**value)),flush=True)
                 dist.barrier(group=cpu_group)
             total=quality_warm_timed+1
@@ -145,7 +153,6 @@ def main():
                 measured=args.quality_steps+args.warmup_steps<step<=quality_warm_timed
                 profiled=step==total
                 if step==args.quality_steps+1:torch.cuda.empty_cache()
-                if step==args.quality_steps+args.warmup_steps+1:torch.cuda.reset_peak_memory_stats()
                 trace_name='initial_step_trace.json' if step==1 else 'full_step_trace.json'
                 capture=args.trace and rank==0 and (step==1 or profiled)
                 with profiler(capture) as trace:
@@ -171,7 +178,7 @@ def main():
                     torch.cuda.synchronize();elapsed=time.perf_counter()-start
                     # This instrumentation is in the trace; max-reducing a
                     # duration necessarily occurs after its measured interval.
-                    elapsed_tensor=torch.tensor(elapsed,device='cuda',dtype=torch.float64);runtime.reduce(elapsed_tensor,'max');elapsed=float(elapsed_tensor)
+                    elapsed_tensor=torch.tensor(elapsed,device='cpu',dtype=torch.float64).cuda();runtime.reduce(elapsed_tensor,'max');elapsed=float(elapsed_tensor)
                     global_loss=float(loss);del out,loss
                     torch.cuda.synchronize()
                 if capture:
@@ -182,10 +189,13 @@ def main():
                 rows.append(row)
                 if rank==0:print(json.dumps(dict(event='optimizer_update',runtime=args.runtime,variant=args.variant,**row)),flush=True)
                 if step==quality_warm_timed:
-                    training_peak=dict(allocated_gib=torch.cuda.max_memory_allocated()/2**30,reserved_gib=torch.cuda.max_memory_reserved()/2**30)
+                    training_peak=runtime.record_peak('timed_updates',reset=True)['torch']
+                elif step==args.quality_steps:runtime.record_peak('quality_updates',reset=True)
+                elif step==args.quality_steps+args.warmup_steps:runtime.record_peak('warmup_updates',reset=True)
+                elif profiled:runtime.record_peak('profile_update',reset=True)
                 if args.full_validation and step==args.quality_steps:
                     path=args.output/'full_validation_trace.json' if full and args.trace and rank==0 else None
-                    value=evaluate(model,validation,runtime,trace_path=path);validation_rows.append(dict(after_updates=step,**value))
+                    value=evaluate(model,validation,runtime,phase='validation_after_quality',trace_path=path);validation_rows.append(dict(after_updates=step,**value))
                     if path is not None:traces[path.name]=sha(path)
                     if rank==0:print(json.dumps(dict(event='full_validation',runtime=args.runtime,after_updates=step,**value)),flush=True)
                     dist.barrier(group=cpu_group)
@@ -196,13 +206,15 @@ def main():
                 assert local(p.grad).dtype==torch.float32 and torch.isfinite(local(p.grad)).all(),name
                 state=optimizer.state[p];assert float(state['step'])==total
                 for key in ['exp_avg','exp_avg_sq']:assert local(state[key]).dtype==torch.float32 and torch.isfinite(local(state[key])).all(),(name,key)
-            all_phase_peak=dict(allocated_gib=torch.cuda.max_memory_allocated()/2**30,reserved_gib=torch.cuda.max_memory_reserved()/2**30)
+            runtime.record_peak('post_update_checks')
+            all_phase_peak={k:max(r['torch'][k] for r in runtime.phase_peaks) for k in ['allocated_gib','reserved_gib']}
+            effective_all_phase_peak={k:max(r['effective'][k] for r in runtime.phase_peaks) for k in ['allocated_gib','reserved_gib']}
             reshard_official_parameters(model)
             report=runtime.report();extra=runtime.extra_bytes/2**30
             rank_result=dict(rank=rank,complete=True,parameter_count=399,optimizer_state_count=len(optimizer.state),updates=total,
                 rows=rows,full_validation=validation_rows,gradient_comparisons=comparisons,all_master_grad_moment_finite_fp32=True,
                 measured_training_peak=training_peak,effective_training_peak={k:v+extra for k,v in training_peak.items()},
-                all_phase_peak=all_phase_peak,effective_all_phase_peak={k:v+extra for k,v in all_phase_peak.items()},runtime=report,traces=traces,
+                all_phase_peak=all_phase_peak,effective_all_phase_peak=effective_all_phase_peak,runtime=report,traces=traces,
                 vocab_head_calls=dict(forward=model.lm_head.forward_calls,backward=model.lm_head.backward_calls) if is_triton else None)
         (args.output/f'rank{rank}.json').write_text(json.dumps(rank_result,indent=2)+'\n')
         reports=[None]*4;dist.all_gather_object(reports,rank_result,group=cpu_group)

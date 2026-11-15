@@ -5,7 +5,7 @@ from qwen3_peer_v13_contract import audit_trace as previous_geometry_audit
 
 RUNTIME_KERNELS={'_runtime_fill','_runtime_typed_fill','_runtime_strided_copy','_runtime_stage',
     '_runtime_peer_barrier','_runtime_peer_collective','_runtime_binary','_runtime_reduce',
-    '_runtime_unary','_runtime_compare','_runtime_chunk_cat_one','_adamw_prepare','_adamw_update'}
+    '_runtime_unary','_runtime_compare','_runtime_chunk_cat_one','_runtime_validation_accumulate','_adamw_prepare','_adamw_update'}
 MODEL_STEP=dict(_gemm=866,_gate_up=72,_native_precision_forward=72,_native_split_dq=36,
     _dq_split_reduce=36,_native_precision_dkdv=36,_native_order_delta=36,
     _attention_kv_head_reduce_kernel=36,_hf_norm_forward=145,_hf_swiglu_backward=36,

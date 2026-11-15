@@ -7,6 +7,8 @@ GradScaler, sparse, complex, BF16 master/state and higher-order modes are not
 silently delegated. This path is not qualified until real tests have passed.
 """
 import math
+import copy
+from collections import defaultdict
 import torch
 import triton
 import triton.language as tl
@@ -72,21 +74,45 @@ class TritonAdamW(torch.optim.Optimizer):
         self.block=block;self.kernel_steps=0
 
     def load_state_dict(self,state_dict):
-        super().load_state_dict(state_dict)
-        for group in self.param_groups:
-            if any(group.get(key,False) for key in ['amsgrad','maximize','differentiable','capturable']):
-                raise ValueError('Unsupported optimizer checkpoint mode')
-            for parameter in group['params']:
-                state=self.state.get(parameter)
-                if not state:continue
-                device=local(parameter).device
+        # Base Optimizer.load_state_dict eagerly uploads a whole replacement
+        # state before discarding the old one. At8B this can transiently add
+        # another16GiB of moments per GPU. Validate metadata first, then reuse
+        # existing local buffers and transfer one tensor at a time instead.
+        state_dict=state_dict.copy()
+        for hook in self._optimizer_load_state_dict_pre_hooks.values():
+            changed=hook(self,state_dict)
+            if changed is not None:state_dict=changed
+        saved_groups=copy.deepcopy(state_dict['param_groups'])
+        if len(saved_groups)!=len(self.param_groups) or any(len(a['params'])!=len(b['params']) for a,b in zip(saved_groups,self.param_groups)):
+            raise ValueError('Optimizer checkpoint group layout differs')
+        specifications=[];groups=[]
+        for saved,current in zip(saved_groups,self.param_groups):
+            if any(saved.get(key,False) for key in ['amsgrad','maximize','differentiable','capturable']):raise ValueError('Unsupported optimizer checkpoint mode')
+            group=dict(saved,params=current['params']);groups.append(group)
+            for saved_id,parameter in zip(saved['params'],current['params']):
+                source_state=state_dict['state'].get(saved_id,{})
+                if not source_state:continue
+                if set(source_state)!={'step','exp_avg','exp_avg_sq'}:raise ValueError('Expected plain FP32 AdamW checkpoint state')
+                p=local(parameter)
                 for key in ['step','exp_avg','exp_avg_sq']:
-                    source=local(state[key])
-                    if source.dtype!=torch.float32:raise ValueError('FP32 optimizer checkpoint state required')
-                    target=raw_empty(source.shape,device=device,dtype=torch.float32)
-                    if source.is_cuda:copy_(target,source)
-                    else:target.copy_(source)  # host checkpoint transfer is DMA
-                    state[key]=target
+                    source=local(source_state[key])
+                    if source.dtype!=torch.float32 or not source.is_contiguous():raise ValueError('Contiguous FP32 checkpoint state required before upload')
+                    if (key=='step' and source.numel()!=1) or (key!='step' and source.shape!=p.shape):raise ValueError('Local checkpoint shape differs')
+                    if source.device.type!='cpu' and source.device!=p.device:raise ValueError('Load CPU or same-device local shards only')
+                specifications.append((parameter,source_state))
+        restored=defaultdict(dict);versions=[]
+        for parameter,sources in specifications:
+            p=local(parameter);previous=self.state.get(parameter,{})
+            for key in ['step','exp_avg','exp_avg_sq']:
+                source=local(sources[key]);target=local(previous[key]) if key in previous else None
+                if target is None or target.shape!=source.shape or target.device!=p.device or target.dtype!=torch.float32:
+                    target=raw_empty(source.shape,device=p.device,dtype=torch.float32)
+                if source.is_cuda:copy_(target,source)
+                else:target.copy_(source)  # matching CPU-to-GPU DMA, no CUDA arithmetic
+                restored[parameter][key]=target;versions.append(target)
+        if versions:torch.autograd.graph.increment_version(versions)
+        self.__setstate__(dict(state=restored,param_groups=groups))
+        for hook in self._optimizer_load_state_dict_post_hooks.values():hook(self)
 
     @torch.no_grad()
     def step(self,closure=None):

@@ -92,7 +92,15 @@ def main():
             g=torch.randn_like(x)*1e-5;x.grad=g;y.grad=g.clone()
             opt=TritonAdamW([x]);ref=torch.optim.AdamW([y],lr=1e-5,betas=(.9,.999),eps=1e-8,weight_decay=.01,fused=True)
             for _ in range(3):opt.step();ref.step()
-            shape_rows.append(dict(shape=shape,rows=compare(opt,ref,[x],[y])))
+            reuse=None
+            if shape==(37984,4096):
+                saved=opt.state_dict();cpu_saved=dict(param_groups=copy.deepcopy(saved['param_groups']),
+                    state={key:{name:value.cpu() for name,value in state.items()} for key,state in saved['state'].items()})
+                before={key:value.data_ptr() for key,value in opt.state[x].items()}
+                opt.load_state_dict(cpu_saved)
+                reuse=before=={key:value.data_ptr() for key,value in opt.state[x].items()};assert reuse
+                opt.step();ref.step();del saved,cpu_saved
+            shape_rows.append(dict(shape=shape,rows=compare(opt,ref,[x],[y]),large_checkpoint_buffers_reused=reuse))
             del x,y,g,opt,ref
         rejected=False
         bad=torch.nn.Parameter(torch.zeros(7,device='cuda',dtype=torch.bfloat16));bad.grad=torch.zeros_like(bad)

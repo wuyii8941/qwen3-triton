@@ -43,6 +43,16 @@ class TritonRuntimeMode(TorchDispatchMode):
         if any(hasattr(t,'to_local') for t in tensors):
             raise RuntimeError(f'Unimplemented DTensor GPU runtime operation: {func}')
         self.replaced[name]+=1
+        if name in ['aten::new_empty','aten::new_empty_strided','aten::new_zeros','aten::new_ones','aten::new_full']:
+            source=args[0];target_device=requested or source.device
+            if target_device.type!='cuda':return func(*args,**kw)
+            shape=tuple(args[1] if len(args)>1 else kw['size']);dtype=kw.get('dtype') or source.dtype
+            if name=='aten::new_empty_strided':
+                stride=tuple(args[2] if len(args)>2 else kw['stride'])
+                return ops.empty_strided(shape,stride,device=target_device,dtype=dtype)
+            if name=='aten::new_empty':return empty(shape,device=target_device,dtype=dtype)
+            value=(args[2] if len(args)>2 else kw['fill_value']) if name=='aten::new_full' else (1 if name=='aten::new_ones' else 0)
+            return fill_(raw_empty(shape,device=target_device,dtype=dtype),value)
         if name in ['aten::empty','aten::empty_strided']:
             shape=tuple(args[0]);dtype=kw.get('dtype') or torch.get_default_dtype();device=requested or torch.get_default_device()
             stride=tuple(args[1]) if name=='aten::empty_strided' else ops.strides(shape)
