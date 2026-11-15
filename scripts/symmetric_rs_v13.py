@@ -39,7 +39,7 @@ def _peer_reduce(P0,P1,P2,P3,OUT,Q:tl.constexpr,RANK:tl.constexpr,
 
 
 class PeerReduceScatter:
-    def __init__(self,capacity,wire_dtype,*,block=1024,warps=4):
+    def __init__(self,capacity,wire_dtype,*,block=1024,warps=4,error_flag=None):
         if dist.get_world_size()!=4 or capacity%4:raise ValueError('Four equal ranks required')
         if wire_dtype not in (torch.bfloat16,torch.float32):raise ValueError('BF16/FP32 wire required')
         device=torch.device('cuda',torch.cuda.current_device())
@@ -49,7 +49,9 @@ class PeerReduceScatter:
         self.wire=symm.empty(capacity,device=device,dtype=wire_dtype)
         self.handle=symm.rendezvous(self.wire,dist.group.WORLD)
         self.peers=[self.handle.get_buffer(r,(capacity,),wire_dtype) for r in range(4)]
-        self.error=torch.zeros((),device='cuda',dtype=torch.int32)
+        if error_flag is not None and (error_flag.dtype!=torch.int32 or error_flag.numel()!=1 or error_flag.device!=device):
+            raise ValueError('Shared error flag must be a local CUDA int32 scalar')
+        self.error=torch.zeros((),device='cuda',dtype=torch.int32) if error_flag is None else error_flag
         self.rank=dist.get_rank();self.capacity=capacity;self.block=block;self.warps=warps
         self.calls=0;self.checked_elements=0
 

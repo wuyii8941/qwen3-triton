@@ -11,8 +11,10 @@ from training.provenance import source_snapshot
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--artifacts',type=Path,required=True);p.add_argument('--results',type=Path,required=True);a=p.parse_args()
-    b=a.artifacts.resolve();destination=a.results.resolve();formal=b/'formal_001'
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--artifacts',type=Path,required=True);p.add_argument('--results',type=Path,required=True)
+    p.add_argument('--cohort',default='formal_002');p.add_argument('--orchestration',default='review_orchestration_002.json');a=p.parse_args()
+    assert Path(a.cohort).name==a.cohort and Path(a.orchestration).name==a.orchestration
+    b=a.artifacts.resolve();destination=a.results.resolve();formal=b/a.cohort
     assert destination.is_relative_to(Path('/data1/tzh')) and destination.is_dir()
     review=json.loads((formal/'independent_review.json').read_text())
     assert review['complete'] and review['audit_passed'] and review['qualified_training_improvement']
@@ -24,22 +26,22 @@ def main():
     for path,digest in review['raw_evidence_sha256'].items():assert sha(path)==digest,path
     assert len(review['resource_selection'])==8 and len(review['comparisons'])==2
     assert all(g>=.03 for c in review['comparisons'] for g in c['candidate_reductions'].values())
-    orchestration=json.loads((b/'review_orchestration_001.json').read_text())
+    orchestration=json.loads((b/a.orchestration).read_text())
     assert orchestration['stage']=='CPU_review_complete' and orchestration['qualified_training_improvement']
     assert orchestration['review_sha256']==sha(formal/'independent_review.json')
     assert orchestration['reviewer_sha256']==sha(root/'scripts/review_qwen3_peer_full_v13.py')
     # Preserve exact historical source identities, even where the worktree
     # subsequently added metadata hooks or strengthened the wire check.
-    archives=['micro_001_sources','full_screen_001_sources','probe_001_sources','symmetric_rs_micro_002_sources']
+    archives=['micro_001_sources','full_screen_001_sources','probe_001_sources','symmetric_rs_micro_002_sources','formal_001_sources','old_pilots_sources']
     for folder in archives:
         archive=json.loads((b/folder/'receipt.json').read_text())
         assert archive['complete']
         for row in archive['sources']:
             assert sha(row.get('archived',row.get('archived_path')))==row['sha256']
     mapping={
-        'formal_001/independent_review.json':'training_review',
-        'formal_001/manifest.json':'full_manifest',
-        'formal_001/attempts.json':'full_attempt_history',
+        a.cohort+'/independent_review.json':'training_review',
+        a.cohort+'/manifest.json':'full_manifest',
+        a.cohort+'/attempts.json':'full_attempt_history',
         'peer_pilot_001/result.json':'peer_pilot',
         'peer_pilot_001/manifest.json':'peer_pilot_manifest',
         'HF_peer_pilot_001/result.json':'HF_peer_pilot',
@@ -54,9 +56,14 @@ def main():
         'micro_001_sources/receipt.json':'communication_micro_source_archive',
         'symmetric_rs_micro_002_sources/receipt.json':'symmetric_micro_source_archive',
         'symmetric_rs_micro_002/manifest.json':'symmetric_micro_manifest',
-        'CPU_peer_preflight_001.json':'CPU_peer_checks',
-        'adoption_policy_001.json':'adoption_policy',
-        'review_orchestration_001.json':'review_orchestration',
+        'CPU_peer_preflight_002.json':'CPU_peer_checks',
+        'adoption_policy_002.json':'adoption_policy',
+        a.orchestration:'review_orchestration',
+        'full_validation_memory_failure_001.json':'full_validation_OOM',
+        'formal_001_sources/receipt.json':'failed_full_source_archive',
+        'old_pilots_sources/receipt.json':'historical_pilot_source_archive',
+        'lifecycle_check_001/accepted/check.json':'buffer_lifecycle_check',
+        'lifecycle_check_001/manifest.json':'buffer_lifecycle_manifest',
     }
     paths={src:destination/f'qwen3_triton_v13_{name}_v1.json' for src,name in mapping.items()}
     strategy_path=destination/'qwen3_triton_v13_strategy_v1.json';index_path=destination/'qwen3_triton_v13_evidence_index_v1.json'
@@ -80,6 +87,7 @@ def main():
         compute='BF16',master_gradient_moments='FP32',deterministic_fill=True,
         gradient_transport='Every staged FP32 coordinate bit-checked for exact BF16 roundtrip; FP32 accumulation/output; other sizes native FP32 NCCL.',
         effective_memory_cap_GiB=41.875,torch_allocator_cap_GiB=41.375,external_memory_reserve_bytes=512*2**20,
+        validation_memory='Peer buffers physically released during no-grad full-batch validation; original41.875GiB Torch limit while no peer storage is active. Recreate and restore tighter training limit before warmup; sticky error and counters persist.',
         extra_flags=['--variant','triton_optimized','--vocab-ce','--fused-vocab-dw','--keep-full-layers','36','--checkpoint-every','1',
             '--skip-embedding-backward-gather','--gemm-plan','results/qwen3_triton_v10_gemm_plan_001.json'],
         comparisons=review['comparisons'],measured_peaks={name:value for name,value in review['timing'].items() if name.startswith('candidate')},

@@ -63,7 +63,7 @@ def compare_first_gradients(parameters,ids,logits,loss,reference_dir,rank,identi
         scope='All-coordinate runtime comparison on firstupdate, same explicitBF16/FP32accum policyFalse. Dense candidategradients are not archived; original reference is losslessly archived.')
 
 @torch.no_grad()
-def evaluate(model,dataset,is_triton):
+def _evaluate_core(model,dataset,is_triton):
     was_training=model.training;model.eval();model.zero_grad(set_to_none=True)
     rank=dist.get_rank();world=dist.get_world_size();nll=0.;count=0
     try:
@@ -81,6 +81,15 @@ def evaluate(model,dataset,is_triton):
         return dict(loss=float(totals[0]/totals[1]),tokens=expected,blocks=len(dataset),batch_per_rank=4)
     finally:
         reshard_official_parameters(model);model.train(was_training)
+
+@torch.no_grad()
+def evaluate(model,dataset,is_triton):
+    # Numerical validation, labels, batch size and coverage remain in the
+    # unchanged core. Peer scratch is unnecessary when no backward will run.
+    communication=getattr(model,'_peer_gradient_communication',None)
+    context=communication.validation_memory() if communication is not None else nullcontext()
+    with context:
+        return _evaluate_core(model,dataset,is_triton)
 
 def main(*, model_setup=None, extra_sources=(), extra_framework=None):
     parser=argparse.ArgumentParser(description=__doc__)

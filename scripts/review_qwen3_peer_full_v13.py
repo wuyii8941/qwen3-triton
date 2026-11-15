@@ -35,7 +35,7 @@ def main():
         assert all(t.dtype==torch.float32 and torch.isfinite(t).all() for t in raw['gradients'].values())
         canonical.append(set(raw['gradients']));norms.append({name:float(t.norm()) for name,t in raw['gradients'].items()});del raw
     history=json.loads((out/'attempts.json').read_text());roles=manifest['roles']
-    assert [r['name'] for r in roles]==['native_r1','V12_r1','HF_peer_r1','candidate_r1','candidate_r2','HF_peer_r2','V12_r2','native_r2']
+    assert [r['name'] for r in roles]==['HF_peer_r1','V12_r1','native_r1','candidate_r1','candidate_r2','native_r2','V12_r2','HF_peer_r2']
     assert [r['number'] for r in history]==list(range(1,len(history)+1))
     assert [r['role'] for r in history if r['accepted']]==[r['name'] for r in roles]
     evidence={};resources=[];data={};timing={};traces={};numerics={};memory={};transport={}
@@ -106,6 +106,16 @@ def main():
                 assert comm['external_memory_budget_bytes']==512*2**20 and comm['external_storage_accounted_in_effective_budget']
                 assert comm['observed_extra_process_bytes']<=512*2**20 and comm['handle_buffer_size']+comm['signal_pad_size']<=512*2**20
                 assert comm['torch_allocator_cap_GiB']==41.375 and comm['total_effective_cap_GiB']==41.875
+                assert comm['pool_generations']==3 and comm['sticky_lossless_flag_persisted_across_validation']
+                assert len(comm['validation_cycles'])==2
+                for index,event in enumerate(comm['validation_cycles']):
+                    assert event['cycle']==index and event['peer_calls_before']==[0,36*16][index]
+                    assert event['peer_buffer_released_before_validation'] and not event['peer_buffers_active_during_validation']
+                    assert event['observed_external_release_bytes']>=event['requested_external_buffer_bytes']-2*2**20
+                    assert event['sticky_lossless_counter_unchanged'] and event['restored_before_training']
+                    assert event['restored_pool_generation']==index+2
+                    assert event['validation_torch_allocator_cap_GiB']==41.875 and event['training_torch_allocator_cap_GiB']==41.375
+                    assert max(event['validation_max_allocated_GiB'],event['validation_max_reserved_GiB'])<=41.875
                 rank_transport.append(comm['lossless'] and comm['lossless_violation_flag']==0 and comm['guard_positive_negative_selftest_passed'])
             else:assert comm==dict(mode='native');rank_transport.append(True)
         data[name]=d;numerics[name]=rank_numerics;memory[name]=rank_memory;transport[name]=rank_transport
@@ -142,7 +152,7 @@ def main():
         recorded_trajectory_equal_to_V12=recorded_equal,all_original_thresholds_unchanged=True,default_changed=False,
         reference_archive_sha256=reference_hashes,raw_evidence_sha256=evidence,
         sources={str(p):sha(p) for p in [Path(__file__),out/'manifest.json',out/'attempts.json',root/'scripts/qwen3_peer_v13_contract.py',root/'scripts/qwen3_vocab_v12_contract.py',root/'scripts/qwen3_training_v11_contract.py']},
-        frozen_sources=manifest['sources'],scope=__doc__,limitations='16 quality updates, not long convergence. Rank0 post27 forward/backward trace excludes optimizer; full-step timings include optimizer. Candidate dense gradients not archived, reference archives and recorded arithmetic rechecked. Two orders are not statistical significance. Effective memory includes a conservative512MiB external reserve, not NVML total. No inference claim.')
+        frozen_sources=manifest['sources'],scope=__doc__,limitations='16 quality updates, not long convergence. Rank0 post27 forward/backward trace excludes optimizer; full-step timings include optimizer. Candidate dense gradients not archived, reference archives and recorded arithmetic rechecked. Two orders are not statistical significance. Training effective memory includes a conservative512MiB external reserve; peer buffers physically released during full-batch validation, whose original41.875GiB cap is unchanged. Not NVML total. No inference claim.')
     with (out/'independent_review.json').open('x') as f:f.write(json.dumps(report,indent=2)+'\n')
     print(json.dumps(dict(qualified=report['qualified_training_improvement'],gates=gates,comparisons=comparisons),indent=2))
 

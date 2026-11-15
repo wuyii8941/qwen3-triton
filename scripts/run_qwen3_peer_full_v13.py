@@ -40,13 +40,19 @@ def main():
     print(json.dumps(dict(pid=os.getpid(),stage='waiting_for_specific_pilot_results')),flush=True)
     triton=completed_pilot(tp);hf=completed_pilot(hp)
     reference=Path('/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/official_8b_paired_quality_ablation_control/hf_reference_r1')
-    policy=out.parent/'adoption_policy_001.json';assert json.loads(policy.read_text())['thresholds_unchanged']
+    policy=out.parent/'adoption_policy_002.json';assert json.loads(policy.read_text())['thresholds_unchanged']
+    lifecycle=out.parent/'lifecycle_check_001'
+    checked=json.loads((lifecycle/'accepted/check.json').read_text());lm=json.loads((lifecycle/'accepted/monitor.json').read_text())
+    assert checked['complete'] and lm['returncode']==0 and not lm['foreign_process_seen'] and not lm['observation_errors']
+    for rank in checked['ranks']:
+        assert rank['sticky_error_negative_case_rejected'] and len(rank['cycles'])==2
+        assert rank['positive_report']['pool_generations']==3 and rank['positive_report']['lossless']
     plan=json.loads((root/'results/qwen3_triton_v10_gemm_plan_001.json').read_text())
     assert audit_trace(tp/'accepted/run/training_trace.json','triton_optimized',True,plan,peer=True)['passed']
     assert audit_trace(hp/'accepted/run/training_trace.json','hf',False,None,peer=True)['passed']
-    arms=[dict(arm='native',variant='hf',vocab_ce=False,fused_dw=False,peer=False),
+    arms=[dict(arm='HF_peer',variant='hf',vocab_ce=False,fused_dw=False,peer=True),
         dict(arm='V12',variant='triton_optimized',vocab_ce=True,fused_dw=True,peer=False),
-        dict(arm='HF_peer',variant='hf',vocab_ce=False,fused_dw=False,peer=True),
+        dict(arm='native',variant='hf',vocab_ce=False,fused_dw=False,peer=False),
         dict(arm='candidate',variant='triton_optimized',vocab_ce=True,fused_dw=True,peer=True)]
     roles=[dict(**arm,order=order,name=arm['arm']+f'_r{order}') for order,rows in [(1,arms),(2,list(reversed(arms)))] for arm in rows]
     files=[Path(__file__),root/'scripts/train_qwen3_peer_rs_v13.py',root/'scripts/train_qwen3_vocab_v12.py',root/'scripts/train_qwen3_communication_v13.py',
@@ -55,6 +61,9 @@ def main():
         root/'scripts/qwen3_peer_v13_contract.py',root/'scripts/qwen3_vocab_v12_contract.py',root/'scripts/qwen3_training_v11_contract.py',
         root/'configs/fsdp_8b.json',root/'results/qwen3_triton_v10_gemm_plan_001.json',reference/'result.json',
         Path('/data1/tzh/proj/qwen_operator_lab/artifacts/official_qwen3_inputs_v1.json'),policy,
+        lifecycle/'accepted/check.json',lifecycle/'accepted/monitor.json',lifecycle/'manifest.json',
+        root/'scripts/check_peer_lifecycle_v13.py',root/'scripts/run_peer_lifecycle_check_v13.py',
+        out.parent/'full_validation_memory_failure_001.json',out.parent/'formal_001_sources/receipt.json',out.parent/'old_pilots_sources/receipt.json',
         tp/'result.json',tp/'manifest.json',tp/'accepted/run/result.json',tp/'accepted/monitor.json',
         hp/'result.json',hp/'manifest.json',hp/'accepted/run/result.json',hp/'accepted/monitor.json',
         *sorted((root/'qwen3_triton').rglob('*.py'))]
@@ -67,6 +76,7 @@ def main():
         memory_cap_GiB=41.875,peer_external_reserve_bytes=512*2**20,peer_torch_allocator_cap_GiB=41.375,
         minimum_reduction_each_order=.03,default_changed=False,
         resource_policy='Fixed roles and order; first clean complete attempt wins; contaminated attempts retained and retried after continuous120s idle; clean technical failure stops; no timing-based retries.',
+        validation_memory_lifecycle='Peer scratch released during no-grad validation and restored before training; original validation numeric core/batch4/coverage and total cap unchanged; sticky error and counters preserved.',
         adoption='All8 roles must pass original399 gradients, forward gates, short quality, full validation, effective memory and CUDA checks. Candidate must reduce whole-step median >=3% vs V12, native HF and HF with the same peer infrastructure in BOTH orders. No defaults switched.'))
     history=[];dump(out/'attempts.json',history)
     def verify():
