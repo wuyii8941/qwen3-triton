@@ -39,10 +39,10 @@ def evaluate(model,dataset,runtime,*,phase,trace_path=None):
     # explicit data-path operations/collectives and tracing differ.
     was_training=model.training;model.eval();model.zero_grad(set_to_none=True)
     rank=dist.get_rank();world=dist.get_world_size()
-    totals=runtime_zeros((2,),device='cuda',dtype=torch.float64)
     try:
         with runtime.validation_memory():
             with profiler(trace_path is not None) as trace:
+                totals=runtime_zeros((2,),device='cuda',dtype=torch.float64)
                 for ids,valid in validation_batches(dataset,rank,world,4):
                     labels=ids.clone();labels[~valid]=-100;ids=ids.cuda();labels=labels.cuda()
                     with sdpa_kernel(SDPBackend.FLASH_ATTENTION):out=model(ids,labels=labels,use_cache=False)
