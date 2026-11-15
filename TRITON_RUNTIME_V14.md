@@ -54,7 +54,33 @@ Triton屏障和4次peer collective，没有NCCL或CUDA barrier kernel。
 首轮因Triton不支持Python `break`的编译失败已保留，改为有界循环条件后通过；
 不能把该错误解释成硬件不支持。
 
-FSDP＋严格GPU操作替换＋Triton AdamW的整体小模型检查已排队。
+`fsdp_check_002`：FSDP＋严格GPU操作替换＋Triton AdamW的小模型集成检查通过。
+四rank各覆盖forward后保留/重新分片两种策略、每种4次更新。逐坐标比较输出、
+输入梯度、独立CPU FP64平均的参数梯度，以及native AdamW更新后的参数与m/v。
+候选完整forward/backward/optimizer/训练统计trace只包含Triton kernel，包含
+打包、拆分、转换、初始化、累加和通信；没有native CUDA计算/NCCL/barrier。
+首次集成因Triton不支持dtype的Python `in`表达式而编译失败，改为显式constexpr
+分支后通过；失败保留。保留的是FSDP主机状态/事件调度，不是它的GPU计算实现。
+
 完整36层8B接入、全399梯度、512块验证、完整step trace和整体/部分消融均待完成。
 组件记录在原始 `artifacts/triton_qwen3_runtime_v14`，小型摘要见
 [组件证据](results/qwen3_triton_runtime_v14_components_v1.json)。
+
+## 完整8B验收约定（在本轮8B计时之前声明）
+
+沿用官方权重/语料身份、4×A6000、每卡B1/S512、BF16计算、FP32 master/梯度/
+moments及41.875GiB有效预算。全399参数门槛、16步质量阈值与初末512块全量
+验证（每卡验证B4）不降低。比较原生HF、V13、仅替换AdamW、完整GPU运行时，
+固定顺序再逆序，各角色接纳第一个完整且资源干净的尝试，保留所有失败。
+
+每角色16次质量更新＋3次预热＋8次计时，另做**1次真实完整profile更新**，
+共28次实际optimizer更新。新增profile必须包含optimizer和统计；它不进入8个
+计时样本。不能沿用V13“trace不更新参数、仅前后向”的27次更新口径。
+同时检查首次更新（含optimizer状态初始化）及完整运行时的验证GPU路径，
+避免只审查已有state的稳态训练。所有实际GPU计算kernel必须逐项识别为Triton；
+不得把Fill/Copy/gradient accumulation一并列为“framework”免检。
+
+完整Triton数据通路的正确性/覆盖验收与性能采用分开：实现即使较慢也要如实
+报告，不能退回原生GPU计算而继续称完整。性能推荐仍需双方相同协议的两轮
+整步计时支持；不从组件检查推断8B速度。新V14训练入口将默认完整运行时，
+历史入口/历史发布分支保留便于比较；当前文档首页仍待完整8B验收后更新。
