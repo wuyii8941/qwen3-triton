@@ -238,6 +238,7 @@ def main():
                 gemm_plan=gemm_identity() if is_triton else None,ranks=reports,sources={str(p):sha(p) for p in sources},
                 scope=__doc__,limitations='Raw run, not independent qualification. Full mode retains CPU FSDP/autograd/driver/DMA; all GPU kernels need phase-wide trace audit.16quality updates not convergence, fixed4A6000/B1S512, no inference claim.')
             (args.output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+        if full:runtime.communication.close()
     finally:dist.destroy_process_group()
 
 

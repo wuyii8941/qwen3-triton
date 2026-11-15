@@ -12,7 +12,7 @@ def main():
     p.add_argument('--output',type=Path,required=True);a=p.parse_args();root=Path(__file__).resolve().parents[1];out=a.output.resolve()
     assert out.is_relative_to(Path('/data1/tzh')) and not out.exists()
     script=root/f'scripts/check_triton_{a.kind}_v14.py';assert script.exists()
-    dependencies={'adamw':['adamw.py','memory.py'],'collectives':['collectives.py','memory.py'],'fsdp':['collectives.py','memory.py','ops.py','dispatch.py','fsdp.py','adamw.py'],
+    dependencies={'adamw':['adamw.py','memory.py'],'collectives':['collectives.py','peer_memory.py','memory.py'],'fsdp':['collectives.py','peer_memory.py','memory.py','ops.py','dispatch.py','fsdp.py','adamw.py'],
         'statistics':['metrics.py','dispatch.py','memory.py','ops.py']}
     files=[Path(__file__),script,root/'scripts/research_python.sh',root/'scripts/run_vocab_resource_queue_v12.py',root/'qwen3_triton/runtime/__init__.py',
         *(root/'qwen3_triton/runtime'/name for name in dependencies[a.kind])]

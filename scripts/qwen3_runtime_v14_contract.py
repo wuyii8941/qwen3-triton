@@ -21,6 +21,9 @@ MODEL_VALIDATION_BATCH=dict(_gemm=181,_gate_up=36,_native_precision_forward=36,
 def audit_trace(path,*,phase,plan=None):
     source=TraceSource(path);raw=source.read_bytes();events=[e for e in json.loads(raw)['traceEvents'] if e.get('cat')=='kernel']
     counts=Counter(e['name'] for e in events);unknown={k:v for k,v in counts.items() if k not in RUNTIME_KERNELS and k not in MODEL_STEP}
+    memory_events=Counter((e.get('cat'),e.get('name')) for e in json.loads(raw)['traceEvents']
+        if e.get('cat')=='gpu_memset' or (e.get('cat')=='gpu_memcpy' and not e.get('name','').startswith(('Memcpy HtoD','Memcpy DtoH'))))
+    native_memory=[dict(category=category,name=name,count=count) for (category,name),count in sorted(memory_events.items())]
     if phase in ['initial_step','full_step']:
         expected=MODEL_STEP;differences={name:dict(expected=n,observed=counts[name]) for name,n in expected.items() if counts[name]!=n}
         geometry=previous_geometry_audit(source,'triton_optimized',True,plan,peer=True)['model_launch_geometry_passed']
@@ -38,6 +41,7 @@ def audit_trace(path,*,phase,plan=None):
     else:raise ValueError('Explicit phase required')
     return dict(phase=phase,trace_sha256=source.artifact_sha256,decoded_trace_sha256=source.decoded_sha256,kernel_count=len(events),kernels=dict(counts),
         unclassified_or_native_compute=unknown,model_count_discrepancies=differences,model_launch_geometry_passed=geometry,
+        native_GPU_memory_operations=native_memory,
         optimizer_coverage_passed=optimizer,communication_coverage_passed=communication,
-        passed=bool(events) and not unknown and not differences and optimizer and communication and geometry is not False,
+        passed=bool(events) and not unknown and not native_memory and not differences and optimizer and communication and geometry is not False,
         scope='Raw kernel events, no trace rewriting. Host CPU/driver/DMA events remain; every actual GPU compute kernel must be classified Triton. Control arms audited separately.')

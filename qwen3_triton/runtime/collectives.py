@@ -1,6 +1,6 @@
 """Four local GPU collectives whose data and synchronization kernels are Triton.
 
-CUDA Symmetric Memory provides allocation, peer mapping and CPU rendezvous.
+CUDA driver IPC provides allocation/peer mapping; Gloo exchanges CPU metadata.
 No native NCCL/CUDA collective or CUDA barrier kernel is called. Separate
 channels preserve FSDP AG/RS stream ordering without aliasing shared staging.
 System-scope release stores/acquire loads use one writer per mailbox, not
@@ -9,10 +9,10 @@ established by the real multi-rank checks before model integration/adoption.
 """
 import torch
 import torch.distributed as dist
-import torch.distributed._symmetric_memory as symm
 import triton
 import triton.language as tl
 from .memory import zeros,fill_
+from .peer_memory import PeerMemory
 
 
 @triton.jit
@@ -85,18 +85,17 @@ class _Channel:
         if capacity<4096 or capacity%16:raise ValueError('Aligned staging capacity required')
         self.name=name;self.capacity=capacity;self.rank=dist.get_rank(group);self.group=group;self.error=error
         self.epoch=0;self.barriers=0;self.calls=0;self.staged_elements=0;self.checked_elements=0;self.timeout_ms=timeout_ms
-        self.payload=symm.empty(capacity,device='cuda',dtype=torch.uint8)
-        self.payload_handle=symm.rendezvous(self.payload,group)
-        self.flags=symm.empty(4*32,device='cuda',dtype=torch.int32)
-        self.flags_handle=symm.rendezvous(self.flags,group)
-        self.peers_flags=[self.flags_handle.get_buffer(r,(4*32,),torch.int32) for r in range(4)]
+        self.pool=PeerMemory(capacity+4*32*4,group)
+        self.payload=self.pool.pointer(self.rank,(capacity,),torch.uint8)
+        self.peers_flags=[self.pool.pointer(r,(4*32,),torch.int32,offset_bytes=capacity) for r in range(4)]
+        self.flags=self.peers_flags[self.rank]
         self.views={};self.last_event=None
-        fill_(self.flags,0);torch.cuda.synchronize();dist.barrier(group=group)
+        fill_(self.payload,0);fill_(self.flags,0);torch.cuda.synchronize();dist.barrier(group=group)
 
     def tensors(self,dtype):
         if dtype not in self.views:
             n=self.capacity//dtype.itemsize
-            self.views[dtype]=[self.payload_handle.get_buffer(r,(n,),dtype) for r in range(4)]
+            self.views[dtype]=[self.pool.pointer(r,(n,),dtype) for r in range(4)]
         return self.views[dtype]
 
     def begin(self):
@@ -114,7 +113,7 @@ class _Channel:
     def report(self):
         return dict(capacity_bytes=self.capacity,calls=self.calls,Triton_barriers=self.barriers,staged_elements=self.staged_elements,
             checked_lossless_elements=self.checked_elements,epoch=self.epoch,
-            mapped_buffer_and_signal_bytes=self.payload_handle.buffer_size+self.payload_handle.signal_pad_size+self.flags_handle.buffer_size+self.flags_handle.signal_pad_size)
+            mapped_buffer_and_signal_bytes=self.pool.size_bytes,allocation_backend='CUDA driver IPC',pool_closed=self.pool.closed)
 
 
 class TritonCollectives:
@@ -122,15 +121,14 @@ class TritonCollectives:
         group=dist.group.WORLD if group is None else group
         if dist.get_world_size(group)!=4 or dist.get_process_group_ranks(group)!=[0,1,2,3]:raise ValueError('Four canonical local ranks required')
         if torch.__version__.split('+')[0]!='2.10.0':raise ValueError('Audited Torch2.10 CUDA symmetric API required')
-        device=torch.device('cuda',torch.cuda.current_device());backend=symm.get_backend(device)
-        if backend is None:symm.set_backend('CUDA')
-        elif backend!='CUDA':raise RuntimeError('CUDA symmetric backend required')
-        self.group=group;self.error=zeros((2,),device=device,dtype=torch.int32)
+        device=torch.device('cuda',torch.cuda.current_device())
+        self.group=group;self.closed=False;self.error=zeros((2,),device=device,dtype=torch.int32)
         if capacities is None:capacities=dict(gather=96*2**20,scatter=370*2**20,reduce=1*2**20,alltoall=8*2**20)
         if set(capacities)!={'gather','scatter','reduce','alltoall'}:raise ValueError('All four communication channels required')
         self.channels={name:_Channel(name,capacities[name],group,self.error,timeout_ms) for name in ['gather','scatter','reduce','alltoall']}
 
     def _run(self,kind,output,source,op='sum',lossless_bf16=False):
+        if self.closed:raise RuntimeError('Closed communicator')
         if (not source.is_cuda or source.device!=output.device or not source.is_contiguous() or not output.is_contiguous()
             or source.dtype not in [torch.bfloat16,torch.float32,torch.float64,torch.int64,torch.int32]):
             raise ValueError('Supported contiguous CUDA tensors required')
@@ -169,7 +167,13 @@ class TritonCollectives:
     def all_to_all(self,output,source):return self._run('alltoall',output,source)
 
     def barrier(self):
+        if self.closed:raise RuntimeError('Closed communicator')
         channel=self.channels['reduce'];channel.begin();channel.barrier();channel.end()
+
+    def close(self):
+        if self.closed:return
+        for channel in self.channels.values():channel.pool.close()
+        self.closed=True
 
     def report(self):
         torch.cuda.synchronize();errors=self.error.cpu().tolist()

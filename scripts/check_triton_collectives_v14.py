@@ -37,7 +37,18 @@ def main():
     torch.use_deterministic_algorithms(True);torch.utils.deterministic.fill_uninitialized_memory=True
     dist.init_process_group('gloo',timeout=timedelta(minutes=20))
     try:
+        torch.cuda.synchronize()
+        setup=torch.profiler.profile(activities=[torch.profiler.ProfilerActivity.CPU,torch.profiler.ProfilerActivity.CUDA]) if rank==0 else None
+        if setup is not None:setup.__enter__()
         comm=TritonCollectives(capacities=dict.fromkeys(['gather','scatter','reduce','alltoall'],4096))
+        if setup is not None:
+            setup.__exit__(None,None,None);path=a.output/'collectives_setup_trace.json';setup.export_chrome_trace(str(path))
+            events=json.loads(path.read_text())['traceEvents'];counts=Counter(e['name'] for e in events if e.get('cat')=='kernel')
+            assert not set(counts)-{'_runtime_fill'} and counts['_runtime_fill']>0,counts
+            assert not [e for e in events if e.get('cat') in ['gpu_memset','gpu_memcpy']], 'Native GPU initialization/data copy during peer bootstrap'
+            setup_trace=dict(sha256=hashlib.sha256(path.read_bytes()).hexdigest(),kernels=dict(counts),only_Triton=True,no_native_GPU_memset_or_copy=True)
+        else:setup_trace=None
+        dist.barrier()
         cases=[]
         for dtype in [torch.bfloat16,torch.float32,torch.float64,torch.int64,torch.int32]:
             for n in [1,7,1031,4099]:
@@ -120,7 +131,7 @@ def main():
             channel=comm.channels['gather'];channel.timeout_ms=100;channel.barrier();torch.cuda.synchronize()
         dist.barrier();timeout_flags=comm.error.cpu().tolist()
         assert bool(timeout_flags[0])==(rank==0)
-        del comm;gc.collect();torch.cuda.synchronize();dist.barrier()
+        comm.close();del comm;gc.collect();torch.cuda.synchronize();dist.barrier()
         # Actual full decoder bucket, checked at every coordinate. The integer
         # construction gives exact BF16 inputs and an independent FP64 oracle.
         large=TritonCollectives(capacities=dict(gather=4096,scatter=370*2**20,reduce=4096,alltoall=4096))
@@ -132,7 +143,8 @@ def main():
         report=dict(rank=rank,complete=True,passed=True,cases=cases,changed_input_repeats=repeats,stream_checks=stream_checks,
             positive_communication=positive,nonrepresentable_rejected_on_owner=rejected,sticky_guard_preserved=sticky,
             incomplete_barrier_timeout_flag=timeout_flags[0],negative_cases_as_expected=True,
-            actual_decoder_elements=total,actual_decoder_FP64_oracle=full_check,actual_decoder_report=large_report,candidate_only_trace=trace,scope=__doc__)
+            actual_decoder_elements=total,actual_decoder_FP64_oracle=full_check,actual_decoder_report=large_report,candidate_only_trace=trace,setup_trace=setup_trace,scope=__doc__)
+        large.close()
         reports=[None]*4;dist.all_gather_object(reports,report)
         if rank==0:(a.output/'check.json').write_text(json.dumps(dict(complete=True,passed=True,kind='collectives',ranks=reports),indent=2)+'\n')
     finally:dist.destroy_process_group()

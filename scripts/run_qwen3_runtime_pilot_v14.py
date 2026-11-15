@@ -46,6 +46,7 @@ def main():
         dirty=bool(monitor['foreign_process_seen'] or monitor['observation_errors'])
         row=dict(number=len(history)+1,resource_contaminated=dirty,returncode=monitor['returncode'],accepted=False,monitor_sha256=sha(folder/'monitor.json'),log_sha256=sha(folder/'worker.log'))
         history.append(row)
+        dump(out/'attempts.json',history)
         if dirty:dump(out/'attempts.json',history);continue
         if monitor['returncode']:
             dump(out/'attempts.json',history);dump(out/'state.json',dict(pid=os.getpid(),stage='clean_technical_failure'));raise RuntimeError('Preserved clean full8B failure; inspect before changing code')
@@ -57,7 +58,11 @@ def main():
         traces={phase:audit_trace(locate_trace(folder/'run',name),phase=phase,plan=plan) for phase,name in [
             ('setup','setup_trace.json'),('initial_step','initial_step_trace.json'),('full_step','full_step_trace.json')]}
         gates['all_GPU_data_compute_Triton']=all(t['passed'] for t in traces.values())
-        assert all(gates.values()),dict(gates=gates,traces=traces)
+        dump(folder/'gate_review.json',dict(gates=gates,traces=traces))
+        if not all(gates.values()):
+            row.update(result_sha256=sha(folder/'run/result.json'),gate_review_sha256=sha(folder/'gate_review.json'))
+            dump(out/'attempts.json',history);dump(out/'state.json',dict(pid=os.getpid(),stage='clean_acceptance_failure',gates=gates))
+            raise RuntimeError('First clean completed8B attempt failed acceptance; preserved raw result and gate_review.json')
         row.update(accepted=True,result_sha256=sha(folder/'run/result.json'));dump(out/'attempts.json',history)
         (out/'accepted').symlink_to(folder.relative_to(out),target_is_directory=True)
         result=dict(complete=True,eligible_for_formal=True,full_model_qualified=False,gates=gates,traces=traces,
