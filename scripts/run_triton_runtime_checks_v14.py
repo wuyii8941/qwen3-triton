@@ -8,11 +8,12 @@ from run_vocab_resource_queue_v12 import run_attempt,dump
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--kind',choices=['adamw','collectives','fsdp'],required=True)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--kind',choices=['adamw','collectives','fsdp','statistics'],required=True)
     p.add_argument('--output',type=Path,required=True);a=p.parse_args();root=Path(__file__).resolve().parents[1];out=a.output.resolve()
     assert out.is_relative_to(Path('/data1/tzh')) and not out.exists()
     script=root/f'scripts/check_triton_{a.kind}_v14.py';assert script.exists()
-    dependencies={'adamw':['adamw.py','memory.py'],'collectives':['collectives.py','memory.py'],'fsdp':['collectives.py','memory.py','ops.py','dispatch.py','fsdp.py','adamw.py']}
+    dependencies={'adamw':['adamw.py','memory.py'],'collectives':['collectives.py','memory.py'],'fsdp':['collectives.py','memory.py','ops.py','dispatch.py','fsdp.py','adamw.py'],
+        'statistics':['metrics.py','dispatch.py','memory.py','ops.py']}
     files=[Path(__file__),script,root/'scripts/research_python.sh',root/'scripts/run_vocab_resource_queue_v12.py',root/'qwen3_triton/runtime/__init__.py',
         *(root/'qwen3_triton/runtime'/name for name in dependencies[a.kind])]
     if a.kind=='fsdp':files.extend(sorted((root/'qwen3_triton/kernels').glob('*.py')));files.append(root/'qwen3_triton/overwrite_allocation.py')
@@ -20,7 +21,8 @@ def main():
     dump(out/'manifest.json',dict(kind=a.kind,sources=sources,source_root=str(root),
         numerical_contract={'adamw':'Per-coordinate p/m/v tolerance2e-6 relative plus1e-8/1e-12/1e-14 absolute; independent CPU oracle; restore/skip/multiple updates.',
             'collectives':'All-coordinate CPU oracles for gathers/exchange/SUM/AVG/MAX/MIN; exact BF16-input actual192946432-element RS; system barrier/streams/negative guards.',
-            'fsdp':'Real FSDP forward/backward/update and all GPU data operations; native reference and strict complete-step kernel audit.'}[a.kind],
+            'fsdp':'Real FSDP forward/backward/update and all GPU data operations; native reference and strict complete-step kernel audit.',
+            'statistics':'32batch weighted FP64 NLL/count accumulation and final division bitwise vs CPU; FP64 fills, zero-token NaN, initial factories and pure Triton GPU trace.'}[a.kind],
         resource_policy='First clean attempt only; retain contamination, retry after120s idle; clean technical failure stops. No external process signalled.',full_model_qualified=False))
     history=[]
     def verify():
