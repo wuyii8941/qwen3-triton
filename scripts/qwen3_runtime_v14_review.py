@@ -118,7 +118,7 @@ def run_review(d,role,*,formal,reference_sha,canonical=None,norms=None):
         memory.append(all(math.isfinite(v) and 0<=v<=41.875 for field in ['effective_training_peak','effective_all_phase_peak'] for v in row[field].values()))
         comm=report['communication']
         if runtime=='full':
-            assert report['strict_GPU_dispatch'] is not None
+            assert report['strict_GPU_dispatch']['strict'] is True
             assert comm['external_memory_budget_bytes']==512*2**20 and comm['observed_extra_process_bytes']<=512*2**20
             assert comm['torch_allocator_cap_GiB']==41.375 and comm['total_effective_cap_GiB']==41.875
             # Exact communication field/error checks are tied to the actual
@@ -128,13 +128,46 @@ def run_review(d,role,*,formal,reference_sha,canonical=None,norms=None):
             assert set(comm['channels'])=={'gather','scatter','reduce','alltoall'}
             assert sum(c['mapped_buffer_and_signal_bytes'] for c in comm['channels'].values())<=512*2**20
             transport.append(comm['timeout_flag']==comm['lossless_violation_flag']==0)
-            assert comm['FSDP_AG_calls']>0 and comm['FSDP_RS_calls']>0
+            # 38 parameter-owning FSDP units: embedding,36decoder,finalnorm.
+            # Norm gathers again in backward; embedding deliberately does not.
+            # Each no-grad validation retains36decoder units across32batches,
+            # while embedding/finalnorm gather per batch:100AG per phase.
+            assert comm['FSDP_host_units']==39
+            assert comm['FSDP_AG_calls']==39*total+200*has_validation
+            assert comm['FSDP_RS_calls']==38*total
+            channels=comm['channels']
+            assert channels['gather']['calls']==42*total+328*has_validation
+            assert channels['scatter']['calls']==39*total
+            assert channels['reduce']['calls']==5*total+130*has_validation
+            assert channels['alltoall']['calls']==1
+            # Every non-head parameter coordinate is checked on each update.
+            assert channels['scatter']['checked_lossless_elements']==(8190735360-151936*4096)*total
+            assert channels['scatter']['staged_elements']==((8190735360-151936*4096)+4*512*4096)*total
+            assert len(comm['validation_cycles'])==2*has_validation
+            for event in comm['validation_cycles']:
+                assert event['peer_buffers_needed_for_validation_all_gather'] is True
+                assert event['torch_allocator_cap_GiB']==41.375 and event['original_effective_cap_GiB']==41.875
+                assert max(event['max_allocated_GiB'],event['max_reserved_GiB'])<=41.375
         elif runtime in ['v13','adam']:
+            assert report['strict_GPU_dispatch'] is None
             assert comm['peer_calls']==comm['calls']==36*total and comm['native_calls']==2*total
             assert comm['checked_elements']==comm['peer_calls']*192946432
             assert comm['external_memory_budget_bytes']==512*2**20 and comm['observed_extra_process_bytes']<=512*2**20
             assert comm['lossless_violation_flag']==0
             assert len(comm['validation_cycles'])==2*has_validation
+            assert comm['wire_dtype']=='torch.bfloat16' and comm['accumulate_output_dtype']=='torch.float32'
+            assert comm['pool_generations']==1+2*has_validation and comm['sticky_lossless_flag_persisted_across_validation']
+            assert comm['torch_allocator_cap_GiB']==41.375 and comm['total_effective_cap_GiB']==41.875
+            assert comm['handle_buffer_size']+comm['signal_pad_size']<=512*2**20
+            assert comm['external_storage_accounted_in_effective_budget']
+            for index,event in enumerate(comm['validation_cycles']):
+                assert event['cycle']==index and event['peer_calls_before']==[0,36*quality][index]
+                assert event['peer_buffer_released_before_validation'] and not event['peer_buffers_active_during_validation']
+                assert event['observed_external_release_bytes']>=event['requested_external_buffer_bytes']-2*2**20
+                assert event['sticky_lossless_counter_unchanged'] and event['restored_before_training']
+                assert event['restored_pool_generation']==index+2
+                assert event['validation_torch_allocator_cap_GiB']==41.875 and event['training_torch_allocator_cap_GiB']==41.375
+                assert max(event['validation_max_allocated_GiB'],event['validation_max_reserved_GiB'])<=41.875
             transport.append(comm['lossless'] and comm['guard_positive_negative_selftest_passed'])
         else:assert comm==dict(mode='native');transport.append(True)
     gates=dict(numerics=all(r['passed'] for r in numerics),effective_memory=all(memory),lossless_transport=all(transport))
