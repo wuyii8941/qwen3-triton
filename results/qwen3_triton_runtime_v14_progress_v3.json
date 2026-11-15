@@ -1,0 +1,54 @@
+{
+  "full_model_qualified": false,
+  "performance_adopted": false,
+  "statistics": {
+    "check_sha256": "f256017c629e028ddf25d8a37a55a938726c2f6395d5890735837080edc4c6ae",
+    "manifest_sha256": "32bfbabff25b0155653ae58e6540855156f3eb0b04ded7fbb6e7dfccee3b2fcb",
+    "monitor_sha256": "3183b50d9c79a181df6ab242004a83d373388bcc48a56afbd93f97cea6b08047",
+    "candidate_trace_sha256": "83c70d1c2f241e241a8ca378736d5a865600fc9077992ad9066fce7290cf77fd",
+    "all4ranks32batch_FP64_bitwise_equal": true,
+    "no_native_GPU_memset_or_D2D": true,
+    "scalar_tensor_division_and_factory_precision": true
+  },
+  "actual8B_failed_screen": {
+    "path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_runtime_v14/full_pilot_003",
+    "review_sha256": "e2ae10cb7375072d541d4ce8dbe39252bb7181f04d4078af2870ad63a377577c",
+    "raw_sha256": "141a03fdee6dfe620592230eacd08a732ba6ed7ab0ef8f24a962ae73242759d4",
+    "actual_updates": 5,
+    "passed_all399_ranks": [
+      0,
+      1,
+      2
+    ],
+    "gradient_failures": [
+      {
+        "rank": 3,
+        "rows": [
+          {
+            "name": "model.layers.6.self_attn.k_norm.weight",
+            "absolute_error_norm": 0.0003133364662062377,
+            "reference_norm": 0.005110359750688076,
+            "relative_l2": 0.061313974258671126,
+            "threshold": 0.00030762158504128457,
+            "passed": false
+          }
+        ]
+      }
+    ],
+    "initialization_native_GPU_memsets": 8,
+    "effective_allphase_max_reserved_GiB": 41.87109375,
+    "historical_kernel_only_purity_insufficient": true
+  },
+  "current_correction": {
+    "peer_allocator": "CUDA driver IPC; all buffer initialization Triton; pending real4GPUtests",
+    "audit": "Reject gpu_memset and device-to-device memcpy, besides unclassified kernels",
+    "numerical": "Diagnose native sum order at exact CE4088/16352 and dX8388608 sizes; thresholds unchanged"
+  },
+  "pending": [
+    "New peer memory initialization/collective real4GPU checks",
+    "Correct failing rank3 k_norm without relaxing gates",
+    "Full512validation feasibility",
+    "Formal28updates/fourarms/twoorders and independent review",
+    "Docs/publication/fullobjective audit"
+  ]
+}

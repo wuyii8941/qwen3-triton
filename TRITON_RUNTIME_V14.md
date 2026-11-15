@@ -95,6 +95,34 @@ SHA和解压后原始字节SHA，不重写或过滤trace。已用真实8B初始�
 无损解压和相同kernel审核结果；验证阶段还将核对B4/rank对应的实际GEMM
 launch geometry及32次GPU FP64统计累加。
 
+## 最近完整8B检查暴露的未完成项
+
+`statistics_check_001`：四rank各32组不同loss/token权重，与独立CPU FP64累加
+及最终除法逐位一致；零有效token的NaN不参与累计，FP64工厂填充值和确定性
+非连续empty初始化均通过。实际trace没有原生GPU memset或设备间拷贝。
+
+`full_pilot_003`：第一个资源干净的尝试完成5次真实更新，FP32状态和有效显存
+门槛通过（各rank全阶段最大reserved含外部预算41.87109375GiB）。rank0/1/2
+全399梯度通过；rank3的 `model.layers.6.self_attn.k_norm.weight` 相对误差
+0.061313974258671126，绝对误差0.0003133364662062377，大于原门槛
+0.00030762158504128457。因此完整数值验收失败，保留第一次干净结果，不
+自动重跑或放宽阈值。正在按真实词表CE及dX形状诊断FP32归约顺序。
+
+更完整的trace事件审核还发现原Symmetric Memory allocator内部的8次
+`gpu_memset`，它们不是kernel事件，旧的kernel白名单检查未能覆盖。因此
+前述“804次初始化kernel均为Triton”**仅证明kernel种类**，不足以证明初始化
+全数据路径完成；历史组件/进度记录不能据此推导整个运行时已验收。
+[Torch2.10源码](https://github.com/pytorch/pytorch/blob/v2.10.0/torch/csrc/distributed/c10d/symm_mem/CUDASymmetricMemory.cu#L400)
+在allocator里直接调用 `cudaMemset`，没有在这里将其归类为主机分配豁免。
+
+新增 `runtime/peer_memory.py` 仅用CUDA Driver API做CPU侧allocation/IPC mapping，
+通过Gloo交换CPU句柄；payload和mailbox初始化均显式执行Triton。没有全局
+CUDA拦截或PyTorch修改。主机负责生命周期：所有GPU使用结束后，每rank先
+关闭import，CPU协调确认后owner才能free。新路径正在做四GPU完整通信检查，
+尚不宣称验收通过。完整trace审核已扩展为拒绝所有原生GPU memset和设备间
+memcpy事件，保留CPU↔GPU DMA。组件和失败证据摘要见
+[最新进度](results/qwen3_triton_runtime_v14_progress_v3.json)。
+
 ## 完整8B验收约定（在本轮8B计时之前声明）
 
 沿用官方权重/语料身份、4×A6000、每卡B1/S512、BF16计算、FP32 master/梯度/
