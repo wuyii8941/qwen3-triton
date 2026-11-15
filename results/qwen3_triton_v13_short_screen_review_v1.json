@@ -1,0 +1,148 @@
+{
+  "complete": true,
+  "audit_passed": true,
+  "full_training_qualified": false,
+  "selected": null,
+  "rows": {
+    "control_first": {
+      "median": 4.901463406160474,
+      "samples": [
+        5.027441358193755,
+        4.7754854541271925,
+        5.031793719157577,
+        4.774225512519479
+      ],
+      "losses_equal": true,
+      "allocated_GiB": 37.46648693084717,
+      "reserved_GiB": 41.818359375,
+      "actual_CUDA_contract_passed": true,
+      "reductions_vs_endpoint_controls": [
+        0.0,
+        -0.0007348803020243988
+      ],
+      "eligible_for_formal": false
+    },
+    "separate": {
+      "median": 5.135878764092922,
+      "samples": [
+        5.241128277033567,
+        5.032750774174929,
+        5.238073565065861,
+        5.033683963119984
+      ],
+      "losses_equal": true,
+      "allocated_GiB": 37.46648693084717,
+      "reserved_GiB": 41.818359375,
+      "actual_CUDA_contract_passed": true,
+      "reductions_vs_endpoint_controls": [
+        -0.047825585648118896,
+        -0.04859561203096896
+      ],
+      "eligible_for_formal": false
+    },
+    "compute": {
+      "median": 4.882910029031336,
+      "samples": [
+        5.008111637085676,
+        4.757708420976996,
+        5.015926655381918,
+        4.7570497915148735
+      ],
+      "losses_equal": true,
+      "allocated_GiB": 37.46648693084717,
+      "reserved_GiB": 41.818359375,
+      "actual_CUDA_contract_passed": true,
+      "reductions_vs_endpoint_controls": [
+        0.003785273007612111,
+        0.003053174428158667
+      ],
+      "eligible_for_formal": false
+    },
+    "buffers": {
+      "median": 4.840554963797331,
+      "samples": [
+        4.965689668431878,
+        4.712685324251652,
+        4.9669277761131525,
+        4.715420259162784
+      ],
+      "losses_equal": true,
+      "allocated_GiB": 37.46648693084717,
+      "reserved_GiB": 41.818359375,
+      "actual_CUDA_contract_passed": true,
+      "reductions_vs_endpoint_controls": [
+        0.012426583107116418,
+        0.011700834856238851
+      ],
+      "eligible_for_formal": false
+    },
+    "compute_buffers": {
+      "median": 4.816006902605295,
+      "samples": [
+        4.9478032644838095,
+        4.684210540726781,
+        4.95848960801959,
+        4.682946339249611
+      ],
+      "losses_equal": true,
+      "allocated_GiB": 37.46648693084717,
+      "reserved_GiB": 41.818359375,
+      "actual_CUDA_contract_passed": true,
+      "reductions_vs_endpoint_controls": [
+        0.01743489575945245,
+        0.016712828018889514
+      ],
+      "eligible_for_formal": false
+    },
+    "control_last": {
+      "median": 4.8978640623390675,
+      "samples": [
+        5.026253741234541,
+        4.770520219579339,
+        5.023984119296074,
+        4.771744005382061
+      ],
+      "losses_equal": true,
+      "allocated_GiB": 37.46648693084717,
+      "reserved_GiB": 41.818359375,
+      "actual_CUDA_contract_passed": true,
+      "reductions_vs_endpoint_controls": [
+        0.0007343406495461391,
+        0.0
+      ],
+      "eligible_for_formal": false
+    }
+  },
+  "original_gradient_reference_not_checked": true,
+  "full_validation_not_run": true,
+  "first_clean_resource_selection_passed": true,
+  "raw_evidence_sha256": {
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/001_overwrite_check/monitor.json": "0c9d08eac24009aad51558d4bb385d06bbe57c85707cdf3002a435eb2b0ec3dc",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/001_overwrite_check/check.json": "8b21f83ad2a2f7e1d03bab00ffd84d7f4ab26c7da4bd89aff0040cef438eb837",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/002_control_first/monitor.json": "5d43456b9975630f00b530cf328e08cf6b33dd5e6361d873ced1b3de23356be3",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/002_control_first/run/result.json": "0733c4886e58f66b055c85b39d1c6ef932b3c0b8ba24a8a6bfd7c3e2e5d83cee",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/002_control_first/run/training_trace.json": "0430c2e63694767b6e905657a7d42d46bbe2fbd19eb363ae8c2b1c73a6342671",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/003_separate/monitor.json": "b16a454f58319656c097402e3f91e4356a0a60e85919812966d80286d64c04cd",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/003_separate/run/result.json": "46d581a857223c5a91532743cd6c42316a7c4a0b190fc693b5f518c9558e554a",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/003_separate/run/training_trace.json": "3b5510f044a5a7e71f15575b5ab515b00c2670845ff26c8c95248dd9b996b017",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/004_compute/monitor.json": "fedfaff9d9e0d024ec0e72b300246c2afad02c9db46e1e86b98a476c616a1c3e",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/004_compute/run/result.json": "b901189a0cef46ed707b80402ccc70707c105855da27b68d3aa84437fdd3a2d0",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/004_compute/run/training_trace.json": "d092569a3b699ca10ff05f437e5a76e69842c2d31dac430f71964241eb16142e",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/005_buffers/monitor.json": "04305b3ba7a4613069a7de437b294d2019c317facb179980ad93b00f57f4378b",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/005_buffers/run/result.json": "1434e3c9fac14a24656125b472310a411516ead5c6a17d9f64ca86c6ced18dba",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/005_buffers/run/training_trace.json": "ce07e103467ee27ee3d48c5f9746989f0d9035369585d00c001d04cef97734c6",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/006_compute_buffers/monitor.json": "21b427768cb06713f2300c4b1cb723c74eb538a39550623ea24864ee22b79341",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/006_compute_buffers/run/result.json": "0a03e42b255ac36a36fb21df9c4614f5d787de5634c84b968b77fd9dfa64084b",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/006_compute_buffers/run/training_trace.json": "c8d6129f9cf68b4d3e2b9f121b0498f9f40ae93a6f4580de2e11f37459732380",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/007_control_last/monitor.json": "a1c5765c1a099b7ee054c4e29003142a6e6b9e180eb64a82f9fbf8f977cf9fde",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/007_control_last/run/result.json": "f5304db7ca9775800666304858c237e7051cb751204b38b6ec2713c7c1cbcff9",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts/007_control_last/run/training_trace.json": "b8cd1367be4ad31ad44e115b860a98fdc2bebade8024926a65fd5ac27243bf62"
+  },
+  "sources": {
+    "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/review_qwen3_communication_screen_v13.py": "70323afdbbd5dbd8f020b4d5252899c64f370b786faa0e2e3eee221bcc344e28",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/manifest.json": "547ee1782414ffde72b406e711cbaa49ca8f91a61d972a0074f0011fe5b34cfd",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/result.json": "4249a5f9e2547fb4e5a55f68cad6bdca1fc9c9a0a03f8d237943bfc9c34f56d5",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/full_screen_001/attempts.json": "b8417a2292ea89ae324aa4ef82b5715ddd8acfdcc5eec6fad92d9195cc005a64"
+  },
+  "scope": "Independent CPU audit of the nine-update communication/allocation screen.\n\nThis validates short-screen evidence only. It cannot establish original399\nreference-gradient equivalence, full validation, convergence or adoption.\n"
+}

@@ -82,7 +82,7 @@ def evaluate(model,dataset,is_triton):
     finally:
         reshard_official_parameters(model);model.train(was_training)
 
-def main(*, model_setup=None, extra_sources=()):
+def main(*, model_setup=None, extra_sources=(), extra_framework=None):
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variant',choices=('hf',*VARIANTS,'fusion_only'),required=True)
     parser.add_argument('--output',type=Path,required=True)
@@ -232,6 +232,8 @@ def main(*, model_setup=None, extra_sources=()):
             rank_result['communication']=communication.report() if communication is not None else dict(mode='native')
             from qwen3_triton.overwrite_allocation import report as allocation_report
             rank_result['overwrite_outputs']=allocation_report()
+            extra_memory=rank_result['communication'].get('external_memory_budget_bytes',0)/2**30
+            rank_result['effective_training_peak']={k:v+extra_memory for k,v in training_peak.items()}
         (args.output/f'rank{rank}.json').write_text(json.dumps(rank_result,indent=2)+'\n')
         reports=[None]*4;dist.all_gather_object(reports,rank_result)
         if rank==0:
@@ -240,6 +242,10 @@ def main(*, model_setup=None, extra_sources=()):
             files.extend(extra_sources)
             if args.gemm_plan:files.append(args.gemm_plan)
             result=dict(complete=True,numerical_equivalence_qualified=False,performance_adopted=False,model='Qwen/Qwen3-8B',variant=args.variant,input_root=str(Path.cwd()),gemm_plan=gemm_plan_identity(),world_size=4,layers=36,ranks=reports,input_manifest_sha256=checked[0]['identity'],math_policy=dict(compute='BF16',master_gradient_moments='FP32',TF32=False,allow_bf16_reduced_precision_reduction=False),experiment='vocabulary_CE_v12',screen_only=not(args.full_validation and args.quality_steps==16 and args.warmup_steps==3 and args.measure_steps==8),common_framework=dict(checkpoint_every=args.checkpoint_every,keep_full_layers=args.keep_full_layers,skip_embedding_backward_gather=args.skip_embedding_backward_gather,retain_lm_head=args.retain_lm_head,vocab_parallel=args.vocab_ce,custom_collectives=False,custom_collective_schedule=args.vocab_ce,head_gradient_preaveraged=args.vocab_ce,fused_vocab_dw=args.fused_vocab_dw,vocab_dw_config=list(model.lm_head.dw_config) if args.fused_vocab_dw else None,optimizer='native_fused_AdamW',optimizer_groups='decoder+head_in_all_arms',batch_per_rank=1,sequence=512),sources={str(p):sha(p) for p in files},scope=__doc__)
+            if extra_framework:
+                allowed={'custom_collectives','gradient_transport','external_memory_budget_bytes','communication_experiment'}
+                if set(extra_framework)-allowed:raise ValueError('Unexpected extra framework metadata')
+                result['common_framework'].update(extra_framework)
             (args.output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     finally:dist.destroy_process_group()
 if __name__=='__main__':main()

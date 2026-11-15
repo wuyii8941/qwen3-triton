@@ -35,8 +35,11 @@ def main():
         assert dist.get_world_size()==4
         n=2**18; q=n//4; setup=None; x=hdl=None
         try:
-            symm.set_backend('CUDA')
-            x=symm.empty(n,device=torch.device('cuda',torch.cuda.current_device()),dtype=torch.bfloat16)
+            device=torch.device('cuda',torch.cuda.current_device())
+            backend=symm.get_backend(device)
+            if backend is None:symm.set_backend('CUDA')
+            elif backend!='CUDA':raise RuntimeError('CUDA backend required; current backend is '+backend)
+            x=symm.empty(n,device=device,dtype=torch.bfloat16)
             hdl=symm.rendezvous(x,dist.group.WORLD)
             setup=dict(rank=rank,supported=True)
         except RuntimeError as exc:setup=dict(rank=rank,supported=False,error=str(exc)[:1000])
