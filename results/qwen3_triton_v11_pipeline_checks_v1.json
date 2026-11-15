@@ -1,0 +1,17 @@
+{
+  "complete": true,
+  "CUDA_initialized": false,
+  "higher_profile_count": 9,
+  "original_control_retested": true,
+  "incumbent_retested": true,
+  "formal_opposite_order_commands_passed": true,
+  "matching_nativeHF_strategy_commands_passed": true,
+  "native_feasibility_is_screen_only": true,
+  "no_new_dense_archives": true,
+  "sources": {
+    "/data1/tzh/proj/qwen3-triton-opt-v11/scripts/run_qwen3_training_v11.py": "9ee0224b44fd606511a72517e8af1a0b8c4481c23d208b7a66e0f1c2587df0ce",
+    "/data1/tzh/proj/qwen3-triton-opt-v11/scripts/review_qwen3_training_v11.py": "071c372241be57c81bceb3c792a2f017f25833b26707c9d042b2618a1175475d",
+    "/data1/tzh/proj/qwen3-triton-opt-v11/scripts/screen_qwen3_retention_v11.py": "207da19a20f5073f0260a89d18cd79d4dfcf2569d0823679f0fcd9bce1f38cf7",
+    "/data1/tzh/proj/qwen3-triton-opt-v11/scripts/continue_qwen3_training_v11.py": "911c90ede77ef614ab6ac80366e2b30d2e980f6ad1ef65cea3ed4005d0491f3b"
+  }
+}

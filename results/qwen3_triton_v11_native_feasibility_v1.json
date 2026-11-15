@@ -1,0 +1,17 @@
+[
+  {
+    "name": "native_feasibility_retain36_head_plan",
+    "strategy": {
+      "name": "retain36_head_plan",
+      "keep_full_layers": 36,
+      "checkpoint_every": 1,
+      "skip_embedding_backward_gather": true,
+      "retain_lm_head": true,
+      "gemm_plan": true
+    },
+    "fits": true,
+    "monitor_sha256": "882dda2b6713c9b1a54738e28a304af532966189883f34f82192423040f4e5fa",
+    "log_sha256": "34131eca4c09f3e606f0da79f39f3dec61707e614223bdbd9dae01b0d1883e3f",
+    "result_sha256": "ec247c538f619276a8d86212de7e0259db6eefcb45b66a25917c125b8f3de9cb"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "stopped_own_controller_pid": 2855324,
+  "before_GPU_admission": true,
+  "reason": "Remove inherited trailing whitespace before final source freeze; no model load or timing produced",
+  "next_cohort": "strategy_screen_002"
+}

@@ -1,0 +1,80 @@
+{
+  "parent_result_sha256": "056fb17321e78fd2a530f467b6f28e67544653904f5c48b711d99be1ca771560",
+  "planner_source": "/data1/tzh/proj/qwen3-triton-opt-v11/scripts/continue_qwen3_training_v11.py",
+  "planner_source_sha256": "911c90ede77ef614ab6ac80366e2b30d2e980f6ad1ef65cea3ed4005d0491f3b",
+  "reason": "Initial screen shows useful retention gains while allocated peak remains near34GiB. Retest incumbent and test24/36layers plus GEMM/checkpoint/head choices under the same cap.",
+  "roles": [
+    {
+      "name": "control",
+      "keep_full_layers": 0,
+      "checkpoint_every": 1,
+      "skip_embedding_backward_gather": false,
+      "retain_lm_head": false,
+      "gemm_plan": false
+    },
+    {
+      "name": "incumbent",
+      "keep_full_layers": 16,
+      "checkpoint_every": 2,
+      "skip_embedding_backward_gather": true,
+      "retain_lm_head": true,
+      "gemm_plan": false
+    },
+    {
+      "name": "retain24_plan",
+      "keep_full_layers": 24,
+      "checkpoint_every": 1,
+      "skip_embedding_backward_gather": true,
+      "retain_lm_head": false,
+      "gemm_plan": true
+    },
+    {
+      "name": "retain36",
+      "keep_full_layers": 36,
+      "checkpoint_every": 1,
+      "skip_embedding_backward_gather": true,
+      "retain_lm_head": false,
+      "gemm_plan": false
+    },
+    {
+      "name": "retain36_plan",
+      "keep_full_layers": 36,
+      "checkpoint_every": 1,
+      "skip_embedding_backward_gather": true,
+      "retain_lm_head": false,
+      "gemm_plan": true
+    },
+    {
+      "name": "retain36_head_plan",
+      "keep_full_layers": 36,
+      "checkpoint_every": 1,
+      "skip_embedding_backward_gather": true,
+      "retain_lm_head": true,
+      "gemm_plan": true
+    },
+    {
+      "name": "retain36_cp2_plan",
+      "keep_full_layers": 36,
+      "checkpoint_every": 2,
+      "skip_embedding_backward_gather": true,
+      "retain_lm_head": false,
+      "gemm_plan": true
+    },
+    {
+      "name": "retain24_cp0_plan",
+      "keep_full_layers": 24,
+      "checkpoint_every": 0,
+      "skip_embedding_backward_gather": true,
+      "retain_lm_head": false,
+      "gemm_plan": true
+    },
+    {
+      "name": "retain36_cp0_plan",
+      "keep_full_layers": 36,
+      "checkpoint_every": 0,
+      "skip_embedding_backward_gather": true,
+      "retain_lm_head": false,
+      "gemm_plan": true
+    }
+  ]
+}

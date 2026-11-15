@@ -1,0 +1,135 @@
+{
+  "complete": true,
+  "qualified_training_improvement": true,
+  "default_changed": false,
+  "copies": [
+    {
+      "path": "qwen3_triton_v11_training_review_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/independent_review.json",
+      "sha256": "aff26fa1350d87e6b377663020f2441b43939477165bd804c782598c07cbc91b",
+      "bytes": 18081
+    },
+    {
+      "path": "qwen3_triton_v11_cohort_manifest_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/manifest.json",
+      "sha256": "43626f4d2738440f19db678e0b9f78d832a471c968dfdcfaecfc0d9f82b42bfc",
+      "bytes": 9027
+    },
+    {
+      "path": "qwen3_triton_v11_selection_policy_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/selection_manifest.json",
+      "sha256": "8b5d72ed1ed32a86f0486a4e1deb40b6678eef2645022557ffa69a0e7f536e14",
+      "bytes": 11412
+    },
+    {
+      "path": "qwen3_triton_v11_native_feasibility_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/native_feasibility.json",
+      "sha256": "e40e384548b9588e120b8343ed97b802862e588672bcb8ce7aa89c68279199ba",
+      "bytes": 567
+    },
+    {
+      "path": "qwen3_triton_v11_strategy_screen_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/strategy_screen_002/result.json",
+      "sha256": "056fb17321e78fd2a530f467b6f28e67544653904f5c48b711d99be1ca771560",
+      "bytes": 8405
+    },
+    {
+      "path": "qwen3_triton_v11_strategy_manifest_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/strategy_screen_002/manifest.json",
+      "sha256": "3d77fe64d9bd5932585d63b80f906ae17cf22a4f48a2580ca43ca3106447b6da",
+      "bytes": 11016
+    },
+    {
+      "path": "qwen3_triton_v11_retention_screen_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/retention_screen_001/result.json",
+      "sha256": "83d01a5662995741138bbd750fe74df010e4263c515ec2ea1e96e9669bf178b3",
+      "bytes": 8775
+    },
+    {
+      "path": "qwen3_triton_v11_retention_manifest_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/retention_screen_001/manifest.json",
+      "sha256": "af92fc67e591319938eeab455b9487e387aa02851ff9b54b28df13f91340e5ca",
+      "bytes": 12232
+    },
+    {
+      "path": "qwen3_triton_v11_retention_profiles_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/higher_retention_profiles_001.json",
+      "sha256": "dece29e4f9b43bd9e6da12dd04766351510ef454d06f3d9a0045d9d285710f88",
+      "bytes": 2337
+    },
+    {
+      "path": "qwen3_triton_v11_trainer_source_checks_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/CPU_preflight_002.json",
+      "sha256": "f1e7c4face71370286f385c489902423f26b2790db5874ba1956add9937a6f26",
+      "bytes": 2318
+    },
+    {
+      "path": "qwen3_triton_v11_trace_contract_checks_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/CPU_trace_contract_001.json",
+      "sha256": "3eb1d74cc804adb5ec373397cc3b65178519d8a6e9a0efd77e2613c0ce2cfb98",
+      "bytes": 1999
+    },
+    {
+      "path": "qwen3_triton_v11_pipeline_checks_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/CPU_pipeline_preflight_001.json",
+      "sha256": "c2a4616bd25e683c8a78cb602c5950b18e16943b9fb7ab339b3b391330ef5358",
+      "bytes": 944
+    },
+    {
+      "path": "qwen3_triton_v11_communication_model_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/communication_model_001.json",
+      "sha256": "d48e4a2fa39dee8d00b09ca0e2be34d8fe7d0849125600d1f704def314f7bed1",
+      "bytes": 5376
+    },
+    {
+      "path": "qwen3_triton_v11_startup_disclosure_v1.json",
+      "original_path": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/pre_admission_source_fix_001.json",
+      "sha256": "22463c618a226cae6377739a6ce5336b146bd0050862f6dd7a488f8420c1093b",
+      "bytes": 229
+    }
+  ],
+  "strategy": {
+    "path": "qwen3_triton_v11_strategy_v1.json",
+    "sha256": "30b20ef9536449c058d5b7f604bd99085b9c1f90ca66fa25b669b851bfcde54d"
+  },
+  "raw_evidence_sha256": {
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/baseline_r1/result.json": "69ecf2d1864360a4ebaeee75e60ea60b9567b2424f6bc3bd065128e80106e45b",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/baseline_r1.gpu.json": "5fd3a5f3728802a8ffe8a95f9c954480e21b973b972883d8ae054d8e40cb03ef",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/baseline_r1/training_trace.json": "ee2023efc965d699b1a1c3568a07b7cd2abd147617724683ccce764cb5218ed5",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/hf_r1/result.json": "83924adc4da3ff0801a69e085c30439529db432e72811179ac031011b2cb3999",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/hf_r1.gpu.json": "5bdbd4eeced6e1a4dc9918b857a4be5d28ca3d465f5968e95b738688f167c94d",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/hf_r1/training_trace.json": "2c82e5d2a136ed601eebe18373a7df33a10b7cd9c2fc2447c1884baa433f4163",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/candidate_r1/result.json": "6365216dd3bd55f42643abad37af23cde5f4d7069026693d7c2b5e0f2de5bacc",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/candidate_r1.gpu.json": "51ecdc47b7ff33f45dde883ce14ffc236470f7b5093b9e21ee35e24a65ba6a48",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/candidate_r1/training_trace.json": "6e7c693bd9f826d716ae61ec465944eb435b0baa3cdf78c0085ab7f28cb044fe",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/candidate_r2/result.json": "b88c55183af84a7d9ba6d9c2090b0a2b07217cbfc65e455b11666f677eefd5c1",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/candidate_r2.gpu.json": "79627ff1176219b85082b24f840e91c508f1f4120235d51a0eb01de91db0b9fe",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/candidate_r2/training_trace.json": "3d018da0bcf8befce2204658f1c6a6fa8f02c22351bb1d1da4e4f2e3276a8d9b",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/hf_r2/result.json": "9494ecdc3f3b4e7c2e3a6a7b9b24fdb08e62ad14091013235b205771ce4758ae",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/hf_r2.gpu.json": "0ce9376a02600584d2e15e15df0d30bf8d5d815ffd54dffb0bbf04f28a3f98cd",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/hf_r2/training_trace.json": "ab1d3ab463bf55f38fc00bc70c17ad3c129eba4c7ff64a2d402b6aed4917b774",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/baseline_r2/result.json": "3f40772631c7c040adffc78a819ffe141e912773cd8b18144f7cf0119ecbb09e",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/baseline_r2.gpu.json": "eb11ab01c3812ce4e22a55a86202bb357d3d272b880fa1726bc0026194850702",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/formal_001/baseline_r2/training_trace.json": "8b54c73ad18a9b1815bfab9813e6eacb4f24075579fd3355b8eb313da79bf483",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/strategy_screen_002/control.gpu.json": "517d64c00a20303cf2de0349e824785c3338bb41c03dc21d91a5206b9fda9027",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/strategy_screen_002/embedding.gpu.json": "00a10e0636a1504ef07c88e3909d881c62c856944be42789d5908ddc8203b2cf",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/strategy_screen_002/retain8.gpu.json": "b648c9170b42650122ccf509ee2f39866fcbdbfb4d6d789b55300757d10eba30",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/strategy_screen_002/retain16.gpu.json": "84c0da8c1c622cbdce4524ce0ffac2edd2e68c00992c25476603802aecf89db5",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/strategy_screen_002/retain16_cp2.gpu.json": "71edb2002b9b0f31e522d344284ced8690fc26d80bd1b8673bbde1a6137e1787",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/strategy_screen_002/retain12_cp0.gpu.json": "435da95dbeeaacba42b55fa637ec68801a2cf9ff464709ae403e6ac1211277fc",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/strategy_screen_002/retain16_head_cp2.gpu.json": "029cf83ec64139a82787e6c624c086382d5ad6857f2cf450d82005fee0cabb02",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/strategy_screen_002/retain16_cp2_gemm.gpu.json": "777c9e8fdf5d63cf5d7d3d7ce804783aed761cf3ba45a77ad95ba44bedaf22c1",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/retention_screen_001/control.gpu.json": "e42b7cc81859ed2698b9bca41c8bee978713b9a0a5e0bc33ab4e3b44ba56eca1",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/retention_screen_001/incumbent.gpu.json": "39a2eb00d8354a357027d39eff442c6deea7674212eb020acd6b1caa379fb0ad",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/retention_screen_001/retain24_plan.gpu.json": "0a457b438fbf6e781f3526ed86764cde91ce323c3a9b220994fc7c135df9763a",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/retention_screen_001/retain36.gpu.json": "5e909e00e35051035008e8d072037098ae178203a16b5fd4e59fae8c65f7fa1e",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/retention_screen_001/retain36_plan.gpu.json": "a184ba7f0d4510334faabc409c53b01453886d5a8ea1f4ef11f039a4a66df80b",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/retention_screen_001/retain36_head_plan.gpu.json": "f9f03bf10673263cf7c24f37dd5a0a2e49736f3e3a8e68a637faae6177d1b363",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/retention_screen_001/retain36_cp2_plan.gpu.json": "15d6fc4fab6f239f3449d9b29197529c1c15469c5167f6d8191a217a08e6e900",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/retention_screen_001/retain24_cp0_plan.gpu.json": "38d7c4f03c4de1e957874e2a3765c7f09dab90a3ed7cc24f83005946539e30ea",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v11/retention_screen_001/retain36_cp0_plan.gpu.json": "32658d39f4a80237b55cc01cda3194da6a6006572d29e2dacd382a9ec773571d"
+  },
+  "collector_sha256": "f838614b2862514ca06aea5fa7af89c609e34beb68b99f24f95c822759e352f4",
+  "scope": "Byte-identical small evidence copies plus an explicit strategy descriptor. Models, corpus, caches, raw gradient archives, logs and profiler traces are not included. Original paths/hashes support local reinspection.",
+  "limitations": "Two orders are descriptive. Dense candidate gradient coordinates were compared at runtime, not archived. Independent replay verifies reference archives and recorded arithmetic. Sixteen quality updates do not prove convergence; inference is not measured."
+}

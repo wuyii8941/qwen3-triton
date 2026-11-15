@@ -41,6 +41,24 @@ BF16 计算、FP32 master/梯度/AdamW state，相同 FSDP2 和逐层重计算�
 [证据索引](results/qwen3_triton_v10_evidence_index_v1.json)。配置保持显式启用；
 原 V9 校验器固定历史源码哈希，本分支使用 `scripts/check_qwen3_tuned_source.py`。
 
+## V11：保留参数、减少训练通信
+
+本分支新增可选训练策略：前向后保留 36 层及 LM head 的完整参数，跳过
+embedding 反向不需要的权重聚合，逐层重计算保持不变，并显式使用 V10 GEMM 计划。
+六组完整 8B 对照及独立审查通过；两轮整步耗时从 **7.141 / 7.195 秒**降至
+**5.249 / 5.214 秒**，分别减少 **26.50% / 27.54%**。
+
+实际 AllGather 从 78 降到 40 次，ReduceScatter 仍为 39 次。代价是计时训练区间
+PyTorch allocated 峰值从约 **34.14 增至 40.18 GiB/卡**，allocated/reserved 均在
+原 41.875 GiB 预算内。相同新策略的 HF 为 **5.246 / 5.251 秒**，与 Triton
+总体持平。这是组合训练策略的收益，不能全部归因于 Triton 算子。
+
+详见 [实验与显式使用方法](OPTIMIZATION_V11.md)、
+[策略参数](results/qwen3_triton_v11_strategy_v1.json) 和
+[独立审查及证据索引](results/qwen3_triton_v11_evidence_index_v1.json)。
+原入口默认值不变；结果限于上述硬件与形状，16 次质量更新不证明长期收敛，
+本轮没有测量推理性能。
+
 ## 代码与复现
 
 - [实现、协议、消融和限制](TRITON_QWEN3.md)
