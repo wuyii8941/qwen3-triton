@@ -4,6 +4,8 @@ All coordinate comparisons, not an accuracy/adoption gate. Finds matching CPU
 addition trees without changing the fixed full-model gradient tolerances.
 """
 import argparse,itertools,json,os
+from collections import Counter
+from contextlib import nullcontext
 from pathlib import Path
 from datetime import timedelta
 import torch
@@ -20,6 +22,22 @@ def trees(stack,expected):
         got=(stack[p[0]]+stack[p[1]])+(stack[p[2]]+stack[p[3]])
         rows.append(dict(tree=['balanced',*p],different_bits=int((got.view(torch.int32)!=expected.view(torch.int32)).sum())))
     return sorted(rows,key=lambda r:r['different_bits'])
+
+
+def addition_segments(stack,expected):
+    candidates=[]
+    for p in itertools.permutations(range(4)):
+        candidates.append((['left',*p],((stack[p[0]]+stack[p[1]])+stack[p[2]])+stack[p[3]]))
+    for p in [(0,1,2,3),(0,2,1,3),(0,3,1,2)]:
+        candidates.append((['balanced',*p],(stack[p[0]]+stack[p[1]])+(stack[p[2]]+stack[p[3]])))
+    masks=torch.stack([x.view(torch.int32)!=expected.view(torch.int32) for _,x in candidates])
+    segments=[]
+    for begin in range(0,expected.numel(),32):
+        end=min(begin+32,expected.numel());errors=masks[:,begin:end].sum(1)
+        matched=[candidates[i][0] for i in range(len(candidates)) if errors[i]==0]
+        if segments and segments[-1]['matching_trees']==matched and segments[-1]['best_different_bits']==int(errors.min()):segments[-1]['end']=end
+        else:segments.append(dict(begin=begin,end=end,matching_trees=matched,best_different_bits=int(errors.min())))
+    return segments
 
 
 def main():
@@ -42,7 +60,15 @@ def main():
                 hosts.append(value)
             source=hosts[rank].cuda();candidate=torch.empty(n if kind=='all_reduce' else n//4,device='cuda')
             if kind=='all_reduce':
-                native=source.clone();dist.all_reduce(native);candidate.copy_(source);comm.all_reduce(candidate)
+                native=source.clone()
+                with torch.profiler.profile(activities=[torch.profiler.ProfilerActivity.CPU,torch.profiler.ProfilerActivity.CUDA]) if rank==0 else nullcontext() as trace:
+                    dist.all_reduce(native);torch.cuda.synchronize()
+                native_trace=None
+                if rank==0:
+                    path=a.output/f'native_all_reduce_{n}.json.gz';trace.export_chrome_trace(str(path))
+                    import gzip
+                    native_trace=dict(Counter(e['name'] for e in json.loads(gzip.decompress(path.read_bytes()))['traceEvents'] if e.get('cat')=='kernel'))
+                candidate.copy_(source);comm.all_reduce(candidate)
                 stack=torch.stack(hosts)
             else:
                 native=torch.empty(n//4,device='cuda');dist.reduce_scatter_tensor(native,source,op=dist.ReduceOp.SUM)
@@ -51,7 +77,9 @@ def main():
             results.append(dict(kind=kind,input_elements=n,output_elements=expected.numel(),
                 candidate_different_bits=int((got.view(torch.int32)!=expected.view(torch.int32)).sum()),
                 BF16_cast_different_bits=int((got.bfloat16().view(torch.int16)!=expected.bfloat16().view(torch.int16)).sum()),
-                candidate_max_abs=float((got-expected).abs().max()),CPU_tree_matches=orders))
+                candidate_max_abs=float((got-expected).abs().max()),CPU_tree_matches=orders,
+                addition_segments=addition_segments(stack,expected) if kind=='all_reduce' else None,
+                native_trace=native_trace if kind=='all_reduce' else None))
             del hosts,source,candidate,native,stack,got,expected
         transport=comm.report();comm.close()
         row=dict(rank=rank,complete=True,results=results,communication=transport)
