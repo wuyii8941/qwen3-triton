@@ -60,7 +60,8 @@ def numerical_review(g,*,strict,canonical=None,norms=None,reference_sha=None):
     error=sum(r['absolute_error_norm']**2 for r in g['rows']);norm=sum(r['reference_norm']**2 for r in g['rows'])
     assert g['global_relative_l2']==(error/max(norm,1e-16))**.5
     gradient=all(r['passed'] for r in g['rows'])
-    assert math.isfinite(g['logits_relative_l2']) and math.isfinite(g['loss_abs_error'])
+    assert math.isfinite(g['logits_relative_l2']) and g['logits_relative_l2']>=0
+    assert math.isfinite(g['loss_abs_error']) and g['loss_abs_error']>=0
     forward=g['logits_relative_l2']<.025 and g['loss_abs_error']<.01 and (g['forward_bitwise_equal'] or not strict)
     assert g['passed']==gradient and g['forward_gate_passed']==forward and g['numerical_gate_passed']==(gradient and forward)
     return dict(passed=gradient and forward,all399=True,gradient_relative_l2=g['global_relative_l2'],
