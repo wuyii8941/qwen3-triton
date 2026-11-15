@@ -7,6 +7,7 @@ import torch
 import triton
 import triton.language as tl
 from .gemm_tuning import gemm_entry
+from qwen3_triton.overwrite_allocation import empty as output_empty
 
 
 @triton.jit
@@ -56,7 +57,8 @@ def matmul(a, b, *, optimized=False, output_dtype=None):
         raise TypeError('Floating point output required')
     m, k = a.shape
     n = b.shape[1]
-    out = torch.empty((m, n), device=a.device, dtype=dtype)
+    # Every valid [M,N] coordinate has one producer, including tail tiles.
+    out = output_empty((m, n), device=a.device, dtype=dtype)
     entry = gemm_entry(a, b, dtype) if optimized else None
     if entry is not None and entry['family'] == 'split_k':
         from .gemm_experiments import split_matmul_into

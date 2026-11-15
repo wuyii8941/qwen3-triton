@@ -1,0 +1,65 @@
+{
+  "complete": true,
+  "module_only": true,
+  "full_training_qualified": false,
+  "rows": {
+    "auto_first": {
+      "environment": {
+        "NCCL_PROTO": null,
+        "NCCL_P2P_LEVEL": null
+      },
+      "full_layer_seconds": [
+        0.07078364118933678,
+        0.07075877208262682
+      ],
+      "all_rank_numerics_passed": true
+    },
+    "simple": {
+      "environment": {
+        "NCCL_PROTO": "Simple",
+        "NCCL_P2P_LEVEL": null
+      },
+      "full_layer_seconds": [
+        0.07072053849697113,
+        0.07075082883238792
+      ],
+      "all_rank_numerics_passed": true
+    },
+    "sys": {
+      "environment": {
+        "NCCL_PROTO": null,
+        "NCCL_P2P_LEVEL": "SYS"
+      },
+      "full_layer_seconds": [
+        0.08398415241390467,
+        0.08374691754579544
+      ],
+      "all_rank_numerics_passed": true
+    },
+    "sys_simple": {
+      "environment": {
+        "NCCL_PROTO": "Simple",
+        "NCCL_P2P_LEVEL": "SYS"
+      },
+      "full_layer_seconds": [
+        0.08373665902763605,
+        0.08391662500798702
+      ],
+      "all_rank_numerics_passed": true
+    },
+    "auto_last": {
+      "environment": {
+        "NCCL_PROTO": null,
+        "NCCL_P2P_LEVEL": null
+      },
+      "full_layer_seconds": [
+        0.07088583707809448,
+        0.07082581892609596
+      ],
+      "all_rank_numerics_passed": true
+    }
+  },
+  "raw_result_sha256": "2d7230698ffc914252f2c8ceb0313655ff0d7be045c4214a8203d5831d545e3e",
+  "manifest_sha256": "a098395312a1de81afb7fec4325c9d3491290f6e427588b50c4f25e5b9a2d740",
+  "decision": "No transport/protocol variant qualifies for a >=3% reduction against both auto endpoint controls in both orders; retain auto. Full FP64-coordinate AVG/SUM checks passed."
+}

@@ -21,6 +21,7 @@ from training.fsdp.communication_v13 import ExperimentalReduceScatter
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--native-only', action='store_true')
     args=parser.parse_args()
     torch.cuda.set_device(int(os.environ['LOCAL_RANK']))
     torch.set_num_threads(2)
@@ -32,8 +33,8 @@ def main():
         rank=dist.get_rank(); assert dist.get_world_size()==4
         if rank==0:args.output.mkdir(exist_ok=False)
         dist.barrier()
-        separate=ExperimentalReduceScatter('separate')
-        hierarchical=ExperimentalReduceScatter('hierarchical')
+        separate=ExperimentalReduceScatter('separate') if not args.native_only else None
+        hierarchical=ExperimentalReduceScatter('hierarchical') if not args.native_only else None
         rows=[]
         # Actual Qwen3-8B decoder layer parameters: Q/K/V/O, gate/up/down,
         # two hidden norms and two head-dimension Q/K norms.
@@ -44,19 +45,29 @@ def main():
             ref=torch.empty(n//4,device='cuda',dtype=torch.float32)
             got=torch.empty_like(ref)
             errors={}
+            received=torch.empty_like(x)
+            dist.all_to_all_single(received,x)
+            # Each destination receives its chunk from every source. Sum in
+            # FP64 independently of NCCL's FP32 reduction algorithm/protocol.
+            exact_sum=received.view(4,n//4).double().sum(dim=0)
+            del received
             for op_name,op in [('AVG',dist.ReduceOp.AVG),('SUM',dist.ReduceOp.SUM)]:
                 dist.reduce_scatter_tensor(ref,x,op=op)
-                for name,comm in [('separate',separate),('hierarchical',hierarchical)]:
-                    comm(got,x,dist.group.WORLD,op)
-                    delta=got-ref
-                    relative=float(torch.linalg.vector_norm(delta)/torch.linalg.vector_norm(ref).clamp_min(1e-12))
+                expected=(exact_sum/4 if op_name=='AVG' else exact_sum).float()
+                for name,comm in ([('native',None)] if args.native_only else [('native',None),('separate',separate),('hierarchical',hierarchical)]):
+                    if comm is None:got.copy_(ref)
+                    else:comm(got,x,dist.group.WORLD,op)
+                    delta=got-expected
+                    relative=float(torch.linalg.vector_norm(delta)/torch.linalg.vector_norm(expected).clamp_min(1e-12))
                     maximum=float(delta.abs().max())
                     passed=relative<1e-6 and maximum<2e-6 and bool(torch.isfinite(got).all())
                     assert passed,(n,op_name,name,relative,maximum)
                     errors[name+'_'+op_name]=dict(relative_l2=relative,max_abs=maximum,passed=passed,all_coordinates=True)
                     del delta
-            del ref
-            for order,modes in enumerate([['native','separate','hierarchical'],['hierarchical','separate','native']],1):
+                del expected
+            del ref,exact_sum
+            orders=[['native'],['native']] if args.native_only else [['native','separate','hierarchical'],['hierarchical','separate','native']]
+            for order,modes in enumerate(orders,1):
                 for mode in modes:
                     comm=dict(separate=separate,hierarchical=hierarchical).get(mode)
                     def run():
@@ -76,12 +87,14 @@ def main():
                     if rank==0:print(json.dumps(row),flush=True)
             del x,got
             torch.cuda.empty_cache()
-        report=dict(rank=rank,complete=True,rows=rows,communication=[separate.report(),hierarchical.report()])
+        report=dict(rank=rank,complete=True,rows=rows,communication=[c.report() for c in [separate,hierarchical] if c is not None])
         (args.output/f'rank{rank}.json').write_text(json.dumps(report,indent=2)+'\n')
         reports=[None]*4;dist.all_gather_object(reports,report)
         if rank==0:
             files=[Path(__file__),Path(__file__).resolve().parents[1]/'training/fsdp/communication_v13.py']
             result=dict(complete=True,full_training_qualified=False,torch=torch.__version__,NCCL=torch.cuda.nccl.version(),
+                environment={key:os.environ.get(key) for key in ['NCCL_PROTO','NCCL_P2P_LEVEL']},
+                reference='AllToAll routes every source chunk, then explicit FP64 sum/mean; every output coordinate checked.',
                 ranks=reports,topology=subprocess.check_output(['nvidia-smi','topo','-m'],text=True),
                 sources={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in files},scope=__doc__)
             (args.output/'result.json').write_text(json.dumps(result,indent=2)+'\n')

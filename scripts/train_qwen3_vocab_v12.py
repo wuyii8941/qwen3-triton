@@ -230,6 +230,8 @@ def main(*, model_setup=None, extra_sources=()):
         rank_result=dict(vocab_head_calls=head_calls,reference_archive=archive,gemm_plan=gemm_plan_identity(),measured_training_peak=training_peak,rank=rank,complete=True,parameter_count=399,optimizer_state_count=len(optimizer.state),updates=total,rows=rows,full_validation=validation_rows,gradient_comparisons=comparisons,all_master_grad_moment_finite_fp32=True,peak_allocated_gib=torch.cuda.max_memory_allocated()/2**30,peak_reserved_gib=torch.cuda.max_memory_reserved()/2**30)
         if model_setup is not None:
             rank_result['communication']=communication.report() if communication is not None else dict(mode='native')
+            from qwen3_triton.overwrite_allocation import report as allocation_report
+            rank_result['overwrite_outputs']=allocation_report()
         (args.output/f'rank{rank}.json').write_text(json.dumps(rank_result,indent=2)+'\n')
         reports=[None]*4;dist.all_gather_object(reports,rank_result)
         if rank==0:

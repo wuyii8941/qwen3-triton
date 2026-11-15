@@ -11,6 +11,7 @@ from triton.language.extra.cuda import libdevice
 from .math_precision import _hf_swiglu_backward as activation_backward
 from qwen3_triton.kernels.residual import residual_add
 from .gemm_tuning import gate_up_entry
+from qwen3_triton.overwrite_allocation import empty as output_empty, empty_like as output_empty_like
 
 @triton.jit
 def _gate_up(X,WG,WU,G,U,Y,M:tl.constexpr,N:tl.constexpr,K:tl.constexpr,
@@ -40,7 +41,8 @@ class _GateUp(torch.autograd.Function):
         if x.dtype not in (torch.float32,torch.bfloat16,torch.float16) or any(t.device!=x.device or t.dtype!=x.dtype or not t.is_contiguous() for t in (x,wg,wu)):raise ValueError('Matching contiguous floating point CUDA inputs required')
         m=x.numel()//x.shape[-1];k=x.shape[-1];n=wg.shape[0]
         if min(m,k,n)<1:raise ValueError('Nonempty inputs required')
-        shape=(*x.shape[:-1],n);g=torch.empty(shape,device=x.device,dtype=x.dtype);u=torch.empty_like(g);y=torch.empty_like(g)
+        # _gate_up writes G, U and Y at every valid row/column coordinate.
+        shape=(*x.shape[:-1],n);g=output_empty(shape,device=x.device,dtype=x.dtype);u=output_empty_like(g);y=output_empty_like(g)
         entry=gate_up_entry(x,n) if optimized else None
         if entry is None:
             bm,bn,bk,group=(64,64,32,8) if optimized else (32,64,32,1)
@@ -51,7 +53,8 @@ class _GateUp(torch.autograd.Function):
     @staticmethod
     def backward(ctx,dy):
         x,wg,wu,g,u=ctx.saved_tensors;dy=dy.contiguous();m=x.numel()//x.shape[-1];k=x.shape[-1];n=wg.shape[0]
-        dg=torch.empty_like(g);du=torch.empty_like(u)
+        # activation_backward writes both outputs for every element <numel.
+        dg=output_empty_like(g);du=output_empty_like(u)
         activation_backward[(triton.cdiv(g.numel(),256),)](g,u,dy,dg,du,g.numel(),256,True,enable_fp_fusion=False)
         dg=dg.view(m,n);du=du.view(m,n);flat=x.view(m,k)
         dxg=matmul(dg,wg,optimized=ctx.optimized);dxu=matmul(du,wu,optimized=ctx.optimized)
