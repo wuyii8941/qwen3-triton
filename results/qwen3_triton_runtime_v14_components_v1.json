@@ -1,0 +1,96 @@
+{
+  "status": "components_only_full_training_pending",
+  "complete_runtime_qualified": false,
+  "full8B_gradient_quality_validation_step_trace_and_ablation_pending": true,
+  "components": {
+    "AdamW": {
+      "module_checks_passed": true,
+      "raw_result": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_runtime_v14/adamw_check_002/accepted/run/check.json",
+      "raw_sha256": "5f8c8f3c85d71dd77377cd6b4d52e25a9d621b416d0b578032ff834c64830fa8",
+      "manifest": {
+        "kind": "adamw",
+        "sources": {
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/run_triton_runtime_checks_v14.py": "19dcc98e789f83958e72c79fa9e7e5fd5e84d596a1f786e5b5d8f6d4f2dc803d",
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/check_triton_adamw_v14.py": "aaf70fd1738f9532e974a2bdfd9d340ef616bfe8a6aacd4086eaf7b77c39cf17",
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/research_python.sh": "90924f69c4227a4027e4df95a84664c85caa96ee91fee21e3c0a48be432cfc85",
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/run_vocab_resource_queue_v12.py": "30a54056b3e70a648a0c80156e666808da76e3809dc3f3d36f1e3638363d381c",
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/__init__.py": "65282fd5bafd653d89d7bbb6a93607db85fa278b2c8eaba276c8fe974b419e0b",
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/adamw.py": "257b01056a587c9d42aa3c4d3b5182bb6bc838def2a14e09732d0f1656c9c26f",
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/memory.py": "3c2bae3b1457b0f71c56b792a02e97ccabb87aa4edb37b65655b0d8efecbee4e"
+        },
+        "source_root": "/data1/tzh/proj/qwen3-triton-runtime-v14",
+        "numerical_contract": "Per-coordinate p/m/v tolerance2e-6 relative plus1e-8/1e-12/1e-14 absolute; independent CPU oracle; restore/skip/multiple updates.",
+        "resource_policy": "First clean attempt only; retain contamination, retry after120s idle; clean technical failure stops. No external process signalled.",
+        "full_model_qualified": false
+      },
+      "resource_history": [
+        {
+          "number": 1,
+          "resource_contaminated": false,
+          "returncode": 0,
+          "accepted": true,
+          "monitor_sha256": "d538d8dd315405d6047563db83f0555c7824ceb9265d48d1fffabe13edefc350",
+          "log_sha256": "6268eb8a0dc6612ecf253d57bb3b555851f3f41e18e969a81a85822594180490",
+          "result_sha256": "5f8c8f3c85d71dd77377cd6b4d52e25a9d621b416d0b578032ff834c64830fa8"
+        }
+      ],
+      "full_model_qualified": false,
+      "trace": {
+        "sha256": "2d3c69672ac199162ab1462d1bcb521eed2669f4f99031e1c713d2beb831de14",
+        "kernels": {
+          "_adamw_prepare": 2,
+          "_adamw_update": 2
+        },
+        "only_Triton": true
+      }
+    },
+    "collectives": {
+      "module_checks_passed": true,
+      "raw_result": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_runtime_v14/collectives_check_002/accepted/run/check.json",
+      "raw_sha256": "3ac3b95fe4f97468aa3a350a157d3ccb11504bf553799b2f42e0b3e2bbda4273",
+      "manifest": {
+        "kind": "collectives",
+        "sources": {
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/run_triton_runtime_checks_v14.py": "0e917affe0feec3fe8699d0a445f8fb62f7327beba07c06cfe4acd0b5b11f783",
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/check_triton_collectives_v14.py": "f652a3451c3f8b02f2b3550aa47ff004ebce9cc4806594909f1ccae612f71b4e",
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/research_python.sh": "90924f69c4227a4027e4df95a84664c85caa96ee91fee21e3c0a48be432cfc85",
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/run_vocab_resource_queue_v12.py": "30a54056b3e70a648a0c80156e666808da76e3809dc3f3d36f1e3638363d381c",
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/__init__.py": "65282fd5bafd653d89d7bbb6a93607db85fa278b2c8eaba276c8fe974b419e0b",
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/collectives.py": "ae66d1a14435914aacd13d4d3dd2d7d5498cb37b162fb2ec7301149c0e04d81c",
+          "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/memory.py": "3c2bae3b1457b0f71c56b792a02e97ccabb87aa4edb37b65655b0d8efecbee4e"
+        },
+        "source_root": "/data1/tzh/proj/qwen3-triton-runtime-v14",
+        "numerical_contract": "All-coordinate CPU oracles for gathers/exchange/SUM/AVG/MAX/MIN; exact BF16-input actual192946432-element RS; system barrier/streams/negative guards.",
+        "resource_policy": "First clean attempt only; retain contamination, retry after120s idle; clean technical failure stops. No external process signalled.",
+        "full_model_qualified": false
+      },
+      "resource_history": [
+        {
+          "number": 1,
+          "resource_contaminated": false,
+          "returncode": 0,
+          "accepted": true,
+          "monitor_sha256": "79db90de1ce59db83dd53b34d7b7b4cd9bd8bcbcdb898d796184c9f03e5fbc42",
+          "log_sha256": "ffb2e27128a67c2876d9af5b7c34328271f7364ad8360342cea81b3d8d19d270",
+          "result_sha256": "3ac3b95fe4f97468aa3a350a157d3ccb11504bf553799b2f42e0b3e2bbda4273"
+        }
+      ],
+      "full_model_qualified": false,
+      "trace": {
+        "sha256": "0366b1216d9305641edbe0367f6431bf681a5a898657e77166afeae5e3789cda",
+        "kernels": {
+          "_runtime_stage": 4,
+          "_runtime_peer_barrier": 8,
+          "_runtime_peer_collective": 4
+        },
+        "only_Triton": true
+      }
+    }
+  },
+  "failed_checks_preserved": [
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_runtime_v14/startup_failure_001",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_runtime_v14/adamw_check_001",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_runtime_v14/collectives_check_001"
+  ],
+  "scope": "No inference/convergence or whole-training speed claim. FSDP2 host orchestration remains; its GPU data operations are being replaced and require complete-step trace validation."
+}

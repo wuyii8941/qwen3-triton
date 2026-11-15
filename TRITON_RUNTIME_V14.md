@@ -36,3 +36,25 @@ CPU rendezvous，正式GPU张量交换必须检查实际路径。
 [NVIDIA PTX内存一致性](https://docs.nvidia.com/cuda/parallel-thread-execution/#memory-consistency-model)。
 本机Torch2.10的FSDP与fused AdamW源码为数值/布局参考；新实现独立编写。
 Alpha接口及跨GPU系统作用域可用性必须在本机SM86四卡实测，不能从文档推出。
+
+## 当前完成的组件检查（不代替完整8B验收）
+
+`adamw_check_002`：四rank各完成128次连续更新，包含非零m/v、不同参数组、
+跳过梯度、64步后的CPU状态恢复及原地版本计数。1/17/64/128步的全部检查点
+参数和m/v与native fused AdamW逐位一致；另覆盖官方8B的norm、Q、MLP及
+`[37984,4096]`词表分片形状。独立CPU oracle通过，候选专用trace只出现
+`_adamw_prepare`和`_adamw_update`。这不是8B训练已采用或optimizer提速结论。
+首版检查因FMA次序带来细小m差异而失败；保留失败，不放宽逐坐标门槛。
+
+`collectives_check_002`：四rank各112项dtype/操作/尾块检查及32次更换数据；
+跨AG/RS stream的不同主机入队次序、粘性无损错误及缺失rank的超时负例通过。
+真实192946432元素decoder桶的每rank全部48236608个FP32输出，与独立CPU
+FP64 oracle逐位一致。bootstrap为CPU Gloo；候选trace只有4次stage、8次
+Triton屏障和4次peer collective，没有NCCL或CUDA barrier kernel。
+首轮因Triton不支持Python `break`的编译失败已保留，改为有界循环条件后通过；
+不能把该错误解释成硬件不支持。
+
+FSDP＋严格GPU操作替换＋Triton AdamW的整体小模型检查已排队。
+完整36层8B接入、全399梯度、512块验证、完整step trace和整体/部分消融均待完成。
+组件记录在原始 `artifacts/triton_qwen3_runtime_v14`，小型摘要见
+[组件证据](results/qwen3_triton_runtime_v14_components_v1.json)。

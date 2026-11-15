@@ -9,7 +9,9 @@ matching the existing BF16 compute / FP32 data-parallel-gradient policy.
 The decoder remains FSDP with averaging; this head's gradient is already
 averaged and MUST be excluded from FSDP. All ranks must call together, with
 the same local shape. Dense logits are an explicit diagnostic option only.
-NCCL collectives, allocation, casts and layout copies use PyTorch.
+The default path retains native collectives. An explicit communication object
+routes head collectives through the Triton runtime; its strict dispatch context
+must also cover allocation, layout copies and auxiliary tensor operations.
 """
 import torch
 import torch.distributed as dist
@@ -17,6 +19,20 @@ from .kernels.linear import matmul
 from .kernels.attention import cast_tensor
 from .kernels.vocab_ce import (local_statistics,packed_statistics,finish_statistics,
                                logit_gradient,accumulate_weight_gradient)
+
+
+def _gather(owner,output,source):
+    if owner.communication is None:dist.all_gather_into_tensor(output,source)
+    else:owner.communication.all_gather(output,source)
+
+
+def _reduce(owner,tensor,op):
+    if owner.communication is None:dist.all_reduce(tensor,op=op)
+    else:
+        if op==dist.ReduceOp.MAX:operation='max'
+        elif op==dist.ReduceOp.SUM:operation='sum'
+        else:raise ValueError('Head only uses MAX/SUM')
+        owner.communication.all_reduce(tensor,operation)
 
 
 class _VocabCE(torch.autograd.Function):
@@ -29,18 +45,19 @@ class _VocabCE(torch.autograd.Function):
             raise ValueError('Matching contiguous BF16 hidden, int64 labels and local FP32 weight required')
         all_hidden=torch.empty((world*r,k),device=hidden.device,dtype=hidden.dtype)
         all_labels=torch.empty(world*r,device=hidden.device,dtype=labels.dtype)
-        dist.all_gather_into_tensor(all_hidden,hidden.view(r,k))
-        dist.all_gather_into_tensor(all_labels,labels.view(-1))
+        _gather(owner,all_hidden,hidden.view(r,k))
+        _gather(owner,all_labels,labels.view(-1))
         w=cast_tensor(weight,torch.bfloat16)
         logits=matmul(all_hidden,w.t(),optimized=True)
         local_lse,target=local_statistics(logits,all_labels,s,rank*v)
-        maximum=local_lse.clone();dist.all_reduce(maximum,op=dist.ReduceOp.MAX)
-        packed=packed_statistics(local_lse,maximum,target);dist.all_reduce(packed,op=dist.ReduceOp.SUM)
+        maximum=local_lse.clone();_reduce(owner,maximum,dist.ReduceOp.MAX)
+        packed=packed_statistics(local_lse,maximum,target);_reduce(owner,packed,dist.ReduceOp.SUM)
         lse,counts,means=finish_statistics(maximum,packed,all_labels,r,s,world,ignore)
         loss=means[rank].clone();dense=None
         if diagnostics:
             received=torch.empty_like(logits)
-            dist.all_to_all_single(received,logits)
+            if owner.communication is None:dist.all_to_all_single(received,logits)
+            else:owner.communication.all_to_all(received,logits)
             dense=received.view(world,r,v).transpose(0,1).contiguous().view(b,s,world*v)
             ctx.mark_non_differentiable(dense)
         ctx.save_for_backward(all_hidden,w,all_labels,logits,lse,counts)
@@ -53,11 +70,12 @@ class _VocabCE(torch.autograd.Function):
         h,w,labels,logits,lse,counts=ctx.saved_tensors
         world=ctx.world;r=ctx.rows;k=h.shape[1]
         ups=torch.empty(world,device=h.device,dtype=up.dtype)
-        dist.all_gather_into_tensor(ups,up.contiguous().view(1))
+        _gather(ctx.owner,ups,up.contiguous().view(1))
         dz=logit_gradient(logits,labels,lse,counts,ups,r,ctx.sequence,ctx.start,ctx.ignore)
         partial_dx=matmul(dz,w,optimized=True,output_dtype=torch.float32)
         local_dx=torch.empty((r,k),device=h.device,dtype=torch.float32)
-        dist.reduce_scatter_tensor(local_dx,partial_dx,op=dist.ReduceOp.SUM)
+        if ctx.owner.communication is None:dist.reduce_scatter_tensor(local_dx,partial_dx,op=dist.ReduceOp.SUM)
+        else:ctx.owner.communication.reduce_scatter(local_dx,partial_dx,'sum')
         dx=cast_tensor(local_dx,torch.bfloat16)
         if ctx.owner.fused_dw:
             from .kernels.vocab_dw import weight_gradient_mean
@@ -72,7 +90,7 @@ class _VocabCE(torch.autograd.Function):
 
 
 class VocabParallelCE(torch.nn.Module):
-    def __init__(self,full_weight_cpu,*,fused_dw=False):
+    def __init__(self,full_weight_cpu,*,fused_dw=False,communication=None):
         super().__init__();world=dist.get_world_size();rank=dist.get_rank()
         if full_weight_cpu.device.type!='cpu' or full_weight_cpu.ndim!=2 or full_weight_cpu.shape[0]%world:
             raise ValueError('Equal CPU vocabulary shards required')
@@ -81,6 +99,7 @@ class VocabParallelCE(torch.nn.Module):
         self.forward_calls=0;self.backward_calls=0
         self.fused_dw=bool(fused_dw)
         self.dw_config=(64,128,32,8,8,3) if self.fused_dw else None
+        self.communication=communication
 
     def forward(self,hidden,labels,*,ignore_index=-100,diagnostics=False):
         if hidden.ndim!=3 or hidden.shape[-1]!=self.in_features:
