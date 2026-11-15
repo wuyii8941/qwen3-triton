@@ -128,6 +128,15 @@ teardown完成。该证据仍不代表完整8B数值/验证已通过，详见
 memcpy事件，保留CPU↔GPU DMA。组件和失败证据摘要见
 [最新进度](results/qwen3_triton_runtime_v14_progress_v3.json)。
 
+`reduction_order_probe_001` 对真实head dX大小8388608个FP32输入及词表CE
+4088/16352元素做原生NCCL与Triton比较。dX在rank0/1/2有112/100/117个
+BF16舍入结果不同；rank3相同。独立CPU枚举加法树确认原生RS按每rank的
+循环顺序相加，全部2097152输出坐标均匹配该顺序。现已只调整任意FP32
+输入的SUM ReduceScatter顺序；BF16无损梯度线和AVG路径保留原算法。
+四rank FP32/BF16分支预编译通过，正在用 `reduction_order_probe_002` 实测。
+这只是找到一个确定的差异，仍须新8B全399梯度及完整质量验证证明修复有效。
+FP32 AllReduce也有加法顺序差异；当前未据此改算法或放宽任何门槛。
+
 ## 完整8B验收约定（在本轮8B计时之前声明）
 
 沿用官方权重/语料身份、4×A6000、每卡B1/S512、BF16计算、FP32 master/梯度/
