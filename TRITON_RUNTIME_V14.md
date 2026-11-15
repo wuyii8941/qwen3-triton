@@ -140,6 +140,22 @@ BF16舍入结果不同；rank3相同。独立CPU枚举加法树确认原生RS按
 证明整个模型的修复有效，不能从该组件逐位一致推出完整验收。
 FP32 AllReduce也有加法顺序差异；当前未据此改算法或放宽任何门槛。
 
+`full_pilot_004` 完成5次真实更新后，初始化、首次更新、完整step的扩展GPU
+审核全部通过，包括没有原生GPU memset/设备间拷贝；各rank显存门槛也通过。
+但rank1第8层K Norm梯度相对误差0.0635948656630924，仍未通过原门槛，
+其他rank全399梯度通过。首次干净失败和全部原始证据保留，详见
+[失败记录](results/qwen3_triton_runtime_v14_full_screen_failure_004.json)。
+
+`reduction_order_probe_003` 捕获实际NCCL `RING_LL` 内核，并用独立CPU加法树
+枚举定位到AllReduce各段的顺序：训练CE4088元素使用1channel、每rank1024
+元素（尾段1016）；验证CE16352元素使用2channel、总长度8192/8160，分别
+按2048/2040元素分段。候选现在对这两个经过确认的4×A6000实际形状保留该
+顺序，仍只执行Triton；通用dtype/形状路径保留原语义。当前正在用3组不同
+输入复核全部坐标，尚待新8B梯度及完整质量验证。此为固定硬件/协议的数值
+边界对齐，不声称任意GPU/消息大小与NCCL逐位一致，不修改原有数值门槛。
+[原始诊断摘要](results/qwen3_triton_runtime_v14_AllReduce_order_diagnosis_v1.json)，
+[对应NCCL源码](https://github.com/NVIDIA/nccl/blob/v2.27.5-1/src/device/all_reduce.h)。
+
 ## 完整8B验收约定（在本轮8B计时之前声明）
 
 沿用官方权重/语料身份、4×A6000、每卡B1/S512、BF16计算、FP32 master/梯度/
