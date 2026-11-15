@@ -1,0 +1,69 @@
+{
+  "complete": true,
+  "full_model_qualified": false,
+  "all4ranks_native_FP32_bitwise_equal": true,
+  "raw_check_sha256": "e0db60e2f8e6b68a1599d9bd6e23d604bfe66efa00269865dee9a5d743b7b86a",
+  "manifest_sha256": "8220fdd2e725b61dc8b09a15f2ee036aa893c17d8cb94230d5f3a2e9247f8697",
+  "monitor_sha256": "34c221e07828bc7fb1e1e2cd3bf1afda5cedf47c75af8c320357172d4d78d8ea",
+  "frozen_sources": {
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/run_runtime_order_probe_v14.py": "567179fcff079b41f1fd3507fb9480d1568c671e077a6dfb97ea4bfced7ca73d",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/check_runtime_reduction_order_v14.py": "b8f15296f2efe12dafac31ee15e88273c788911790a0e7a9893de218af341450",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/research_python.sh": "90924f69c4227a4027e4df95a84664c85caa96ee91fee21e3c0a48be432cfc85",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/run_vocab_resource_queue_v12.py": "30a54056b3e70a648a0c80156e666808da76e3809dc3f3d36f1e3638363d381c",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/__init__.py": "65282fd5bafd653d89d7bbb6a93607db85fa278b2c8eaba276c8fe974b419e0b",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/adamw.py": "6981413cfc49181d1cb397e5bbdaae7bd330024f3504d06d2cae31259f9ce16c",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/collectives.py": "d939be9ffaf60f660ac2ed3cfa477ebaa4c11bfbd46a452195e3743c1bfcb573",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/dispatch.py": "6c2446aa41121dd6f5e7067c6994fa7c46f8b08c408c4a9a2c50b621364c1eed",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/fsdp.py": "b7f785b26ec5f07f04804d96208dd91da00e93fb610a361315e881ace4e71aa4",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/manager.py": "7f13ce94d518b0abdb19c364f76825329f502888b38cdc846d80b6dc1f8e2aae",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/memory.py": "3c2bae3b1457b0f71c56b792a02e97ccabb87aa4edb37b65655b0d8efecbee4e",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/metrics.py": "57212cc0946967c54bd417cc29e9cf14537d3871b079744580addaf684b223fc",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/ops.py": "5dfc472bfd74c20cb821faa186df5e090e4b8c7e7a3031036eb5c484d91f5ab1",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/peer_memory.py": "806c4b0984c64b661010d9c3d17a031b2cb5f0b1517326253172c9a07dbc98ec"
+  },
+  "cases": [
+    {
+      "kind": "all_reduce",
+      "input_elements": 4088,
+      "input_tag": 0,
+      "output_elements": 4088
+    },
+    {
+      "kind": "all_reduce",
+      "input_elements": 16352,
+      "input_tag": 0,
+      "output_elements": 16352
+    },
+    {
+      "kind": "all_reduce",
+      "input_elements": 4088,
+      "input_tag": 1,
+      "output_elements": 4088
+    },
+    {
+      "kind": "all_reduce",
+      "input_elements": 16352,
+      "input_tag": 1,
+      "output_elements": 16352
+    },
+    {
+      "kind": "all_reduce",
+      "input_elements": 4088,
+      "input_tag": 2,
+      "output_elements": 4088
+    },
+    {
+      "kind": "all_reduce",
+      "input_elements": 16352,
+      "input_tag": 2,
+      "output_elements": 16352
+    },
+    {
+      "kind": "reduce_scatter",
+      "input_elements": 8388608,
+      "input_tag": 0,
+      "output_elements": 2097152
+    }
+  ],
+  "scope": "All coordinates of three changed-input CE4088/16352 AllReduces plus actual8388608-input hidden-gradient SUM RS, all4ranks bitwise equal native NCCL. Fixed4A6000/versions; not full8B quality or wider shapes qualification."
+}
