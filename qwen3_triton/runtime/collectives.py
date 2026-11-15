@@ -36,12 +36,11 @@ def _runtime_peer_barrier(F0,F1,F2,F3,LOCAL,ERROR,EPOCH,RANK:tl.constexpr,TIMEOU
         mov.u32 $0, 0;
     }''',constraints='=r,l,r,r',args=[target,EPOCH.to(tl.uint32),(lane<4).to(tl.uint32)],dtype=tl.uint32,is_pure=False,pack=1)
     address=LOCAL+tl.minimum(lane,3)*32
-    started=_timer();seen=_sys_load(address)
-    while tl.sum(((lane<4)&(seen<EPOCH)).to(tl.int32),0)>0:
-        if _timer()-started>TIMEOUT_NS:
-            tl.atomic_or(ERROR,1)
-            break
+    started=_timer();seen=_sys_load(address);expired=tl.full((),False,tl.int1)
+    while (tl.sum(((lane<4)&(seen<EPOCH)).to(tl.int32),0)>0)&(~expired):
+        expired=_timer()-started>TIMEOUT_NS
         seen=_sys_load(address)
+    if expired:tl.atomic_or(ERROR,1)
 
 
 @triton.jit
