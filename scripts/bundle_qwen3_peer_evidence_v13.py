@@ -64,6 +64,7 @@ def main():
         'old_pilots_sources/receipt.json':'historical_pilot_source_archive',
         'lifecycle_check_001/accepted/check.json':'buffer_lifecycle_check',
         'lifecycle_check_001/manifest.json':'buffer_lifecycle_manifest',
+        'environment_001.json':'environment',
     }
     paths={src:destination/f'qwen3_triton_v13_{name}_v1.json' for src,name in mapping.items()}
     strategy_path=destination/'qwen3_triton_v13_strategy_v1.json';index_path=destination/'qwen3_triton_v13_evidence_index_v1.json'
