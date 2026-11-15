@@ -1,0 +1,496 @@
+{
+  "complete": true,
+  "sources": [
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/run_qwen3_peer_full_v13.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/run_qwen3_peer_full_v13.py",
+      "sha256": "94a3f4edd18a56aa1d8a4408eefa2377a1bf71731abecd72f274a6ee37afd1c4"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/train_qwen3_peer_rs_v13.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/train_qwen3_peer_rs_v13.py",
+      "sha256": "864ec6b3455dbcd81a0515c97e3b51d87f36866469480a02a3fa866bd9946680"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/train_qwen3_vocab_v12.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/train_qwen3_vocab_v12.py",
+      "sha256": "aef3f71ffd815e1c8dd9814ccb2cd0ae82e3839ce3b0879fd0921cdbbe25abcd"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/train_qwen3_communication_v13.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/train_qwen3_communication_v13.py",
+      "sha256": "d119b4a572309b13d370eaff012d3ede2b6598d6f6340e9116fad53f9c7229de"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/fsdp_peer_rs_v13.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/fsdp_peer_rs_v13.py",
+      "sha256": "a428c1817d0544fd93b61654d48b6f087523abb0ff4ed1d679d4274531245a60"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/symmetric_rs_v13.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/symmetric_rs_v13.py",
+      "sha256": "0cccbf595df96fe1966afccde5a22eaa260a10c42ce93f9401b0ac01594ffc14"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/overwrite_fsdp_v13.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/overwrite_fsdp_v13.py",
+      "sha256": "b89b69d7ca55e6bbed4b9daf74183345e7522ec74ec33ebe3b14b9edd4674b7c"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/vocab_model_v12.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/vocab_model_v12.py",
+      "sha256": "4bd8e59da570fa755965365e8454c63cb1229d9540474d62b14386eadaff54c0"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/research_python.sh",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/research_python.sh",
+      "sha256": "90924f69c4227a4027e4df95a84664c85caa96ee91fee21e3c0a48be432cfc85"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/run_vocab_resource_queue_v12.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/run_vocab_resource_queue_v12.py",
+      "sha256": "30a54056b3e70a648a0c80156e666808da76e3809dc3f3d36f1e3638363d381c"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/run_vocab_screen_v12.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/run_vocab_screen_v12.py",
+      "sha256": "dcc812b9b86a67d79573d1ece55d11baefb21bb009196f7f35d1026d6442d681"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/qwen3_peer_v13_contract.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/qwen3_peer_v13_contract.py",
+      "sha256": "2fab02ac6f493a5d46fbc8d1508ef62d4e38e852cbb9043acced89133208cd28"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/qwen3_vocab_v12_contract.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/qwen3_vocab_v12_contract.py",
+      "sha256": "75f1144d235da11df27fa6c17dc7e74bd28582968036f905f2a118de67026205"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/qwen3_training_v11_contract.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/qwen3_training_v11_contract.py",
+      "sha256": "4fafcc10c3382fe0709e87a2e26c6fce83e53a5fa26375baccd9f874f90597e9"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/configs/fsdp_8b.json",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/configs/fsdp_8b.json",
+      "sha256": "d8c40270236054a35f8e1274910991368ce943af15eab23cbbb221beb192a815"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/results/qwen3_triton_v10_gemm_plan_001.json",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/results/qwen3_triton_v10_gemm_plan_001.json",
+      "sha256": "1ecb1538bb6c0881613a56f1dc0ac665aca52d2d8c718d8cb83cc70ca92bba15"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v1/official_8b_paired_quality_ablation_control/hf_reference_r1/result.json",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/external/e70e69be27a57f9c/result.json",
+      "sha256": "663ed0b3769f19afbc0d664067b008224212e29184ff9c4bd9c1ef6d8dd517d6"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen_operator_lab/artifacts/official_qwen3_inputs_v1.json",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/external/e94f1abe681a56fb/official_qwen3_inputs_v1.json",
+      "sha256": "02bd3b9257c92692c755c5fdfce9697189afe580883def0b5cacbf7b25d295a7"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/adoption_policy_001.json",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/external/ec17e25f8ae10de7/adoption_policy_001.json",
+      "sha256": "58595e6d5998699c573d5abd29ee1587cf46a634605d530c085aecb2990e2ce9"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/peer_pilot_001/result.json",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/external/91ec14b8d22006c4/result.json",
+      "sha256": "223602c86a921c7b2907e702cae051f91551080bfaa2f3136714e857013cd8d1"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/peer_pilot_001/manifest.json",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/external/72f3d9791abad470/manifest.json",
+      "sha256": "6dee47807e2a4eecf5a88034e75fbf53e76d14a3d071a22448acdf2a1e3cc1b7"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/peer_pilot_001/accepted/run/result.json",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/external/006e8ccef927ffa4/result.json",
+      "sha256": "a57e26a38383b39a175534624659ebecfbd8a583aa466c1fc7ab771cb31d088b"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/peer_pilot_001/accepted/monitor.json",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/external/41cbab92f9f8cf6b/monitor.json",
+      "sha256": "3c23db89bff084db2077a2f879f10de70323d12cdd169d6e55c681b2bfcc7935"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/HF_peer_pilot_001/result.json",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/external/ac81f50a6ed1550a/result.json",
+      "sha256": "180eed3d2d62acb947dc6af63e3a1c4052410d5fde23fb5d1e87ca75089049d3"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/HF_peer_pilot_001/manifest.json",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/external/90062c19cc16a178/manifest.json",
+      "sha256": "6a19c7531a5fea294ed6252ca82672f0fbd3bfff27bca35a2eaec2d0fd5c2c19"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/HF_peer_pilot_001/accepted/run/result.json",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/external/9e32a322df1dc8fe/result.json",
+      "sha256": "e700800c96ef065c3784457b45ecd4bc6a49bb682000256271c2bc0c639ab726"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/HF_peer_pilot_001/accepted/monitor.json",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/external/8f58cbf0513514ed/monitor.json",
+      "sha256": "3f743584830d603c325a3c324ad915bb860fa93766a374ecf846e43cbf9810ca"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/__init__.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/__init__.py",
+      "sha256": "82e9fd47b9a2e5763702a6eabc12aa41f0f80c082b9076b28da9adfb77530507"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/_model.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/_model.py",
+      "sha256": "834df2b111e010bb8250dd8231979d14b47cb0de906b9e2f8bf6d911cc0f31b8"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/_model_optimized.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/_model_optimized.py",
+      "sha256": "fb0eae20df4e6e07a2239ac09c55221d0834edb2e676c26c7ec47d9c9ec78149"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/audit.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/audit.py",
+      "sha256": "9e43654bcd96a1e70d02fa47bb6c71ea95614bd66ab36e0994eacaf171108a33"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/benchmark_utils/__init__.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/benchmark_utils/__init__.py",
+      "sha256": "9ab63ec588821328df6922899f68077a28ee5584e970b9e31363fee13b6d6985"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/benchmark_utils/gpu_lease.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/benchmark_utils/gpu_lease.py",
+      "sha256": "25ee1cd8cd4edffa2d24202f8fac979463846c4cc9f8dfdbc2ca65a4af522dbc"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/benchmark_utils/monitor.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/benchmark_utils/monitor.py",
+      "sha256": "a7a3c6e72a60feee9997c993a6e11c3238bea71e209328355ea51e1c1bd68884"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/benchmark_utils/stable_idle.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/benchmark_utils/stable_idle.py",
+      "sha256": "5a4c62706c07b8a51a82dcdb123a9f1409b62188e588a9fe00088ff02d2dfd93"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/gradient_archive.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/gradient_archive.py",
+      "sha256": "a7ec43bc6269c13681d0a2348c67a57ed4d74a260480069660ee40355c367e08"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/__init__.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/__init__.py",
+      "sha256": "010fffaff857eb0a9acd6945e2943e2a9823b4898aff1a6778126267c5253d6b"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/activation.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/activation.py",
+      "sha256": "0411c9bfe9074832f048f1d94c4920f7e0b487dfad9f1ac6cae8d8596134207b"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/attention.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/attention.py",
+      "sha256": "d4554e1da9265ced8bc2e1a256a636bd68c2c337165cdf548870f345266706b7"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/attention_kernels.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/attention_kernels.py",
+      "sha256": "269bd044cd4f1924a1901431b0c36e30bcfa45b34647a6658f76f9bd8deba545"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/attention_precision.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/attention_precision.py",
+      "sha256": "197e39a90e5c5b8b96827c6e2a512cf0cc9a79a11f048388dd21345d8bc79568"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/embedding.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/embedding.py",
+      "sha256": "977c2b687ba8f76859a324dd9d5d30a25c6d0e8eac1a0d5ff72269ab4ca08564"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/gemm_experiments.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/gemm_experiments.py",
+      "sha256": "354108f718e778a501baad50ef989c30e35def6f134d2584d4fe1c723dd5698c"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/gemm_tuning.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/gemm_tuning.py",
+      "sha256": "839976b5b2da0430210b69c727d8f792deefc1cb4a1d02db6e807afcdcd22150"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/hf_reduction.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/hf_reduction.py",
+      "sha256": "58588abf318473a79d671787831df67e8387a4a4ebd2ddaa7d53742c775e16ac"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/linear.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/linear.py",
+      "sha256": "6fa3d82187868d20bf1be0d1c9d4d5a6ca9f39677895828edee2d7672873d948"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/loss.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/loss.py",
+      "sha256": "33b060986fe9d418b9a9b80ed0cb77529b28079f1a31480a2be28254bbdb06d0"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/math_precision.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/math_precision.py",
+      "sha256": "ae594164416c54b6ca989178bb7920c7cb0d0afc5e8d59d8021e2542daf6c917"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/mlp.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/mlp.py",
+      "sha256": "2726296b9a1d8de7768a8c1658be8ff64a3c3afdd244a839e8416fbeed0d401b"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/mlp_precision.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/mlp_precision.py",
+      "sha256": "74c67e67c01247d4564e3327401fbc90b7820065dcacb856a27563d1388f0728"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/norm.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/norm.py",
+      "sha256": "3e9824da12a6cdd2f65b4964557acb2b195660b1748c35f4ca7075e8200756ef"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/norm_rope.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/norm_rope.py",
+      "sha256": "d1fab3c87817d84044af9bbb50e8f6067ce1bd1e3806b84be95f6b07713d4cd6"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/residual.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/residual.py",
+      "sha256": "d002f65b293dcff45dee8e3042fd350a1a67b4d039792c0fd65a5f18ad45427e"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/rotary.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/rotary.py",
+      "sha256": "cd4f0157e2e15c7da2db7c9867d9453c847988716ddd436d1d6769a8362d5c6f"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/vocab_ce.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/vocab_ce.py",
+      "sha256": "74d0ac60473a6eaf5813733291b6598c5445e3fac09bbd98108c59b5052caa39"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/kernels/vocab_dw.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/kernels/vocab_dw.py",
+      "sha256": "1359a03f272dd3496fc9a788b47b42cbd6f182f2141793be353ba9a8c422e153"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/model.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/model.py",
+      "sha256": "9d43c81d60c6745f1f366ecbcb0ae997155474331a51df8dd0b59f659c5fe986"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/overwrite_allocation.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/overwrite_allocation.py",
+      "sha256": "d3ac630e127120657951944e1e46a2752dd645fbe847ae0850383b5c5f8f5332"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/qwen3_triton/vocab_parallel.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/qwen3_triton/vocab_parallel.py",
+      "sha256": "a99e0ec8635fd1d3a4714a3b5e8116960dc2bf2f3007f8e05a87f4ea22a9a4a1"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/model/__init__.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/model/__init__.py",
+      "sha256": "847e81e2883fed56bd8ca638461b6c2dab69c52c72fa5e6f3aac13f99afb74ab"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/model/config.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/model/config.py",
+      "sha256": "e308e3a569536acd02131873f72da34a38543d7c5fca6d67f529c370ced30ffd"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/model/qwen_tiny.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/model/qwen_tiny.py",
+      "sha256": "f2fa96c71b98bd392faba0845bf705cb00fe4af0dd68652c01f8a73319e17adb"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/__init__.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/reference/__init__.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/reference/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/reference/attention.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/reference/attention.py",
+      "sha256": "aa80b1228fb273c21cd52654a0e9243058cc0aa9f40aafe47fa9d98730d640fa"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/reference/fused_qk_norm_rope.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/reference/fused_qk_norm_rope.py",
+      "sha256": "d2c8272db6d40317981846358d198b68ddc5333e7b01eff287aa8d444f006a14"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/reference/rms_norm.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/reference/rms_norm.py",
+      "sha256": "358464d567302df32ac6c47b23208b4ed4685884238c8a3c89a090979444adfc"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/reference/rope.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/reference/rope.py",
+      "sha256": "1eb4276b8b06f57cd7d0beb42527846a17bd6b79ff9baf0774a458acb4bc1ce1"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/reference/swiglu.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/reference/swiglu.py",
+      "sha256": "60eb44a0f6f5db4551bc9dbb56c291d069521915dc9eec60b715d9fdef563202"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/triton/__init__.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/triton/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/triton/attention.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/triton/attention.py",
+      "sha256": "f818040044d377543c35126e7a68bcb3d8e5eca0e65209340e883a430f99ae2f"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/triton/attention_backward.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/triton/attention_backward.py",
+      "sha256": "f0c9814367b7f07064dcfb07df1dd262f647ab3fcf12dcf56d6de0ab37911c3e"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/triton/fused_qk_norm_rope.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/triton/fused_qk_norm_rope.py",
+      "sha256": "bef48740e7b9d572fcec3c4c79ab2986bc13f353310993ee4bdd75d1ccc1ae19"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/triton/gate_up_swiglu.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/triton/gate_up_swiglu.py",
+      "sha256": "7d655a5e447b6e108810d128c5b0f5d0b3237d2b69e121a4fcb876017ca01527"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/triton/gradient_transport.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/triton/gradient_transport.py",
+      "sha256": "f359280887b226a7be158197020c3815d7bc4d02d6f347093af2e3a70210a4a6"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/triton/rms_norm.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/triton/rms_norm.py",
+      "sha256": "fad5728bd60dba883fa3ffb8bba4fe6dfc9654a1ba1ccf5b9f96628dba960f25"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/triton/rope.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/triton/rope.py",
+      "sha256": "a965410b803a135dc122929dcc010cfec39f32e1e5f04acad1c3cda3aecc53ff"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/ops/triton/silu_and_mul.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/ops/triton/silu_and_mul.py",
+      "sha256": "edd55f23f6d91555ed9297c88eaee4fd32aee7ab5779c908e37cf9c04f40b0ed"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/__init__.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/__init__.py",
+      "sha256": "51ccaa273fc8d2f2d4e079220daad1af3faa59d45237a991038e301bc1236097"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/best_state.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/best_state.py",
+      "sha256": "2e8f7674706a92a2365942948538918cd62d6928e1af2f0aa8c334e29fa9bb01"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/data.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/data.py",
+      "sha256": "b27df49108d7729514053406e7cc261cd177612c7f001fe5918ff3dc475964e6"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/evaluation.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/evaluation.py",
+      "sha256": "a6b5147c86171d854d5e99b52e86dc376fe3de6d949ddea72217f3b0604e0a8d"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/fsdp/__init__.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/fsdp/__init__.py",
+      "sha256": "15668fafeed64e351c63c6d78b5002f46b3e888a7d91ce6f435f2d835943ed64"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/fsdp/activation_checkpoint.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/fsdp/activation_checkpoint.py",
+      "sha256": "8d614a743fe57ae2ebbe95d0f0968325202802fe63234af5cf359cc18ba0f9d3"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/fsdp/communication.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/fsdp/communication.py",
+      "sha256": "629f53d80f228212241d7c1a90797a29c6b60569361d567c185be14f09c8111f"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/fsdp/communication_v13.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/fsdp/communication_v13.py",
+      "sha256": "54c0be2be34f22206ce852b040db3924a1d2b6fb7a12cf38d031d124a958f20c"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/fsdp/custom.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/fsdp/custom.py",
+      "sha256": "d428986825c94b31302028ad740e6107329e0d3acc85b5365f83648f3ed39c5d"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/fsdp/official.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/fsdp/official.py",
+      "sha256": "95382eaf3f5fabe291c0c38b817a90c19607848dcd316df9fb07e5999784d83d"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/fsdp/primitives.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/fsdp/primitives.py",
+      "sha256": "51c8bf47dcd33fe0c52cc5e632a9c0083a1dcaf7253f5b10fb4929e544de6be7"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/fsdp/vocab_embedding.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/fsdp/vocab_embedding.py",
+      "sha256": "f8c66d4fd9847849520799b4aa7dbe46e7ae6ed43ea3031602a742f10dbc65e8"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/fsdp/vocab_head.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/fsdp/vocab_head.py",
+      "sha256": "6a6516103b457cc65bfccba63fccd4f5c8793452e42cad333404a62329f86b94"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/input_manifest.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/input_manifest.py",
+      "sha256": "d910c7c6c291ac0716f6e57c28134d88b11d22cf8ca6d1b76310b6ba39d85dce"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/policy.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/policy.py",
+      "sha256": "5a916dc02cf6b77644174a285ed0d212ecc8eb227fe07b9b41bb760eaaae3997"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/provenance.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/provenance.py",
+      "sha256": "28cc8cfabc8fed53463281b053a549947defa0ea335eaad2f4b3bd9eb8ecd5a5"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/stopping.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/stopping.py",
+      "sha256": "d9df604e3728155ba57add1bb03f1e47864fa3a01f1509c3c787a051a1845dde"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/training/train.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/training/train.py",
+      "sha256": "a1d0bb71379327c1a3d03eb0a630534cc8e659fc9298a993741d8a6ca3f40c49"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/review_qwen3_peer_full_v13.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/review_qwen3_peer_full_v13.py",
+      "sha256": "ee8aa0b573f481491fddcd9593b3734f9df03404e4eda461efb876a690189853"
+    },
+    {
+      "original": "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/continue_qwen3_peer_v13.py",
+      "archived": "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_001_sources/workspace/scripts/continue_qwen3_peer_v13.py",
+      "sha256": "4d54b78ea9c870fe5ec45170d8c87abc46f3626934530e8541053bb7e7f600ec"
+    }
+  ],
+  "original_manifest_sha256": "447c4b6ae22db625033311a663a35e70d4ed051113ba72a1320d56d762f6e3a2"
+}

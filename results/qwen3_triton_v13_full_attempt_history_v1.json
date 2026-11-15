@@ -1,0 +1,376 @@
+[
+  {
+    "number": 1,
+    "role": "HF_peer_r1",
+    "folder": "attempts/001_HF_peer_r1",
+    "accepted": false,
+    "resource_contaminated": true,
+    "returncode": 1,
+    "monitor_sha256": "7b4cac7daa0c718a7920bb5af23eedb168036c6079d06bfb026b1c4a2911e200",
+    "log_sha256": "0b8e9915397a7321e6842850ef31992beb45c2243d9d72cefd861082b0cd2447"
+  },
+  {
+    "number": 2,
+    "role": "HF_peer_r1",
+    "folder": "attempts/002_HF_peer_r1",
+    "accepted": true,
+    "resource_contaminated": false,
+    "returncode": 0,
+    "monitor_sha256": "757af580903e793632c2848204feaf0ab6b5961d44e46b8a778103f564434b46",
+    "log_sha256": "595439a2b8a4070c90a7062244e2225a3ab4fe630d39c7ce258485684398d2e9",
+    "result_sha256": "b4c337f4cf31ed41c89d4fd73dd893365c54969bfdc0bf6de52e00d45ac20038",
+    "trace_sha256": "11d89ad254856ca595c66886bc16c0dadabc030d4133300bc6c46b00079ceaa5",
+    "actual_CUDA": {
+      "trace_sha256": "11d89ad254856ca595c66886bc16c0dadabc030d4133300bc6c46b00079ceaa5",
+      "peer": true,
+      "collectives": {
+        "observed": {
+          "AllGather": 40,
+          "ReduceScatter": 3,
+          "AllReduce": 0
+        },
+        "expected": {
+          "AllGather": 40,
+          "ReduceScatter": 3,
+          "AllReduce": 0
+        },
+        "passed": true
+      },
+      "checked_copy_peer_reduce_and_barrier_counts_passed": true,
+      "peer_launch_geometry_passed": true,
+      "expected_peer_calls": 36,
+      "observed_peer_reduce": 36,
+      "observed_checked_copy": 36,
+      "observed_GPU_barriers": 72,
+      "native_decoder": true,
+      "native_Flash_kernels": {
+        "void pytorch_flash::flash_fwd_kernel<Flash_fwd_kernel_traits<128, 64, 64, 4, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 4, cutlass::bfloat16_t> >, false, true, false, false, true, true, false, false>(pytorch_flash::Flash_fwd_params)": 72,
+        "void pytorch_flash::flash_bwd_dot_do_o_kernel<false, Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params)": 36,
+        "void pytorch_flash::flash_bwd_dq_dk_dv_loop_seqk_parallel_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> >, false, true, false, false, true, true, false>(pytorch_flash::Flash_bwd_params)": 36,
+        "void pytorch_flash::flash_bwd_convert_dq_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params, int)": 36
+      },
+      "passed": true
+    }
+  },
+  {
+    "number": 3,
+    "role": "V12_r1",
+    "folder": "attempts/003_V12_r1",
+    "accepted": true,
+    "resource_contaminated": false,
+    "returncode": 0,
+    "monitor_sha256": "d40618bd6c86bd7625273c3e2c7118920342a1241591ea0a1dec8ce5b881bf5b",
+    "log_sha256": "b953ef2b8a955b25620d77d3071aa183a4a195059be67c7051335a38ca9da790",
+    "result_sha256": "b305962b361389a8b8e91af0a5428c1c9bdf7bb9627b1c00cc07e5ba97bfb67d",
+    "trace_sha256": "0773be8604a24282fbd0ffc036899f477d9ed4e2fc10cca8a7c7979fd5233d53",
+    "actual_CUDA": {
+      "trace_sha256": "0773be8604a24282fbd0ffc036899f477d9ed4e2fc10cca8a7c7979fd5233d53",
+      "collectives": {
+        "observed": {
+          "AllGather": 42,
+          "ReduceScatter": 39,
+          "AllReduce": 2
+        },
+        "expected": {
+          "AllGather": 42,
+          "ReduceScatter": 39,
+          "AllReduce": 2
+        },
+        "passed": true
+      },
+      "vocab_ce": true,
+      "fused_dw": true,
+      "fused_DW_geometry_passed": true,
+      "native_decoder": false,
+      "model_kernel_counts_passed": true,
+      "discrepancies": {},
+      "unclassified_kernels": {},
+      "forbidden_library_kernels": {},
+      "launch_geometry_passed": true,
+      "passed": true
+    }
+  },
+  {
+    "number": 4,
+    "role": "native_r1",
+    "folder": "attempts/004_native_r1",
+    "accepted": true,
+    "resource_contaminated": false,
+    "returncode": 0,
+    "monitor_sha256": "22b0ef24b86a75278079697789e4772ca3de1683099af64d1a9b2247e0920948",
+    "log_sha256": "34cfa900df7fd0a4b6de68129ab380203ce33a8890cc177ee61ca5f66aa27032",
+    "result_sha256": "e9e1a07d28400f53e16ba111d3dd561a174d6e61f58eea295c79e05ce0b128ce",
+    "trace_sha256": "cd2b9dfd732d2098310546f1c01d03b11d679989d839e2ac40f042f7bf8b4694",
+    "actual_CUDA": {
+      "trace_sha256": "cd2b9dfd732d2098310546f1c01d03b11d679989d839e2ac40f042f7bf8b4694",
+      "collectives": {
+        "passed": true,
+        "expected_all_gather": 40,
+        "observed_all_gather": 40,
+        "expected_reduce_scatter": 39,
+        "observed_reduce_scatter": 39
+      },
+      "reference": true,
+      "native_Flash_kernels": {
+        "void pytorch_flash::flash_fwd_kernel<Flash_fwd_kernel_traits<128, 64, 64, 4, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 4, cutlass::bfloat16_t> >, false, true, false, false, true, true, false, false>(pytorch_flash::Flash_fwd_params)": 72,
+        "void pytorch_flash::flash_bwd_dot_do_o_kernel<false, Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params)": 36,
+        "void pytorch_flash::flash_bwd_dq_dk_dv_loop_seqk_parallel_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> >, false, true, false, false, true, true, false>(pytorch_flash::Flash_bwd_params)": 36,
+        "void pytorch_flash::flash_bwd_convert_dq_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params, int)": 36
+      },
+      "passed": true
+    }
+  },
+  {
+    "number": 5,
+    "role": "candidate_r1",
+    "folder": "attempts/005_candidate_r1",
+    "accepted": true,
+    "resource_contaminated": false,
+    "returncode": 0,
+    "monitor_sha256": "d6888e23bdfddefd4a2660abd410621ec1e35b57697c8726b6cc70ffddbefc04",
+    "log_sha256": "473a801dd7b641d9f7edf665beebf7b171b6332beed6343c52071acd5be9de3c",
+    "result_sha256": "388a173f4dd7726596aa0a3b72ac449957fd5a4bfaf341a99d8679eba8d02296",
+    "trace_sha256": "b6416fb5c6cccd00f15c01f3e7a21b00b933d28ca53ef855b509e75ebb4452d5",
+    "actual_CUDA": {
+      "trace_sha256": "b6416fb5c6cccd00f15c01f3e7a21b00b933d28ca53ef855b509e75ebb4452d5",
+      "peer": true,
+      "collectives": {
+        "observed": {
+          "AllGather": 42,
+          "ReduceScatter": 3,
+          "AllReduce": 2
+        },
+        "expected": {
+          "AllGather": 42,
+          "ReduceScatter": 3,
+          "AllReduce": 2
+        },
+        "passed": true
+      },
+      "checked_copy_peer_reduce_and_barrier_counts_passed": true,
+      "peer_launch_geometry_passed": true,
+      "expected_peer_calls": 36,
+      "observed_peer_reduce": 36,
+      "observed_checked_copy": 36,
+      "observed_GPU_barriers": 72,
+      "native_decoder": false,
+      "model_kernel_counts_passed": true,
+      "discrepancies": {},
+      "unclassified_kernels": {},
+      "model_launch_geometry_passed": true,
+      "passed": true
+    }
+  },
+  {
+    "number": 6,
+    "role": "candidate_r2",
+    "folder": "attempts/006_candidate_r2",
+    "accepted": true,
+    "resource_contaminated": false,
+    "returncode": 0,
+    "monitor_sha256": "60a29cd22a9ed5e90fb3b4fff3e181b4aa6e2b5e991d0c258476fc39750084cb",
+    "log_sha256": "d6465d42dfbf2d4b8163cfd5d884637b36151789fe42339010f2e09cb7f3539a",
+    "result_sha256": "7f18e5f68c0337e8d90dc24f5ba1acd2d37a44d1d915e3f6d23ab84550ee29a5",
+    "trace_sha256": "d025136e4a7f5e4d140f86845fc651b52739951c8a12e7784404cbe230e481d3",
+    "actual_CUDA": {
+      "trace_sha256": "d025136e4a7f5e4d140f86845fc651b52739951c8a12e7784404cbe230e481d3",
+      "peer": true,
+      "collectives": {
+        "observed": {
+          "AllGather": 42,
+          "ReduceScatter": 3,
+          "AllReduce": 2
+        },
+        "expected": {
+          "AllGather": 42,
+          "ReduceScatter": 3,
+          "AllReduce": 2
+        },
+        "passed": true
+      },
+      "checked_copy_peer_reduce_and_barrier_counts_passed": true,
+      "peer_launch_geometry_passed": true,
+      "expected_peer_calls": 36,
+      "observed_peer_reduce": 36,
+      "observed_checked_copy": 36,
+      "observed_GPU_barriers": 72,
+      "native_decoder": false,
+      "model_kernel_counts_passed": true,
+      "discrepancies": {},
+      "unclassified_kernels": {},
+      "model_launch_geometry_passed": true,
+      "passed": true
+    }
+  },
+  {
+    "number": 7,
+    "role": "native_r2",
+    "folder": "attempts/007_native_r2",
+    "accepted": false,
+    "resource_contaminated": true,
+    "returncode": 1,
+    "monitor_sha256": "9e2591b2da004619fd2e8a8419ca741788f618f5c5ef512c7b7faac2778848dd",
+    "log_sha256": "0bb771e1bd5cc58f867902586136a8f4352c97d75affa97c2fa88dbcfb17d85b"
+  },
+  {
+    "number": 8,
+    "role": "native_r2",
+    "folder": "attempts/008_native_r2",
+    "accepted": true,
+    "resource_contaminated": false,
+    "returncode": 0,
+    "monitor_sha256": "42708451b5b6a0e5e8262043149aefb0101034a025b060ce279b969b3261a4c2",
+    "log_sha256": "61fbe2b3e003baa0b7822d45bcab8118144ae6a444f5b19bb6d07890c6be0229",
+    "result_sha256": "bc449ef2c8994144dfb42551d1fc22ceb298e318ad2fc0d503fa103820b1a2eb",
+    "trace_sha256": "1f1c461a541aa835a4f710652a00753e20f46cf3c9fbf9c39c7781d43634bfed",
+    "actual_CUDA": {
+      "trace_sha256": "1f1c461a541aa835a4f710652a00753e20f46cf3c9fbf9c39c7781d43634bfed",
+      "collectives": {
+        "passed": true,
+        "expected_all_gather": 40,
+        "observed_all_gather": 40,
+        "expected_reduce_scatter": 39,
+        "observed_reduce_scatter": 39
+      },
+      "reference": true,
+      "native_Flash_kernels": {
+        "void pytorch_flash::flash_fwd_kernel<Flash_fwd_kernel_traits<128, 64, 64, 4, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 4, cutlass::bfloat16_t> >, false, true, false, false, true, true, false, false>(pytorch_flash::Flash_fwd_params)": 72,
+        "void pytorch_flash::flash_bwd_dot_do_o_kernel<false, Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params)": 36,
+        "void pytorch_flash::flash_bwd_dq_dk_dv_loop_seqk_parallel_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> >, false, true, false, false, true, true, false>(pytorch_flash::Flash_bwd_params)": 36,
+        "void pytorch_flash::flash_bwd_convert_dq_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params, int)": 36
+      },
+      "passed": true
+    }
+  },
+  {
+    "number": 9,
+    "role": "V12_r2",
+    "folder": "attempts/009_V12_r2",
+    "accepted": true,
+    "resource_contaminated": false,
+    "returncode": 0,
+    "monitor_sha256": "9ddf8e270d7c55f5c326fd2a3082799309c3606facc165ef360831bc1f235408",
+    "log_sha256": "16e564df063596effdaa75daa58b3e81b0da6186ef5803ad261fa03089efdb42",
+    "result_sha256": "a2e21a0ebf48379630f29b8c89f12efdfc0d8bea15fea92344f5f87e616e193e",
+    "trace_sha256": "6b550d9507afbe4129d488aba2429554a50cc20bc932c29d44fb0aba824b5fd2",
+    "actual_CUDA": {
+      "trace_sha256": "6b550d9507afbe4129d488aba2429554a50cc20bc932c29d44fb0aba824b5fd2",
+      "collectives": {
+        "observed": {
+          "AllGather": 42,
+          "ReduceScatter": 39,
+          "AllReduce": 2
+        },
+        "expected": {
+          "AllGather": 42,
+          "ReduceScatter": 39,
+          "AllReduce": 2
+        },
+        "passed": true
+      },
+      "vocab_ce": true,
+      "fused_dw": true,
+      "fused_DW_geometry_passed": true,
+      "native_decoder": false,
+      "model_kernel_counts_passed": true,
+      "discrepancies": {},
+      "unclassified_kernels": {},
+      "forbidden_library_kernels": {},
+      "launch_geometry_passed": true,
+      "passed": true
+    }
+  },
+  {
+    "number": 10,
+    "role": "HF_peer_r2",
+    "folder": "attempts/010_HF_peer_r2",
+    "accepted": false,
+    "resource_contaminated": true,
+    "returncode": 1,
+    "monitor_sha256": "07e515a1ee0ce49a67c2b62a9552c53a7b1eccc5d3d33c59ca13888a83fd3f9a",
+    "log_sha256": "c713c79f7efa7f832d6479dfafc1e872cec5acba1e4c5e142ac75462f1cee9c8"
+  },
+  {
+    "number": 11,
+    "role": "HF_peer_r2",
+    "folder": "attempts/011_HF_peer_r2",
+    "accepted": false,
+    "resource_contaminated": true,
+    "returncode": 1,
+    "monitor_sha256": "1ebb77254fd43699ddbe909f3c6470e423e46cf77e7e3a60e438126011a336d1",
+    "log_sha256": "63b0cfb028a2ba762b817dae7f33983e2f02af8b682ec4827a536643b518e331"
+  },
+  {
+    "number": 12,
+    "role": "HF_peer_r2",
+    "folder": "attempts/012_HF_peer_r2",
+    "accepted": false,
+    "resource_contaminated": true,
+    "returncode": 1,
+    "monitor_sha256": "4ae0ef6e67d33360df735449ea53982aa1126f82e6849abdab30780d050a03c6",
+    "log_sha256": "0174fab79ced3b731a405079607bbfcff17c353248ab4d147e92bea4765f2a9a"
+  },
+  {
+    "number": 13,
+    "role": "HF_peer_r2",
+    "folder": "attempts/013_HF_peer_r2",
+    "accepted": false,
+    "resource_contaminated": true,
+    "returncode": 1,
+    "monitor_sha256": "d21bf1094a9f5ba95c92f0fe644f25c1ae2308a46f958d3da3604dba36682735",
+    "log_sha256": "861d5b0e157b744c7b5014710fcf6ec71fd000ef49e81564c46d9cdb75bc7541"
+  },
+  {
+    "number": 14,
+    "role": "HF_peer_r2",
+    "folder": "attempts/014_HF_peer_r2",
+    "accepted": false,
+    "resource_contaminated": true,
+    "returncode": -15,
+    "monitor_sha256": "e0acf2be0b5a7273a4aac31eb03f02133a938ba74f777eb61c5f38fae7ab3d6c",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "number": 15,
+    "role": "HF_peer_r2",
+    "folder": "attempts/015_HF_peer_r2",
+    "accepted": true,
+    "resource_contaminated": false,
+    "returncode": 0,
+    "monitor_sha256": "69324d397e749244d7fc517493054cb870c2c12840a2645677fe4240e64c832a",
+    "log_sha256": "41fb89728ec7c25f5f7dd07735880e904dfd2fd81bbe62e6f201a60c405963e0",
+    "result_sha256": "629746214e85c543b6f6e0a754198e57db7f6fd8519a2277fa4063efaa800766",
+    "trace_sha256": "ccb5b2189de0b3fc7af2b57c511871b1d8309c159e372e545a933f8914285ec0",
+    "actual_CUDA": {
+      "trace_sha256": "ccb5b2189de0b3fc7af2b57c511871b1d8309c159e372e545a933f8914285ec0",
+      "peer": true,
+      "collectives": {
+        "observed": {
+          "AllGather": 40,
+          "ReduceScatter": 3,
+          "AllReduce": 0
+        },
+        "expected": {
+          "AllGather": 40,
+          "ReduceScatter": 3,
+          "AllReduce": 0
+        },
+        "passed": true
+      },
+      "checked_copy_peer_reduce_and_barrier_counts_passed": true,
+      "peer_launch_geometry_passed": true,
+      "expected_peer_calls": 36,
+      "observed_peer_reduce": 36,
+      "observed_checked_copy": 36,
+      "observed_GPU_barriers": 72,
+      "native_decoder": true,
+      "native_Flash_kernels": {
+        "void pytorch_flash::flash_fwd_kernel<Flash_fwd_kernel_traits<128, 64, 64, 4, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 4, cutlass::bfloat16_t> >, false, true, false, false, true, true, false, false>(pytorch_flash::Flash_fwd_params)": 72,
+        "void pytorch_flash::flash_bwd_dot_do_o_kernel<false, Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params)": 36,
+        "void pytorch_flash::flash_bwd_dq_dk_dv_loop_seqk_parallel_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> >, false, true, false, false, true, true, false>(pytorch_flash::Flash_bwd_params)": 36,
+        "void pytorch_flash::flash_bwd_convert_dq_kernel<Flash_bwd_kernel_traits<128, 64, 64, 8, 4, 2, 2, true, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 64, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params, int)": 36
+      },
+      "passed": true
+    }
+  }
+]

@@ -1,0 +1,55 @@
+{
+  "complete": true,
+  "stage": "declared_before_formal002_timing",
+  "baseline": "Qualified V12 full Triton Qwen3-8B with vocabulary-parallel CE and fused dW",
+  "model": "Qwen/Qwen3-8B",
+  "layers": 36,
+  "parameters": 399,
+  "world_size": 4,
+  "batch_per_rank": 1,
+  "sequence": 512,
+  "quality_updates": 16,
+  "warmup": 3,
+  "measured_steps": 8,
+  "validation_blocks": 512,
+  "validation_points": [
+    0,
+    16
+  ],
+  "candidate_gradient_rule": "Every coordinate of all399 local FP32 gradients; per-parameter norm(error) < .06*max(norm(reference),1e-8)+1e-6; forward logits relativeL2<.025 and loss abs<.01",
+  "native_control_rule": "Per-parameter norm(error) < .0001*max(norm(reference),1e-8)+1e-7 plus bitwise forward",
+  "quality": {
+    "mean_loss_drift": 0.002,
+    "max_loss_drift": 0.01,
+    "max_validation_loss_drift": 0.002
+  },
+  "memory_cap_GiB": 41.875,
+  "states": "BF16 compute, FP32 masters/gradients/moments, no TF32 or reduced-precision BF16 accumulation",
+  "minimum_complete_step_reduction_each_order": 0.03,
+  "performance_anchors": [
+    "fresh matched-order V12 Triton",
+    "fresh native HF with the same shared infrastructure settings"
+  ],
+  "selection": "First clean attempt only; dirty resource attempts excluded and preserved; clean technical failures stop; no timing-based repeat selection",
+  "scope": "Short screens cannot establish adoption. Deterministic-fill-dependent gains must be disclosed as limited to that protocol; compare common fill=False baselines before general production recommendation. Symmetric-memory probe is availability/correctness only, not an integrated training result.",
+  "thresholds_unchanged": true,
+  "prior_policy_sha256": "58595e6d5998699c573d5abd29ee1587cf46a634605d530c085aecb2990e2ce9",
+  "all8_profiles_must_pass": true,
+  "validation_batch_per_rank": 4,
+  "first_order": [
+    "HF_peer",
+    "V12",
+    "native",
+    "candidate"
+  ],
+  "second_order": [
+    "candidate",
+    "native",
+    "V12",
+    "HF_peer"
+  ],
+  "validation_memory_policy": "After synchronization, physically release peer buffer before no-grad validation. Restore it and lower Torch allocator cap before training. Sticky error flag and coverage counters persist. The effective cap remains41.875GiB; no validation sample/batch reduction.",
+  "order_reason": "Run the previously failing shared-HF full validation first after fixing buffer lifetime; old failed cohort is preserved and not used for new performance selection.",
+  "lifecycle_check_sha256": "6717cae8d6fcb9649f640a4872a73026656cb1578c78ce694ff890d0eb17bcd6",
+  "full_validation_failure_sha256": "2da6cab49ac0d029fd90d61b4631a079539589f6c433d34ca36ebc139abf4dc4"
+}

@@ -1,0 +1,31 @@
+{
+  "complete": true,
+  "utc": "2026-11-15T13:33:23.583857+00:00",
+  "python": "3.11.16 (main, Sep  2 2026, 23:39:52) [GCC 15.3.0]",
+  "torch": "2.10.0+cu128",
+  "triton": "3.6.0",
+  "transformers": "4.51.0",
+  "CUDA_build": "12.8",
+  "NCCL": [
+    2,
+    27,
+    5
+  ],
+  "cache_directories": {
+    "TMPDIR": "/data1/tzh/proj/qwen3-triton-opt-v13/.runtime-research/tmp",
+    "XDG_CACHE_HOME": "/data1/tzh/proj/qwen3-triton-opt-v13/.runtime-research/xdg",
+    "HF_HOME": "/data1/tzh/proj/qwen3-triton-opt-v13/.runtime-research/huggingface",
+    "TORCH_HOME": "/data1/tzh/proj/qwen3-triton-opt-v13/.runtime-research/torch",
+    "TRITON_CACHE_DIR": "/data1/tzh/proj/qwen3-triton-opt-v13/.runtime-research/triton",
+    "CUDA_CACHE_PATH": "/data1/tzh/proj/qwen3-triton-opt-v13/.runtime-research/cuda",
+    "TORCHINDUCTOR_CACHE_DIR": "/data1/tzh/proj/qwen3-triton-opt-v13/.runtime-research/inductor",
+    "TORCH_EXTENSIONS_DIR": "/data1/tzh/proj/qwen3-triton-opt-v13/.runtime-research/extensions"
+  },
+  "GPU_inventory": [
+    "NVIDIA RTX A6000, 535.129.03, 49140",
+    "NVIDIA RTX A6000, 535.129.03, 49140",
+    "NVIDIA RTX A6000, 535.129.03, 49140",
+    "NVIDIA RTX A6000, 535.129.03, 49140"
+  ],
+  "scope": "Software/hardware snapshot during fixed formal cohort, CUDA disabled for this CPU inspection. No environment upgrades or GPU contexts created."
+}

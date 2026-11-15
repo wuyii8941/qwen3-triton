@@ -1,0 +1,57 @@
+{
+  "complete": true,
+  "available": true,
+  "statuses": [
+    {
+      "rank": 0,
+      "supported": true
+    },
+    {
+      "rank": 1,
+      "supported": true
+    },
+    {
+      "rank": 2,
+      "supported": true
+    },
+    {
+      "rank": 3,
+      "supported": true
+    }
+  ],
+  "errors": [
+    {
+      "relative_l2": 1.1675126143639858e-10,
+      "max_abs": 1.4901161193847656e-08,
+      "finite": true,
+      "all_coordinates": true
+    },
+    {
+      "relative_l2": 0.0,
+      "max_abs": 0.0,
+      "finite": true,
+      "all_coordinates": true
+    },
+    {
+      "relative_l2": 1.3007975252499193e-10,
+      "max_abs": 1.4901161193847656e-08,
+      "finite": true,
+      "all_coordinates": true
+    },
+    {
+      "relative_l2": 1.1658886356347153e-10,
+      "max_abs": 1.4901161193847656e-08,
+      "finite": true,
+      "all_coordinates": true
+    }
+  ],
+  "full_training_qualified": false,
+  "torch": "2.10.0+cu128",
+  "compute_capability": [
+    8,
+    6
+  ],
+  "source_dtype": "BF16",
+  "accumulate_output_dtype": "FP32",
+  "scope": "Probe CUDA symmetric-memory peer access and a Triton FP32 reduction.\n\nBF16 source values are loaded directly from four mapped peer buffers and\naccumulated/output in FP32. This tests availability/correctness only, not a\ntraining integration, communication compression claim or speedup.\n"
+}

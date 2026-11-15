@@ -1,0 +1,21 @@
+{
+  "complete": true,
+  "full_training_qualified": false,
+  "original_gradient_gates_AST_unchanged": true,
+  "original_validation_numeric_core_AST_unchanged": true,
+  "original_optimizer_update_timing_loop_AST_unchanged": true,
+  "validation_memory_wrapper_added": true,
+  "validation_batch4_and512blocks_unchanged": true,
+  "actual_peer_trace_positive": true,
+  "wrong_actual_trace_labels_rejected": true,
+  "GPU_physical_buffer_release_and_recreate_passed": true,
+  "sticky_error_negative_case_passed": true,
+  "all_formal002_frozen_sources_unchanged": true,
+  "sources": {
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/formal_002/manifest.json": "ef0edf1b8d41fe2532c008b8b5a68fdbd1cb43e9bd893ea958f20d681a165d64",
+    "/data1/tzh/proj/qwen_operator_lab/artifacts/triton_qwen3_v13/lifecycle_check_001/accepted/check.json": "6717cae8d6fcb9649f640a4872a73026656cb1578c78ce694ff890d0eb17bcd6",
+    "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/review_qwen3_peer_full_v13.py": "f14915ab5af9780882b13d256c12f5a365b06c34cfbe89519a7f5873eec38777",
+    "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/train_qwen3_vocab_v12.py": "04ad057565d90f35091b2d35e8c48367ee670c7e4202662879f07700472bba31",
+    "/data1/tzh/proj/qwen3-triton-opt-v13/scripts/fsdp_peer_rs_v13.py": "19350562bf24c92420b007275055f48e9ada400663c02a2c68b824088b8fb130"
+  }
+}

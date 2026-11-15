@@ -1,0 +1,11 @@
+{
+  "pid": 4084896,
+  "stage": "CPU_review_complete",
+  "controller_pid": 4078644,
+  "controller_start_ticks": "1255024801",
+  "full_manifest_sha256": "ef0edf1b8d41fe2532c008b8b5a68fdbd1cb43e9bd893ea958f20d681a165d64",
+  "reviewer_sha256": "f14915ab5af9780882b13d256c12f5a365b06c34cfbe89519a7f5873eec38777",
+  "orchestrator_sha256": "4d54b78ea9c870fe5ec45170d8c87abc46f3626934530e8541053bb7e7f600ec",
+  "qualified_training_improvement": true,
+  "review_sha256": "4ff06248564a815040084a8ad030e581f6a5a0b156958c5f4235cdeeb9db8938"
+}

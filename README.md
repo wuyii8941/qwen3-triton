@@ -8,7 +8,12 @@ SwiGLU、residual 和交叉熵的模型计算及反向均由 Triton 实现。
 GitHub main 的首次发布固定已验收的 V9 实现与小型证据；本研究分支继续以此优化。
 这不是完整预训练框架，也不包含推理/KV cache 接口。
 
-## 实测结果
+本分支最新通过完整验收的是 [V13](OPTIMIZATION_V13.md)：
+两轮为 **4.5148 / 4.5176 秒/步**，
+相对同轮 HF＋Flash 耗时减少 **14.75% / 13.80%**，
+相对已有 V12 减少 **7.95% / 7.85%**。下文保留各代各自的实验协议与结果。
+
+## V9：首次完整实现的实测结果
 
 官方 8B 权重，4×RTX A6000，每卡 batch=1、sequence=512，
 BF16 计算、FP32 master/梯度/AdamW state，相同 FSDP2 和逐层重计算协议。
@@ -87,6 +92,35 @@ CUDA 覆盖和资源审查。辅助 HF 定制 head 两轮均有一项梯度检�
 [显式策略](results/qwen3_triton_v12_strategy_v1.json) 和
 [证据索引](results/qwen3_triton_v12_evidence_index_v1.json)。新入口显式启用，
 原默认配置不变；不能将本轮增量与 V11 的公共策略收益重复计算。
+
+## V13：无损梯度传输与 Triton FP32 规约
+
+本分支通过 CUDA Symmetric Memory，以 BF16 传输已能由 BF16 精确表示的本地
+梯度值，再由 Triton 以 FP32 累加和输出。每次传输的每个坐标均检查位模式往返，
+没有放宽原数值门槛。36 层 decoder 的大梯度规约使用新算子，其余通信仍走 NCCL。
+
+| 同轮完整 8B 训练 | 顺序一，秒/步 | 逆序，秒/步 |
+| --- | ---: | ---: |
+| 原生 HF＋Flash，共有 V11 策略 | 5.296109 | 5.240922 |
+| V12 Triton，词表分片 head＋融合 dW | 4.904509 | 4.902587 |
+| HF＋Flash＋同一 peer 通信 | 4.974458 | 4.940806 |
+| 完整 Triton＋peer 通信 | 4.514766 | 4.517596 |
+
+相对 V12 的本轮增量为 **7.95% / 7.85%**；相对同轮原生 HF 为
+**14.75% / 13.80%**，相对采用相同通信算法的 HF 为 **9.24% / 8.57%**。
+HF 也可使用这一通信算子，不能将其称为 Triton 独占算法。
+有效 allocated/reserved 峰值最高 **37.966 / 41.871 GiB/卡**，
+包含外部缓冲的 0.5 GiB 预留，原总预算和验证 batch/样本均未减少。
+
+八组完整运行及独立审查通过原 399 参数梯度、短程质量、全量验证、FP32 状态、
+显存及 CUDA 覆盖门槛。负结果和旧验证 OOM 均保留；只推荐通过完整验收的
+peer 方案。固定硬件、形状与软件版本，16 次质量更新不证明长期收敛，未测推理。
+新入口显式启用，原默认配置不变。
+
+详见 [实现、完整结果与复现](OPTIMIZATION_V13.md)、
+[独立审查](results/qwen3_triton_v13_training_review_v1.json)、
+[显式策略](results/qwen3_triton_v13_strategy_v1.json) 和
+[证据索引](results/qwen3_triton_v13_evidence_index_v1.json)。
 
 ## 代码与复现
 

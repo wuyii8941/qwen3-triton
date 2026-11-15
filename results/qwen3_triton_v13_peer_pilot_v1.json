@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "full_training_qualified": false,
+  "median": 4.523120098747313,
+  "samples": [
+    4.659685922786593,
+    4.394711408764124,
+    4.651528788730502,
+    4.394538225606084
+  ],
+  "all399_reference_gradient_gates": [
+    true,
+    true,
+    true,
+    true
+  ],
+  "effective_memory_gates": [
+    true,
+    true,
+    true,
+    true
+  ],
+  "lossless_transport_gates": [
+    true,
+    true,
+    true,
+    true
+  ],
+  "loss_drift": {
+    "mean": 0.0,
+    "maximum": 0.0
+  },
+  "reductions_vs_recent_short_controls": [
+    0.07718986679317741,
+    0.07651171180377525
+  ],
+  "eligible_for_formal": true,
+  "result_sha256": "a57e26a38383b39a175534624659ebecfbd8a583aa466c1fc7ab771cb31d088b",
+  "scope": "Pilot only; trace retained but not yet audited here. No full validation or adoption claim."
+}
