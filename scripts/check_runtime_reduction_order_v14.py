@@ -49,10 +49,10 @@ def main():
     try:
         comm=TritonCollectives(group=cpu,capacities=dict(gather=4096,scatter=40*2**20,reduce=1*2**20,alltoall=4096))
         results=[]
-        for kind,n in [('all_reduce',4088),('all_reduce',16352),('reduce_scatter',4*512*4096)]:
+        for kind,n,tag in [('all_reduce',n,tag) for tag in range(3) for n in [4088,16352]]+[('reduce_scatter',4*512*4096,0)]:
             hosts=[]
             for r in range(4):
-                gen=torch.Generator().manual_seed(17000+r)
+                gen=torch.Generator().manual_seed(17000+tag*101+r)
                 # Positive exponentials plus signed dX-like values distinguish
                 # rounding trees; no GPU reference computation except NCCL.
                 value=torch.rand(n,generator=gen,dtype=torch.float32)
@@ -61,10 +61,10 @@ def main():
             source=hosts[rank].cuda();candidate=torch.empty(n if kind=='all_reduce' else n//4,device='cuda')
             if kind=='all_reduce':
                 native=source.clone()
-                with torch.profiler.profile(activities=[torch.profiler.ProfilerActivity.CPU,torch.profiler.ProfilerActivity.CUDA]) if rank==0 else nullcontext() as trace:
+                with torch.profiler.profile(activities=[torch.profiler.ProfilerActivity.CPU,torch.profiler.ProfilerActivity.CUDA]) if rank==0 and tag==0 else nullcontext() as trace:
                     dist.all_reduce(native);torch.cuda.synchronize()
                 native_trace=None
-                if rank==0:
+                if rank==0 and tag==0:
                     path=a.output/f'native_all_reduce_{n}.json.gz';trace.export_chrome_trace(str(path))
                     import gzip
                     native_trace=dict(Counter(e['name'] for e in json.loads(gzip.decompress(path.read_bytes()))['traceEvents'] if e.get('cat')=='kernel'))
@@ -74,7 +74,7 @@ def main():
                 native=torch.empty(n//4,device='cuda');dist.reduce_scatter_tensor(native,source,op=dist.ReduceOp.SUM)
                 comm.reduce_scatter(candidate,source,'sum');stack=torch.stack([x[rank*(n//4):(rank+1)*(n//4)] for x in hosts])
             got=candidate.cpu();expected=native.cpu();orders=trees(stack,expected)
-            results.append(dict(kind=kind,input_elements=n,output_elements=expected.numel(),
+            results.append(dict(kind=kind,input_elements=n,input_tag=tag,output_elements=expected.numel(),
                 candidate_different_bits=int((got.view(torch.int32)!=expected.view(torch.int32)).sum()),
                 BF16_cast_different_bits=int((got.bfloat16().view(torch.int16)!=expected.bfloat16().view(torch.int16)).sum()),
                 candidate_max_abs=float((got-expected).abs().max()),CPU_tree_matches=orders,

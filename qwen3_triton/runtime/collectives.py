@@ -76,6 +76,17 @@ def _runtime_peer_collective(P0,P1,P2,P3,OUT,Q:tl.constexpr,START:tl.constexpr,C
         if OP=='avg':a=a*.25;b=b*.25;c=c*.25;d=d*.25
         if OP=='max':value=tl.maximum(tl.maximum(a,b),tl.maximum(c,d))
         elif OP=='min':value=tl.minimum(tl.minimum(a,b),tl.minimum(c,d))
+        elif KIND=='reduce' and OP=='sum' and P0.dtype.element_ty==tl.float32 and (Q==4088 or Q==16352):
+            # Qualified4A6000/NCCL2.27.5 native vocabulary-CE geometry:
+            # B1S512:1channel,1024-element rank chunks (last is1016).
+            # B4S512:2channels,8192/8160 elements,2048/2040 rank chunks.
+            # These shapes have independent CPU addition-tree and raw NCCL
+            # RING_LL trace evidence. No native collective executes here.
+            logical=START+i
+            if Q==4088:owner=logical//1024
+            else:owner=tl.where(logical<8192,logical//2048,(logical-8192)//2040)
+            v0=((b+c)+d)+a;v1=((c+d)+a)+b;v2=((d+a)+b)+c;v3=((a+b)+c)+d
+            value=tl.where(owner==0,v0,tl.where(owner==1,v1,tl.where(owner==2,v2,v3)))
         elif KIND=='scatter' and OP=='sum' and P0.dtype.element_ty==tl.float32:
             # The vocabulary dX path retains arbitrary FP32 inputs until its
             # final BF16 cast. Match the four-rank native ring's cyclic sum
