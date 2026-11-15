@@ -1,14 +1,16 @@
 # Source provenance
 
-This package is a local source candidate. It has not been published. The
+Earlier model source snapshots were published; the V14 runtime extension is
+a local research candidate while its full-model gates remain pending. The
 repository's source license must be selected before an open-source release;
 the third-party notices below do not license this project's own source.
 
 `model.py` is the complete 36-layer Qwen3-8B candidate. `_model.py` and
 `_model_optimized.py` provide its model graph and optimization switches.
 All model arithmetic and its derivatives are explicit handwritten Triton.
-PyTorch provides tensor/parameter/autograd bookkeeping; the training caller
-uses common native FSDP2/NCCL/AdamW. No FlashAttention or cuBLAS model kernels
+PyTorch provides tensor/parameter/autograd bookkeeping. Historical training
+callers use common native FSDP2/NCCL/AdamW; V14 explicitly replaces the GPU
+runtime data path described below. No FlashAttention or cuBLAS model kernels
 are called by the Triton variants.
 
 The current V9 source port is recorded in
@@ -49,14 +51,49 @@ pinned recipe and not included in a source release. See the upstream
 [WikiText dataset revision](https://huggingface.co/datasets/Salesforce/wikitext/tree/b08601e04326c79dfdd32d625aee71d232d685c3/wikitext-103-raw-v1)
 and [Qwen3-8B model revision](https://huggingface.co/Qwen/Qwen3-8B/tree/b968826d9c46dd6066d109eabc6255188de91218).
 
+## V14 runtime algorithm and API references
+
+- `runtime/adamw.py` is handwritten Triton. FP32 state boundaries and double
+  coefficient arithmetic were checked against the installed Torch2.10
+  [fused AdamW reference](https://github.com/pytorch/pytorch/blob/v2.10.0/aten/src/ATen/native/cuda/fused_adam_utils.cuh).
+  The public Optimizer base supplies host state/group bookkeeping only.
+- `runtime/dispatch.py`, `ops.py` and `fsdp.py` route actual FSDP packing,
+  splitting, conversion, initialization and autograd accumulation to Triton.
+  Their layout/API references are the installed Torch2.10 FSDP sources and
+  public custom AllGather/ReduceScatter interfaces. No global Torch dispatch
+  function or CUDA API is replaced or patched.
+- `runtime/collectives.py` implements exchange, reduction and system-scope
+  release/acquire mailbox synchronization in Triton. The ordering reference
+  for two qualified vocabulary-CE message sizes is NCCL2.27.5's
+  [ring algorithm](https://github.com/NVIDIA/nccl/blob/v2.27.5-1/src/device/all_reduce.h),
+  additionally measured from raw native CUDA traces and independent CPU
+  addition trees. Candidate execution calls no native NCCL operation; native
+  NCCL is an explicitly labeled diagnostic/control only. Matching addition
+  order is fixed to the measured four-A6000 shapes, not a wider parity claim.
+- `runtime/peer_memory.py` binds CUDA Driver IPC allocation/mapping APIs from
+  Python; Gloo exchanges CPU handles. Payload/mailbox initialization is
+  Triton. It avoids Torch2.10 Symmetric Memory allocator's explicit native
+  `cudaMemset`, identified in source and actual profiler memory events.
+  Reference: [CUDA Driver memory/IPC API](https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__MEM.html).
+- CPU process/autograd/FSDP scheduling, driver allocation/mapping/events and
+  host-device DMA remain host services. GPU copies, fills, casts, arithmetic
+  and synchronization are not exempted with them. Raw phase-wide audits
+  inspect kernel events plus native GPU memset and device-copy events.
+
+These references describe algorithms/APIs; runtime source is independently
+written. Component proof and clean full8B failures are preserved in
+`TRITON_RUNTIME_V14.md` and its evidence links. Component bitwise parity does
+not qualify the entire model, nor establish an overall speed improvement.
+
 ## Current qualification boundary
 
-The artifact V9 candidate passes full36-layer BF16 forward checks on four
+The historical artifact V9 candidate passes full36-layer BF16 forward checks on four
 real training inputs with bitwise-equal HF logits. Its actual four-rank FSDP
 control passes all399 parameter-shard gradient norm gates in both Triton
 arms, completes four AdamW updates and verifies finite FP32 masters, gradients
 and moments. Full-training CUDA traces show explicit Triton model arithmetic.
-This public relocation still requires its own GPU entry verification.
+Its relocation and later V9-V13 qualification are documented by their dated
+reports; the following describes the original artifact boundary.
 The candidate gradient contract is L2 error below 0.06 times the reference
 norm plus 1e-6 for every parameter shard; it is not bitwise gradient parity.
 Full validation, paired step/module timings and method selection remain
