@@ -32,13 +32,13 @@ class VocabLossTritonQwen3(_LossOnlyGraph,PrecisionQwen3ForCausalLM):pass
 class VocabLossHFQwen3(_LossOnlyGraph,Qwen3ForCausalLM):pass
 
 
-def shard_vocab_loss_model(model,*,keep_full_layers,checkpoint_every,skip_embedding_backward_gather):
+def shard_vocab_loss_model(model,*,keep_full_layers,checkpoint_every,skip_embedding_backward_gather,fused_vocab_dw=False):
     if model.config.tie_word_embeddings:raise ValueError('Untied head required')
     if not 0<=keep_full_layers<=len(model.model.layers):raise ValueError('Invalid retention count')
     if isinstance(model,PrecisionQwen3ForCausalLM):model.__class__=VocabLossTritonQwen3
     elif isinstance(model,Qwen3ForCausalLM):model.__class__=VocabLossHFQwen3
     else:raise TypeError('Supported Qwen3 graph required')
-    model.lm_head=VocabParallelCE(model.lm_head.weight.detach().cpu())
+    model.lm_head=VocabParallelCE(model.lm_head.weight.detach().cpu(),fused_dw=fused_vocab_dw)
     body=model.model;mp=MixedPrecisionPolicy(param_dtype=torch.bfloat16,reduce_dtype=torch.float32)
     fully_shard(body.embed_tokens.float(),mp_policy=mp,reshard_after_forward=True)
     if skip_embedding_backward_gather:body.embed_tokens.set_unshard_in_backward(False)

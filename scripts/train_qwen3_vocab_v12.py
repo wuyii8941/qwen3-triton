@@ -102,9 +102,11 @@ def main():
     parser.add_argument('--skip-embedding-backward-gather',action='store_true')
     parser.add_argument('--retain-lm-head',action='store_true')
     parser.add_argument('--vocab-ce',action='store_true',help='Custom sharded projection/loss and parameter ownership')
+    parser.add_argument('--fused-vocab-dw',action='store_true',help='Fuse per-data-rank dW GEMM/round/mean; B1/S512 only')
     args=parser.parse_args()
     if args.checkpoint_every<0:parser.error('checkpoint-every must be nonnegative')
     if args.vocab_ce and args.retain_lm_head:parser.error('Vocabulary-local head is not an FSDP retention unit')
+    if args.fused_vocab_dw and not args.vocab_ce:parser.error('Fused vocabulary dW requires --vocab-ce')
     if args.input_root:
         args.protocol=args.protocol.resolve();args.input_manifest=args.input_manifest.resolve()
         args.output=args.output.resolve()
@@ -153,7 +155,7 @@ def main():
         validation=Blocks(Path(protocol['corpus'])/protocol['validation']['split'],512)
         if args.vocab_ce:
             from vocab_model_v12 import shard_vocab_loss_model
-            model=shard_vocab_loss_model(model,keep_full_layers=args.keep_full_layers,checkpoint_every=args.checkpoint_every,skip_embedding_backward_gather=args.skip_embedding_backward_gather).train()
+            model=shard_vocab_loss_model(model,keep_full_layers=args.keep_full_layers,checkpoint_every=args.checkpoint_every,skip_embedding_backward_gather=args.skip_embedding_backward_gather,fused_vocab_dw=args.fused_vocab_dw).train()
         else:model=shard_official_qwen(model,keep_full_layers=args.keep_full_layers,checkpoint_every=args.checkpoint_every,checkpoint_mode='full',vocab_parallel_head=False,vocab_parallel_embedding=False).train()
         if args.skip_embedding_backward_gather and not args.vocab_ce:
             model.model.embed_tokens.set_unshard_in_backward(False)
@@ -231,7 +233,7 @@ def main():
             files=[Path(__file__),args.protocol,args.input_manifest,ROOT/'training/fsdp/official.py',ROOT/'training/fsdp/activation_checkpoint.py',*sorted((ROOT/'qwen3_triton').rglob('*.py'))]
             files.append(ROOT/'scripts/vocab_model_v12.py')
             if args.gemm_plan:files.append(args.gemm_plan)
-            result=dict(complete=True,numerical_equivalence_qualified=False,performance_adopted=False,model='Qwen/Qwen3-8B',variant=args.variant,input_root=str(Path.cwd()),gemm_plan=gemm_plan_identity(),world_size=4,layers=36,ranks=reports,input_manifest_sha256=checked[0]['identity'],math_policy=dict(compute='BF16',master_gradient_moments='FP32',TF32=False,allow_bf16_reduced_precision_reduction=False),experiment='vocabulary_CE_v12',screen_only=not(args.full_validation and args.quality_steps==16 and args.warmup_steps==3 and args.measure_steps==8),common_framework=dict(checkpoint_every=args.checkpoint_every,keep_full_layers=args.keep_full_layers,skip_embedding_backward_gather=args.skip_embedding_backward_gather,retain_lm_head=args.retain_lm_head,vocab_parallel=args.vocab_ce,custom_collectives=False,custom_collective_schedule=args.vocab_ce,head_gradient_preaveraged=args.vocab_ce,optimizer='native_fused_AdamW',optimizer_groups='decoder+head_in_all_arms',batch_per_rank=1,sequence=512),sources={str(p):sha(p) for p in files},scope=__doc__)
+            result=dict(complete=True,numerical_equivalence_qualified=False,performance_adopted=False,model='Qwen/Qwen3-8B',variant=args.variant,input_root=str(Path.cwd()),gemm_plan=gemm_plan_identity(),world_size=4,layers=36,ranks=reports,input_manifest_sha256=checked[0]['identity'],math_policy=dict(compute='BF16',master_gradient_moments='FP32',TF32=False,allow_bf16_reduced_precision_reduction=False),experiment='vocabulary_CE_v12',screen_only=not(args.full_validation and args.quality_steps==16 and args.warmup_steps==3 and args.measure_steps==8),common_framework=dict(checkpoint_every=args.checkpoint_every,keep_full_layers=args.keep_full_layers,skip_embedding_backward_gather=args.skip_embedding_backward_gather,retain_lm_head=args.retain_lm_head,vocab_parallel=args.vocab_ce,custom_collectives=False,custom_collective_schedule=args.vocab_ce,head_gradient_preaveraged=args.vocab_ce,fused_vocab_dw=args.fused_vocab_dw,vocab_dw_config=list(model.lm_head.dw_config) if args.fused_vocab_dw else None,optimizer='native_fused_AdamW',optimizer_groups='decoder+head_in_all_arms',batch_per_rank=1,sequence=512),sources={str(p):sha(p) for p in files},scope=__doc__)
             (args.output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     finally:dist.destroy_process_group()
 if __name__=='__main__':main()

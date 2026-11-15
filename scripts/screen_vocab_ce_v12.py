@@ -10,6 +10,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--fused-dw',action='store_true')
     args=p.parse_args();output=args.output.resolve();assert not output.exists()
     assert output.is_relative_to(Path('/data1/tzh'));output.mkdir()
     sources={str(p):sha(p) for p in [Path(__file__),ROOT/'scripts/benchmark_vocab_ce_v12.py',
@@ -26,8 +27,10 @@ def main():
              CUBLAS_WORKSPACE_CONFIG=':4096:8',PYTORCH_ALLOC_CONF='backend:native,expandable_segments:False')
         env.pop('PYTORCH_CUDA_ALLOC_CONF',None)
         with (output/'worker.log').open('w') as log:
-            run(['bash',str(ROOT/'scripts/research_python.sh'),'-m','torch.distributed.run','--standalone','--nproc_per_node=4',
-                 str(ROOT/'scripts/benchmark_vocab_ce_v12.py'),'--output',str(output/'module')],cwd=ROOT,env=env,stdout=log,monitor=output/'gpu.json')
+            cmd=['bash',str(ROOT/'scripts/research_python.sh'),'-m','torch.distributed.run','--standalone','--nproc_per_node=4',
+                 str(ROOT/'scripts/benchmark_vocab_ce_v12.py'),'--output',str(output/'module')]
+            if args.fused_dw:cmd.append('--fused-dw')
+            run(cmd,cwd=ROOT,env=env,stdout=log,monitor=output/'gpu.json')
         monitor=json.loads((output/'gpu.json').read_text())
         assert not monitor['foreign_process_seen'] and not monitor['observation_errors']
         for path,digest in sources.items():assert sha(path)==digest,path

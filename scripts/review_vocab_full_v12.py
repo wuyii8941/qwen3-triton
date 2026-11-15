@@ -27,6 +27,10 @@ def main():
     assert manifest['checkpoint_every'] in (0,1,2)
     assert source_snapshot(Path(manifest['source_root']))==manifest['core_snapshot']
     for path,digest in manifest['sources'].items():assert sha(path)==digest,path
+    archive_path=Path(manifest['checkpoint_source_archive']['path'])
+    assert sha(archive_path)==manifest['checkpoint_source_archive']['sha256']
+    archive=json.loads(archive_path.read_text());assert archive['complete']
+    for row in archive['sources']:assert sha(row['archived_path'])==row['sha256']
     reference=Path(manifest['reference_dir']);ref=json.loads((reference/'result.json').read_text())
     assert ref['variant']=='hf' and ref['layers']==36 and sha(reference/'result.json')==manifest['reference_result_sha256']
     canonical=[]
@@ -40,6 +44,7 @@ def main():
     results={};numerics={};timing={};traces={};evidence={}
     roles=manifest['roles'];arms=['native','triton_control','HF_custom_head','candidate']
     if manifest['checkpoint_every']!=1:arms.insert(2,'head_cp1')
+    if manifest['fused_dw']:arms.insert(arms.index('HF_custom_head'),'head_unfused')
     assert [r['name'] for r in roles]==[a+'_r1' for a in arms]+[a+'_r2' for a in reversed(arms)]
     plan_path=Path(manifest['gemm_plan']['path']);assert sha(plan_path)==manifest['gemm_plan']['sha256']
     plan=json.loads(plan_path.read_text())
@@ -53,6 +58,7 @@ def main():
         expected=dict(checkpoint_every=role['checkpoint_every'],keep_full_layers=36,skip_embedding_backward_gather=True,
             retain_lm_head=not role['vocab_ce'],vocab_parallel=role['vocab_ce'],custom_collectives=False,
             custom_collective_schedule=role['vocab_ce'],head_gradient_preaveraged=role['vocab_ce'],
+            fused_vocab_dw=role['fused_dw'],vocab_dw_config=[64,128,32,8,8,3] if role['fused_dw'] else None,
             optimizer='native_fused_AdamW',optimizer_groups='decoder+head_in_all_arms',batch_per_rank=1,sequence=512)
         assert a['common_framework']==expected
         for path,digest in a['sources'].items():assert sha(path)==digest,path
@@ -93,7 +99,8 @@ def main():
         timing[name]=dict(median_seconds=statistics.median(samples),samples_seconds=samples,
             allocated_GiB=max(r['measured_training_peak']['allocated_gib'] for r in a['ranks']),
             reserved_GiB=max(r['measured_training_peak']['reserved_gib'] for r in a['ranks']))
-        traces[name]=audit_trace(out/name/'training_trace.json',role['variant'],role['vocab_ce'],plan if tuned else None,role['checkpoint_every'])
+        traces[name]=audit_trace(out/name/'training_trace.json',role['variant'],role['vocab_ce'],plan if tuned else None,role['checkpoint_every'],
+                                fused_dw=role['fused_dw'],dw_config=(64,128,32,8,8,3) if role['fused_dw'] else None)
     quality={}
     for role in roles:
         name=role['name'];row=results[name]['ranks'][0];control=results[f"native_r{role['order']}"]['ranks'][0]
@@ -107,14 +114,25 @@ def main():
         comparisons.append(dict(order=order,seconds=t,reduction_vs_native_HF=1-t['candidate']/t['native'],
             reduction_vs_triton_V11=1-t['candidate']/t['triton_control'],
             reduction_vs_HF_custom_head=1-t['candidate']/t['HF_custom_head'],
-            checkpoint_incremental_reduction=1-t['candidate']/t['head_cp1'] if 'head_cp1' in t else None))
+            checkpoint_incremental_reduction=1-t['candidate']/t['head_cp1'] if 'head_cp1' in t else None,
+            fusion_incremental_reduction=1-t['candidate']/t['head_unfused'] if 'head_unfused' in t else None))
     gates=dict(numerics=all(c['passed'] for rows in numerics.values() for c in rows),
         short_quality=all(q['passed'] for q in quality.values()),
         actual_CUDA_and_collectives=all(t['passed'] for t in traces.values()))
+    fusion_trajectory=None
+    if manifest['fused_dw']:
+        fusion_trajectory=all(
+            [r['global_loss'] for r in results[f'candidate_r{o}']['ranks'][rank]['rows']]==
+            [r['global_loss'] for r in results[f'head_unfused_r{o}']['ranks'][rank]['rows']] and
+            results[f'candidate_r{o}']['ranks'][rank]['full_validation']==results[f'head_unfused_r{o}']['ranks'][rank]['full_validation'] and
+            results[f'candidate_r{o}']['ranks'][rank]['gradient_comparisons']==results[f'head_unfused_r{o}']['ranks'][rank]['gradient_comparisons']
+            for o in [1,2] for rank in range(4))
+        gates['fusion_preserves_recorded_trajectory']=fusion_trajectory
     performance=all(c['reduction_vs_native_HF']>=.03 and c['reduction_vs_triton_V11']>=.03 for c in comparisons)
     report=dict(complete=True,audit_passed=True,gates=gates,performance_rule_passed=performance,
         qualified_training_improvement=all(gates.values()) and performance,default_changed=False,
-        checkpoint_every=manifest['checkpoint_every'],comparisons=comparisons,timing=timing,numerics=numerics,
+        checkpoint_every=manifest['checkpoint_every'],fused_dw=manifest['fused_dw'],fusion_recorded_trajectory_equal=fusion_trajectory,
+        comparisons=comparisons,timing=timing,numerics=numerics,
         quality=quality,traces=traces,sources={str(Path(__file__).resolve()):sha(Path(__file__)),str(out/'manifest.json'):sha(out/'manifest.json'),**evidence},
         limitations='Two orders are descriptive, not statistical significance. Dense candidate gradients were compared at runtime, not archived. Independent CPU replay verifies reference archives and recorded error arithmetic. Sixteen quality updates do not prove convergence. HF custom head requires the same bespoke Triton loss, parameter ownership and collective schedule. No inference claim.')
     with (out/'independent_review.json').open('x') as f:f.write(json.dumps(report,indent=2)+'\n')

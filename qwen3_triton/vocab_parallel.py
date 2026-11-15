@@ -59,22 +59,28 @@ class _VocabCE(torch.autograd.Function):
         local_dx=torch.empty((r,k),device=h.device,dtype=torch.float32)
         dist.reduce_scatter_tensor(local_dx,partial_dx,op=dist.ReduceOp.SUM)
         dx=cast_tensor(local_dx,torch.bfloat16)
-        dw=torch.empty(w.shape,device=w.device,dtype=torch.float32)
-        for source in range(world):
-            partial_dw=matmul(dz[source*r:(source+1)*r].t(),h[source*r:(source+1)*r],optimized=True)
-            accumulate_weight_gradient(partial_dw,dw,world,source==0)
+        if ctx.owner.fused_dw:
+            from .kernels.vocab_dw import weight_gradient_mean
+            dw=weight_gradient_mean(dz,h,r,world,ctx.owner.dw_config)
+        else:
+            dw=torch.empty(w.shape,device=w.device,dtype=torch.float32)
+            for source in range(world):
+                partial_dw=matmul(dz[source*r:(source+1)*r].t(),h[source*r:(source+1)*r],optimized=True)
+                accumulate_weight_gradient(partial_dw,dw,world,source==0)
         ctx.owner.backward_calls+=1
         return dx.view(-1,ctx.sequence,k),dw,None,None,None,None
 
 
 class VocabParallelCE(torch.nn.Module):
-    def __init__(self,full_weight_cpu):
+    def __init__(self,full_weight_cpu,*,fused_dw=False):
         super().__init__();world=dist.get_world_size();rank=dist.get_rank()
         if full_weight_cpu.device.type!='cpu' or full_weight_cpu.ndim!=2 or full_weight_cpu.shape[0]%world:
             raise ValueError('Equal CPU vocabulary shards required')
         self.out_features,self.in_features=full_weight_cpu.shape;v=self.out_features//world
         self.weight=torch.nn.Parameter(full_weight_cpu[rank*v:(rank+1)*v].float().cuda().clone())
         self.forward_calls=0;self.backward_calls=0
+        self.fused_dw=bool(fused_dw)
+        self.dw_config=(64,128,32,8,8,3) if self.fused_dw else None
 
     def forward(self,hidden,labels,*,ignore_index=-100,diagnostics=False):
         if hidden.ndim!=3 or hidden.shape[-1]!=self.in_features:
