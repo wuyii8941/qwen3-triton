@@ -61,7 +61,7 @@ def compare_first_gradients(parameters,ids,logits,loss,reference_dir,rank,identi
         numerical_gate_passed=passed and forward_passed,reference_dir=str(reference_dir),
         reference_result_sha256=sha(reference_dir/'result.json'),
         scope='All-coordinate runtime comparison on firstupdate, same explicitBF16/FP32accum policyFalse. Dense candidategradients are not archived; original reference is losslessly archived.')
-    
+
 @torch.no_grad()
 def evaluate(model,dataset,is_triton):
     was_training=model.training;model.eval();model.zero_grad(set_to_none=True)
