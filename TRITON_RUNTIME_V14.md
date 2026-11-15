@@ -118,8 +118,13 @@ launch geometry及32次GPU FP64统计累加。
 新增 `runtime/peer_memory.py` 仅用CUDA Driver API做CPU侧allocation/IPC mapping，
 通过Gloo交换CPU句柄；payload和mailbox初始化均显式执行Triton。没有全局
 CUDA拦截或PyTorch修改。主机负责生命周期：所有GPU使用结束后，每rank先
-关闭import，CPU协调确认后owner才能free。新路径正在做四GPU完整通信检查，
-尚不宣称验收通过。完整trace审核已扩展为拒绝所有原生GPU memset和设备间
+关闭import，CPU协调确认后owner才能free。`collectives_check_003` 已完成该路径
+四GPU通信检查：每rank112项、32次换数据、不同stream入队、无损粘性错误和
+超时负例，以及真实大桶全部48236608坐标的独立CPU FP64 oracle均通过。
+初始化trace只有9次Triton fill，没有任何原生GPU memset或memcpy；显式IPC
+teardown完成。该证据仍不代表完整8B数值/验证已通过，详见
+[IPC组件证据](results/qwen3_triton_runtime_v14_peer_memory_v1.json)。
+完整trace审核已扩展为拒绝所有原生GPU memset和设备间
 memcpy事件，保留CPU↔GPU DMA。组件和失败证据摘要见
 [最新进度](results/qwen3_triton_runtime_v14_progress_v3.json)。
 
