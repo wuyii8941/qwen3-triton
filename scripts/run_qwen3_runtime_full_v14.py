@@ -54,7 +54,7 @@ def main():
         input_identity=json.loads((reference/'result.json').read_text())['input_manifest_sha256'],
         quality_steps=16,warmup=3,measured=8,real_profile_updates=1,total_updates=28,validation_blocks=512,validation_points=[0,16],
         effective_cap_GiB=41.875,minimum_reduction_each_order=.03,full_model_qualified=False,
-        prerequisite_reaudit=dict(execution_sources_current=True,checks=screen_checks,traces=screen_traces),
+        validation_screen=str(screen),prerequisite_reaudit=dict(execution_sources_current=True,checks=screen_checks,traces=screen_traces),
         resource_policy='Fixed eight roles in forward/reverse order. First clean attempt only, retain all contamination and retry after120s idle. Clean technical/gate failure stops. No timing retries.',
         qualification='Original399gradients/forward,16quality,full512validation,memory,complete phase GPU purity and separate performance rule. No default/main branch change.'))
     history=[];dump(out/'attempts.json',history);plan=json.loads((root/'results/qwen3_triton_v10_gemm_plan_001.json').read_text())

@@ -39,6 +39,19 @@ def main():
     history=json.loads((out/'attempts.json').read_text());assert [r['number'] for r in history]==list(range(1,len(history)+1))
     assert [r['role'] for r in history if r['accepted']]==expected
     plan=json.loads((root/'results/qwen3_triton_v10_gemm_plan_001.json').read_text())
+    screen=Path(manifest['validation_screen']);sm=json.loads((screen/'manifest.json').read_text())
+    for path,digest in sm['sources'].items():
+        source=Path(path)
+        if source.is_relative_to(root/'qwen3_triton') or source.is_relative_to(root/'training') or source in [
+            root/'scripts/train_qwen3_runtime_v14.py',root/'scripts/train_qwen3_vocab_v12.py',root/'scripts/vocab_model_v12.py',
+            root/'scripts/research_python.sh',root/'configs/fsdp_8b.json',root/'results/qwen3_triton_v10_gemm_plan_001.json',
+            Path(manifest['input_root'])/'artifacts/official_qwen3_inputs_v1.json']:
+            assert sha(source)==digest,source
+    screened=json.loads((screen/'accepted/run/result.json').read_text())
+    screen_checks=run_review(screened,dict(arm='full_runtime'),formal=False,reference_sha=manifest['reference_result_sha256'],canonical=canonical,norms=norms)
+    screen_traces=trace_review(screen/'accepted/run','full',plan,validation=True)
+    assert manifest['prerequisite_reaudit']==dict(execution_sources_current=True,checks=screen_checks,traces=screen_traces)
+    assert all(screen_checks['gates'].values()) and all(t['passed'] for t in screen_traces.values())
     checks={};traces={};data={};resources=[];evidence={}
     for role in roles:
         name=role['name'];attempts=[r for r in history if r['role']==name];clean=[r for r in attempts if not r['resource_contaminated']]
