@@ -66,6 +66,22 @@ Triton屏障和4次peer collective，没有NCCL或CUDA barrier kernel。
 组件记录在原始 `artifacts/triton_qwen3_runtime_v14`，小型摘要见
 [组件证据](results/qwen3_triton_runtime_v14_components_v1.json)。
 
+后续 `adamw_check_003` 已通过相同四rank128步及官方8B分片检查；新增最大
+`[37984,4096]` 分片的CPU检查点恢复，确认m/v/step使用原GPU缓冲区，恢复后
+继续更新仍与native fused AdamW逐位一致。该结果覆盖有界恢复实现，不代表
+整模型检查点系统已实现，也不代表完整8B训练已验收。
+
+完整入口为 `scripts/train_qwen3_runtime_v14.py`，默认 `--runtime full`。
+严格模式现在覆盖FSDP初始化；第一次8B试跑暴露的 `new_zeros` 已补齐，原失败
+保留。新的试跑仍需通过实际全399梯度和初始化/首次更新/整步trace检查。
+验证使用GPU FP64 NLL累加，显存峰值按初始化、验证、训练及更新后检查分别
+记账。完整验证预检查另外发现FP64除法的编译问题，尚待修复及实测，不将
+未跑通的路径算作覆盖完成。
+
+已提供512块验证可行性运行器、固定四组正逆序消融运行器及CPU审核脚本。
+这些脚本仅通过语法/导入预检查；仍须运行完整8B并审核真实结果，不能从脚本
+存在推出验收通过。现阶段不启动未通过前置可行性检查的正式性能采用流程。
+
 ## 完整8B验收约定（在本轮8B计时之前声明）
 
 沿用官方权重/语料身份、4×A6000、每卡B1/S512、BF16计算、FP32 master/梯度/
