@@ -71,8 +71,11 @@ def main():
                 if step%11==0:g.zero_()
                 x.grad=g;y.grad=g.clone()
             cpu_p,cpu_m,cpu_v=cpu_oracle(cpu_p,p[0].grad.cpu(),cpu_m,cpu_v,17+step,1e-5,.9,.999,.01,1e-8)
+            before_version=p[0]._version
             ours.step();native.step()
+            assert p[0]._version>before_version
             if step in [1,17,64,128]:
+                print(json.dumps(dict(rank=rank,event='compare_AdamW_state',after_updates=step)),flush=True)
                 checkpoints.append(dict(after_updates=step,rows=compare(ours,native,p,r)))
                 oracle.append(dict(after_updates=step,parameter=errors(p[0].cpu(),cpu_p,1e-8),exp_avg=errors(ours.state[p[0]]['exp_avg'].cpu(),cpu_m,1e-12),exp_avg_sq=errors(ours.state[p[0]]['exp_avg_sq'].cpu(),cpu_v,1e-14)))
             if step==64:
@@ -110,7 +113,7 @@ def main():
             trace=dict(sha256=hashlib.sha256(path.read_bytes()).hexdigest(),kernels=dict(counts),only_Triton=True)
         else:trace=None
         report=dict(rank=rank,complete=True,passed=True,updates=128,nonzero_initial_state=True,skip_gradient_tested=True,
-            CPU_checkpoint_restore_after64=True,native_comparisons=checkpoints,CPU_oracle=oracle,official8B_shard_shapes=shape_rows,
+            CPU_checkpoint_restore_after64=True,inplace_version_counter_preserved=True,native_comparisons=checkpoints,CPU_oracle=oracle,official8B_shard_shapes=shape_rows,
             unsupported_dtype_rejected=rejected,candidate_only_trace=trace,scope=__doc__)
         reports=[None]*4;dist.all_gather_object(reports,report)
         if rank==0:(a.output/'check.json').write_text(json.dumps(dict(complete=True,passed=True,kind='adamw',ranks=reports),indent=2)+'\n')

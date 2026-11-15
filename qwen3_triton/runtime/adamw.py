@@ -48,7 +48,9 @@ def _adamw_update(META,COEFF,ROWS:tl.constexpr,LR:tl.constexpr,B1:tl.constexpr,B
     b1=tl.full((),B1,tl.float64);b2=tl.full((),B2,tl.float64)
     lr=tl.full((),LR,tl.float64);decay=tl.full((),DECAY,tl.float64);eps=tl.full((),EPS,tl.float64)
     p=(p.to(tl.float64)-lr*decay*p.to(tl.float64)).to(tl.float32)
-    m=(b1*m.to(tl.float64)+(1.-b1)*g.to(tl.float64)).to(tl.float32)
+    # Fix the FMA contraction explicitly rather than allowing the compiler
+    # to choose which product is rounded first near cancellation.
+    m=tl.fma(b1,m.to(tl.float64),(1.-b1)*g.to(tl.float64)).to(tl.float32)
     v=(b2*v.to(tl.float64)+(1.-b2)*g.to(tl.float64)*g.to(tl.float64)).to(tl.float32)
     bc2=tl.load(COEFF+r*3+1);size=tl.load(COEFF+r*3+2)
     root=libdevice.sqrt_rn(v)
@@ -94,7 +96,7 @@ class TritonAdamW(torch.optim.Optimizer):
         if getattr(self,'grad_scale',None) is not None or getattr(self,'found_inf',None) is not None:
             raise ValueError('GradScaler is not supported by this explicit BF16/FP32 path')
         for group in self.param_groups:
-            rows=[];blocks=0;device=None
+            rows=[];blocks=0;device=None;changed=[]
             for parameter in group['params']:
                 if parameter.grad is None:continue
                 p=local(parameter);g=local(parameter.grad)
@@ -113,6 +115,8 @@ class TritonAdamW(torch.optim.Optimizer):
                     raise ValueError('Invalid local FP32 AdamW state')
                 rows.append([p.data_ptr(),g.data_ptr(),m.data_ptr(),v.data_ptr(),step.data_ptr(),p.numel(),blocks])
                 blocks+=triton.cdiv(p.numel(),self.block)
+                changed.extend([parameter,m,v,step])
+                if p is not parameter:changed.append(p)
             if not rows:continue
             # Pointer/shape metadata originates on the host. Transfer is DMA,
             # not tensor arithmetic; GPU values are not copied to the CPU.
@@ -122,5 +126,8 @@ class TritonAdamW(torch.optim.Optimizer):
             lr=group['lr'];b1,b2=group['betas']
             _adamw_prepare[(triton.cdiv(len(rows),128),)](meta,coeff,len(rows),lr,b1,b2,128,enable_fp_fusion=True)
             _adamw_update[(blocks,)](meta,coeff,len(rows),lr,b1,b2,group['weight_decay'],group['eps'],self.block,num_warps=4,enable_fp_fusion=True)
+            # Raw Triton stores do not inform autograd's host version counters.
+            # Preserve detection of stale saved tensors after an in-place step.
+            torch.autograd.graph.increment_version(changed)
         self.kernel_steps+=1
         return loss
