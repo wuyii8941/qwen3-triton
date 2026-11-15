@@ -44,7 +44,7 @@ def validation_geometry(events,plan):
     add(8192,37984,4096,4096,1,1,4096,32)
     assert sum(expected.values())==181*32
     actual=Counter((tuple(e['args']['grid']),tuple(e['args']['block'])) for e in events if e['name']=='_gemm')
-    entry=next((e for e in plan['entries'] if e['kind']=='gate_up' and e['M']==2048),None)
+    entry=next((e for e in plan['entries'] if e['kind']=='gate_up' and (e['M'],e['N'],e['K'])==(2048,12288,4096)),None)
     tm,tn,tk,group,warps,stages=entry['config'] if entry else (64,64,32,8,4,3)
     gate_expected=Counter({((((2048+tm-1)//tm)*((12288+tn-1)//tn),1,1),(warps*32,1,1)):36*32})
     gate_actual=Counter((tuple(e['args']['grid']),tuple(e['args']['block'])) for e in events if e['name']=='_gate_up')

@@ -3,6 +3,7 @@ import math
 import torch
 import triton
 import triton.language as tl
+import triton.language.extra.cuda.libdevice as libdevice
 from .memory import empty,raw_empty
 
 
@@ -77,7 +78,9 @@ def _runtime_binary(X,Y,OUT,N:tl.constexpr,SHAPE:tl.constexpr,XS:tl.constexpr,YS
     if OP=='add':value=x+y*ALPHA
     elif OP=='sub':value=x-y*ALPHA
     elif OP=='mul':value=x*y
-    elif OP=='div':value=tl.div_rn(x,y)
+    elif OP=='div':
+        if calc==tl.float64:value=libdevice.div_rn(x,y)
+        else:value=tl.div_rn(x,y)
     elif OP=='eq':value=x==y
     elif OP=='ne':value=x!=y
     elif OP=='lt':value=x<y

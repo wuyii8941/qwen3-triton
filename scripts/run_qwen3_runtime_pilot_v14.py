@@ -6,6 +6,7 @@ from qwen3_triton.benchmark_utils.stable_idle import stable_lease
 from training.provenance import source_snapshot
 from run_vocab_resource_queue_v12 import run_attempt,dump
 from qwen3_runtime_v14_contract import audit_trace
+from runtime_trace_v14 import locate_trace
 
 
 def main():
@@ -15,7 +16,7 @@ def main():
     reference=inputs/'artifacts/triton_qwen3_v1/official_8b_paired_quality_ablation_control/hf_reference_r1'
     policy=inputs/'artifacts/triton_qwen3_runtime_v14/full_runtime_policy_001.json'
     files=[Path(__file__),root/'scripts/train_qwen3_runtime_v14.py',root/'scripts/train_qwen3_vocab_v12.py',root/'scripts/vocab_model_v12.py',
-        root/'scripts/qwen3_runtime_v14_contract.py',root/'scripts/qwen3_peer_v13_contract.py',root/'scripts/qwen3_vocab_v12_contract.py',root/'scripts/qwen3_training_v11_contract.py',
+        root/'scripts/qwen3_runtime_v14_contract.py',root/'scripts/runtime_trace_v14.py',root/'scripts/qwen3_peer_v13_contract.py',root/'scripts/qwen3_vocab_v12_contract.py',root/'scripts/qwen3_training_v11_contract.py',
         root/'scripts/research_python.sh',root/'scripts/run_vocab_resource_queue_v12.py',root/'configs/fsdp_8b.json',
         root/'results/qwen3_triton_v10_gemm_plan_001.json',policy,inputs/'artifacts/official_qwen3_inputs_v1.json',reference/'result.json',
         *sorted((root/'qwen3_triton').rglob('*.py')),*sorted((root/'training').rglob('*.py'))]
@@ -53,7 +54,7 @@ def main():
         gates=dict(gradients=all(r['gradient_comparisons'][0]['numerical_gate_passed'] for r in d['ranks']),
             memory=all(max(r['effective_training_peak'].values())<=41.875 and max(r['effective_all_phase_peak'].values())<=41.875 for r in d['ranks']))
         plan=json.loads((root/'results/qwen3_triton_v10_gemm_plan_001.json').read_text())
-        traces={phase:audit_trace(folder/'run'/name,phase=phase,plan=plan) for phase,name in [
+        traces={phase:audit_trace(locate_trace(folder/'run',name),phase=phase,plan=plan) for phase,name in [
             ('setup','setup_trace.json'),('initial_step','initial_step_trace.json'),('full_step','full_step_trace.json')]}
         gates['all_GPU_data_compute_Triton']=all(t['passed'] for t in traces.values())
         assert all(gates.values()),dict(gates=gates,traces=traces)

@@ -137,7 +137,7 @@ def main():
                 torch.cuda.synchronize()
         setup_traces={}
         if setup_capture:
-            path=args.output/'setup_trace.json';setup_trace.export_chrome_trace(str(path));setup_traces[path.name]=sha(path)
+            path=args.output/'setup_trace.json.gz';setup_trace.export_chrome_trace(str(path));setup_traces[path.name]=sha(path)
         dist.barrier(group=cpu_group)  # host model construction/profile export complete
         with runtime.scope():
             runtime.record_peak('setup',reset=True)
@@ -153,7 +153,7 @@ def main():
                 measured=args.quality_steps+args.warmup_steps<step<=quality_warm_timed
                 profiled=step==total
                 if step==args.quality_steps+1:torch.cuda.empty_cache()
-                trace_name='initial_step_trace.json' if step==1 else 'full_step_trace.json'
+                trace_name='initial_step_trace.json.gz' if step==1 else 'full_step_trace.json.gz'
                 capture=args.trace and rank==0 and (step==1 or profiled)
                 with profiler(capture) as trace:
                     ids_cpu=train[(step-1)*4+rank].unsqueeze(0).contiguous();ids=ids_cpu.cuda()
@@ -194,7 +194,7 @@ def main():
                 elif step==args.quality_steps+args.warmup_steps:runtime.record_peak('warmup_updates',reset=True)
                 elif profiled:runtime.record_peak('profile_update',reset=True)
                 if args.full_validation and step==args.quality_steps:
-                    path=args.output/'full_validation_trace.json' if full and args.trace and rank==0 else None
+                    path=args.output/'full_validation_trace.json.gz' if full and args.trace and rank==0 else None
                     value=evaluate(model,validation,runtime,phase='validation_after_quality',trace_path=path);validation_rows.append(dict(after_updates=step,**value))
                     if path is not None:traces[path.name]=sha(path)
                     if rank==0:print(json.dumps(dict(event='full_validation',runtime=args.runtime,after_updates=step,**value)),flush=True)
