@@ -69,8 +69,8 @@ def clone(source,*,dtype=None,preserve=True):
 def _runtime_binary(X,Y,OUT,N:tl.constexpr,SHAPE:tl.constexpr,XS:tl.constexpr,YS:tl.constexpr,OS:tl.constexpr,
                     TENSOR_Y:tl.constexpr,OP:tl.constexpr,ALPHA:tl.constexpr,B:tl.constexpr):
     i=(tl.program_id(0)*B+tl.arange(0,B)).to(tl.int64);valid=i<N
-    dtype=OUT.dtype.element_ty
-    calc=tl.float32 if dtype in (tl.float16,tl.bfloat16) else dtype
+    dtype:tl.constexpr=OUT.dtype.element_ty
+    calc:tl.constexpr=tl.float32 if (dtype==tl.float16 or dtype==tl.bfloat16) else dtype
     x=tl.load(X+_offset(i,SHAPE,XS),valid,0).to(calc)
     if TENSOR_Y:y=tl.load(Y+_offset(i,SHAPE,YS),valid,0).to(calc)
     else:y=tl.full((),Y,calc)
