@@ -28,7 +28,7 @@ def trace_review(folder,runtime,plan,*,validation):
         collectives={kind:sum(n for k,n in counts.items() if 'ncclDevKernel_'+kind in k) for kind in ['AllGather','ReduceScatter']}
         if runtime=='native':
             model=bool([k for k in counts if 'flash' in k.lower()])
-            comm=collectives==dict(AllGather=40,ReduceScatter=39)
+            comm=collectives==dict(AllGather=40+int(validation and phase=='initial_step'),ReduceScatter=39)
             geometry=None;differences={}
         else:
             old=v13_trace(source,'triton_optimized',True,plan,peer=True)
@@ -36,7 +36,7 @@ def trace_review(folder,runtime,plan,*,validation):
             geometry=old['model_launch_geometry_passed']
             model=not differences and geometry
             comm=(old['checked_copy_peer_reduce_and_barrier_counts_passed'] and old['peer_launch_geometry_passed']
-                  and collectives==dict(AllGather=42,ReduceScatter=3))
+                  and collectives==dict(AllGather=42+int(validation and phase=='initial_step'),ReduceScatter=3))
         native_adam={k:v for k,v in counts.items() if 'adam' in k.lower() and k not in ['_adamw_prepare','_adamw_update']}
         optimizer=(counts['_adamw_prepare']==counts['_adamw_update']==2 and not native_adam) if runtime=='adam' else (bool(native_adam) and not counts['_adamw_update'])
         result[phase]=dict(trace_sha256=sha(path),decoded_trace_sha256=source.decoded_sha256,passed=bool(events) and bool(model) and bool(comm) and optimizer,
@@ -132,11 +132,16 @@ def run_review(d,role,*,formal,reference_sha,canonical=None,norms=None):
             # Norm gathers again in backward; embedding deliberately does not.
             # Each no-grad validation retains36decoder units across32batches,
             # while embedding/finalnorm gather per batch:100AG per phase.
+            # No-grad forwards remain in FSDP's post-forward order until a
+            # backward final callback clears it. The first training backward
+            # after each validation therefore additionally prefetches the
+            # preceding validation's finalnorm. Raw module annotations and
+            # Torch2.10 _record_post_forward/_backward_prefetch confirm this.
             assert comm['FSDP_host_units']==39
-            assert comm['FSDP_AG_calls']==39*total+200*has_validation
+            assert comm['FSDP_AG_calls']==39*total+202*has_validation
             assert comm['FSDP_RS_calls']==38*total
             channels=comm['channels']
-            assert channels['gather']['calls']==42*total+328*has_validation
+            assert channels['gather']['calls']==42*total+330*has_validation
             assert channels['scatter']['calls']==39*total
             assert channels['reduce']['calls']==5*total+130*has_validation
             assert channels['alltoall']['calls']==1

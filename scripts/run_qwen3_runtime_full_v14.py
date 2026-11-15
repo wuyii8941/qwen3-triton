@@ -50,6 +50,11 @@ def main():
         root/'scripts/run_vocab_resource_queue_v12.py',root/'configs/fsdp_8b.json',root/'results/qwen3_triton_v10_gemm_plan_001.json',
         policy,environment,root/'requirements-qwen3-triton.txt',inputs/'artifacts/official_qwen3_inputs_v1.json',reference/'result.json',screen/'result.json',screen/'manifest.json',
         screen/'accepted/monitor.json',screen/'accepted/run/result.json',screen/'attempts.json',*sorted((root/'qwen3_triton').rglob('*.py')),*sorted((root/'training').rglob('*.py'))]
+    if sr.get('CPU_reaudit'):
+        receipt=Path(sr['CPU_reaudit']);reviewed=json.loads(receipt.read_text())
+        assert reviewed['CPU_only'] and reviewed['no_GPU_rerun'] and reviewed['first_clean_attempt_preserved']
+        assert reviewed['numerical_quality_memory_thresholds_unchanged']
+        files.extend([receipt,root/'scripts/review_qwen3_runtime_validation_v14.py',screen/'attempts_before_CPU_reaudit_001.json'])
     sources={str(f):sha(f) for f in files};core=source_snapshot(root);out.mkdir(parents=True);(out/'attempts').mkdir()
     dump(out/'manifest.json',dict(source_root=str(root),input_root=str(inputs),sources=sources,core_snapshot=core,roles=roles,
         reference_dir=str(reference),reference_result_sha256=sha(reference/'result.json'),policy=str(policy),policy_sha256=sha(policy),
