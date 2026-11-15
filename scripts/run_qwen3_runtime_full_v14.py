@@ -23,7 +23,7 @@ def main():
     assert pd['first_order']==list(ARMS) and pd['second_order']==list(reversed(ARMS))
     roles=[dict(arm=arm,order=order,name=f'{arm}_r{order}') for order,key in [(1,'first_order'),(2,'second_order')] for arm in pd[key]]
     files=[Path(__file__),root/'scripts/train_qwen3_runtime_v14.py',root/'scripts/train_qwen3_vocab_v12.py',root/'scripts/vocab_model_v12.py',
-        root/'scripts/review_qwen3_runtime_full_v14.py',root/'scripts/qwen3_runtime_v14_review.py',root/'scripts/qwen3_runtime_v14_contract.py',
+        root/'scripts/review_qwen3_runtime_full_v14.py',root/'scripts/runtime_trace_v14.py',root/'scripts/qwen3_runtime_v14_review.py',root/'scripts/qwen3_runtime_v14_contract.py',
         root/'scripts/qwen3_peer_v13_contract.py',root/'scripts/qwen3_vocab_v12_contract.py',root/'scripts/qwen3_training_v11_contract.py',
         root/'scripts/fsdp_peer_rs_v13.py',root/'scripts/symmetric_rs_v13.py',root/'scripts/research_python.sh',
         root/'scripts/run_vocab_resource_queue_v12.py',root/'configs/fsdp_8b.json',root/'results/qwen3_triton_v10_gemm_plan_001.json',

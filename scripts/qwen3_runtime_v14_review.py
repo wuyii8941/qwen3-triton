@@ -5,6 +5,7 @@ from pathlib import Path
 from qwen3_triton.gradient_archive import sha
 from qwen3_runtime_v14_contract import audit_trace,MODEL_STEP
 from qwen3_peer_v13_contract import audit_trace as v13_trace
+from runtime_trace_v14 import TraceSource,locate_trace
 
 
 ARMS={'HF_native':('native','hf'),'V13':('v13','triton_optimized'),
@@ -15,13 +16,14 @@ def trace_review(folder,runtime,plan,*,validation):
     if runtime=='full':
         phases=[('setup','setup_trace.json'),('initial_step','initial_step_trace.json'),('full_step','full_step_trace.json')]
         if validation:phases.append(('validation','full_validation_trace.json'))
-        return {phase:audit_trace(folder/name,phase=phase,plan=plan) for phase,name in phases}
+        return {phase:audit_trace(locate_trace(folder,name),phase=phase,plan=plan) for phase,name in phases}
     result={}
     # Controls intentionally contain native GPU runtime kernels. Check their
     # actual model, communication and optimizer identity without describing
     # those native operations as Triton coverage.
     for phase in ['initial_step','full_step']:
-        path=folder/(phase+'_trace.json');events=[e for e in json.loads(path.read_text())['traceEvents'] if e.get('cat')=='kernel']
+        path=locate_trace(folder,phase+'_trace.json');source=TraceSource(path)
+        events=[e for e in json.loads(source.read_text())['traceEvents'] if e.get('cat')=='kernel']
         counts=Counter(e['name'] for e in events)
         collectives={kind:sum(n for k,n in counts.items() if 'ncclDevKernel_'+kind in k) for kind in ['AllGather','ReduceScatter']}
         if runtime=='native':
@@ -29,7 +31,7 @@ def trace_review(folder,runtime,plan,*,validation):
             comm=collectives==dict(AllGather=40,ReduceScatter=39)
             geometry=None;differences={}
         else:
-            old=v13_trace(path,'triton_optimized',True,plan,peer=True)
+            old=v13_trace(source,'triton_optimized',True,plan,peer=True)
             differences={k:dict(expected=v,observed=counts[k]) for k,v in MODEL_STEP.items() if counts[k]!=v}
             geometry=old['model_launch_geometry_passed']
             model=not differences and geometry
@@ -37,7 +39,7 @@ def trace_review(folder,runtime,plan,*,validation):
                   and collectives==dict(AllGather=42,ReduceScatter=3))
         native_adam={k:v for k,v in counts.items() if 'adam' in k.lower() and k not in ['_adamw_prepare','_adamw_update']}
         optimizer=(counts['_adamw_prepare']==counts['_adamw_update']==2 and not native_adam) if runtime=='adam' else (bool(native_adam) and not counts['_adamw_update'])
-        result[phase]=dict(trace_sha256=sha(path),passed=bool(events) and bool(model) and bool(comm) and optimizer,
+        result[phase]=dict(trace_sha256=sha(path),decoded_trace_sha256=source.decoded_sha256,passed=bool(events) and bool(model) and bool(comm) and optimizer,
             model_passed=model,model_count_discrepancies=differences,model_launch_geometry_passed=geometry,
             communication_passed=comm,native_collectives=collectives,optimizer_passed=optimizer,native_AdamW_kernels=native_adam,
             kernels=dict(counts),scope='Control arm permits native runtime; model/optimizer/communication identities checked explicitly.')

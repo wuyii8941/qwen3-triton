@@ -17,7 +17,7 @@ def main():
     assert out.is_relative_to(Path('/data1/tzh')) and not out.exists()
     reference=inputs/'artifacts/triton_qwen3_v1/official_8b_paired_quality_ablation_control/hf_reference_r1'
     files=[Path(__file__),root/'scripts/train_qwen3_runtime_v14.py',root/'scripts/train_qwen3_vocab_v12.py',root/'scripts/vocab_model_v12.py',
-        root/'scripts/qwen3_runtime_v14_review.py',root/'scripts/qwen3_runtime_v14_contract.py',root/'scripts/qwen3_peer_v13_contract.py',
+        root/'scripts/qwen3_runtime_v14_review.py',root/'scripts/runtime_trace_v14.py',root/'scripts/qwen3_runtime_v14_contract.py',root/'scripts/qwen3_peer_v13_contract.py',
         root/'scripts/qwen3_vocab_v12_contract.py',root/'scripts/qwen3_training_v11_contract.py',root/'scripts/run_vocab_resource_queue_v12.py',
         root/'scripts/research_python.sh',root/'configs/fsdp_8b.json',root/'results/qwen3_triton_v10_gemm_plan_001.json',
         inputs/'artifacts/official_qwen3_inputs_v1.json',reference/'result.json',pilot/'result.json',pilot/'manifest.json',pilot/'accepted/monitor.json',
