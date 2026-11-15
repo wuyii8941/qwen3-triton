@@ -76,6 +76,15 @@ def _runtime_peer_collective(P0,P1,P2,P3,OUT,Q:tl.constexpr,START:tl.constexpr,C
         if OP=='avg':a=a*.25;b=b*.25;c=c*.25;d=d*.25
         if OP=='max':value=tl.maximum(tl.maximum(a,b),tl.maximum(c,d))
         elif OP=='min':value=tl.minimum(tl.minimum(a,b),tl.minimum(c,d))
+        elif KIND=='scatter' and OP=='sum' and P0.dtype.element_ty==tl.float32:
+            # The vocabulary dX path retains arbitrary FP32 inputs until its
+            # final BF16 cast. Match the four-rank native ring's cyclic sum
+            # order; a rank-independent left fold changes BF16 tie rounding.
+            # Actual512x4096/rank probes compare every coordinate to NCCL.
+            if RANK==0:value=((b+c)+d)+a
+            elif RANK==1:value=((c+d)+a)+b
+            elif RANK==2:value=((d+a)+b)+c
+            else:value=((a+b)+c)+d
         else:value=((a+b)+c)+d
         tl.store(OUT+START+i,value,valid)
 
