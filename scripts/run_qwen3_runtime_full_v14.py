@@ -18,6 +18,8 @@ def main():
     assert out.is_relative_to(Path('/data1/tzh')) and not out.exists()
     reference=inputs/'artifacts/triton_qwen3_v1/official_8b_paired_quality_ablation_control/hf_reference_r1'
     policy=out.parent/'full_runtime_policy_001.json';pd=json.loads(policy.read_text())
+    environment=out.parent/'runtime_environment_001.json';software=json.loads(environment.read_text())
+    assert (software['torch'],software['triton'],software['transformers'],software['cuda_build'])==('2.10.0+cu128','3.6.0','4.51.0','12.8')
     assert pd['total_optimizer_updates']==28 and pd['validation_points']==[0,16]
     assert pd['effective_cap_GiB']==41.875 and pd['performance_adoption_minimum_each_order']==.03
     assert pd['first_order']==list(ARMS) and pd['second_order']==list(reversed(ARMS))
@@ -46,7 +48,7 @@ def main():
         root/'scripts/qwen3_peer_v13_contract.py',root/'scripts/qwen3_vocab_v12_contract.py',root/'scripts/qwen3_training_v11_contract.py',
         root/'scripts/fsdp_peer_rs_v13.py',root/'scripts/symmetric_rs_v13.py',root/'scripts/research_python.sh',
         root/'scripts/run_vocab_resource_queue_v12.py',root/'configs/fsdp_8b.json',root/'results/qwen3_triton_v10_gemm_plan_001.json',
-        policy,inputs/'artifacts/official_qwen3_inputs_v1.json',reference/'result.json',screen/'result.json',screen/'manifest.json',
+        policy,environment,root/'requirements-qwen3-triton.txt',inputs/'artifacts/official_qwen3_inputs_v1.json',reference/'result.json',screen/'result.json',screen/'manifest.json',
         screen/'accepted/monitor.json',screen/'accepted/run/result.json',screen/'attempts.json',*sorted((root/'qwen3_triton').rglob('*.py')),*sorted((root/'training').rglob('*.py'))]
     sources={str(f):sha(f) for f in files};core=source_snapshot(root);out.mkdir(parents=True);(out/'attempts').mkdir()
     dump(out/'manifest.json',dict(source_root=str(root),input_root=str(inputs),sources=sources,core_snapshot=core,roles=roles,
@@ -54,7 +56,7 @@ def main():
         input_identity=json.loads((reference/'result.json').read_text())['input_manifest_sha256'],
         quality_steps=16,warmup=3,measured=8,real_profile_updates=1,total_updates=28,validation_blocks=512,validation_points=[0,16],
         effective_cap_GiB=41.875,minimum_reduction_each_order=.03,full_model_qualified=False,
-        validation_screen=str(screen),prerequisite_reaudit=dict(execution_sources_current=True,checks=screen_checks,traces=screen_traces),
+        runtime_environment=software,validation_screen=str(screen),prerequisite_reaudit=dict(execution_sources_current=True,checks=screen_checks,traces=screen_traces),
         resource_policy='Fixed eight roles in forward/reverse order. First clean attempt only, retain all contamination and retry after120s idle. Clean technical/gate failure stops. No timing retries.',
         qualification='Original399gradients/forward,16quality,full512validation,memory,complete phase GPU purity and separate performance rule. No default/main branch change.'))
     history=[];dump(out/'attempts.json',history);plan=json.loads((root/'results/qwen3_triton_v10_gemm_plan_001.json').read_text())

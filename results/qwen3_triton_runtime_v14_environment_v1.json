@@ -1,0 +1,21 @@
+{
+  "python": "3.11.16",
+  "torch": "2.10.0+cu128",
+  "triton": "3.6.0",
+  "transformers": "4.51.0",
+  "cuda_build": "12.8",
+  "nccl_compiled_version": [
+    2,
+    27,
+    5
+  ],
+  "GPU_inventory": [
+    "0, NVIDIA RTX A6000, 535.129.03, 49140",
+    "1, NVIDIA RTX A6000, 535.129.03, 49140",
+    "2, NVIDIA RTX A6000, 535.129.03, 49140",
+    "3, NVIDIA RTX A6000, 535.129.03, 49140"
+  ],
+  "requirements_sha256": "aba50cb40ecdbb81f50aafb59f03df32bbd85a1770559f8ee67ba6dd352d8896",
+  "fixed_training_policy": "4RTXA6000, localB1S512, validationB4, BF16compute/FP32master-grad-moments, deterministicTrue/fillTrue, TF32False, BF16reducedprecisionFalse",
+  "no_inference_or_convergence_claim": true
+}
