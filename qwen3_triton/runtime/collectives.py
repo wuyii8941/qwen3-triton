@@ -168,6 +168,9 @@ class TritonCollectives:
     def all_reduce(self,tensor,op='sum'):return self._run('reduce',tensor,tensor,op)
     def all_to_all(self,output,source):return self._run('alltoall',output,source)
 
+    def barrier(self):
+        channel=self.channels['reduce'];channel.begin();channel.barrier();channel.end()
+
     def report(self):
         torch.cuda.synchronize();errors=self.error.cpu().tolist()
         if any(errors):raise RuntimeError(f'Triton communicator rejected: timeout={errors[0]}, lossless={errors[1]}')
