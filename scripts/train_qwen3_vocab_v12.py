@@ -82,7 +82,7 @@ def evaluate(model,dataset,is_triton):
     finally:
         reshard_official_parameters(model);model.train(was_training)
 
-def main():
+def main(*, model_setup=None, extra_sources=()):
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variant',choices=('hf',*VARIANTS,'fusion_only'),required=True)
     parser.add_argument('--output',type=Path,required=True)
@@ -161,6 +161,7 @@ def main():
             model.model.embed_tokens.set_unshard_in_backward(False)
         if args.retain_lm_head:
             model.lm_head.set_reshard_after_forward(False)
+        communication=model_setup(model) if model_setup is not None else None
         parameters=dict(model.named_parameters());assert len(parameters)==399 and all(local(p).dtype==torch.float32 for p in parameters.values())
         # Native fused AdamW cannot mix local Tensor and DTensor parameters in
         # one group. Use the same decoder/head grouping for every comparison arm.
@@ -227,11 +228,14 @@ def main():
         head_calls=dict(forward=model.lm_head.forward_calls,backward=model.lm_head.backward_calls) if args.vocab_ce else None
         archive=save_archive(dict({'1':raw_first}),args.output/f'raw_rank{rank}.pt.gz',max_bytes=6*2**30) if args.save_reference else None
         rank_result=dict(vocab_head_calls=head_calls,reference_archive=archive,gemm_plan=gemm_plan_identity(),measured_training_peak=training_peak,rank=rank,complete=True,parameter_count=399,optimizer_state_count=len(optimizer.state),updates=total,rows=rows,full_validation=validation_rows,gradient_comparisons=comparisons,all_master_grad_moment_finite_fp32=True,peak_allocated_gib=torch.cuda.max_memory_allocated()/2**30,peak_reserved_gib=torch.cuda.max_memory_reserved()/2**30)
+        if model_setup is not None:
+            rank_result['communication']=communication.report() if communication is not None else dict(mode='native')
         (args.output/f'rank{rank}.json').write_text(json.dumps(rank_result,indent=2)+'\n')
         reports=[None]*4;dist.all_gather_object(reports,rank_result)
         if rank==0:
             files=[Path(__file__),args.protocol,args.input_manifest,ROOT/'training/fsdp/official.py',ROOT/'training/fsdp/activation_checkpoint.py',*sorted((ROOT/'qwen3_triton').rglob('*.py'))]
             files.append(ROOT/'scripts/vocab_model_v12.py')
+            files.extend(extra_sources)
             if args.gemm_plan:files.append(args.gemm_plan)
             result=dict(complete=True,numerical_equivalence_qualified=False,performance_adopted=False,model='Qwen/Qwen3-8B',variant=args.variant,input_root=str(Path.cwd()),gemm_plan=gemm_plan_identity(),world_size=4,layers=36,ranks=reports,input_manifest_sha256=checked[0]['identity'],math_policy=dict(compute='BF16',master_gradient_moments='FP32',TF32=False,allow_bf16_reduced_precision_reduction=False),experiment='vocabulary_CE_v12',screen_only=not(args.full_validation and args.quality_steps==16 and args.warmup_steps==3 and args.measure_steps==8),common_framework=dict(checkpoint_every=args.checkpoint_every,keep_full_layers=args.keep_full_layers,skip_embedding_backward_gather=args.skip_embedding_backward_gather,retain_lm_head=args.retain_lm_head,vocab_parallel=args.vocab_ce,custom_collectives=False,custom_collective_schedule=args.vocab_ce,head_gradient_preaveraged=args.vocab_ce,fused_vocab_dw=args.fused_vocab_dw,vocab_dw_config=list(model.lm_head.dw_config) if args.fused_vocab_dw else None,optimizer='native_fused_AdamW',optimizer_groups='decoder+head_in_all_arms',batch_per_rank=1,sequence=512),sources={str(p):sha(p) for p in files},scope=__doc__)
             (args.output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
