@@ -4,6 +4,10 @@
 `95a27d0`，独立分支 `research/triton-runtime-v14`；历史分支和默认入口不改。
 所有输出、缓存、临时文件位于 `/data1/tzh`，不写 `/home/tzh`。
 
+最近进展：`full_pilot_005` 首次干净的完整8B五更新试跑通过全部399梯度、
+FP32状态、显存及所有GPU事件检查。512块验证和正式四组正逆序消融尚待
+完成；以下组件/失败记录保留各自的历史范围，不能当作完整验收报告。
+
 用户要求覆盖整个训练流程，不能再把“模型前后向都是 Triton”称为全流程完成。
 以下项目必须逐项落实，并用包含 optimizer、统计和通信的完整 step trace 核对。
 CPU 数据准备、主机控制、驱动服务与 GPU 数据计算分开说明，不隐藏原生计算回退。
@@ -62,7 +66,8 @@ Triton屏障和4次peer collective，没有NCCL或CUDA barrier kernel。
 首次集成因Triton不支持dtype的Python `in`表达式而编译失败，改为显式constexpr
 分支后通过；失败保留。保留的是FSDP主机状态/事件调度，不是它的GPU计算实现。
 
-完整36层8B接入、全399梯度、512块验证、完整step trace和整体/部分消融均待完成。
+上述组件检查阶段，完整36层8B接入、全399梯度、512块验证、完整step trace
+和整体/部分消融均待完成；后续真实8B进展见本文末尾。
 组件记录在原始 `artifacts/triton_qwen3_runtime_v14`，小型摘要见
 [组件证据](results/qwen3_triton_runtime_v14_components_v1.json)。
 
@@ -138,7 +143,7 @@ BF16舍入结果不同；rank3相同。独立CPU枚举加法树确认原生RS按
 详见[归约顺序证据](results/qwen3_triton_runtime_v14_reduction_order_v1.json)。
 `full_pilot_004` 正在按新源码冻结重做8B检查；仍须全399梯度及完整质量验证
 证明整个模型的修复有效，不能从该组件逐位一致推出完整验收。
-FP32 AllReduce也有加法顺序差异；当前未据此改算法或放宽任何门槛。
+该阶段的FP32 AllReduce仍有加法顺序差异；后续诊断和修复如下，门槛始终不变。
 
 `full_pilot_004` 完成5次真实更新后，初始化、首次更新、完整step的扩展GPU
 审核全部通过，包括没有原生GPU memset/设备间拷贝；各rank显存门槛也通过。
@@ -155,6 +160,20 @@ FP32 AllReduce也有加法顺序差异；当前未据此改算法或放宽任何
 边界对齐，不声称任意GPU/消息大小与NCCL逐位一致，不修改原有数值门槛。
 [原始诊断摘要](results/qwen3_triton_runtime_v14_AllReduce_order_diagnosis_v1.json)，
 [对应NCCL源码](https://github.com/NVIDIA/nccl/blob/v2.27.5-1/src/device/all_reduce.h)。
+
+`reduction_order_probe_004` 已确认：四rank的两种CE AllReduce形状各3组不同
+输入、以及8388608元素dX ReduceScatter全部坐标与原生NCCL逐位一致，见
+[通信顺序证明](results/qwen3_triton_runtime_v14_collective_order_proof_v1.json)。
+
+`full_pilot_005` 完成首次干净的5次真实8B更新：四rank全部399参数梯度通过，
+完整首步梯度比较记录与历史已验收V13相同。FP32参数/梯度/m/v、实际更新
+计数、有效显存、初始化/首次更新/完整step的所有GPU事件检查均通过；初始化
+808次kernel均为Triton，且没有原生GPU memset/设备间拷贝。前5个全局loss与
+V13最多相差一个FP32舍入单位，不能据此声称完整状态逐位相同。
+[真实8B试跑证据](results/qwen3_triton_runtime_v14_full_pilot_v1.json)。
+正在运行 `full_validation_screen_001`：仍为5次更新，但在0/1更新后分别覆盖
+全部512块、261632 shifted tokens、每卡验证B4，并检查完整验证GPU路径。
+正式16质量更新/28实际更新、四组两轮消融和独立审查尚未完成。
 
 ## 完整8B验收约定（在本轮8B计时之前声明）
 

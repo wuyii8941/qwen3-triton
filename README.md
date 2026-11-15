@@ -3,7 +3,7 @@
 官方 **Qwen/Qwen3-8B（36 层）**的可训练 Triton 模型。
 Embedding、所有 Linear、RMSNorm、QK-Norm/RoPE、causal GQA attention、
 SwiGLU、residual 和交叉熵的模型计算及反向均由 Triton 实现。
-参数、autograd、分配器、FSDP2/NCCL 和 AdamW 使用共同的 PyTorch 基础设施。
+V9–V13 的参数、autograd、分配器、FSDP2/NCCL 和 AdamW 使用共同的 PyTorch 基础设施。
 
 GitHub main 的首次发布固定已验收的 V9 实现与小型证据；本研究分支继续以此优化。
 这不是完整预训练框架，也不包含推理/KV cache 接口。
@@ -12,6 +12,13 @@ GitHub main 的首次发布固定已验收的 V9 实现与小型证据；本研�
 两轮为 **4.5148 / 4.5176 秒/步**，
 相对同轮 HF＋Flash 耗时减少 **14.75% / 13.80%**，
 相对已有 V12 减少 **7.95% / 7.85%**。下文保留各代各自的实验协议与结果。
+
+[V14 完整 GPU 运行时](TRITON_RUNTIME_V14.md) 正在验收：新增 Triton AdamW、
+FSDP GPU 打包/拷贝/累加和全部GPU张量通信/屏障，保留CPU调度及驱动服务。
+最新真实36层8B的5次更新已通过四rank全399梯度、FP32状态、显存及
+初始化/首次更新/整步GPU事件检查；512块验证和正式正逆序消融仍待完成。
+新 [运行时入口](scripts/train_qwen3_runtime_v14.py) 默认 `--runtime full`，
+当前仅用于研究验证，不从这次试跑推断整体提速或完整数值验收。
 
 ## V9：首次完整实现的实测结果
 
