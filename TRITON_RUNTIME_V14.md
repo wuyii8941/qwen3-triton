@@ -133,8 +133,11 @@ memcpy事件，保留CPU↔GPU DMA。组件和失败证据摘要见
 BF16舍入结果不同；rank3相同。独立CPU枚举加法树确认原生RS按每rank的
 循环顺序相加，全部2097152输出坐标均匹配该顺序。现已只调整任意FP32
 输入的SUM ReduceScatter顺序；BF16无损梯度线和AVG路径保留原算法。
-四rank FP32/BF16分支预编译通过，正在用 `reduction_order_probe_002` 实测。
-这只是找到一个确定的差异，仍须新8B全399梯度及完整质量验证证明修复有效。
+四rank FP32/BF16分支预编译通过；`reduction_order_probe_002` 已实测确认每rank
+全部2097152个FP32输出与原生NCCL逐位一致，之前的BF16舍入差异全部消除，
+详见[归约顺序证据](results/qwen3_triton_runtime_v14_reduction_order_v1.json)。
+`full_pilot_004` 正在按新源码冻结重做8B检查；仍须全399梯度及完整质量验证
+证明整个模型的修复有效，不能从该组件逐位一致推出完整验收。
 FP32 AllReduce也有加法顺序差异；当前未据此改算法或放宽任何门槛。
 
 ## 完整8B验收约定（在本轮8B计时之前声明）
