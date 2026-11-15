@@ -22,19 +22,39 @@ def main():
     assert pd['effective_cap_GiB']==41.875 and pd['performance_adoption_minimum_each_order']==.03
     assert pd['first_order']==list(ARMS) and pd['second_order']==list(reversed(ARMS))
     roles=[dict(arm=arm,order=order,name=f'{arm}_r{order}') for order,key in [(1,'first_order'),(2,'second_order')] for arm in pd[key]]
+    # A successful screen from an earlier implementation is not sufficient.
+    # Recheck execution bytes plus raw GPU traces and all recorded original
+    # error arithmetic with the current CPU reviewer before reserving GPUs.
+    sm=json.loads((screen/'manifest.json').read_text())
+    for path,digest in sm['sources'].items():
+        source=Path(path)
+        execution=(source.is_relative_to(root/'qwen3_triton') or source.is_relative_to(root/'training') or source in [
+            root/'scripts/train_qwen3_runtime_v14.py',root/'scripts/train_qwen3_vocab_v12.py',root/'scripts/vocab_model_v12.py',
+            root/'scripts/research_python.sh',root/'configs/fsdp_8b.json',root/'results/qwen3_triton_v10_gemm_plan_001.json',
+            inputs/'artifacts/official_qwen3_inputs_v1.json'])
+        if execution:assert sha(source)==digest,source
+    monitor=json.loads((screen/'accepted/monitor.json').read_text())
+    assert monitor['returncode']==0 and not monitor['foreign_process_seen'] and not monitor['observation_errors']
+    plan=json.loads((root/'results/qwen3_triton_v10_gemm_plan_001.json').read_text())
+    screened=json.loads((screen/'accepted/run/result.json').read_text())
+    screen_checks=run_review(screened,dict(arm='full_runtime'),formal=False,reference_sha=sha(reference/'result.json'))
+    screen_traces=trace_review(screen/'accepted/run','full',plan,validation=True)
+    assert all(screen_checks['gates'].values()) and all(t['passed'] for t in screen_traces.values())
+    for phase,t in screen_traces.items():assert t['trace_sha256']==sr['traces'][phase]['trace_sha256']
     files=[Path(__file__),root/'scripts/train_qwen3_runtime_v14.py',root/'scripts/train_qwen3_vocab_v12.py',root/'scripts/vocab_model_v12.py',
         root/'scripts/review_qwen3_runtime_full_v14.py',root/'scripts/runtime_trace_v14.py',root/'scripts/qwen3_runtime_v14_review.py',root/'scripts/qwen3_runtime_v14_contract.py',
         root/'scripts/qwen3_peer_v13_contract.py',root/'scripts/qwen3_vocab_v12_contract.py',root/'scripts/qwen3_training_v11_contract.py',
         root/'scripts/fsdp_peer_rs_v13.py',root/'scripts/symmetric_rs_v13.py',root/'scripts/research_python.sh',
         root/'scripts/run_vocab_resource_queue_v12.py',root/'configs/fsdp_8b.json',root/'results/qwen3_triton_v10_gemm_plan_001.json',
         policy,inputs/'artifacts/official_qwen3_inputs_v1.json',reference/'result.json',screen/'result.json',screen/'manifest.json',
-        screen/'accepted/monitor.json',screen/'accepted/run/result.json',*sorted((root/'qwen3_triton').rglob('*.py')),*sorted((root/'training').rglob('*.py'))]
+        screen/'accepted/monitor.json',screen/'accepted/run/result.json',screen/'attempts.json',*sorted((root/'qwen3_triton').rglob('*.py')),*sorted((root/'training').rglob('*.py'))]
     sources={str(f):sha(f) for f in files};core=source_snapshot(root);out.mkdir(parents=True);(out/'attempts').mkdir()
     dump(out/'manifest.json',dict(source_root=str(root),input_root=str(inputs),sources=sources,core_snapshot=core,roles=roles,
         reference_dir=str(reference),reference_result_sha256=sha(reference/'result.json'),policy=str(policy),policy_sha256=sha(policy),
         input_identity=json.loads((reference/'result.json').read_text())['input_manifest_sha256'],
         quality_steps=16,warmup=3,measured=8,real_profile_updates=1,total_updates=28,validation_blocks=512,validation_points=[0,16],
         effective_cap_GiB=41.875,minimum_reduction_each_order=.03,full_model_qualified=False,
+        prerequisite_reaudit=dict(execution_sources_current=True,checks=screen_checks,traces=screen_traces),
         resource_policy='Fixed eight roles in forward/reverse order. First clean attempt only, retain all contamination and retry after120s idle. Clean technical/gate failure stops. No timing retries.',
         qualification='Original399gradients/forward,16quality,full512validation,memory,complete phase GPU purity and separate performance rule. No default/main branch change.'))
     history=[];dump(out/'attempts.json',history);plan=json.loads((root/'results/qwen3_triton_v10_gemm_plan_001.json').read_text())

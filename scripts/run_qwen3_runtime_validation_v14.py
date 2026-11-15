@@ -35,7 +35,9 @@ def main():
         dump(out/'state.json',dict(pid=os.getpid(),stage='waiting_stable_four_GPU_lease'))
         with stable_lease([0,1,2,3]):
             verify()
-            if shutil.disk_usage(out).free<700*2**20:raise RuntimeError('Insufficient free disk for full raw validation trace; no GPU run started')
+            if shutil.disk_usage(out).free<700*2**20:
+                dump(out/'state.json',dict(pid=os.getpid(),stage='disk_preflight_failure_no_GPU_run'))
+                raise RuntimeError('Insufficient free disk for full raw validation trace; no GPU run started')
             folder=out/'attempts'/f'{len(history)+1:03d}';folder.mkdir()
             cmd=['bash',str(root/'scripts/research_python.sh'),'-m','torch.distributed.run','--standalone','--nproc_per_node=4',
                 str(root/'scripts/train_qwen3_runtime_v14.py'),'--runtime','full','--output',str(folder/'run'),
