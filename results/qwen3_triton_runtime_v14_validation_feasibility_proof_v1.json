@@ -1,0 +1,835 @@
+{
+  "complete": true,
+  "full_model_qualified": false,
+  "eligible_for_formal": true,
+  "actual_optimizer_updates": 5,
+  "quality_updates": 1,
+  "full_validation": [
+    {
+      "after_updates": 0,
+      "loss": 2.605893226340413,
+      "tokens": 261632,
+      "blocks": 512,
+      "batch_per_rank": 4
+    },
+    {
+      "after_updates": 1,
+      "loss": 2.5237293438985944,
+      "tokens": 261632,
+      "blocks": 512,
+      "batch_per_rank": 4
+    }
+  ],
+  "gates": {
+    "numerics": true,
+    "effective_memory": true,
+    "lossless_transport": true
+  },
+  "phase_traces": {
+    "setup": {
+      "phase": "setup",
+      "trace_sha256": "9e32ad311a7abedd97f84dcfd9508ce97c23b684f570fafb9f5709a1e7600008",
+      "decoded_trace_sha256": "92b76856fea083b1273da98fd1df8140d9017445a89729e5d046f5d169968686",
+      "kernel_count": 808,
+      "kernels": {
+        "_runtime_fill": 11,
+        "_runtime_strided_copy": 399,
+        "_runtime_typed_fill": 398
+      },
+      "unclassified_or_native_compute": {},
+      "model_count_discrepancies": {},
+      "model_launch_geometry_passed": null,
+      "native_GPU_memory_operations": [],
+      "optimizer_coverage_passed": true,
+      "communication_coverage_passed": true,
+      "passed": true,
+      "scope": "Raw kernel events, no trace rewriting. Host CPU/driver/DMA events remain; every actual GPU compute kernel must be classified Triton. Control arms audited separately."
+    },
+    "initial_step": {
+      "phase": "initial_step",
+      "trace_sha256": "424b5db5c57f9eafd9405660935dbe7e24f7667ac352a77cb9d73b1b95c48ca4",
+      "decoded_trace_sha256": "e10c3acddbe3c3815ce22b026a011ae0c550553abfd4adf65156dfee3a356969",
+      "kernel_count": 13579,
+      "kernels": {
+        "_runtime_peer_barrier": 223,
+        "_runtime_fill": 6407,
+        "_runtime_strided_copy": 1635,
+        "_runtime_stage": 111,
+        "_runtime_peer_collective": 111,
+        "_lookup": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_hf_norm_forward": 145,
+        "_gemm": 866,
+        "_hf_norm_rope_forward": 144,
+        "_native_precision_forward": 72,
+        "_add": 144,
+        "_gate_up": 72,
+        "_cast": 2,
+        "_partials": 1,
+        "_local_rows": 1,
+        "_pack": 1,
+        "_finish": 1,
+        "_means": 1,
+        "_runtime_typed_fill": 2,
+        "_grad": 1,
+        "_vocab_dw_mean": 1,
+        "_backward": 74,
+        "_reduce_rows": 290,
+        "_runtime_chunk_cat_one": 398,
+        "_hf_swiglu_backward": 36,
+        "_runtime_binary": 545,
+        "_native_order_delta": 36,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_norm_rope_backward": 72,
+        "_zero": 1,
+        "_runtime_unary": 400,
+        "_runtime_compare": 800,
+        "_runtime_reduce": 835,
+        "_adamw_prepare": 2,
+        "_adamw_update": 2
+      },
+      "unclassified_or_native_compute": {},
+      "model_count_discrepancies": {},
+      "model_launch_geometry_passed": true,
+      "native_GPU_memory_operations": [],
+      "optimizer_coverage_passed": true,
+      "communication_coverage_passed": true,
+      "passed": true,
+      "scope": "Raw kernel events, no trace rewriting. Host CPU/driver/DMA events remain; every actual GPU compute kernel must be classified Triton. Control arms audited separately."
+    },
+    "full_step": {
+      "phase": "full_step",
+      "trace_sha256": "291120bbb705c24b0b09f13cc38210a52226e9a2b979ed81be76d90aa80e1597",
+      "decoded_trace_sha256": "687685e15f395ad2fa1423ecee4bee1ad7d2fe316ddd3a65d94a51d09259e5f6",
+      "kernel_count": 12294,
+      "kernels": {
+        "_runtime_fill": 5206,
+        "_runtime_compare": 800,
+        "_runtime_binary": 545,
+        "_runtime_reduce": 835,
+        "_runtime_unary": 400,
+        "_adamw_prepare": 2,
+        "_adamw_update": 2,
+        "_runtime_strided_copy": 1632,
+        "_runtime_stage": 91,
+        "_runtime_peer_barrier": 183,
+        "_runtime_peer_collective": 91,
+        "_lookup": 1,
+        "_positions": 1,
+        "_tables": 1,
+        "_hf_norm_forward": 145,
+        "_gemm": 866,
+        "_hf_norm_rope_forward": 144,
+        "_native_precision_forward": 72,
+        "_add": 144,
+        "_gate_up": 72,
+        "_cast": 2,
+        "_partials": 1,
+        "_local_rows": 1,
+        "_pack": 1,
+        "_finish": 1,
+        "_means": 1,
+        "_runtime_typed_fill": 1,
+        "_grad": 1,
+        "_vocab_dw_mean": 1,
+        "_backward": 74,
+        "_reduce_rows": 290,
+        "_runtime_chunk_cat_one": 398,
+        "_hf_swiglu_backward": 36,
+        "_native_order_delta": 36,
+        "_native_split_dq": 36,
+        "_dq_split_reduce": 36,
+        "_native_precision_dkdv": 36,
+        "_attention_kv_head_reduce_kernel": 36,
+        "_norm_rope_backward": 72,
+        "_zero": 1
+      },
+      "unclassified_or_native_compute": {},
+      "model_count_discrepancies": {},
+      "model_launch_geometry_passed": true,
+      "native_GPU_memory_operations": [],
+      "optimizer_coverage_passed": true,
+      "communication_coverage_passed": true,
+      "passed": true,
+      "scope": "Raw kernel events, no trace rewriting. Host CPU/driver/DMA events remain; every actual GPU compute kernel must be classified Triton. Control arms audited separately."
+    },
+    "validation": {
+      "phase": "validation",
+      "trace_sha256": "e2c6beb0054faf04c131049ed4725599089e88da9b142eccb24c6cce1734ed0f",
+      "decoded_trace_sha256": "c094edc70ff90e280c35e5e1337f9fa2239dbdf333dda51d8df866c90214c8d8",
+      "kernel_count": 51459,
+      "kernels": {
+        "_runtime_strided_copy": 6052,
+        "_runtime_fill": 28618,
+        "_native_precision_forward": 1152,
+        "_gemm": 5792,
+        "_add": 2304,
+        "_hf_norm_forward": 2336,
+        "_gate_up": 1152,
+        "_hf_norm_rope_forward": 2304,
+        "_runtime_stage": 325,
+        "_runtime_peer_barrier": 650,
+        "_runtime_peer_collective": 325,
+        "_cast": 32,
+        "_partials": 32,
+        "_local_rows": 32,
+        "_pack": 32,
+        "_finish": 32,
+        "_means": 32,
+        "_runtime_unary": 32,
+        "_runtime_compare": 64,
+        "_runtime_binary": 33,
+        "_runtime_validation_accumulate": 32,
+        "_lookup": 32,
+        "_positions": 32,
+        "_tables": 32
+      },
+      "unclassified_or_native_compute": {},
+      "model_count_discrepancies": {},
+      "model_launch_geometry_passed": true,
+      "native_GPU_memory_operations": [],
+      "optimizer_coverage_passed": true,
+      "communication_coverage_passed": true,
+      "passed": true,
+      "scope": "Raw kernel events, no trace rewriting. Host CPU/driver/DMA events remain; every actual GPU compute kernel must be classified Triton. Control arms audited separately."
+    }
+  },
+  "first_clean_GPU_result_preserved": true,
+  "CPU_audit_correction_sha256": "8bbe81a47f198614f892d8488da703b4ece71bff946716e5ee7aeaa1638e399a",
+  "original_attempt_history_sha256": "d230945810de29b2658309aeb5ab98a5d0b0a85892c083e49f672973d536e75f",
+  "final_attempt_history_sha256": "4517c07bea7f5153f1c26b91c402ff2cfb64f7550e767c7eb941e4cc77ce1ec4",
+  "raw_result_sha256": "97eff5e541cb1dabcc2832683a353ee2590b5a2cdec7fea2e035dd43db02c352",
+  "monitor_sha256": "2da91400b12feff7a9f8636c2b39c90fb196a7c1abf96cf9188a3d1f80eaf9dd",
+  "manifest_sha256": "e1b56a32da10c208c01c2e41d3a7bc9b93bc0527911f78c54f324ff500ddcbe9",
+  "ranks": [
+    {
+      "rank": 0,
+      "all399_numerical_gate": true,
+      "FP32_masters_grad_moments_finite": true,
+      "effective_allphase_peak": {
+        "allocated_gib": 38.66190481185913,
+        "reserved_gib": 41.8671875
+      },
+      "phase_memory_ledger": [
+        {
+          "phase": "setup",
+          "torch": {
+            "allocated_gib": 8.347997188568115,
+            "reserved_gib": 8.36328125
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 8.847997188568115,
+            "reserved_gib": 8.86328125
+          }
+        },
+        {
+          "phase": "validation_0",
+          "torch": {
+            "allocated_gib": 22.90327215194702,
+            "reserved_gib": 25.16796875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 23.40327215194702,
+            "reserved_gib": 25.66796875
+          }
+        },
+        {
+          "phase": "quality_updates",
+          "torch": {
+            "allocated_gib": 30.661001682281494,
+            "reserved_gib": 36.4921875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 31.161001682281494,
+            "reserved_gib": 36.9921875
+          }
+        },
+        {
+          "phase": "validation_after_quality",
+          "torch": {
+            "allocated_gib": 38.16190481185913,
+            "reserved_gib": 40.376953125
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 38.66190481185913,
+            "reserved_gib": 40.876953125
+          }
+        },
+        {
+          "phase": "warmup_updates",
+          "torch": {
+            "allocated_gib": 37.46831750869751,
+            "reserved_gib": 41.32421875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 37.96831750869751,
+            "reserved_gib": 41.82421875
+          }
+        },
+        {
+          "phase": "timed_updates",
+          "torch": {
+            "allocated_gib": 37.46831750869751,
+            "reserved_gib": 41.3671875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 37.96831750869751,
+            "reserved_gib": 41.8671875
+          }
+        },
+        {
+          "phase": "profile_update",
+          "torch": {
+            "allocated_gib": 37.46831750869751,
+            "reserved_gib": 41.365234375
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 37.96831750869751,
+            "reserved_gib": 41.865234375
+          }
+        },
+        {
+          "phase": "post_update_checks",
+          "torch": {
+            "allocated_gib": 31.530848503112793,
+            "reserved_gib": 40.52734375
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 32.03084850311279,
+            "reserved_gib": 41.02734375
+          }
+        }
+      ],
+      "FSDP_AG": 397,
+      "FSDP_RS": 190,
+      "native_GPU_collectives": 0,
+      "communication_channels": {
+        "gather": {
+          "capacity_bytes": 100663296,
+          "calls": 540,
+          "Triton_barriers": 1494,
+          "staged_elements": 23438383365,
+          "checked_lossless_elements": 0,
+          "epoch": 1494,
+          "mapped_buffer_and_signal_bytes": 100663808,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        },
+        "scatter": {
+          "capacity_bytes": 387973120,
+          "calls": 195,
+          "Triton_barriers": 420,
+          "staged_elements": 37883970560,
+          "checked_lossless_elements": 37842027520,
+          "epoch": 420,
+          "mapped_buffer_and_signal_bytes": 387973632,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        },
+        "reduce": {
+          "capacity_bytes": 1048576,
+          "calls": 155,
+          "Triton_barriers": 305,
+          "staged_elements": 1600466,
+          "checked_lossless_elements": 0,
+          "epoch": 305,
+          "mapped_buffer_and_signal_bytes": 1049088,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        },
+        "alltoall": {
+          "capacity_bytes": 8388608,
+          "calls": 1,
+          "Triton_barriers": 38,
+          "staged_elements": 77791232,
+          "checked_lossless_elements": 0,
+          "epoch": 38,
+          "mapped_buffer_and_signal_bytes": 8389120,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        }
+      }
+    },
+    {
+      "rank": 1,
+      "all399_numerical_gate": true,
+      "FP32_masters_grad_moments_finite": true,
+      "effective_allphase_peak": {
+        "allocated_gib": 38.66190481185913,
+        "reserved_gib": 41.8671875
+      },
+      "phase_memory_ledger": [
+        {
+          "phase": "setup",
+          "torch": {
+            "allocated_gib": 8.347997188568115,
+            "reserved_gib": 8.36328125
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 8.847997188568115,
+            "reserved_gib": 8.86328125
+          }
+        },
+        {
+          "phase": "validation_0",
+          "torch": {
+            "allocated_gib": 22.90327215194702,
+            "reserved_gib": 25.16796875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 23.40327215194702,
+            "reserved_gib": 25.66796875
+          }
+        },
+        {
+          "phase": "quality_updates",
+          "torch": {
+            "allocated_gib": 30.661001682281494,
+            "reserved_gib": 36.4921875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 31.161001682281494,
+            "reserved_gib": 36.9921875
+          }
+        },
+        {
+          "phase": "validation_after_quality",
+          "torch": {
+            "allocated_gib": 38.16190481185913,
+            "reserved_gib": 40.376953125
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 38.66190481185913,
+            "reserved_gib": 40.876953125
+          }
+        },
+        {
+          "phase": "warmup_updates",
+          "torch": {
+            "allocated_gib": 37.46831750869751,
+            "reserved_gib": 41.32421875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 37.96831750869751,
+            "reserved_gib": 41.82421875
+          }
+        },
+        {
+          "phase": "timed_updates",
+          "torch": {
+            "allocated_gib": 37.46831750869751,
+            "reserved_gib": 41.3671875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 37.96831750869751,
+            "reserved_gib": 41.8671875
+          }
+        },
+        {
+          "phase": "profile_update",
+          "torch": {
+            "allocated_gib": 37.46831750869751,
+            "reserved_gib": 41.365234375
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 37.96831750869751,
+            "reserved_gib": 41.865234375
+          }
+        },
+        {
+          "phase": "post_update_checks",
+          "torch": {
+            "allocated_gib": 31.530848503112793,
+            "reserved_gib": 40.52734375
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 32.03084850311279,
+            "reserved_gib": 41.02734375
+          }
+        }
+      ],
+      "FSDP_AG": 397,
+      "FSDP_RS": 190,
+      "native_GPU_collectives": 0,
+      "communication_channels": {
+        "gather": {
+          "capacity_bytes": 100663296,
+          "calls": 540,
+          "Triton_barriers": 1494,
+          "staged_elements": 23438383365,
+          "checked_lossless_elements": 0,
+          "epoch": 1494,
+          "mapped_buffer_and_signal_bytes": 100663808,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        },
+        "scatter": {
+          "capacity_bytes": 387973120,
+          "calls": 195,
+          "Triton_barriers": 420,
+          "staged_elements": 37883970560,
+          "checked_lossless_elements": 37842027520,
+          "epoch": 420,
+          "mapped_buffer_and_signal_bytes": 387973632,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        },
+        "reduce": {
+          "capacity_bytes": 1048576,
+          "calls": 155,
+          "Triton_barriers": 305,
+          "staged_elements": 1600466,
+          "checked_lossless_elements": 0,
+          "epoch": 305,
+          "mapped_buffer_and_signal_bytes": 1049088,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        },
+        "alltoall": {
+          "capacity_bytes": 8388608,
+          "calls": 1,
+          "Triton_barriers": 38,
+          "staged_elements": 77791232,
+          "checked_lossless_elements": 0,
+          "epoch": 38,
+          "mapped_buffer_and_signal_bytes": 8389120,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        }
+      }
+    },
+    {
+      "rank": 2,
+      "all399_numerical_gate": true,
+      "FP32_masters_grad_moments_finite": true,
+      "effective_allphase_peak": {
+        "allocated_gib": 38.66190481185913,
+        "reserved_gib": 41.8671875
+      },
+      "phase_memory_ledger": [
+        {
+          "phase": "setup",
+          "torch": {
+            "allocated_gib": 8.347997188568115,
+            "reserved_gib": 8.36328125
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 8.847997188568115,
+            "reserved_gib": 8.86328125
+          }
+        },
+        {
+          "phase": "validation_0",
+          "torch": {
+            "allocated_gib": 22.90327215194702,
+            "reserved_gib": 25.16796875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 23.40327215194702,
+            "reserved_gib": 25.66796875
+          }
+        },
+        {
+          "phase": "quality_updates",
+          "torch": {
+            "allocated_gib": 30.661001682281494,
+            "reserved_gib": 36.4921875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 31.161001682281494,
+            "reserved_gib": 36.9921875
+          }
+        },
+        {
+          "phase": "validation_after_quality",
+          "torch": {
+            "allocated_gib": 38.16190481185913,
+            "reserved_gib": 40.376953125
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 38.66190481185913,
+            "reserved_gib": 40.876953125
+          }
+        },
+        {
+          "phase": "warmup_updates",
+          "torch": {
+            "allocated_gib": 37.46831750869751,
+            "reserved_gib": 41.32421875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 37.96831750869751,
+            "reserved_gib": 41.82421875
+          }
+        },
+        {
+          "phase": "timed_updates",
+          "torch": {
+            "allocated_gib": 37.46831750869751,
+            "reserved_gib": 41.3671875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 37.96831750869751,
+            "reserved_gib": 41.8671875
+          }
+        },
+        {
+          "phase": "profile_update",
+          "torch": {
+            "allocated_gib": 37.46831750869751,
+            "reserved_gib": 41.365234375
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 37.96831750869751,
+            "reserved_gib": 41.865234375
+          }
+        },
+        {
+          "phase": "post_update_checks",
+          "torch": {
+            "allocated_gib": 31.530848503112793,
+            "reserved_gib": 40.52734375
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 32.03084850311279,
+            "reserved_gib": 41.02734375
+          }
+        }
+      ],
+      "FSDP_AG": 397,
+      "FSDP_RS": 190,
+      "native_GPU_collectives": 0,
+      "communication_channels": {
+        "gather": {
+          "capacity_bytes": 100663296,
+          "calls": 540,
+          "Triton_barriers": 1494,
+          "staged_elements": 23438383365,
+          "checked_lossless_elements": 0,
+          "epoch": 1494,
+          "mapped_buffer_and_signal_bytes": 100663808,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        },
+        "scatter": {
+          "capacity_bytes": 387973120,
+          "calls": 195,
+          "Triton_barriers": 420,
+          "staged_elements": 37883970560,
+          "checked_lossless_elements": 37842027520,
+          "epoch": 420,
+          "mapped_buffer_and_signal_bytes": 387973632,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        },
+        "reduce": {
+          "capacity_bytes": 1048576,
+          "calls": 155,
+          "Triton_barriers": 305,
+          "staged_elements": 1600466,
+          "checked_lossless_elements": 0,
+          "epoch": 305,
+          "mapped_buffer_and_signal_bytes": 1049088,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        },
+        "alltoall": {
+          "capacity_bytes": 8388608,
+          "calls": 1,
+          "Triton_barriers": 38,
+          "staged_elements": 77791232,
+          "checked_lossless_elements": 0,
+          "epoch": 38,
+          "mapped_buffer_and_signal_bytes": 8389120,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        }
+      }
+    },
+    {
+      "rank": 3,
+      "all399_numerical_gate": true,
+      "FP32_masters_grad_moments_finite": true,
+      "effective_allphase_peak": {
+        "allocated_gib": 38.66190481185913,
+        "reserved_gib": 41.8671875
+      },
+      "phase_memory_ledger": [
+        {
+          "phase": "setup",
+          "torch": {
+            "allocated_gib": 8.347997188568115,
+            "reserved_gib": 8.36328125
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 8.847997188568115,
+            "reserved_gib": 8.86328125
+          }
+        },
+        {
+          "phase": "validation_0",
+          "torch": {
+            "allocated_gib": 22.90327215194702,
+            "reserved_gib": 25.16796875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 23.40327215194702,
+            "reserved_gib": 25.66796875
+          }
+        },
+        {
+          "phase": "quality_updates",
+          "torch": {
+            "allocated_gib": 30.661001682281494,
+            "reserved_gib": 36.4921875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 31.161001682281494,
+            "reserved_gib": 36.9921875
+          }
+        },
+        {
+          "phase": "validation_after_quality",
+          "torch": {
+            "allocated_gib": 38.16190481185913,
+            "reserved_gib": 40.376953125
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 38.66190481185913,
+            "reserved_gib": 40.876953125
+          }
+        },
+        {
+          "phase": "warmup_updates",
+          "torch": {
+            "allocated_gib": 37.46831750869751,
+            "reserved_gib": 41.32421875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 37.96831750869751,
+            "reserved_gib": 41.82421875
+          }
+        },
+        {
+          "phase": "timed_updates",
+          "torch": {
+            "allocated_gib": 37.46831750869751,
+            "reserved_gib": 41.3671875
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 37.96831750869751,
+            "reserved_gib": 41.8671875
+          }
+        },
+        {
+          "phase": "profile_update",
+          "torch": {
+            "allocated_gib": 37.46831750869751,
+            "reserved_gib": 41.365234375
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 37.96831750869751,
+            "reserved_gib": 41.865234375
+          }
+        },
+        {
+          "phase": "post_update_checks",
+          "torch": {
+            "allocated_gib": 31.530848503112793,
+            "reserved_gib": 40.52734375
+          },
+          "external_budget_bytes": 536870912,
+          "effective": {
+            "allocated_gib": 32.03084850311279,
+            "reserved_gib": 41.02734375
+          }
+        }
+      ],
+      "FSDP_AG": 397,
+      "FSDP_RS": 190,
+      "native_GPU_collectives": 0,
+      "communication_channels": {
+        "gather": {
+          "capacity_bytes": 100663296,
+          "calls": 540,
+          "Triton_barriers": 1494,
+          "staged_elements": 23438383365,
+          "checked_lossless_elements": 0,
+          "epoch": 1494,
+          "mapped_buffer_and_signal_bytes": 100663808,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        },
+        "scatter": {
+          "capacity_bytes": 387973120,
+          "calls": 195,
+          "Triton_barriers": 420,
+          "staged_elements": 37883970560,
+          "checked_lossless_elements": 37842027520,
+          "epoch": 420,
+          "mapped_buffer_and_signal_bytes": 387973632,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        },
+        "reduce": {
+          "capacity_bytes": 1048576,
+          "calls": 155,
+          "Triton_barriers": 305,
+          "staged_elements": 1600466,
+          "checked_lossless_elements": 0,
+          "epoch": 305,
+          "mapped_buffer_and_signal_bytes": 1049088,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        },
+        "alltoall": {
+          "capacity_bytes": 8388608,
+          "calls": 1,
+          "Triton_barriers": 38,
+          "staged_elements": 77791232,
+          "checked_lossless_elements": 0,
+          "epoch": 38,
+          "mapped_buffer_and_signal_bytes": 8389120,
+          "allocation_backend": "CUDA driver IPC",
+          "pool_closed": false
+        }
+      }
+    }
+  ],
+  "scope": "Actual36layer8B full512validation at0/1 withFP32optimizerstates and everyvalidation GPUevent checked. FirstcleanGPU result reused after fixing CPU prefetched-norm count assumption; no numeric/memory threshold changed. Formal16quality/28updates/twoorder4arms remain pending."
+}

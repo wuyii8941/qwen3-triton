@@ -175,6 +175,25 @@ V13最多相差一个FP32舍入单位，不能据此声称完整状态逐位相�
 全部512块、261632 shifted tokens、每卡验证B4，并检查完整验证GPU路径。
 正式16质量更新/28实际更新、四组两轮消融和独立审查尚未完成。
 
+`full_validation_screen_001` 的首次干净GPU结果已完成：0/1更新后各验证全部
+512块、261632 shifted tokens、每卡B4；有optimizer状态时的有效allocated/
+reserved验证峰值为38.662/40.877GiB（含512MiB外部预算），没有缩小batch或
+数据覆盖。全399梯度、FP32状态、全部阶段显存与GPU事件/形状检查均通过，
+见[完整验证可行性证据](results/qwen3_triton_runtime_v14_validation_feasibility_proof_v1.json)。
+
+原CPU审核曾因AG计数预测少两次而拒绝结果；原始GPU运行、原审核状态和
+attempt history均保留。Torch2.10在no-grad forward中仍记录post-forward顺序，
+直到backward结束才清理；因此每次验证后的首次训练backward额外误预取一次
+final norm。实际trace的模块注解也明确显示这一次额外prefetch，故两个验证
+阶段总共应计202次FSDP AG（200次验证forward＋2次训练时预取），不是200。
+只修正CPU审核并重新审核同一GPU结果，没有GPU重跑、没有放宽数值/显存阈值。
+原生HF和V13控制的首次训练trace也按这个原生FSDP行为计入额外一次AG。
+
+`formal_001` 已冻结源码并开始四组正逆序完整对照：HF native、V13、
+V13＋Triton AdamW、full runtime，再逆序。每角色16质量＋3预热＋8计时＋
+1真实profile更新＝28次实际更新，验证点0/16各512块。全部8组及CPU独立
+审查尚未完成，因此目前不能声明完整V14数值验收或整体性能采用。
+
 ## 完整8B验收约定（在本轮8B计时之前声明）
 
 沿用官方权重/语料身份、4×A6000、每卡B1/S512、BF16计算、FP32 master/梯度/
