@@ -1,0 +1,500 @@
+{
+  "complete": true,
+  "cases": 24,
+  "all_passed": true,
+  "rows": [
+    {
+      "m": 1,
+      "n": 4096,
+      "k": 4096,
+      "layout": "input",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        4096,
+        1
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 0,
+      "reference_accumulation": false,
+      "sliced": false,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 1,
+      "n": 4096,
+      "k": 4096,
+      "layout": "input",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        4096,
+        1
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 0,
+      "reference_accumulation": false,
+      "sliced": true,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 1,
+      "n": 4096,
+      "k": 4096,
+      "layout": "input",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        4096,
+        1
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 0,
+      "reference_accumulation": true,
+      "sliced": false,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 1,
+      "n": 4096,
+      "k": 4096,
+      "layout": "input",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        4096,
+        1
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 0,
+      "reference_accumulation": true,
+      "sliced": true,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 1,
+      "n": 4096,
+      "k": 4096,
+      "layout": "weight",
+      "input_stride": [
+        8192,
+        1
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 0,
+      "weight_storage_offset": 1,
+      "reference_accumulation": false,
+      "sliced": false,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 1,
+      "n": 4096,
+      "k": 4096,
+      "layout": "weight",
+      "input_stride": [
+        8192,
+        1
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 0,
+      "weight_storage_offset": 1,
+      "reference_accumulation": false,
+      "sliced": true,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 1,
+      "n": 4096,
+      "k": 4096,
+      "layout": "weight",
+      "input_stride": [
+        8192,
+        1
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 0,
+      "weight_storage_offset": 1,
+      "reference_accumulation": true,
+      "sliced": false,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 1,
+      "n": 4096,
+      "k": 4096,
+      "layout": "weight",
+      "input_stride": [
+        8192,
+        1
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 0,
+      "weight_storage_offset": 1,
+      "reference_accumulation": true,
+      "sliced": true,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 1,
+      "n": 4096,
+      "k": 4096,
+      "layout": "both",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 1,
+      "reference_accumulation": false,
+      "sliced": false,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 1,
+      "n": 4096,
+      "k": 4096,
+      "layout": "both",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 1,
+      "reference_accumulation": false,
+      "sliced": true,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 1,
+      "n": 4096,
+      "k": 4096,
+      "layout": "both",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 1,
+      "reference_accumulation": true,
+      "sliced": false,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 1,
+      "n": 4096,
+      "k": 4096,
+      "layout": "both",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 1,
+      "reference_accumulation": true,
+      "sliced": true,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 8,
+      "n": 64,
+      "k": 4096,
+      "layout": "input",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        4096,
+        1
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 0,
+      "reference_accumulation": false,
+      "sliced": false,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 8,
+      "n": 64,
+      "k": 4096,
+      "layout": "input",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        4096,
+        1
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 0,
+      "reference_accumulation": false,
+      "sliced": true,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 8,
+      "n": 64,
+      "k": 4096,
+      "layout": "input",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        4096,
+        1
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 0,
+      "reference_accumulation": true,
+      "sliced": false,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 8,
+      "n": 64,
+      "k": 4096,
+      "layout": "input",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        4096,
+        1
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 0,
+      "reference_accumulation": true,
+      "sliced": true,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 8,
+      "n": 64,
+      "k": 4096,
+      "layout": "weight",
+      "input_stride": [
+        4096,
+        1
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 0,
+      "weight_storage_offset": 1,
+      "reference_accumulation": false,
+      "sliced": false,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 8,
+      "n": 64,
+      "k": 4096,
+      "layout": "weight",
+      "input_stride": [
+        4096,
+        1
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 0,
+      "weight_storage_offset": 1,
+      "reference_accumulation": false,
+      "sliced": true,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 8,
+      "n": 64,
+      "k": 4096,
+      "layout": "weight",
+      "input_stride": [
+        4096,
+        1
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 0,
+      "weight_storage_offset": 1,
+      "reference_accumulation": true,
+      "sliced": false,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 8,
+      "n": 64,
+      "k": 4096,
+      "layout": "weight",
+      "input_stride": [
+        4096,
+        1
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 0,
+      "weight_storage_offset": 1,
+      "reference_accumulation": true,
+      "sliced": true,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 8,
+      "n": 64,
+      "k": 4096,
+      "layout": "both",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 1,
+      "reference_accumulation": false,
+      "sliced": false,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 8,
+      "n": 64,
+      "k": 4096,
+      "layout": "both",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 1,
+      "reference_accumulation": false,
+      "sliced": true,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 8,
+      "n": 64,
+      "k": 4096,
+      "layout": "both",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 1,
+      "reference_accumulation": true,
+      "sliced": false,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    },
+    {
+      "m": 8,
+      "n": 64,
+      "k": 4096,
+      "layout": "both",
+      "input_stride": [
+        8192,
+        2
+      ],
+      "weight_stride": [
+        8192,
+        2
+      ],
+      "input_storage_offset": 1,
+      "weight_storage_offset": 1,
+      "reference_accumulation": true,
+      "sliced": true,
+      "bitwise_equal_to_independent_FP32_oracle": true,
+      "max_abs": 0.0
+    }
+  ],
+  "strict_GPU_dispatch": {
+    "strict": true,
+    "replaced_GPU_operations": {
+      "aten::empty": 24
+    },
+    "host_metadata_operations": {
+      "aten::view": 48,
+      "aten::t": 24
+    },
+    "host_DMA_operations": {},
+    "scope": "Host views/autograd/FSDP scheduling/driver/DMA remain. Unknown GPU data operations fail. Full real-kernel trace must additionally prove no hidden native compute."
+  },
+  "oracle": "Dyadic/integer inputs with exact FP32 sum below2^24; native FP32 matrix multiply then BF16 cast. Candidate runs under strict Triton runtime. Positive-stride input/weight views include nonzero storage offsets; no default-route oracle."
+}

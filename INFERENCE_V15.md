@@ -736,7 +736,7 @@ and wall-timed. Source/options/raw-trace proof is bound to complete039validation
 The measured reference Graph request uses7.95%/8.12%less time than same-order
 HF Graph and1.64%/1.79%less than the default Triton Graph. The default route
 remains numerically unqualified and is only a timing ablation. Eager has no
-consistent improvement versus default and remains about3.63xslower than HF
+consistent improvement versus default and takes about3.63xthe time of HF
 eager. This is a Graph-only result at the stated finite shape/protocol, not a
 serving-throughput or unrestricted quality-equivalence claim. The earlier194.8ms
 prefill-only path failed original quality gates and is not promoted here.
@@ -757,3 +757,66 @@ CUDA_VISIBLE_DEVICES=1 bash scripts/research_python.sh \
   --qualification /data1/tzh/proj/qwen_operator_lab/artifacts/inference_v15/reference_norm_qualified_039/full/result.json \
   --output /data1/tzh/proj/qwen_operator_lab/artifacts/inference_v15/new_unique_paired_request
 ```
+
+
+## Final review fix and current-source qualification041
+
+The single fresh whole-branch review of2577c29..cf6f67f found one Important
+issue: after a reference route declined noncontiguous M1/M8input/weight views,
+the following GEMV still ignored strides; `sliced=True` could instead raise.
+The fix adds contiguity guards to both specialized routes, preserving the
+existing stride-aware Triton GEMM fallback. A new CPU dispatch regression was
+observed RED before the fix, then GREEN on24input/weight/both-view and
+default/reference/sliced combinations. Actual CUDA checks include nonzero
+storage offsets and compare all24cases against an independent exact FP32
+integer-sum oracle followed by BF16conversion; all are bitwise.
+
+Current041repeats the full fixed512xS512validation, all24original gates, both
+literal16-token continuations and all five phase audits on corrected source.
+Everything passes; corpus logits remain bitwise and meanNLLremains
+2.605893106199801. No foreignGPUprocess is observed. All model, verifier,
+benchmark, combined-run and raw-trace source hashes match. The raw traces
+total1172591bytes. The failed-input8stepregression and640synthetic norm cases
+also pass. This supersedes039/040for current-source qualification/timing;
+previous measurements remain historical evidence for their own hashes.
+
+The same continuous monitored lease then runs the identical two-order six-arm
+request protocol (B1S65,8outputs,2warmup+5measured,60samples):
+
+|Complete request, ms|Order1 median|Reverse-order median|
+|---|---:|---:|
+|HF eager|370.051|370.567|
+|HF Graph|220.338|220.151|
+|Default Triton eager (unqualified)|1188.216|1172.597|
+|Default Triton Graph (unqualified)|205.614|205.556|
+|Reference+tiling Triton eager|1186.672|1152.341|
+|Reference+tiling Triton Graph|202.146|202.154|
+
+Reference Graph uses8.26%/8.17%less time than same-orderHFGraph and
+1.69%/1.65%less than defaultTritonGraph. Reference eager takes3.21x/3.11xthe
+time of same-orderHFeager and has no general speed recommendation. Every graph
+matches its own eager path on all three changed inputs; reference matches HF
+on all three, while the default route matches2/3. No best-order cherry-picking
+or assertion/threshold removal is used. New options remain opt-in. Extra text
+teacher-forced diagnostics still retain23failedmeanAbs checks; the finite
+qualification does not establish universal numerical equivalence.
+
+The reviewer reported no Critical issue. The Important stride finding is fixed
+in one RED→GREEN pass and verified by8CPUregressions, actualGPUstridechecks,
+fresh complete8Bgates and pairedtiming; no second review was requested. The
+full CPU test suite passes46tests with61CUDA-dependent skips; actualGPUchecks
+are recorded separately. One Minor remains deferred: the implicit `forward`
+cache has prompt-only capacity, so continuation uses the explicit preallocated
+cache shown in Usage. Fresh training certification, serving/sampling/ragged/TP
+and concurrent graph use remain outside this inference evidence.
+
+[Current full report](results/qwen3_triton_inference_v15_reference_api_qualified_v3.json),
+[current source/raw evidence index](results/qwen3_triton_inference_v15_reference_api_receipt_v3.json),
+[current60paired samples](results/qwen3_triton_inference_v15_reference_paired_request_v2.json),
+[independent strided oracle](results/qwen3_triton_inference_v15_strided_boundary_v1.json),
+[review, fix verification and execution rulings](results/qwen3_triton_inference_v15_final_review_v1.json).
+
+The combined `qualify_qwen3_reference_request_v15.py` command now includes the
+stride regression and paired benchmark after complete validation, all under
+one stable continuously monitored GPU lease. Its output contains `full/`,
+`paired/`, `request/`, `strided.json`, `norm.json` and `source_receipt.json`.

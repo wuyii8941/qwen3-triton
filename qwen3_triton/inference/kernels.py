@@ -137,9 +137,9 @@ def linear(x,weight,*,gemv=True,accurate=False,sliced=False,prefill_tiling=False
         out=raw_empty((*shape[:-1],n),device=x.device,dtype=x.dtype)
         _gemm[(triton.cdiv(m,128)*triton.cdiv(n,bn),)](x,weight,out,m,n,k,k,1,1,k,128,bn,64,1,num_warps=4,num_stages=3)
         return out
-    if gemv and sliced and not accurate and m==1 and n==4096 and k in (4096,12288):
+    if gemv and sliced and not accurate and m==1 and n==4096 and k in (4096,12288) and x.is_contiguous() and weight.is_contiguous():
         return sliced_linear(x,weight)
-    if gemv and m<=8:
+    if gemv and m<=8 and x.is_contiguous() and weight.is_contiguous():
         y=raw_empty((*shape[:-1],n),device=x.device,dtype=x.dtype)
         _inference_gemv[(triton.cdiv(n,16),m)](x,weight,y,n,k,16,256,accurate,num_warps=4,enable_fp_fusion=False)
         return y

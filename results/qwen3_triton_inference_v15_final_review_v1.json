@@ -1,0 +1,51 @@
+{
+  "review": {
+    "base": "2577c29",
+    "head": "cf6f67fea2adcdfb9ba64a98daf71eefe76cf042",
+    "mode": "Single fresh-context read-only independent whole-branch source/evidence review; no reviewer GPU reproduction",
+    "critical": 0,
+    "important": [
+      {
+        "finding": "Small-row noncontiguous fallback ignores/rejects strides",
+        "file": "qwen3_triton/inference/kernels.py",
+        "disposition": "Fixed with two layout guards",
+        "regression": "check_inference_strided_routes_v15 observed RED, then24/24GREEN; actual24CUDA independent FP32 oracle comparisons all bitwise; fresh complete041qualification and paired benchmark; all8CPUregressions and fullCPU suite pass"
+      }
+    ],
+    "minor_deferred": [
+      "Implicit forward cache has only prompt capacity; use explicit preallocated KV cache for continuation"
+    ],
+    "reviewer_initial_verdict": "With fixes",
+    "rereview": false
+  },
+  "final_verification": {
+    "artifact_root": "/data1/tzh/proj/qwen_operator_lab/artifacts/inference_v15/reference_review_qualified_041",
+    "source_receipt": "qwen3_triton_inference_v15_reference_api_receipt_v3.json",
+    "full_report": "qwen3_triton_inference_v15_reference_api_qualified_v3.json",
+    "paired_report": "qwen3_triton_inference_v15_reference_paired_request_v2.json",
+    "CPU_regression_scripts": 8,
+    "CPU_suite_passed": 46,
+    "CPU_suite_CUDA_skipped": 61,
+    "qualified": true,
+    "monitored_resource_clean": true
+  },
+  "rulings_in_order": [
+    "Ruling: normalize Task1/2/3 headings to Task 1/2/3 for skill task tools \u2014 formatting only \u2014 a wrong choice would affect bookkeeping, not GPU behavior.",
+    "Ruling: keep the existing gemv=False preference by declining ordered GEMV routes in that mode; reference qualification uses default gemv=True \u2014 preserves existing API semantics \u2014 unmeasured option combinations carry no numerical-equivalence claim.",
+    "Ruling: add a fifth bounded raw trace for M17 prefill \u2014 new affected route requires its own complete audit; each trace remains<=8MiB \u2014 maximum retained raw evidence grows8MiB and actual sizes will be reported.",
+    "Ruling: distinguish functional_qualified from qualified; full qualification additionally requires requested512xS512 fixed validation and its gates \u2014 prevents an empty/failed corpus from yielding a complete acceptance claim \u2014 quick checks may be functional-only.",
+    "Ruling: use M128/N64 tiles for M65 split linears and M32/N64 for M17 split linears to avoid repeated weight reads across row tiles; preserve K64 partitions and forward reduction \u2014 costs numerical risk if compiler layouts differ, so all real-layer and full-model checks precede performance claims.",
+    "Ruling: launch independent Task3 benchmark after all032gates were read and verified, while Task2 evidence/docs are committed \u2014 keeps frozen executable sources and reduces GPU idle time; cost if wrong is bookkeeping overlap, not mismatched measurements.",
+    "Ruling: extend opt-in reference_accumulation to short-rowH4096RMSNorm using native2.10block-x width512/last_pow2(rows),1<=rows<16 \u2014 actualcapturedinput proves source of changed-request drift; costs compiler/layout numerical risk, so full gates rerun. DefaultFalse remains unchanged.",
+    "Ruling: fix functionaldunder boolean dispatch output selection \u2014 name.endswith(underscore) accidentally treated __and__/__or__ as in-place; CPUregressionRED proves unexpected operandalias; costs shared-runtime regression risk, so full inference revalidation and targetedCPUcheck required.",
+    "Ruling: perform the single fresh whole-branch review after Task3 evidence/tests commit and before integration \u2014 executing-plans specifies this final gate, avoiding a duplicate per-task review; cost if wrong is review bookkeeping order, not missing review.",
+    "Final: Ruling: universal parity/performance outside measured prompts/shapes/devices/versions \u2014 keep finite-protocol claims and23extra teacherforcedfailures disclosed \u2014 unmeasured inputs can drift or be slower.",
+    "Final: Ruling: padded/ragged/sampling/serving/TP/concurrent graph reuse \u2014 retain explicit unsupported scope, no feature claim \u2014 callers needing these capabilities must use another engine.",
+    "Final: Ruling: fresh training certification \u2014 inference does not re-certify historical V13/V14 metrics, sharedbooleanfix has targetedCPU+inferenceevidence \u2014 current training runtime has no fresh four-rank numerical/performance result.",
+    "Final: Ruling: reviewer did not run GPUs \u2014 accept read-only source/retained-SHA review plus author monitored fresh full validation \u2014 numerical/performance results are not independently reproduced by reviewer.",
+    "Final: Ruling: follow prior user authorization to push proven effective work by publishing the isolated research/inference-v15 branch after final verification \u2014 no redundant integration menu, no merge or unrequested PR \u2014 costs a new remote research version with explicitly bounded claims; main is not an integration target."
+  ],
+  "deferred_minors": [
+    "Final: minor (deferred): implicit forward(use_cache=True) allocates only prompt capacity; continuation requires documented explicit preallocated KV cache."
+  ]
+}
