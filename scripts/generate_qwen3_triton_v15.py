@@ -14,7 +14,7 @@ def main():
     ids=tokenizer(text,return_tensors='pt')['input_ids']
     model=TritonQwen3Inference.from_pretrained(a.model)
     with model.runtime:ids=ids.to(model.device)
-    out=model.generate(ids,max_new_tokens=a.max_new_tokens,eos_token_id=tokenizer.eos_token_id,pad_token_id=tokenizer.pad_token_id)
+    out=model.generate(ids,max_new_tokens=a.max_new_tokens,eos_token_id=model.generation_config.eos_token_id,pad_token_id=model.generation_config.pad_token_id)
     tokens=out[0,ids.shape[1]:].cpu().tolist()
     print(json.dumps(dict(generated_text=tokenizer.decode(tokens,skip_special_tokens=True),token_ids=tokens),ensure_ascii=False))
 

@@ -31,19 +31,48 @@ def metrics(x,y):
     return values
 
 
-def trace(out,name,fn,expected_cache_appends):
+def trace(out,name,fn,expected_cache_appends,*,warmup_collection=False):
     with torch.profiler.profile(activities=[torch.profiler.ProfilerActivity.CPU,torch.profiler.ProfilerActivity.CUDA]) as prof:
-        result=fn();torch.cuda.synchronize()
+        if warmup_collection:
+            from qwen3_triton.inference.kernels import positions
+            with torch.profiler.record_function('collection_bootstrap'):
+                for _ in range(64):positions(1,1,0,torch.device('cuda'))
+                torch.cuda.synchronize()
+        with torch.profiler.record_function('actual_'+name):
+            result=fn();torch.cuda.synchronize()
     p=out/(name+'.json.gz');prof.export_chrome_trace(str(p))
     assert p.stat().st_size<=8*2**20,'Trace exceeds8MiB cap'
     data=json.loads(gzip.decompress(p.read_bytes()));events=data['traceEvents'];counts=Counter(e['name'] for e in events if e.get('cat')=='kernel')
     allowed={'_inference_positions','_inference_cache_append','_inference_cached_attention','_inference_decode_partial','_inference_decode_merge','_inference_gemv','_inference_argmax_parts','_inference_select',
         '_hf_norm_forward','_hf_norm_rope_forward','_hf_swiglu_forward','_gemm','_gate_up','_lookup','_tables','_add',
         '_runtime_fill','_runtime_typed_fill','_runtime_strided_copy','_runtime_binary','_runtime_compare','_runtime_reduce','_runtime_unary'}
-    unknown={k:v for k,v in counts.items() if k not in allowed}
+    scopes=[e for e in events if e.get('name')=='actual_'+name and e.get('cat')=='user_annotation']
+    all_counts=dict(counts)
+    launches=[e for e in events if 'LaunchKernel' in e.get('name','')]
+    if scopes:
+        assert len(scopes)==1
+        scope=scopes[0];begin=scope['ts'];end=begin+scope['dur']
+        launches=[e for e in launches if begin<=e.get('ts',-1)<=end]
+        correlations={e.get('args',{}).get('correlation') for e in launches}
+        actual=[e for e in events if e.get('cat')=='kernel' and e.get('args',{}).get('correlation') in correlations]
+        counts=Counter(e['name'] for e in actual)
+    else:actual=[e for e in events if e.get('cat')=='kernel']
+    recorded={e.get('args',{}).get('correlation') for e in actual}
+    missing=[e.get('args',{}).get('correlation') for e in launches if e.get('args',{}).get('correlation') not in recorded]
+    base={'_inference_positions':1,'_lookup':1,'_tables':1,'_hf_norm_forward':73,'_hf_norm_rope_forward':72,'_inference_cache_append':36,'_inference_cached_attention':36,'_add':72}
+    if name=='decode':expected={**base,'_inference_gemv':253,'_hf_swiglu_forward':36,'_gemm':0,'_gate_up':0}
+    elif name=='prefill':expected={**base,'_gemm':180,'_gate_up':36,'_inference_gemv':1,'_hf_swiglu_forward':0}
+    elif name=='generate':
+        steps=expected_cache_appends//36
+        expected={k:v*steps for k,v in base.items()}
+        expected.update(_gemm=180,_gate_up=36,_inference_gemv=1+253*(steps-1),_hf_swiglu_forward=36*(steps-1),_inference_argmax_parts=steps,_inference_select=steps)
+    elif name=='setup':expected={k:0 for k in base}
+    else:raise ValueError('Explicit measured phase required')
+    differences={k:dict(expected=v,actual=counts[k]) for k,v in expected.items() if counts[k]!=v}
+    unknown={k:v for k,v in all_counts.items() if k not in allowed}
     memory=Counter(e.get('name') for e in events if e.get('cat')=='gpu_memset' or (e.get('cat')=='gpu_memcpy' and not e.get('name','').startswith(('Memcpy HtoD','Memcpy DtoH'))))
-    report=dict(sha256=sha(p),bytes=p.stat().st_size,kernels=dict(counts),unclassified=unknown,native_GPU_memory_events=dict(memory),expected_cache_appends=expected_cache_appends,
-        passed=not unknown and not memory and counts['_inference_cache_append']==expected_cache_appends)
+    report=dict(sha256=sha(p),bytes=p.stat().st_size,kernels=dict(counts),all_trace_kernels=all_counts,missing_launch_correlations=missing,count_discrepancies=differences,actual_scope_found=bool(scopes),unclassified=unknown,native_GPU_memory_events=dict(memory),expected_cache_appends=expected_cache_appends,
+        passed=not unknown and not memory and not missing and not differences and counts['_inference_cache_append']==expected_cache_appends)
     return result,report
 
 

@@ -6,7 +6,9 @@ SwiGLU、residual 和交叉熵的模型计算及反向均由 Triton 实现。
 V9–V13 的参数、autograd、分配器、FSDP2/NCCL 和 AdamW 使用共同的 PyTorch 基础设施。
 
 GitHub main 的首次发布固定已验收的 V9 实现与小型证据；本研究分支继续以此优化。
-这不是完整预训练框架，也不包含推理/KV cache 接口。
+训练版本的验收范围不包含完整预训练框架。新增 [V15 推理实现](INFERENCE_V15.md)
+提供单卡 BF16 prefill、KV cache、decode、贪心生成和固定请求 CUDA Graph；
+完整 S512 语料对照一致，但短序列数值门槛尚有未通过项，暂不作为质量等价推荐。
 
 本分支最新通过完整验收的是 [V13](OPTIMIZATION_V13.md)：
 两轮为 **4.5148 / 4.5176 秒/步**，

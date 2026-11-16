@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 import torch
 from torch import nn
-from transformers import AutoConfig
+from transformers import AutoConfig,GenerationConfig
 from transformers.modeling_outputs import CausalLMOutputWithPast
 from .._model import TritonQwen3ForCausalLM
 from .._model_optimized import OptimizationOptions
@@ -52,6 +52,7 @@ class TritonQwen3Inference(nn.Module):
         with torch.device('meta'):
             core=TritonQwen3ForCausalLM(config,OptimizationOptions())
         self.model=core.model;self.lm_head=core.lm_head;self.config=config
+        self.generation_config=GenerationConfig.from_model_config(config)
         self.gemv=gemv;self.split_decode=split_decode;self.runtime=InferenceRuntimeMode();self._cache_owner=object()
         self.eval()
 
@@ -71,6 +72,8 @@ class TritonQwen3Inference(nn.Module):
         from safetensors import safe_open
         path=Path(path).resolve();config=AutoConfig.from_pretrained(path,local_files_only=True)
         model=cls(config,gemv=gemv,split_decode=split_decode)
+        if (path/'generation_config.json').is_file():
+            model.generation_config=GenerationConfig.from_pretrained(path,local_files_only=True)
         index=path/'model.safetensors.index.json'
         shards=sorted(set(json.loads(index.read_text())['weight_map'].values())) if index.exists() else ['model.safetensors']
         state={}
@@ -154,10 +157,11 @@ class TritonQwen3Inference(nn.Module):
     def generate(self,input_ids,*,max_new_tokens=32,eos_token_id=None,pad_token_id=None):
         """Greedy GPU argmax with per-row EOS, padding and request-local cache."""
         if type(max_new_tokens) is not int or max_new_tokens<0:raise ValueError('Nonnegative max_new_tokens required')
-        eos=self.config.eos_token_id if eos_token_id is None else eos_token_id
+        eos=self.generation_config.eos_token_id if eos_token_id is None else eos_token_id
         eos=() if eos is None else ((eos,) if isinstance(eos,int) else tuple(eos))
         if any(type(x) is not int or not 0<=x<self.config.vocab_size for x in eos):raise ValueError('Invalid EOS tokens')
-        pad=pad_token_id if pad_token_id is not None else (self.config.pad_token_id if self.config.pad_token_id is not None else (eos[0] if eos else 0))
+        configured_pad=self.generation_config.pad_token_id
+        pad=pad_token_id if pad_token_id is not None else (configured_pad if configured_pad is not None else (eos[0] if eos else 0))
         if type(pad) is not int or not 0<=pad<self.config.vocab_size:raise ValueError('Invalid padding token')
         with self.runtime:
             if max_new_tokens==0:

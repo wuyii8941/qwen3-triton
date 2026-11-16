@@ -218,3 +218,35 @@ GPU activity events, so only35/36cache append kernels were observed. The raw
 trace is preserved and is not silently treated as a passing trace. A complete
 phase recording must be acquired separately; earlier passing traces do not
 replace this failed run's coverage result.
+
+
+## Complete phase recollection and generation metadata
+
+The stricter trace reviewer now requires exact complete operation counts and
+matching GPU activity for every actual-phase CUDA launch. Its CPU regression
+accepts a complete decode trace and rejects both a missingGEMV and an unmatched
+launch, even if36cache appends remain. A separate monitored8B recording now
+passes setup/prefill/decode/generation with no missing correlations, count gaps,
+unclassified kernels or native GPU memory events. Collector bootstrap consists
+of64Triton position launches separately annotated and retained in each raw trace.
+Original full_validation_008 stays failed; the fresh phase evidence is separately
+labeled. [New phase report](results/qwen3_triton_inference_v15_phase_reaudit_v1.json),
+[execution-source boundary](results/qwen3_triton_inference_v15_phase_reaudit_sources_v1.json).
+
+The local checkpoint lacked tokenizer_config.json. The exact official file from
+revisionb968826d9c46dd6066d109eabc6255188de91218was fetched and installed without
+changing weights or tokenizer.json. SHA256d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101,
+9732bytes; [source receipt](results/qwen3_triton_inference_v15_tokenizer_metadata_v1.json).
+Fresh clones need a complete local official checkpoint/tokenizer including this
+file. This supplies both thinking/non-thinking CPU chat templates.
+
+The model now loads generation_config.json and defaults to its EOSlist/padding;
+explicit generate arguments still override it. The CLI no longer replaces the
+model's EOSlist with a single tokenizerEOS. CPU regression verifies loading and
+CLI propagation of multipleEOS IDs with a conflicting tokenizer fixture. In the
+real8B CLI run, `--chat` answered `The capital of France is Paris.` and stopped
+on token151645after8tokens within a32-token budget, without stderr.
+[CLI record](results/qwen3_triton_inference_v15_chat_demo_v1.json).
+The metadata fix changes CPU stopping configuration, not GPU arithmetic;
+phase009's exact pre-metadata source is retained. This smoke check does not
+resolve the original short-shape numerical gates or establish broad chat quality.
