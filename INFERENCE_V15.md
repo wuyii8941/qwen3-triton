@@ -136,3 +136,33 @@ model. Earlier graph speed measurements apply to the earlier split-decode source
 not this revised default; graph speed and output parity must be revalidated for
 this source before a performance recommendation. A matched, monitored HF Graph
 comparison remains pending.
+
+
+## Monitored matched Graph comparison
+
+The revised decode source was compared with HF on oneA6000 with continuous
+foreign-process monitoring and the shared120s-idle admission. Both paths use
+one65-token prompt and8fixed greedy tokens, no earlyEOS. Both Graph paths match
+their own eager generation on three changed inputs. No foreign context was seen.
+Forward/reverse request medians are:
+
+| Path | Order1(seconds/request) | Order2(seconds/request) |
+| --- | ---: | ---: |
+| HF eager |0.31627|0.31498|
+| HF Graph |0.21889|0.21861|
+| Triton eager |1.14893|1.14441|
+| Triton Graph |0.20499|0.20480|
+
+Triton Graph request time is6.35%/6.32% lower than HF Graph in this fixed-shape
+experiment. **This remains conditional performance evidence, not a quality-
+equivalent performance recommendation:** one of the three inputs generates
+different tokens from HF, and the original full-model logit gates still fail.
+Preparation/capture cost is excluded in all replay timings, both models are
+resident simultaneously, and this is not a serving throughput result.
+[Full monitored comparison](results/qwen3_triton_inference_v15_paired_graph_v1.json).
+
+On identical officialHF intermediate operands, all measured rotary tables,
+fusedQK-Norm/RoPE and SwiGLU outputs match bitwise; remaining local differences
+are in linear projection/MLP accumulation. The current separate-GEMV decode
+MLP is closer toHF than the experimental tensorcore fusedMLP on those inputs,
+so that experimental path was not adopted. [Boundary diagnostics](results/qwen3_triton_inference_v15_boundaries_v1.json).
