@@ -1,0 +1,12 @@
+{
+  "complete": true,
+  "kind": "CPU_SM86_precompile",
+  "GPU_run": false,
+  "source_commit": "0763259",
+  "source_sha256": "98247fac57c66fb760105a5e6eecef1f902d224c3759efae8c25f27a78a51883",
+  "operation": "FP64 validation NLL/count division",
+  "kernel": "_runtime_binary",
+  "error": "tl.div_rn supports FP32 only: Expected dtype ['fp32'] but got fp64",
+  "planned_correction": "Use libdevice.div_rn FP64 overload; preserve FP32 path. Source unchanged until current pilot controller is terminal.",
+  "full_model_qualified": false
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "number": 1,
+    "resource_contaminated": false,
+    "returncode": 1,
+    "accepted": false,
+    "monitor_sha256": "ff4a9b7fbcfec0796a30922a367d1146e68548e03396ef8ee7f820677c2debb1",
+    "log_sha256": "c2ed3fbe77c94b43b5358c94714a8c134b40a438e3fc18bab1e080cb35f0576f"
+  }
+]

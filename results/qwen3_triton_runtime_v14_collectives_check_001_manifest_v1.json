@@ -1,0 +1,16 @@
+{
+  "kind": "collectives",
+  "sources": {
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/run_triton_runtime_checks_v14.py": "19dcc98e789f83958e72c79fa9e7e5fd5e84d596a1f786e5b5d8f6d4f2dc803d",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/check_triton_collectives_v14.py": "f652a3451c3f8b02f2b3550aa47ff004ebce9cc4806594909f1ccae612f71b4e",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/research_python.sh": "90924f69c4227a4027e4df95a84664c85caa96ee91fee21e3c0a48be432cfc85",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/run_vocab_resource_queue_v12.py": "30a54056b3e70a648a0c80156e666808da76e3809dc3f3d36f1e3638363d381c",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/__init__.py": "65282fd5bafd653d89d7bbb6a93607db85fa278b2c8eaba276c8fe974b419e0b",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/collectives.py": "f4ec0b407167df94240b46fd6785d0470b43d0289afed7dfef7837a43c610b3e",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/memory.py": "3c2bae3b1457b0f71c56b792a02e97ccabb87aa4edb37b65655b0d8efecbee4e"
+  },
+  "source_root": "/data1/tzh/proj/qwen3-triton-runtime-v14",
+  "numerical_contract": "All-coordinate CPU oracles for gathers/exchange/SUM/AVG/MAX/MIN; exact BF16-input actual192946432-element RS; system barrier/streams/negative guards.",
+  "resource_policy": "First clean attempt only; retain contamination, retry after120s idle; clean technical failure stops. No external process signalled.",
+  "full_model_qualified": false
+}

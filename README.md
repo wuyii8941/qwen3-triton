@@ -13,12 +13,13 @@ GitHub main 的首次发布固定已验收的 V9 实现与小型证据；本研�
 相对同轮 HF＋Flash 耗时减少 **14.75% / 13.80%**，
 相对已有 V12 减少 **7.95% / 7.85%**。下文保留各代各自的实验协议与结果。
 
-[V14 完整 GPU 运行时](TRITON_RUNTIME_V14.md) 正在验收：新增 Triton AdamW、
-FSDP GPU 打包/拷贝/累加和全部GPU张量通信/屏障，保留CPU调度及驱动服务。
-最新真实36层8B的5次更新已通过四rank全399梯度、FP32状态、显存及
-初始化/首次更新/整步GPU事件检查；512块验证和正式正逆序消融仍待完成。
-新 [运行时入口](scripts/train_qwen3_runtime_v14.py) 默认 `--runtime full`，
-当前仅用于研究验证，不从这次试跑推断整体提速或完整数值验收。
+[V14 完整 GPU 运行时](TRITON_RUNTIME_V14.md) 已通过完整8B功能验收：四rank、
+全399参数、16步质量检查、初末512块验证、显存和完整GPU事件审核均通过。
+完整 GPU 数据通路由 Triton 实现，CPU FSDP/autograd 调度与 CUDA 驱动服务保留。
+但同一正式对照中 V14 为 **5.927 秒/步**，比 HF＋Flash 慢 **12.3%**，比 V13
+慢 **31.1%**，因此没有采用为性能默认。新[运行时入口](scripts/train_qwen3_runtime_v14.py)
+仍默认 `--runtime full` 以复现完整实现；性能推荐继续使用已验收的 V13。
+完整协议与审核摘要见[正式证据索引](results/qwen3_triton_runtime_v14_evidence_index_v1.json)。
 
 ## V9：首次完整实现的实测结果
 

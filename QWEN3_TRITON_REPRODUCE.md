@@ -1,10 +1,12 @@
 # Reproduce complete Qwen3-8B experiments
 
 V14 extends model arithmetic to the complete training GPU data path. Its
-five-update actual8B and full512-block feasibility checks have passed;
-the eight-role16-quality-update cohort is still running. The
-[V14 entry and controls](#v14-full-training-gpu-runtime) below describe this
-extension. V9-V13 results retain their original protocols and scope.
+eight-role, two-order, 16-quality-update cohort and independent CPU review
+passed all predeclared functional, numerical, memory and GPU coverage gates.
+Performance was not adopted: full runtime is about12.3% slower than HF+Flash
+and31.1% slower than V13. The [V14 entry and controls](#v14-full-training-gpu-runtime)
+and [formal evidence index](results/qwen3_triton_runtime_v14_evidence_index_v1.json)
+describe the bounded claim. V9-V13 results retain their original protocols and scope.
 
 The public V9 implementation has completed all sixteen accepted four-rank
 official Qwen3-8B roles: HF + Flash, complete Triton base/optimized and five
@@ -284,9 +286,10 @@ its CPU reviewer rechecks original archive hashes/norms, all399 recorded
 error contracts, full validation, memory and raw GPU events.
 
 Raw runs always report `full_runtime_qualified=false`; only the independent
-whole-cohort review can qualify the feature. That is separate from
-`performance_adopted`: the full implementation may be numerically qualified
-without meeting the two-order speed rule. The current in-progress status,
-component evidence and retained failures are in
-[TRITON_RUNTIME_V14.md](TRITON_RUNTIME_V14.md). Exact native addition-order
-matching is qualified only for the measured4A6000/versions/message shapes.
+whole-cohort review can qualify the feature. V14 is now functionally qualified,
+while `performance_adopted=false`: in both orders the full runtime is slower
+than HF+Flash and V13. The bounded role reports, frozen protocol, retained
+attempts, historical source receipts and reviewer result are linked from the
+[formal evidence index](results/qwen3_triton_runtime_v14_evidence_index_v1.json).
+Exact native addition-order matching is qualified only for the measured
+4×A6000/software/message shapes.

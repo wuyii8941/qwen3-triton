@@ -1,0 +1,11 @@
+[
+  {
+    "number": 1,
+    "resource_contaminated": false,
+    "returncode": 0,
+    "accepted": true,
+    "monitor_sha256": "43d5fd880589aaf3e3f67fb9fe72cbbfbe6a43e44c564ae06c01423081c2b897",
+    "log_sha256": "5badd614fb84735680da75ba972d62bfccf3805511b2e77e01efa1ccfbe16728",
+    "result_sha256": "73c0285557259c9fa7264438d3ccecb427e0c6977a9d34a4837f661f8cd57bbf"
+  }
+]

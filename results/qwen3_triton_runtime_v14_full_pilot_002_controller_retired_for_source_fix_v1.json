@@ -1,0 +1,10 @@
+{
+  "pid": 445856,
+  "proc_start_time": "1256795109",
+  "stage_before": "waiting_stable_four_GPU_lease",
+  "worker_children_before": [],
+  "reason": "Known FP64 validation division compile failure and lossless trace storage update require a new source freeze. Both prior GPU attempts resource contaminated; no clean completed attempt discarded.",
+  "attempts_sha256": "d043bdc7f3838c51634534adaca62dd4d57d5613ca89d5557d75f049b533b29a",
+  "source_manifest_sha256": "d30a7a4c88bee43f7989beadde153086db4db12c7e8bd0a0d8bde1f9086257a6",
+  "controller_terminal_verified": true
+}

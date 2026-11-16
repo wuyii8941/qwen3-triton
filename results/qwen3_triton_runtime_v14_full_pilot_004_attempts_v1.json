@@ -1,0 +1,12 @@
+[
+  {
+    "number": 1,
+    "resource_contaminated": false,
+    "returncode": 0,
+    "accepted": false,
+    "monitor_sha256": "b287ec5c0888f4f1cb7cdc00e0aef919c4c8360fc001e1816da70e61347433bc",
+    "log_sha256": "3d5e8391ebd40e6e2a5e4750294031974be39e699b6b1106170343fb58976863",
+    "result_sha256": "adf9c5ce72c657ca3b3c0f4fb9c53d1f50f55846f1ffb6f922bdb16a8b9c385a",
+    "gate_review_sha256": "51dc02ff65a7975176211cb5540b76542983ec0b8170fd2f14fc07233af5c7a2"
+  }
+]

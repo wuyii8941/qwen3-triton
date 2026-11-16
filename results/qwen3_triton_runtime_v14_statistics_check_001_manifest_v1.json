@@ -1,0 +1,18 @@
+{
+  "kind": "statistics",
+  "sources": {
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/run_triton_runtime_checks_v14.py": "f6fee610952c348eab3aee9e6bf0581f26559302531d14fa08f038d678e3cacf",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/check_triton_statistics_v14.py": "57749648860a0c6368326df30ae7c0512a88b5851d9b07c2d91b0ab4d2f626de",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/research_python.sh": "90924f69c4227a4027e4df95a84664c85caa96ee91fee21e3c0a48be432cfc85",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/scripts/run_vocab_resource_queue_v12.py": "30a54056b3e70a648a0c80156e666808da76e3809dc3f3d36f1e3638363d381c",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/__init__.py": "65282fd5bafd653d89d7bbb6a93607db85fa278b2c8eaba276c8fe974b419e0b",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/metrics.py": "57212cc0946967c54bd417cc29e9cf14537d3871b079744580addaf684b223fc",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/dispatch.py": "6c2446aa41121dd6f5e7067c6994fa7c46f8b08c408c4a9a2c50b621364c1eed",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/memory.py": "3c2bae3b1457b0f71c56b792a02e97ccabb87aa4edb37b65655b0d8efecbee4e",
+    "/data1/tzh/proj/qwen3-triton-runtime-v14/qwen3_triton/runtime/ops.py": "5dfc472bfd74c20cb821faa186df5e090e4b8c7e7a3031036eb5c484d91f5ab1"
+  },
+  "source_root": "/data1/tzh/proj/qwen3-triton-runtime-v14",
+  "numerical_contract": "32batch weighted FP64 NLL/count accumulation and final division bitwise vs CPU; FP64 fills, zero-token NaN, initial factories and pure Triton GPU trace.",
+  "resource_policy": "First clean attempt only; retain contamination, retry after120s idle; clean technical failure stops. No external process signalled.",
+  "full_model_qualified": false
+}

@@ -1,9 +1,11 @@
 # Source provenance
 
-Earlier model source snapshots were published; the V14 runtime extension is
-a local research candidate while its full-model gates remain pending. The
-repository's source license must be selected before an open-source release;
-the third-party notices below do not license this project's own source.
+Earlier model source snapshots were published. V14 has passed its fixed
+4×A6000 full-model functional qualification, but formal comparisons found it
+slower than both HF+Flash and V13, so it is not adopted as a performance
+recommendation. The repository's source license remains to be selected before
+an open-source release; the third-party notices below do not license this
+project's own source.
 
 `model.py` is the complete 36-layer Qwen3-8B candidate. `_model.py` and
 `_model_optimized.py` provide its model graph and optimization switches.
@@ -81,9 +83,9 @@ and [Qwen3-8B model revision](https://huggingface.co/Qwen/Qwen3-8B/tree/b968826d
   inspect kernel events plus native GPU memset and device-copy events.
 
 These references describe algorithms/APIs; runtime source is independently
-written. Component proof and clean full8B failures are preserved in
-`TRITON_RUNTIME_V14.md` and its evidence links. Component bitwise parity does
-not qualify the entire model, nor establish an overall speed improvement.
+written. Formal full8B proof, earlier component checks and failed attempts are
+preserved in `TRITON_RUNTIME_V14.md` and the linked bounded evidence.
+Functional qualification does not establish an overall speed improvement.
 
 ## Current qualification boundary
 

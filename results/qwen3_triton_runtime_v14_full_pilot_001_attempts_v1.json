@@ -1,0 +1,18 @@
+[
+  {
+    "number": 1,
+    "resource_contaminated": true,
+    "returncode": 1,
+    "accepted": false,
+    "monitor_sha256": "6187e867b847cca00ee8a34727b31d464dd12df29d89f37909f582cc78c9d95d",
+    "log_sha256": "0a802543341697820e5722b33a7390662e2238ae6040ab1c03f76f165af03261"
+  },
+  {
+    "number": 2,
+    "resource_contaminated": false,
+    "returncode": 1,
+    "accepted": false,
+    "monitor_sha256": "a36a0061c1db29775bce222a47001a356352b8b520ceee2438a9d5c7f12aa60f",
+    "log_sha256": "540a0c1fd280824d43b40a761fc59bc78ac824ed2f04f21e8a8a84b54e8df0dd"
+  }
+]
