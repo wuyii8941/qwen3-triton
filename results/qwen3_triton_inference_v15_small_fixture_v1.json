@@ -1,0 +1,105 @@
+{
+  "complete": true,
+  "small_fixture_only": true,
+  "checks": [
+    {
+      "kind": "attention",
+      "batch": 1,
+      "sequence": 17,
+      "start": 0,
+      "max_abs": 0.006875038146972656,
+      "relative_l2": 0.0016699411207810044
+    },
+    {
+      "kind": "attention",
+      "batch": 2,
+      "sequence": 3,
+      "start": 15,
+      "max_abs": 0.0037314891815185547,
+      "relative_l2": 0.001961595145985484
+    },
+    {
+      "kind": "attention",
+      "batch": 1,
+      "sequence": 1,
+      "start": 0,
+      "max_abs": 0.0,
+      "relative_l2": 0.0
+    },
+    {
+      "kind": "attention",
+      "batch": 2,
+      "sequence": 1,
+      "start": 31,
+      "max_abs": 0.0031015872955322266,
+      "relative_l2": 0.001649254932999611
+    },
+    {
+      "kind": "attention",
+      "batch": 1,
+      "sequence": 1,
+      "start": 256,
+      "max_abs": 0.0008367002010345459,
+      "relative_l2": 0.0017029367154464126
+    },
+    {
+      "kind": "attention",
+      "batch": 1,
+      "sequence": 1,
+      "start": 513,
+      "max_abs": 0.00048786401748657227,
+      "relative_l2": 0.001630812999792397
+    },
+    {
+      "kind": "full",
+      "max_abs": 0.0107421875,
+      "relative_l2": 0.007198581472039223
+    },
+    {
+      "kind": "chunked",
+      "max_abs": 0.009765625,
+      "relative_l2": 0.007287202402949333
+    },
+    {
+      "kind": "cache_vs_recompute",
+      "max_abs": 0.0078125,
+      "relative_l2": 0.003913458436727524
+    }
+  ],
+  "cache_reset": true,
+  "capacity_guard": true,
+  "foreign_cache_guard": true,
+  "token_bounds_guard": true,
+  "greedy_matches_HF": true,
+  "zero_tokens": true,
+  "EOS": true,
+  "mixed_finished_rows": true,
+  "strict_GPU_dispatch": {
+    "strict": true,
+    "replaced_GPU_operations": {
+      "aten::to": 26,
+      "aten::empty": 571,
+      "aten::ge": 15,
+      "aten::lt": 15,
+      "aten::__and__": 15,
+      "aten::all": 16,
+      "aten::empty_like": 85,
+      "aten::clone": 1
+    },
+    "host_metadata_operations": {
+      "aten::_has_compatible_shallow_copy_type": 50,
+      "aten::set_": 494,
+      "aten::view": 170,
+      "aten::t": 33,
+      "aten::slice": 11,
+      "aten::select": 7,
+      "aten::alias": 1
+    },
+    "host_DMA_operations": {
+      "to_host_or_device": 26,
+      "scalar_DtoH": 16
+    },
+    "scope": "Host views/autograd/FSDP scheduling/driver/DMA remain. Unknown GPU data operations fail. Full real-kernel trace must additionally prove no hidden native compute."
+  },
+  "limitations": "Two-layer random fixture, not official8B verification or timing."
+}

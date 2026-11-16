@@ -36,7 +36,7 @@ class TritonRuntimeMode(TorchDispatchMode):
         if not cuda:return func(*args,**kw)
         if name in _METADATA:
             self.metadata[name]+=1;return func(*args,**kw)
-        if name=='aten::_local_scalar_dense':
+        if name in ['aten::_local_scalar_dense','aten::is_nonzero']:
             self.host_dma['scalar_DtoH']+=1;return func(*args,**kw)
         # Local FSDP tensors are ordinary tensors. An unexpected DTensor
         # arithmetic route must not disable this mode around native kernels.
@@ -90,13 +90,14 @@ class TritonRuntimeMode(TorchDispatchMode):
                 value=value.item()
             return self._fill_strided(args[0],value)
         if name in ['aten::add','aten::add_','aten::sub','aten::sub_','aten::mul','aten::mul_','aten::div','aten::div_',
-                    'aten::eq','aten::ne','aten::lt','aten::le','aten::gt','aten::ge','aten::bitwise_and','aten::bitwise_or']:
-            op=name.split('::')[1].rstrip('_');op={'bitwise_and':'and','bitwise_or':'or'}.get(op,op)
+                    'aten::eq','aten::ne','aten::lt','aten::le','aten::gt','aten::ge','aten::bitwise_and','aten::bitwise_or',
+                    'aten::__and__','aten::__or__']:
+            op=name.split('::')[1].rstrip('_');op={'bitwise_and':'and','bitwise_or':'or','__and':'and','__or':'or'}.get(op,op)
             if kw.get('rounding_mode') is not None:raise RuntimeError('Explicit rounded division is not implemented')
             out=args[0] if name.endswith('_') else kw.get('out')
             return ops.binary(args[0],args[1],op,out=out,alpha=kw.get('alpha',1))
-        if name in ['aten::abs','aten::neg','aten::isfinite','aten::bitwise_not']:
-            return ops.unary(args[0],{'aten::bitwise_not':'not'}.get(name,name.split('::')[1]),out=kw.get('out'))
+        if name in ['aten::abs','aten::neg','aten::isfinite','aten::bitwise_not','aten::__invert__']:
+            return ops.unary(args[0],{'aten::bitwise_not':'not','aten::__invert__':'not'}.get(name,name.split('::')[1]),out=kw.get('out'))
         if name in ['aten::all','aten::any','aten::sum']:
             if len(args)>1 or kw.get('dim') is not None or kw.get('keepdim',False):
                 raise RuntimeError(f'Unimplemented dimension-specific GPU reduction: {func}')
