@@ -529,3 +529,23 @@ GPUprocesses were observed. Formal API/audit work is planned only after the
 remaining numerical gate is resolved.
 [Actual-source/local-call receipt](results/qwen3_triton_inference_v15_native_order_local_v1.json),
 [unchanged-gate raw report](results/qwen3_triton_inference_v15_native_order_full_v1.json).
+
+
+## Native GEMV tree identification
+
+Controlled sparse dots now cover18large-term placements and everyKcoordinate
+for native K/V and gate/up GEMV. The recorded native kernel identities match
+the complete schedule study. Repeated markers are consistent; no foreignGPU
+processes were observed. A CPU binary-addition-tree model is checked against
+explicit FP32 sparse-dot evaluation before fitting478regular schedules per
+operator. The fits include a simple sequential per-lane accumulation followed
+by a descending-offset warp tree:32lanes forK/V,16forgate/up.
+
+Nine/eightparameter configurations fit the respective masks exactly; several
+are alternative load groupings for the same arithmetic tree. This does not
+prove full arithmetic identity on arbitrary operands. The next reference-only
+run implements the inferred tree explicitly (rather than relying on an
+implementation-dependent generic reduction), preserves K-order while unrolling
+loads, and rechecks real operands plus all original full-model gates. The fast
+existing LMhead is unchanged. Production defaults remain unchanged.
+[Complete GEMV tree probe](results/qwen3_triton_inference_v15_gemv_tree_v1.json).
