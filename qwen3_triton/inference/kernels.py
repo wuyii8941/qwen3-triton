@@ -4,7 +4,8 @@ import torch
 import triton
 import triton.language as tl
 from ..runtime.memory import raw_empty
-from ..kernels.linear import matmul
+from ..kernels.linear import matmul,_gemm
+from ..kernels.mlp_precision import _gate_up
 from ..kernels.math_precision import _hf_norm_forward,_hf_norm_rope_forward
 
 
@@ -125,8 +126,13 @@ def _inference_gemv(X,W,Y,N:tl.constexpr,K:tl.constexpr,BN:tl.constexpr,BK:tl.co
     tl.store(Y+row*N+n,tl.sum(acc,1),n<N)
 
 
-def linear(x,weight,*,gemv=True,accurate=False,sliced=False):
+def linear(x,weight,*,gemv=True,accurate=False,sliced=False,prefill_tiling=False):
     shape=x.shape;m=x.numel()//shape[-1];k=shape[-1];n=weight.shape[0]
+    if prefill_tiling and m==65 and x.is_cuda and x.dtype==torch.bfloat16 and weight.dtype==x.dtype and weight.device==x.device and x.is_contiguous() and weight.is_contiguous() and (n,k) in ((4096,4096),(1024,4096),(4096,12288)):
+        bn=32 if n==1024 else 64
+        out=raw_empty((*shape[:-1],n),device=x.device,dtype=x.dtype)
+        _gemm[(triton.cdiv(m,128)*triton.cdiv(n,bn),)](x,weight,out,m,n,k,k,1,1,k,128,bn,64,1,num_warps=4,num_stages=3)
+        return out
     if gemv and sliced and not accurate and m==1 and n==4096 and k in (4096,12288):
         return sliced_linear(x,weight)
     if gemv and m<=8:
@@ -202,3 +208,14 @@ def sliced_linear(x,weight):
     out=raw_empty((*x.shape[:-1],weight.shape[0]),device=x.device,dtype=x.dtype)
     _inference_sliced_linear[(triton.cdiv(weight.shape[0],32),)](x,weight,out,weight.shape[0],weight.shape[1],num_warps=4,num_stages=2,enable_fp_fusion=False)
     return out
+
+
+
+def tiled_prefill_gate_up(x,gate_weight,up_weight):
+    """Measured SM86 M65 configuration; same BF16 rounding as gate_up_swiglu."""
+    n,k=gate_weight.shape
+    if x.numel()!=65*4096 or x.shape[-1]!=4096 or (n,k)!=(12288,4096) or up_weight.shape!=gate_weight.shape:raise ValueError('Measured Qwen3-8B M65 gate/up shape required')
+    if x.dtype!=torch.bfloat16 or not x.is_cuda or any(t.device!=x.device or t.dtype!=x.dtype or not t.is_contiguous() for t in (x,gate_weight,up_weight)):raise ValueError('Matching contiguous BF16 CUDA inputs required')
+    shape=(*x.shape[:-1],n);g=raw_empty(shape,device=x.device,dtype=x.dtype);u=raw_empty(shape,device=x.device,dtype=x.dtype);y=raw_empty(shape,device=x.device,dtype=x.dtype)
+    _gate_up[(triton.cdiv(65,128)*triton.cdiv(n,32),)](x,gate_weight,up_weight,g,u,y,65,n,k,128,32,64,1,num_warps=4,num_stages=3,enable_fp_fusion=False)
+    return y

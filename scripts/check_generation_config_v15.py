@@ -21,7 +21,8 @@ def main():
    eos_token_id=2;pad_token_id=7
    def __call__(self,*a,**kw):return {'input_ids':torch.tensor([[5]])}
    def decode(self,*a,**kw):return 'fixture'
-  with patch.object(cli.AutoTokenizer,'from_pretrained',return_value=Tokenizer()),patch.object(cli.TritonQwen3Inference,'from_pretrained',return_value=model),patch('sys.argv',['generate','--model',tmp,'--prompt','fixture']):cli.main()
+  with patch.object(cli.AutoTokenizer,'from_pretrained',return_value=Tokenizer()),patch.object(cli.TritonQwen3Inference,'from_pretrained',return_value=model) as loader,patch('sys.argv',['generate','--model',tmp,'--prompt','fixture','--prefill-tiling']):cli.main()
+  assert loader.call_args.kwargs.get('prefill_tiling') is True,'CLI discarded explicit prefill tiling option'
   assert calls[0].get('eos_token_id')==[2,3] and calls[0].get('pad_token_id')==0,calls
  print('Local EOS list/padding retained and used by CLI')
 if __name__=='__main__':main()

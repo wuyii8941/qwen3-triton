@@ -85,7 +85,7 @@ def run(a,out,foreign):
     assert identity['repo']=='Qwen/Qwen3-8B' and Path(identity['model_dir']).resolve()==model_dir
     for name,item in identity['shards'].items():assert sha(model_dir/name)==item['sha256'],name
     for name,h in identity['model_files_sha256'].items():assert sha(model_dir/name)==h,name
-    candidate,setup=trace(out,'setup',lambda:TritonQwen3Inference.from_pretrained(model_dir,sliced_decode=a.sliced_decode),0,warmup_collection=a.warmup_collection,sliced_decode=a.sliced_decode)
+    candidate,setup=trace(out,'setup',lambda:TritonQwen3Inference.from_pretrained(model_dir,sliced_decode=a.sliced_decode,prefill_tiling=a.prefill_tiling),0,warmup_collection=a.warmup_collection,sliced_decode=a.sliced_decode)
     assert sum(p.numel() for p in candidate.parameters())==8190735360 and len(list(candidate.parameters()))==399 and len(candidate.model.layers)==36
     hf=AutoModelForCausalLM.from_pretrained(model_dir,local_files_only=True,torch_dtype=torch.bfloat16,attn_implementation='sdpa').eval().cuda()
     tokenizer=AutoTokenizer.from_pretrained(model_dir,local_files_only=True)
@@ -171,7 +171,7 @@ def run(a,out,foreign):
     numerical=all(v['passed'] for v in cases);greedy=all(v['exact_match'] for v in generation)
     result=dict(complete=True,model='Qwen/Qwen3-8B',revision=identity['revision'],parameter_count=8190735360,layers=36,single_GPU=True,
         environment=dict(torch=torch.__version__,CUDA=torch.version.cuda,GPU=torch.cuda.get_device_name(),capability=torch.cuda.get_device_capability()),
-        physical_GPU=a.physical_device,sliced_decode=a.sliced_decode,compute='BF16 weights/activations, FP32 reductions',corpus_protocol=dict(sequence=a.corpus_sequence,blocks=a.corpus_blocks,shifted_tokens=a.corpus_blocks*(a.corpus_sequence-1),full_validation=a.corpus_blocks==512 and a.corpus_sequence==512),corpus_diagnostics=corpus_rows,numerics=numerical,greedy_exact_match=greedy,cases=cases,generation=generation,traces=traces,latencies=latencies,
+        physical_GPU=a.physical_device,sliced_decode=a.sliced_decode,prefill_tiling=a.prefill_tiling,compute='BF16 weights/activations, FP32 reductions',corpus_protocol=dict(sequence=a.corpus_sequence,blocks=a.corpus_blocks,shifted_tokens=a.corpus_blocks*(a.corpus_sequence-1),full_validation=a.corpus_blocks==512 and a.corpus_sequence==512),corpus_diagnostics=corpus_rows,numerics=numerical,greedy_exact_match=greedy,cases=cases,generation=generation,traces=traces,latencies=latencies,
         strict_GPU_dispatch=candidate.runtime.report(),peak_process_allocated_GiB=torch.cuda.max_memory_allocated()/2**30,foreign_GPU_processes=foreign,
         diagnostic_only=a.diagnostic,qualified=not a.diagnostic and numerical and greedy and all(t['passed'] for t in traces.values()) and not foreign,
         source_sha256={str(p.relative_to(ROOT)):sha(p) for p in sources},input_identity_sha256=sha(a.identity),
@@ -182,7 +182,7 @@ def run(a,out,foreign):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',default='/data1/tzh/models/Qwen/Qwen3-8B');p.add_argument('--identity',default='/data1/tzh/proj/qwen_operator_lab/artifacts/official_qwen3_inputs_v1.json');p.add_argument('--sliced-decode',action='store_true');p.add_argument('--warmup-collection',action='store_true');p.add_argument('--corpus-sequence',type=int,default=128);p.add_argument('--corpus-blocks',type=int,default=0);p.add_argument('--diagnostic',action='store_true',help='Retain failing metrics and continue; qualification still requires every original gate');p.add_argument('--physical-device',type=int,default=0);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',default='/data1/tzh/models/Qwen/Qwen3-8B');p.add_argument('--identity',default='/data1/tzh/proj/qwen_operator_lab/artifacts/official_qwen3_inputs_v1.json');p.add_argument('--sliced-decode',action='store_true');p.add_argument('--prefill-tiling',action='store_true');p.add_argument('--warmup-collection',action='store_true');p.add_argument('--corpus-sequence',type=int,default=128);p.add_argument('--corpus-blocks',type=int,default=0);p.add_argument('--diagnostic',action='store_true',help='Retain failing metrics and continue; qualification still requires every original gate');p.add_argument('--physical-device',type=int,default=0);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
     out=a.output.resolve();assert out.is_relative_to(Path('/data1/tzh')) and not out.exists();out.mkdir(parents=True)
     foreign=[];stop=threading.Event()
     assert os.environ.get('CUDA_VISIBLE_DEVICES')==str(a.physical_device),'Explicit physical-device/CUDA mapping required'

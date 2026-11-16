@@ -207,7 +207,7 @@ The full512-block validation comparison completed with all512unique block
 indices,261632shiftedNLLtargets and262144logit positions. Every block's maximum
 and mean absolute logit difference,KL andTV is zero; all top1positions agree.
 HF and Triton meanNLL are both2.605893106199801. No foreignGPUprocess was
-observed, and current model/source hashes match the executed source.
+observed, and the recorded model/source hashes match that run’s executed source.
 [Complete raw report](results/qwen3_triton_inference_v15_full_validation_v1.json),
 [coverage and source receipt](results/qwen3_triton_inference_v15_full_validation_receipt_v1.json).
 
@@ -311,7 +311,9 @@ lower latency thanHF Graph remains conditional, not quality-equivalent evidence.
 ## Prefill tile screening (research only)
 
 A synthetic identical-input screen of8configurations x4operator shapes x3M
-values (17/65/257) found96/96bitwise equal to the current Triton outputs.
+values (17/65/257) found96/96bitwise equal to each screened operator’s default
+tile configuration. The gate/up screen uses the older activation implementation;
+its difference from the runtime precision kernel is disclosed below.
 Only S65 is selected for the next full-request experiment; other lengths are
 not changed. The narrower Kstep32 variants do not provide the expected gain;
 the measured faster choices use Kstep64 and shape-specific Ntiles:
@@ -350,3 +352,78 @@ lower thanHF in this B1S65/8-token graph experiment. No foreignGPUprocesses
 were observed. Graph setup is excluded, as in all prior comparisons. This
 result belongs to the standalone research override; it is not yet an exported
 production option. [Complete request spike](results/qwen3_triton_inference_v15_tiled_request_spike_v1.json).
+
+
+Source review found an important boundary in the preceding spike: its gate/up
+candidate uses `kernels/mlp.py`, whereas the unchanged runtime uses
+`kernels/mlp_precision.py` (libdevice exp and round-to-nearest division). Thus
+the96-case screen compares tile variants within the older gate/up implementation,
+and the40 full-model equalities establish only those tested inputs. The spike's
+speed gain combines that implementation change with tiling and must not be
+attributed solely to tiles. The exported option uses the existing precision
+kernel and changes only its configuration; it requires fresh API evidence.
+The earlier raw sources/results are retained at commit7497112, unmodified.
+
+
+## Explicit prefill tiling API
+
+`TritonQwen3Inference.from_pretrained(path, prefill_tiling=True)` and CLI
+`--prefill-tiling` select the measured M65 configurations. The default isFalse;
+`sliced_decode` remains independent and defaultsFalse. Only flattenedM=B*S=65
+and the official8B Q/O/K/V/down plus gate/up shapes are selected; other shapes
+use the existing Triton route. Evidence is scoped to B1S65 on SM86. Existing
+precision-kernel activation arithmetic, weights and cache handling are retained.
+CPU regression verifies loader propagation, unchanged checkpoint tensors,
+defaultFalse, independent decode choice and CLI forwarding.
+
+The actual API full-logit/request comparison and unchanged HF gates are recorded
+below. Prior spike timings remain assigned to the standalone research override.
+
+Set `prefill_tiling=True` before constructing `CapturedGreedyRequest`: a graph
+captures that route at construction. Changing model options later does not
+rewrite an existing captured graph; create a new request graph for a new choice.
+
+
+The fresh precision-API audit retains all24original HF-case metrics exactly,
+including the same two failed decode cases (meanAbs0.0364415 after18tokens and
+0.0371610 after67tokens) and the raw greedy mismatch. It passes all four complete
+phase traces and observes no foreignGPUprocesses. The eightS128 diagnostics are
+unchanged. Original qualification remainsFalse.
+[Original-gate audit](results/qwen3_triton_inference_v15_prefill_api_HF_gates_v1.json),
+[exact pre-layout-guard source](results/qwen3_triton_inference_v15_prefill_api_HF_sources_v1.json).
+
+Read-only review identified a layout boundary: fixed-stride tiled launches must
+not consume positive-stride views accepted by the existing matmul helper. The
+new eligibility guard requires matching contiguous BF16 CUDA input/weight;
+other layouts use the existing stride-aware Triton matmul. This guard does not
+change the official contiguous path. Fresh API testing includes stride2 input
+and weight views, reproducing the former wrong fixed-stride output before
+checking the guarded result against the baseline.
+
+
+The fresh guarded precision API now reproduces40/40full-logit comparisons
+bitwise against the default. Both stride2 regressions reproduce the old wrong
+launch (265996/266015unequal coordinates) and pass with the eligibility guard.
+Both new complete phase audits pass, and three changed-input generations agree
+with default/HF; each graph matches its own eager path. No foreignGPUprocesses
+were observed, and every recorded source digest matches the executed file.
+
+|Guarded API graph request|Forward order seconds|Reverse order seconds|
+|---|---:|---:|
+|HF|0.218980|0.219544|
+|Triton default|0.205253|0.205412|
+|Triton prefill_tiling=True|0.194780|0.194825|
+
+This actual API lowers request latency by5.10%/5.15% versus default and
+11.05%/11.26% versusHF Graph in the measured B1S65/8-token SM86 setting.
+Capture/preparation is excluded. Eager timings do not show a consistent gain
+and remain slower thanHF; this is a graph-replay optimization result. The
+original independent HF short/decode gates remain failed, so the option stays
+explicit and is not a generally qualified quality-equivalent recommendation.
+[Guarded API raw report](results/qwen3_triton_inference_v15_prefill_api_request_v1.json).
+
+Reproduce with `probe_qwen3_tiled_request_v15.py --production --output ...`.
+Historical API attempt020failed from a benchmark argument-name collision;
+022was retired while pending so it could not execute a previously imported
+unguarded module after the source changed. Both local records are retained;
+only complete guarded run023supplies the API performance claim above.
