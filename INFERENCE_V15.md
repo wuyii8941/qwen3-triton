@@ -166,3 +166,13 @@ fusedQK-Norm/RoPE and SwiGLU outputs match bitwise; remaining local differences
 are in linear projection/MLP accumulation. The current separate-GEMV decode
 MLP is closer toHF than the experimental tensorcore fusedMLP on those inputs,
 so that experimental path was not adopted. [Boundary diagnostics](results/qwen3_triton_inference_v15_boundaries_v1.json).
+
+
+Linear isolation probes compared identical HF operands at layers0/12/24/31/35
+in prefill and fourdecode positions. Changing GEMM Ktile16/32/64/128 did not
+change their discrepancy. SplitK2/4/8/16 and GEMV lane widths32/64/128/256/512
+also did not remove it. No probe was adopted. Native HF decode uses a mix of
+cuBLAS GEMV and TensorCore GEMM kernels, captured in the retained diagnostic
+summary. [Linear-order diagnostics](results/qwen3_triton_inference_v15_linear_order_diagnostics_v1.json).
+These observations narrow the remaining precision investigation; they do not
+establish bitwise parity or justify relaxing the original full-model gates.
