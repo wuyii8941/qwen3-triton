@@ -198,3 +198,23 @@ quality equivalence. The original two absolute-logit gate failures and literal
 greedy mismatch remain false. Full512-block/S512quality evaluation is pending.
 [Raw diagnostic](results/qwen3_triton_inference_v15_quality_diagnostic_v1.json),
 [exact execution source](results/qwen3_triton_inference_v15_quality_source_v1.json).
+
+
+## Complete fixed-corpus S512 comparison
+
+The full512-block validation comparison completed with all512unique block
+indices,261632shiftedNLLtargets and262144logit positions. Every block's maximum
+and mean absolute logit difference,KL andTV is zero; all top1positions agree.
+HF and Triton meanNLL are both2.605893106199801. No foreignGPUprocess was
+observed, and current model/source hashes match the executed source.
+[Complete raw report](results/qwen3_triton_inference_v15_full_validation_v1.json),
+[coverage and source receipt](results/qwen3_triton_inference_v15_full_validation_receipt_v1.json).
+
+This qualifies this recorded S512numerical comparison, not every inference
+shape. The two original short/decode logit failures and literal greedy mismatch
+remain unqualified. The run's decode profiler audit also fails:585CUDAlaunches
+were recorded but only570GPUkernel events; the first15launch correlations lack
+GPU activity events, so only35/36cache append kernels were observed. The raw
+trace is preserved and is not silently treated as a passing trace. A complete
+phase recording must be acquired separately; earlier passing traces do not
+replace this failed run's coverage result.
