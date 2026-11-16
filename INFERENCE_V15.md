@@ -478,3 +478,28 @@ marker patterns alone do not prove the complete native algorithm. Earlier
 native-name filters only retained GEMM/GEMV names, so any separately named
 reduction kernel needs full-event recollection. Production is unchanged.
 [Complete sparse-dot probe](results/qwen3_triton_inference_v15_dot_traversal_v1.json).
+
+
+## Complete native linear schedule recollection
+
+The complete raw native trace confirms a separately named cublasLt
+`splitKreduce_kernel`, previously excluded by GEMM/GEMV-name-only filters.
+All80scoped launches across16shape configurations have corresponding GPU
+activity. The gridZsplit counts and successful random-operand reproductions are:
+
+|M|Operator|Splits|Contiguous Kpartition length|Triton reduction|
+|---:|---|---:|---:|---|
+|17|gate/up, K4096|3|1408|forwardFP32|
+|65|Q/O, K4096|3|1408|forwardFP32|
+|65|K/V, K4096|5|832|forwardFP32|
+|65|down, K12288|7|1792|forwardFP32|
+
+A64-element partition alignment reproduces all four random operand cases
+bitwise. Reversing reduction order leaves discrepancies; earlier power-of-two
+split tests did not include the observed3/5/7choices. The sparse-dot2816boundary
+corresponds to two1408-element partitions. These measurements identify a
+concrete arithmetic mismatch to test on all real layers, not yet full-model
+qualification. The production model remains unchanged.
+[Complete native schedule report](results/qwen3_triton_inference_v15_native_splitk_v1.json).
+The cuBLAS12.8documentation also exposes split count and reduction scheme as
+separate algorithm settings: [official cuBLASLt attributes](https://docs.nvidia.com/cuda/archive/12.8.2/cublas/index.html#cublasltmatmulalgoconfigattributes-t).
