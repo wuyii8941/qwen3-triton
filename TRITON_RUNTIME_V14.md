@@ -36,6 +36,30 @@ streams/events、CPU 数据准备及 host-device DMA。full runtime 的训练 GP
 （模型、FSDP 张量打包/拆分与累加、AdamW、通信、屏障和验证统计）均经 Triton；
 这是受支持训练路径的限定，不声称所有外围服务也是 Triton。
 
+### 留在主机侧的工作及原因
+
+这里的目标是把 GPU 张量数据面交给 Triton；Triton kernel 由 CPU 启动并操作
+GPU 指针，本身不运行 Python、创建 CUDA runtime 对象或管理多进程生命周期。
+因此 FSDP2 的主机状态机和 CUDA 资源管理保留在 PyTorch/CUDA Driver，GPU 数据
+操作则由 Triton 执行。
+
+| 主机侧工作 | 为什么不是 Triton kernel | 实际边界 |
+| --- | --- | --- |
+| FSDP2/autograd hook、模块递归、参数状态和分片元数据 | 它们运行在 Python/C++ 主机控制流上，注册回调、管理对象生命周期并决定何时启动 GPU 工作；GPU kernel 不能代替这些框架回调或改变主机对象图。 | 保留 PyTorch FSDP2 调度；AG/RS、chunk-cat、拆分拷贝、cast、fill、梯度累加均进入 Triton。 |
+| 多进程启动、CPU rendezvous 和 IPC 句柄交换 | 进程创建、socket/Gloo 消息与不透明句柄序列化属于 OS/主机通信；kernel 只能在已有进程与映射内执行。 | Gloo 仅交换 rank/IPC 元数据并协调生命周期；张量 payload 和 GPU 屏障使用 Triton。 |
+| CUDA allocation、IPC map/unmap、stream/event 创建和销毁 | 这些是必须在 kernel 启动前后由 CUDA Driver/runtime 调用的资源管理 API，不是对 GPU 张量逐元素计算。 | `runtime/peer_memory.py` 在 CPU 调用 Driver API；映射后的地址传给 Triton kernel 做读写与 system-scope 同步。 |
+| CPU 文件读取、token/block 准备及 host-device DMA | 文件系统和数据加载在 CPU；DMA 由 CUDA copy engine/runtime 安排，Triton kernel 不负责提交该传输。 | 输入仍在 CPU 准备并通过 host-device copy 上传；设备内转换/拷贝走 Triton。 |
+| CUDA stream/event 查询、同步和显存/NVML 记账 | 这些操作查询或改变 host runtime 的调度/资源状态；kernel 无法创建或等待一个尚未由主机建立的 stream/event。 | 由 PyTorch/CUDA Driver/NVML 管理；其间发生的 GPU 张量计算仍受严格 dispatch 和 trace 审核。 |
+
+full 模式通过 `TritonRuntimeMode` 将未实现的 CUDA 张量操作直接报错，并以原始
+kernel 与 GPU 内存事件再审核隐藏路径。正式运行的四个 rank 都启用了严格
+dispatch，未实现的 CUDA 张量操作会报错；原始 profiler trace 由 rank 0 采集。
+两轮 rank 0 trace 在 setup、首次更新、完整更新、完整验证中分别记录808、
+13579、12294、51459 个 GPU kernel 事件；这些事件均归入 Triton，未分类/原生
+计算为空，原生 GPU memset/设备间拷贝事件为零。审查范围和哈希见
+[`training_review`](results/qwen3_triton_runtime_v14_training_review_v1.json)；
+V14 资格限于审核中的 4×A6000、软件版本和消息形状。
+
 下面的组件和失败条目是按当时进度保留的审计历史；它们的“尚待完成”状态已由
 上面的正式整体验收结果覆盖，不应解读为当前状态。
 
