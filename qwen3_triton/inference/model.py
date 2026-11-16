@@ -114,7 +114,7 @@ class TritonQwen3Inference(nn.Module):
             x=embedding(input_ids,self.model.embed_tokens.weight)
             cos,sin=self.model.rotary_emb(pos,torch.bfloat16)
             for i,layer in enumerate(self.model.layers):
-                h=rms_norm(x,layer.input_layernorm.weight,layer.input_layernorm.eps)
+                h=rms_norm(x,layer.input_layernorm.weight,layer.input_layernorm.eps,reference_accumulation=self.reference_accumulation)
                 a=layer.self_attn;d=a.head_dim
                 q=kernels.linear(h,a.q_proj.weight,gemv=self.gemv,sliced=self.sliced_decode,prefill_tiling=self.prefill_tiling,reference_accumulation=self.reference_accumulation).view(b,s,a.num_heads,d)
                 k=kernels.linear(h,a.k_proj.weight,gemv=self.gemv,sliced=self.sliced_decode,prefill_tiling=self.prefill_tiling,reference_accumulation=self.reference_accumulation).view(b,s,a.num_kv_heads,d)
@@ -124,7 +124,7 @@ class TritonQwen3Inference(nn.Module):
                 kernels.append(k,v,cache.keys[i],cache.values[i],start)
                 y=kernels.attention(q,cache.keys[i],cache.values[i],start,split_decode=self.split_decode).view(b,s,-1)
                 x=residual_add(x,kernels.linear(y,a.o_proj.weight,gemv=self.gemv,sliced=self.sliced_decode,prefill_tiling=self.prefill_tiling,reference_accumulation=self.reference_accumulation))
-                h=rms_norm(x,layer.post_attention_layernorm.weight,layer.post_attention_layernorm.eps)
+                h=rms_norm(x,layer.post_attention_layernorm.weight,layer.post_attention_layernorm.eps,reference_accumulation=self.reference_accumulation)
                 m=layer.mlp
                 if (b*s<=8 and self.gemv) or (self.reference_accumulation and b*s==17 and h.shape[-1]==4096 and m.gate_proj.weight.shape[0]==12288):
                     y=swiglu(kernels.linear(h,m.gate_proj.weight,gemv=self.gemv,reference_accumulation=self.reference_accumulation),kernels.linear(h,m.up_proj.weight,gemv=self.gemv,reference_accumulation=self.reference_accumulation))
@@ -132,7 +132,7 @@ class TritonQwen3Inference(nn.Module):
                     y=kernels.tiled_prefill_gate_up(h,m.gate_proj.weight,m.up_proj.weight)
                 else:y=gate_up_swiglu(h,m.gate_proj.weight,m.up_proj.weight,optimized=True)
                 x=residual_add(x,kernels.linear(y,m.down_proj.weight,gemv=self.gemv,sliced=self.sliced_decode,prefill_tiling=self.prefill_tiling,reference_accumulation=self.reference_accumulation))
-            x=rms_norm(x,self.model.norm.weight,self.model.norm.eps)
+            x=rms_norm(x,self.model.norm.weight,self.model.norm.eps,reference_accumulation=self.reference_accumulation)
             if logits_to_keep:x=x[:,-logits_to_keep:,:].contiguous()
             logits=kernels.linear(x,self.lm_head.weight,gemv=self.gemv,sliced=self.sliced_decode,prefill_tiling=self.prefill_tiling,reference_accumulation=self.reference_accumulation)
             cache.length=start+s

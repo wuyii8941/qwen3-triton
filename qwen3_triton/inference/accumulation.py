@@ -82,3 +82,34 @@ def linear(x,weight,*,gemv=True):
         _split_gemm[(triton.cdiv(m,tm)*triton.cdiv(n,tn),value)](x,weight,partial,m,n,k,k,1,1,k,tm,tn,64,1,value,num_warps=4,num_stages=2)
         _inference_reduce_parts[(triton.cdiv(m*n,256),)](partial,y,m*n,value,256,enable_fp_fusion=False)
     return y
+
+
+@triton.jit
+def _inference_reference_norm(X,W,Y,H:tl.constexpr,WIDTH:tl.constexpr,EPS:tl.constexpr,STEPS:tl.constexpr):
+    row=tl.program_id(0);lane=tl.arange(0,WIDTH)
+    a=tl.full((WIDTH,),0.,tl.float32);b=a;c=a;d=a
+    for start in range(H//(WIDTH*4)):
+        off=row*H+start*WIDTH*4+lane*4
+        x0=tl.load(X+off).to(tl.float32);x1=tl.load(X+off+1).to(tl.float32)
+        x2=tl.load(X+off+2).to(tl.float32);x3=tl.load(X+off+3).to(tl.float32)
+        a=a+x0*x0;b=b+x1*x1;c=c+x2*x2;d=d+x3*x3
+    value=((a+b)+c)+d
+    for step in tl.static_range(STEPS):
+        value=value+tl.gather(value,lane^(WIDTH//2>>step),0)
+    mean=tl.sum(tl.where(lane==0,value,0.),0)*(1./H)
+    inv=tl.rsqrt(mean+EPS);col=tl.arange(0,H)
+    x=tl.load(X+row*H+col).to(tl.float32);w=tl.load(W+col).to(tl.float32)
+    normal=(x*inv).to(Y.dtype.element_ty).to(tl.float32)
+    tl.store(Y+row*H+col,normal*w)
+
+
+def short_norm(x,weight,eps):
+    """Native2.10 short-row block-x tree; None outside the measured domain."""
+    if x.ndim<2 or x.shape[-1]!=4096 or not x.is_cuda or x.dtype!=torch.bfloat16 or not x.is_contiguous() or weight.shape!=(4096,) or weight.dtype!=x.dtype or weight.device!=x.device or not weight.is_contiguous():return None
+    rows=x.numel()//4096
+    if not 1<=rows<16:return None
+    # Reduce.cuh: max512threads, block_height=min(last_pow2(rows),16).
+    height=1<<(rows.bit_length()-1);width=512//height
+    y=raw_empty(x.shape,device=x.device,dtype=x.dtype)
+    _inference_reference_norm[(rows,)](x,weight,y,4096,width,eps,width.bit_length()-1,num_warps=4,enable_fp_fusion=False)
+    return y

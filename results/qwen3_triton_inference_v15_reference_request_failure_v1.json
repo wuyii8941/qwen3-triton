@@ -1,0 +1,9 @@
+{
+  "raw_failure": {
+    "error": "AssertionError({'case': 1, 'Triton_graph_equal': True, 'HF_graph_equal': True, 'HF_vs_Triton_equal': False, 'Triton_reference_graph_equal': True, 'HF_vs_Triton_reference_equal': False, 'reference_output_tokens': [11, 220, 16, 11, 220, 17, 11, 220], 'HF_output_tokens': [11, 220, 16, 15, 15, 15, 15, 15]})",
+    "foreign_context_observations": []
+  },
+  "sha256": "5cd431ce01fd019464c433c8d4afd9cb8e3229025675d6f37f1e740dcebfe404",
+  "timings_produced": false,
+  "disposition": "Preserved failure. Graph-own-eager equality passes but reference-vs-HF case1 fails; diagnosed direct native short-row RMSNorm order in038 and corrected/validated in039. Benchmark guard and original gates are retained."
+}

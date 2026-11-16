@@ -4,7 +4,7 @@
 
 **Goal:** Export an opt-in Triton accumulation path that addresses the original Qwen3-8B short/decode failures, then qualify its complete GPU path and measure its request performance.
 
-**Architecture:** Keep the unmodified inference default and official BF16 weights/activations. An inference-only module selects measured contiguous Split-K3/5/7 with64-aligned boundaries and forward FP32 reduction, interleaved2x32, or explicit sequential32/16-lane GEMV followed by descending warp reduction, for the exact affected8B shapes. Unselected shapes use the existing Triton implementation. No HF/native GPU fallback.
+**Architecture:** Keep the unmodified inference default and official BF16 weights/activations. An inference-only module selects measured contiguous Split-K3/5/7 with64-aligned boundaries and forward FP32 reduction, interleaved2x32, or explicit sequential32/16-lane GEMV followed by descending warp reduction, for the exact affected8B shapes. Unselected shapes use the existing Triton implementation. The same opt-in route also selects native2.10short-row H4096normalization trees (512/last_pow2(rows) lanes for1<=rows<16), based on captured real-input failure038. No HF/native GPU fallback.
 
 **Tech Stack:** Existing Python3.11, PyTorch2.10.0+cu128, Triton3.6, Transformers4.51, SM86 RTX A6000.
 
@@ -68,6 +68,7 @@
 
 **Interfaces:** Same GPU, B1S65,8outputs, no earlyEOS, two orders,2warmup+5measured repetitions, HF/default/reference arithmetic graph and eager arms; each graph must equal its own eager path.
 
+- [ ] Fix the observed changed-input RMSNorm failure with real-input RED→GREEN evidence, rerun unchanged full gates, and preserve original failed benchmark.
 - [ ] Capture/select options before graph creation and verify three changed inputs.
 - [ ] Measure both orders and retain all eager/graph samples; exclude preparation uniformly and report any absent eager improvement.
 - [ ] If a tile choice changes the proven FP32 schedule, revalidate local/full-model arithmetic before using its timings. Do not select a faster path that fails original gates.

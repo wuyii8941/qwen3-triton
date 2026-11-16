@@ -173,7 +173,11 @@ def select(logits,ids,next_token,done,position,eos,pad):
     _inference_select[(b,)](values,indices,ids,next_token,done,b,parts,triton.next_power_of_2(parts),ids.shape[1],position,tuple(eos),pad)
 
 
-def rms_norm(x,weight,eps):
+def rms_norm(x,weight,eps,*,reference_accumulation=False):
+    if reference_accumulation:
+        from .accumulation import short_norm
+        output=short_norm(x,weight,eps)
+        if output is not None:return output
     # Training's wrapper requires>=16 rows; inference also needs1/8 rows.
     # This kernel's independent per-row reduction does not require that limit.
     y=raw_empty(x.shape,device=x.device,dtype=x.dtype)

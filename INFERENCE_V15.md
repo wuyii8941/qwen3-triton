@@ -651,3 +651,28 @@ CUDA_VISIBLE_DEVICES=1 bash scripts/research_python.sh \
   --corpus-blocks 512 --corpus-sequence 512 \
   --output /data1/tzh/proj/qwen_operator_lab/artifacts/inference_v15/new_unique_run
 ```
+
+
+## Changed-input guard found a short-row norm gap
+
+The first six-arm request attempt033stopped before timing: changed-input case1
+matched each graph's own eager path, but reference greedy token4was11whereHF
+selected15. Original032finite-protocol acceptance remains historical evidence,
+not a claim that this new case passed. The failed attempt retained no speed claim.
+
+Direct real-input diagnostic038locates the first propagated difference at
+layer14inputRMSNorm in the third request step. All2016same-HF-input body-linear
+checks and288same-QKVattention checks are bitwise. The old32-lane norm mean is
+1.1948513984680176, while native uses1.1948515176773071; inverse values differ
+0.9148352146148682vs0.9148351550102234, producing35BF16differences. A separate
+512-lane Triton probe matches the native mean, inverse and output bitwise. This
+is a reduction-order issue; no epsilon/threshold/weight change is used to mask it.
+
+The opt-in route now mirrors local PyTorch2.10Reduce.cuh's short-row block width
+for contiguous BF16H4096inputs:512/last_pow2(rows),1<=rows<16. Other rows retain
+the previous normalization. DefaultFalse preserves existing norm arithmetic.
+The shared runtime's functional `__and__`/`__or__` dispatch also stops choosing
+the left operand as an in-place output; a CPU regression reproduces the alias.
+These source changes require fresh complete validation and request measurements.
+Ordinary and widened random norm fixtures both passed640/640before the fix, so
+they are retained as weak checks; actual model-input regression is required.

@@ -7,9 +7,9 @@ from scripts.verify_qwen3_inference_v15 import trace
 BASE={'_inference_positions':1,'_lookup':1,'_tables':1,'_hf_norm_forward':73,'_hf_norm_rope_forward':72,'_inference_cache_append':36,'_inference_cached_attention':36,'_add':72}
 P65={**BASE,'_split_gemm':180,'_inference_reduce_parts':180,'_gate_up':36,'_inference_gemv':1}
 P17={**BASE,'_gemm':108,'_inference_interleaved_linear':72,'_split_gemm':72,'_inference_reduce_parts':72,'_hf_swiglu_forward':36,'_inference_gemv':1}
-DECODE={**BASE,'_inference_interleaved_linear':108,'_inference_reference_gemv':144,'_inference_gemv':1,'_hf_swiglu_forward':36}
+DECODE={**BASE,'_hf_norm_forward':0,'_inference_reference_norm':73,'_inference_interleaved_linear':108,'_inference_reference_gemv':144,'_inference_gemv':1,'_hf_swiglu_forward':36}
 GENERATE={key:value*3 for key,value in BASE.items()}
-GENERATE.update(_split_gemm=180,_inference_reduce_parts=180,_gate_up=36,_inference_gemv=3,_inference_interleaved_linear=216,_inference_reference_gemv=288,_hf_swiglu_forward=72,_inference_argmax_parts=3,_inference_select=3)
+GENERATE.update(_hf_norm_forward=73,_inference_reference_norm=146,_split_gemm=180,_inference_reduce_parts=180,_gate_up=36,_inference_gemv=3,_inference_interleaved_linear=216,_inference_reference_gemv=288,_hf_swiglu_forward=72,_inference_argmax_parts=3,_inference_select=3)
 
 def run():
  with tempfile.TemporaryDirectory(dir='/data1/tzh/proj/qwen_operator_lab/.runtime-research/tmp') as tmp:

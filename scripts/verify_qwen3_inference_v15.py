@@ -35,13 +35,13 @@ def metrics(x,y):
 
 
 def _phase_counts(kind,*,reference_accumulation=False,sliced_decode=False,prompt_tokens=65):
-    families={'_inference_positions','_lookup','_tables','_hf_norm_forward','_hf_norm_rope_forward','_inference_cache_append','_inference_cached_attention','_inference_decode_partial','_inference_decode_merge','_add','_gemm','_gate_up','_inference_gemv','_inference_sliced_linear','_inference_interleaved_linear','_inference_reference_gemv','_split_gemm','_inference_reduce_parts','_hf_swiglu_forward','_inference_argmax_parts','_inference_select'}
+    families={'_inference_reference_norm','_inference_positions','_lookup','_tables','_hf_norm_forward','_hf_norm_rope_forward','_inference_cache_append','_inference_cached_attention','_inference_decode_partial','_inference_decode_merge','_add','_gemm','_gate_up','_inference_gemv','_inference_sliced_linear','_inference_interleaved_linear','_inference_reference_gemv','_split_gemm','_inference_reduce_parts','_hf_swiglu_forward','_inference_argmax_parts','_inference_select'}
     counts=dict.fromkeys(families,0)
     if kind=='setup':return counts
     counts.update(_inference_positions=1,_lookup=1,_tables=1,_hf_norm_forward=73,_hf_norm_rope_forward=72,_inference_cache_append=36,_inference_cached_attention=36,_add=72)
     if kind=='decode':
         counts['_hf_swiglu_forward']=36
-        if reference_accumulation:counts.update(_inference_gemv=1,_inference_reference_gemv=144,_inference_interleaved_linear=108)
+        if reference_accumulation:counts.update(_hf_norm_forward=0,_inference_reference_norm=73,_inference_gemv=1,_inference_reference_gemv=144,_inference_interleaved_linear=108)
         elif sliced_decode:counts.update(_inference_gemv=145,_inference_sliced_linear=108)
         else:counts['_inference_gemv']=253
     elif kind=='prefill':
@@ -66,7 +66,7 @@ def trace(out,name,fn,expected_cache_appends,*,warmup_collection=False,sliced_de
     p=out/(name+'.json.gz');prof.export_chrome_trace(str(p))
     assert p.stat().st_size<=8*2**20,'Trace exceeds8MiB cap'
     data=json.loads(gzip.decompress(p.read_bytes()));events=data['traceEvents'];counts=Counter(e['name'] for e in events if e.get('cat')=='kernel')
-    allowed={'_inference_positions','_inference_cache_append','_inference_cached_attention','_inference_decode_partial','_inference_decode_merge','_inference_gemv','_inference_sliced_linear','_inference_interleaved_linear','_inference_reference_gemv','_split_gemm','_inference_reduce_parts','_inference_argmax_parts','_inference_select',
+    allowed={'_inference_reference_norm','_inference_positions','_inference_cache_append','_inference_cached_attention','_inference_decode_partial','_inference_decode_merge','_inference_gemv','_inference_sliced_linear','_inference_interleaved_linear','_inference_reference_gemv','_split_gemm','_inference_reduce_parts','_inference_argmax_parts','_inference_select',
         '_hf_norm_forward','_hf_norm_rope_forward','_hf_swiglu_forward','_gemm','_gate_up','_lookup','_tables','_add',
         '_runtime_fill','_runtime_typed_fill','_runtime_strided_copy','_runtime_binary','_runtime_compare','_runtime_reduce','_runtime_unary'}
     scopes=[e for e in events if e.get('name')=='actual_'+name and e.get('cat')=='user_annotation']

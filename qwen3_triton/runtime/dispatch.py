@@ -94,7 +94,7 @@ class TritonRuntimeMode(TorchDispatchMode):
                     'aten::__and__','aten::__or__']:
             op=name.split('::')[1].rstrip('_');op={'bitwise_and':'and','bitwise_or':'or','__and':'and','__or':'or'}.get(op,op)
             if kw.get('rounding_mode') is not None:raise RuntimeError('Explicit rounded division is not implemented')
-            out=args[0] if name.endswith('_') else kw.get('out')
+            out=args[0] if name.endswith('_') and not name.endswith('__') else kw.get('out')
             return ops.binary(args[0],args[1],op,out=out,alpha=kw.get('alpha',1))
         if name in ['aten::abs','aten::neg','aten::isfinite','aten::bitwise_not','aten::__invert__']:
             return ops.unary(args[0],{'aten::bitwise_not':'not','aten::__invert__':'not'}.get(name,name.split('::')[1]),out=kw.get('out'))
