@@ -91,7 +91,7 @@ def _inference_decode_merge(P,L,O,H:tl.constexpr,D:tl.constexpr,SPLITS:tl.conste
     tl.store(O+bh*D+d,value)
 
 
-def attention(q,cache_k,cache_v,start,*,split_decode=True):
+def attention(q,cache_k,cache_v,start,*,split_decode=False):
     b,s,h,d=q.shape;hk=cache_k.shape[1];capacity=cache_k.shape[2];total=start+s
     out=raw_empty(q.shape,device=q.device,dtype=q.dtype)
     if s==1 and split_decode:
@@ -105,7 +105,10 @@ def attention(q,cache_k,cache_v,start,*,split_decode=True):
         import struct
         scale=struct.unpack('f',struct.pack('f',d**-.5))[0]
         sl2=struct.unpack('f',struct.pack('f',scale*math.log2(math.e)))[0]
-        _inference_cached_attention[(triton.cdiv(s,64),b*h)](q,cache_k,cache_v,out,s,total,capacity,h,hk,d,start,sl2,64,64,num_warps=4,num_stages=2,enable_fp_fusion=False)
+        # Actual HF Flash decode uses32-key tiles; prefill uses64.
+        # Same-QKV all36layer probes establish the required rounding order.
+        key_tile=32 if s==1 else 64
+        _inference_cached_attention[(triton.cdiv(s,64),b*h)](q,cache_k,cache_v,out,s,total,capacity,h,hk,d,start,sl2,64,key_tile,num_warps=4,num_stages=2,enable_fp_fusion=False)
     return out
 
 

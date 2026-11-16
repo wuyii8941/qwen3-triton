@@ -111,3 +111,28 @@ request-owned storage until next replay, one object must stay on one stream
 and cannot serve concurrent requests. CUDA Graph removes repeated CPU launch
 work; its GPU arithmetic remains the existing Triton kernels. HF numerical
 parity, matched HF Graph timing and broader request/length coverage remain open.
+
+
+## Decode attention rounding investigation
+
+The exact HF decode kernel is `Flash_fwd_kernel_traits<128,128,32,4>`:
+head-dimension128, query-tile128, **key-tile32**, four warps. The initial
+interpretation of the template's first two128 values as M/N was wrong; the
+128-key experiment is retained as a rejected diagnostic. Source parameter order:
+[Flash kernel traits](https://raw.githubusercontent.com/Dao-AILab/flash-attention/979702c87a8713a8e0a5e9fee122b90d2ef13be5/csrc/flash_attn/src/kernel_traits.h).
+
+Same-Q/K/V probes over all36layers and fourdecode positions show exact BF16
+agreement with HF for32-key tiles (both64/128query tiles), while64-key and
+split decode have differences. Prefill on the same HF operands agrees exactly
+with64-key tiles. The default now selects64-key prefill and32-key single-token
+decode, with split decode retained as an explicit experimental control.
+See [geometry probe](results/qwen3_triton_inference_v15_attention_geometry_v1.json).
+
+The full-model rerun still fails two original numerical gates and one generated
+continuation. All four phase GPU coverage audits pass and monitoring recorded no
+foreign processes. The [new full diagnostic](results/qwen3_triton_inference_v15_official_diagnostic_v2.json)
+preserves those failures: local attention agreement does not qualify the full
+model. Earlier graph speed measurements apply to the earlier split-decode source,
+not this revised default; graph speed and output parity must be revalidated for
+this source before a performance recommendation. A matched, monitored HF Graph
+comparison remains pending.

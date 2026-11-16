@@ -45,7 +45,7 @@ class KVCache:
 
 
 class TritonQwen3Inference(nn.Module):
-    def __init__(self,config,*,gemv=True,split_decode=True):
+    def __init__(self,config,*,gemv=True,split_decode=False):
         super().__init__()
         if config.head_dim!=128:raise ValueError('The qualified Qwen3 attention head dimension is128')
         # Meta construction avoids allocating/randomly initializing another8B.
@@ -65,7 +65,7 @@ class TritonQwen3Inference(nn.Module):
         return self
 
     @classmethod
-    def from_pretrained(cls,path,*,device='cuda',gemv=True,split_decode=True):
+    def from_pretrained(cls,path,*,device='cuda',gemv=True,split_decode=False):
         """Load local official safetensors; no HF model/GPU compute dependency."""
         import json
         from safetensors import safe_open
