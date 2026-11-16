@@ -4,7 +4,7 @@
 
 **Goal:** Export an opt-in Triton accumulation path that addresses the original Qwen3-8B short/decode failures, then qualify its complete GPU path and measure its request performance.
 
-**Architecture:** Keep the unmodified inference default and official BF16 weights/activations. An inference-only module selects measured contiguous Split-K3/5/7 with64-aligned boundaries and forward FP32 reduction, or interleaved2x32, for the exact affected8B shapes. Unselected shapes use the existing Triton implementation. No HF/native GPU fallback.
+**Architecture:** Keep the unmodified inference default and official BF16 weights/activations. An inference-only module selects measured contiguous Split-K3/5/7 with64-aligned boundaries and forward FP32 reduction, interleaved2x32, or explicit sequential32/16-lane GEMV followed by descending warp reduction, for the exact affected8B shapes. Unselected shapes use the existing Triton implementation. No HF/native GPU fallback.
 
 **Tech Stack:** Existing Python3.11, PyTorch2.10.0+cu128, Triton3.6, Transformers4.51, SM86 RTX A6000.
 
@@ -32,11 +32,10 @@
 
 ### Prerequisite: Resolve native GEMV arithmetic
 
-Run028proves1188selected local calls and the B1S17/S65prefills bitwise, but
-cached decode after67tokens still fails the original meanAbs gate. Do not
-export or qualify a purported complete fix while that remains false. Infer the
-remaining M1K/V/gate/up native reduction tree using controlled sparse dots,
-then test real operands and rerun the original gates without relaxing them.
+- [x] Run028proved the selected SplitK/interleaved calls but retained one cached decode failure.
+- [x] Run029identified32-lane K/V and16-lane gate/up sequential accumulator trees with descending warp reduction.
+- [x] Run030explicitly reproduced these trees:2520/2520real-layer local calls are bitwise, all24original numerical gates and both literal16-token continuations pass. Exact-source receipts are in `results/qwen3_triton_inference_v15_reference_order_*_v1.json`.
+- [ ] Exported API, complete updated phase audits, full fixed validation and paired performance remain open below. Research qualified=False is retained.
 
 ### Task1: Export inference-only arithmetic and configuration
 
@@ -45,7 +44,7 @@ then test real operands and rerun the original gates without relaxing them.
 **Interfaces:** `TritonQwen3Inference(..., reference_accumulation=False)` and `from_pretrained` retain the option; CLI `--reference-accumulation` forwards it. `accumulation.linear(x,weight)` returns a BF16 output for supported contiguous same-device BF16 CUDA shapes, otherwiseNone. `kernels.linear(...,reference_accumulation=False)` checks it before existing paths and preserves diagnostic `accurate` precedence.
 
 - [ ] Write/run CPU failing loader/CLI regression: explicitTrue survives loading, defaultFalse, official fixture state tensors unchanged, prefill tiling independent.
-- [ ] Implement exact routing: M1N4096K4096/12288 interleaved2x32; M17N1024K4096 interleaved2x32; M17N12288K4096 split3; M65N4096K4096 split3, N1024K4096 split5, N4096K12288 split7; all global partitions aligned64 and reduced in increasing partition order in FP32 before BF16 materialization.
+- [ ] Implement exact routing: M1N4096K4096/12288 interleaved2x32; M17N1024K4096 interleaved2x32; M1N1024K4096 ordered GEMV32 andM1N12288K4096 ordered GEMV16; M17N12288K4096 split3; M65N4096K4096 split3, N1024K4096 split5, N4096K12288 split7; all global partitions aligned64 and reduced in increasing partition order in FP32 before BF16 materialization.
 - [ ] Use measured GEMM machinery and raw overwrite allocation; preserve native-precision SwiGLU. M17 gate/up use independently reduced linears plus existing SwiGLU; other MLP shapes retain existing path.
 - [ ] Check contiguous/shape/type guards, partition-tail coverage and literal disabled fallback; run CPU configuration checks.
 - [ ] Validate selected kernels on actual36-layer HF operands, including positive-stride views; retain discrepancies, do not infer full-model parity from local checks.
@@ -58,7 +57,7 @@ then test real operands and rerun the original gates without relaxing them.
 **Interfaces:** Verifier `--reference-accumulation` forwards/records the actual model option. Trace reviewer takes that option and explicit prompt length, with expected counts derived for the M65 and M17 routes.
 
 - [ ] Write/run failing CPU trace fixtures for the new complete route, missing partials, missing reductions, wrong route and unmatched launch activity.
-- [ ] Add only actual new Triton kernel names to the whitelist and require all operation counts. M65 prefill has180split+180reduce,36fusedgate/up,1GEMV; B1decode has108interleaved+145GEMV. M17 prefill has108ordinaryGEMM,72interleaved,72split+72reduce,36SwiGLU,1GEMV. Other common attention/cache/norm/residual counts remain unchanged.
+- [ ] Add only actual new Triton kernel names to the whitelist and require all operation counts. M65 prefill has180split+180reduce,36fusedgate/up,1GEMV; B1decode has108interleaved+144orderedGEMV+1existingGEMV. M17 prefill has108ordinaryGEMM,72fusedinterleaved,72split+72reduce,36SwiGLU,1existingGEMV. Other common attention/cache/norm/residual counts remain unchanged.
 - [ ] Record complete M17 and M65 phase traces with bounded bootstrap collection; verify all launches have GPU events and reject native compute/device memory fallbacks.
 - [ ] Run unchanged24cases, literal two16-token continuations and full fixed512xS512 corpus with the actual exported API, pinned checkpoint hashes, source freeze, stable lease and continuous monitoring. Preserve earlier failed reports.
 - [ ] Declare qualification only if every required gate and clean-monitor condition is proven; record exact limits.

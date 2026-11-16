@@ -549,3 +549,32 @@ implementation-dependent generic reduction), preserves K-order while unrolling
 loads, and rechecks real operands plus all original full-model gates. The fast
 existing LMhead is unchanged. Production defaults remain unchanged.
 [Complete GEMV tree probe](results/qwen3_triton_inference_v15_gemv_tree_v1.json).
+
+
+## Complete arithmetic research prototype: original gates pass
+
+Adding explicit native GEMV trees resolves the remaining original failure in the
+research prototype without changing any threshold. All24original numerical
+cases pass and both literal16-token text continuations matchHF. All2520realHF
+body-linear local checks match bitwise, including2340selected changed calls.
+B1S17/S65/S257full-prefill logits are bitwise equal. At the two originally
+failing decode positions, meanAbs falls to5.63e-8(after18) and1.13e-7(after67).
+Other cases still use the original tolerance: e.g.B1decode after a257-token
+prefix reaches meanAbs0.0189731; this is not a universal bitwise claim.
+No foreignGPUprocesses were observed.
+
+The actual GEMV implementation uses sequential per-lane FP32FMA,8load unroll,
+explicit descending XOR gathers and lane-zero extraction. K/V use32lanes;
+gate/up use16. This avoids relying on a generic reduction’s physical layout.
+The existing fast LMhead is retained. The prototype changes arithmetic only
+inside its process-local research wrappers; production defaults are unchanged.
+
+**This is arithmetic evidence, not exported API/GPU-path qualification.** The
+unchanged profiler reviewer still rejects the new kernel names/counts, so setup
+passes while prefill/decode/generation audits remainFalse and qualified=False.
+The outer receipt includes the actual new kernel/wrapper source. Exporting the
+option, testing complete phase counts, full fixed validation and measuring the
+correct version’s paired whole-request speed remain required.
+[Actual-source/complete arithmetic receipt](results/qwen3_triton_inference_v15_reference_order_complete_v1.json),
+[all real-layer checks](results/qwen3_triton_inference_v15_reference_order_locals_v1.json),
+[unchanged original gates and retained trace failures](results/qwen3_triton_inference_v15_reference_order_gates_v1.json).
