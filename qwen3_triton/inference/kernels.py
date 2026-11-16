@@ -125,8 +125,10 @@ def _inference_gemv(X,W,Y,N:tl.constexpr,K:tl.constexpr,BN:tl.constexpr,BK:tl.co
     tl.store(Y+row*N+n,tl.sum(acc,1),n<N)
 
 
-def linear(x,weight,*,gemv=True,accurate=False):
+def linear(x,weight,*,gemv=True,accurate=False,sliced=False):
     shape=x.shape;m=x.numel()//shape[-1];k=shape[-1];n=weight.shape[0]
+    if gemv and sliced and not accurate and m==1 and n==4096 and k in (4096,12288):
+        return sliced_linear(x,weight)
     if gemv and m<=8:
         y=raw_empty((*shape[:-1],n),device=x.device,dtype=x.dtype)
         _inference_gemv[(triton.cdiv(n,16),m)](x,weight,y,n,k,16,256,accurate,num_warps=4,enable_fp_fusion=False)
@@ -176,3 +178,27 @@ def norm_rope(x,weight,cos,sin,eps):
     inv=raw_empty((rows,),device=x.device,dtype=torch.float32)
     _hf_norm_rope_forward[(rows,)](x,weight,cos,sin,y,inv,h,x.shape[2],eps,triton.next_power_of_2(h),enable_fp_fusion=False)
     return y
+
+
+@triton.jit
+def _inference_sliced_linear(X,W,Y,N:tl.constexpr,K:tl.constexpr):
+    """Two interleaved32K accumulators, matching measured SM86 sliced1x2."""
+    row=tl.arange(0,16);col=tl.program_id(0)*32+tl.arange(0,32);kk=tl.arange(0,32)
+    a0=tl.zeros((16,32),tl.float32);a1=tl.zeros((16,32),tl.float32)
+    for step in range(tl.cdiv(K,64)):
+        k0=step*64+kk;k1=k0+32
+        x0=tl.load(X+tl.zeros((16,1),tl.int32)+k0[None,:],(row[:,None]==0)&(k0[None,:]<K),0)
+        x1=tl.load(X+tl.zeros((16,1),tl.int32)+k1[None,:],(row[:,None]==0)&(k1[None,:]<K),0)
+        w0=tl.load(W+col[None,:]*K+k0[:,None],(col[None,:]<N)&(k0[:,None]<K),0)
+        w1=tl.load(W+col[None,:]*K+k1[:,None],(col[None,:]<N)&(k1[:,None]<K),0)
+        a0=tl.dot(x0,w0,a0,input_precision='ieee')
+        a1=tl.dot(x1,w1,a1,input_precision='ieee')
+    tl.store(Y+row[:,None]*0+col[None,:],a0+a1,(row[:,None]==0)&(col[None,:]<N))
+
+
+def sliced_linear(x,weight):
+    if x.numel()!=x.shape[-1] or not x.is_contiguous() or not weight.is_contiguous():raise ValueError('Single contiguous query and row-major weight required')
+    if x.dtype!=torch.bfloat16 or weight.dtype!=x.dtype or x.device!=weight.device or not x.is_cuda or x.shape[-1]!=weight.shape[1]:raise ValueError('Matching BF16 CUDA input/weight required')
+    out=raw_empty((*x.shape[:-1],weight.shape[0]),device=x.device,dtype=x.dtype)
+    _inference_sliced_linear[(triton.cdiv(weight.shape[0],32),)](x,weight,out,weight.shape[0],weight.shape[1],num_warps=4,num_stages=2,enable_fp_fusion=False)
+    return out

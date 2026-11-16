@@ -31,7 +31,7 @@ def metrics(x,y):
     return values
 
 
-def trace(out,name,fn,expected_cache_appends,*,warmup_collection=False):
+def trace(out,name,fn,expected_cache_appends,*,warmup_collection=False,sliced_decode=False):
     with torch.profiler.profile(activities=[torch.profiler.ProfilerActivity.CPU,torch.profiler.ProfilerActivity.CUDA]) as prof:
         if warmup_collection:
             from qwen3_triton.inference.kernels import positions
@@ -43,7 +43,7 @@ def trace(out,name,fn,expected_cache_appends,*,warmup_collection=False):
     p=out/(name+'.json.gz');prof.export_chrome_trace(str(p))
     assert p.stat().st_size<=8*2**20,'Trace exceeds8MiB cap'
     data=json.loads(gzip.decompress(p.read_bytes()));events=data['traceEvents'];counts=Counter(e['name'] for e in events if e.get('cat')=='kernel')
-    allowed={'_inference_positions','_inference_cache_append','_inference_cached_attention','_inference_decode_partial','_inference_decode_merge','_inference_gemv','_inference_argmax_parts','_inference_select',
+    allowed={'_inference_positions','_inference_cache_append','_inference_cached_attention','_inference_decode_partial','_inference_decode_merge','_inference_gemv','_inference_sliced_linear','_inference_argmax_parts','_inference_select',
         '_hf_norm_forward','_hf_norm_rope_forward','_hf_swiglu_forward','_gemm','_gate_up','_lookup','_tables','_add',
         '_runtime_fill','_runtime_typed_fill','_runtime_strided_copy','_runtime_binary','_runtime_compare','_runtime_reduce','_runtime_unary'}
     scopes=[e for e in events if e.get('name')=='actual_'+name and e.get('cat')=='user_annotation']
@@ -60,12 +60,12 @@ def trace(out,name,fn,expected_cache_appends,*,warmup_collection=False):
     recorded={e.get('args',{}).get('correlation') for e in actual}
     missing=[e.get('args',{}).get('correlation') for e in launches if e.get('args',{}).get('correlation') not in recorded]
     base={'_inference_positions':1,'_lookup':1,'_tables':1,'_hf_norm_forward':73,'_hf_norm_rope_forward':72,'_inference_cache_append':36,'_inference_cached_attention':36,'_add':72}
-    if name=='decode':expected={**base,'_inference_gemv':253,'_hf_swiglu_forward':36,'_gemm':0,'_gate_up':0}
+    if name=='decode':expected={**base,'_inference_gemv':145 if sliced_decode else 253,'_inference_sliced_linear':108 if sliced_decode else 0,'_hf_swiglu_forward':36,'_gemm':0,'_gate_up':0}
     elif name=='prefill':expected={**base,'_gemm':180,'_gate_up':36,'_inference_gemv':1,'_hf_swiglu_forward':0}
     elif name=='generate':
         steps=expected_cache_appends//36
         expected={k:v*steps for k,v in base.items()}
-        expected.update(_gemm=180,_gate_up=36,_inference_gemv=1+253*(steps-1),_hf_swiglu_forward=36*(steps-1),_inference_argmax_parts=steps,_inference_select=steps)
+        expected.update(_gemm=180,_gate_up=36,_inference_gemv=1+(145 if sliced_decode else 253)*(steps-1),_inference_sliced_linear=(108 if sliced_decode else 0)*(steps-1),_hf_swiglu_forward=36*(steps-1),_inference_argmax_parts=steps,_inference_select=steps)
     elif name=='setup':expected={k:0 for k in base}
     else:raise ValueError('Explicit measured phase required')
     differences={k:dict(expected=v,actual=counts[k]) for k,v in expected.items() if counts[k]!=v}
@@ -85,7 +85,7 @@ def run(a,out,foreign):
     assert identity['repo']=='Qwen/Qwen3-8B' and Path(identity['model_dir']).resolve()==model_dir
     for name,item in identity['shards'].items():assert sha(model_dir/name)==item['sha256'],name
     for name,h in identity['model_files_sha256'].items():assert sha(model_dir/name)==h,name
-    candidate,setup=trace(out,'setup',lambda:TritonQwen3Inference.from_pretrained(model_dir),0)
+    candidate,setup=trace(out,'setup',lambda:TritonQwen3Inference.from_pretrained(model_dir,sliced_decode=a.sliced_decode),0,warmup_collection=a.warmup_collection,sliced_decode=a.sliced_decode)
     assert sum(p.numel() for p in candidate.parameters())==8190735360 and len(list(candidate.parameters()))==399 and len(candidate.model.layers)==36
     hf=AutoModelForCausalLM.from_pretrained(model_dir,local_files_only=True,torch_dtype=torch.bfloat16,attn_implementation='sdpa').eval().cuda()
     tokenizer=AutoTokenizer.from_pretrained(model_dir,local_files_only=True)
@@ -148,9 +148,9 @@ def run(a,out,foreign):
         generation.append(row)
     ids=torch.randint(1,100000,(1,65),device='cuda');token=torch.tensor([[50]],device='cuda')
     cache=candidate.new_cache(1,80)
-    _,traces['prefill']=trace(out,'prefill',lambda:candidate(ids,past_key_values=cache),36)
-    _,traces['decode']=trace(out,'decode',lambda:candidate(token,past_key_values=cache),36)
-    _,traces['generate']=trace(out,'generate',lambda:candidate.generate(ids,max_new_tokens=3,eos_token_id=[],pad_token_id=0),108)
+    _,traces['prefill']=trace(out,'prefill',lambda:candidate(ids,past_key_values=cache),36,warmup_collection=a.warmup_collection,sliced_decode=a.sliced_decode)
+    _,traces['decode']=trace(out,'decode',lambda:candidate(token,past_key_values=cache),36,warmup_collection=a.warmup_collection,sliced_decode=a.sliced_decode)
+    _,traces['generate']=trace(out,'generate',lambda:candidate.generate(ids,max_new_tokens=3,eos_token_id=[],pad_token_id=0),108,warmup_collection=a.warmup_collection,sliced_decode=a.sliced_decode)
     assert a.diagnostic or all(t['passed'] for t in traces.values()),traces
     # Teacher-forced continuation fixed across arms; cache is fresh each sample.
     continuation=torch.randint(1,100000,(1,8),device='cuda');latencies=[]
@@ -171,7 +171,7 @@ def run(a,out,foreign):
     numerical=all(v['passed'] for v in cases);greedy=all(v['exact_match'] for v in generation)
     result=dict(complete=True,model='Qwen/Qwen3-8B',revision=identity['revision'],parameter_count=8190735360,layers=36,single_GPU=True,
         environment=dict(torch=torch.__version__,CUDA=torch.version.cuda,GPU=torch.cuda.get_device_name(),capability=torch.cuda.get_device_capability()),
-        physical_GPU=a.physical_device,compute='BF16 weights/activations, FP32 reductions',corpus_protocol=dict(sequence=a.corpus_sequence,blocks=a.corpus_blocks,shifted_tokens=a.corpus_blocks*(a.corpus_sequence-1),full_validation=a.corpus_blocks==512 and a.corpus_sequence==512),corpus_diagnostics=corpus_rows,numerics=numerical,greedy_exact_match=greedy,cases=cases,generation=generation,traces=traces,latencies=latencies,
+        physical_GPU=a.physical_device,sliced_decode=a.sliced_decode,compute='BF16 weights/activations, FP32 reductions',corpus_protocol=dict(sequence=a.corpus_sequence,blocks=a.corpus_blocks,shifted_tokens=a.corpus_blocks*(a.corpus_sequence-1),full_validation=a.corpus_blocks==512 and a.corpus_sequence==512),corpus_diagnostics=corpus_rows,numerics=numerical,greedy_exact_match=greedy,cases=cases,generation=generation,traces=traces,latencies=latencies,
         strict_GPU_dispatch=candidate.runtime.report(),peak_process_allocated_GiB=torch.cuda.max_memory_allocated()/2**30,foreign_GPU_processes=foreign,
         diagnostic_only=a.diagnostic,qualified=not a.diagnostic and numerical and greedy and all(t['passed'] for t in traces.values()) and not foreign,
         source_sha256={str(p.relative_to(ROOT)):sha(p) for p in sources},input_identity_sha256=sha(a.identity),
@@ -182,7 +182,7 @@ def run(a,out,foreign):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',default='/data1/tzh/models/Qwen/Qwen3-8B');p.add_argument('--identity',default='/data1/tzh/proj/qwen_operator_lab/artifacts/official_qwen3_inputs_v1.json');p.add_argument('--corpus-sequence',type=int,default=128);p.add_argument('--corpus-blocks',type=int,default=0);p.add_argument('--diagnostic',action='store_true',help='Retain failing metrics and continue; qualification still requires every original gate');p.add_argument('--physical-device',type=int,default=0);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',default='/data1/tzh/models/Qwen/Qwen3-8B');p.add_argument('--identity',default='/data1/tzh/proj/qwen_operator_lab/artifacts/official_qwen3_inputs_v1.json');p.add_argument('--sliced-decode',action='store_true');p.add_argument('--warmup-collection',action='store_true');p.add_argument('--corpus-sequence',type=int,default=128);p.add_argument('--corpus-blocks',type=int,default=0);p.add_argument('--diagnostic',action='store_true',help='Retain failing metrics and continue; qualification still requires every original gate');p.add_argument('--physical-device',type=int,default=0);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
     out=a.output.resolve();assert out.is_relative_to(Path('/data1/tzh')) and not out.exists();out.mkdir(parents=True)
     foreign=[];stop=threading.Event()
     assert os.environ.get('CUDA_VISIBLE_DEVICES')==str(a.physical_device),'Explicit physical-device/CUDA mapping required'

@@ -45,7 +45,7 @@ class KVCache:
 
 
 class TritonQwen3Inference(nn.Module):
-    def __init__(self,config,*,gemv=True,split_decode=False):
+    def __init__(self,config,*,gemv=True,split_decode=False,sliced_decode=False):
         super().__init__()
         if config.head_dim!=128:raise ValueError('The qualified Qwen3 attention head dimension is128')
         # Meta construction avoids allocating/randomly initializing another8B.
@@ -53,7 +53,7 @@ class TritonQwen3Inference(nn.Module):
             core=TritonQwen3ForCausalLM(config,OptimizationOptions())
         self.model=core.model;self.lm_head=core.lm_head;self.config=config
         self.generation_config=GenerationConfig.from_model_config(config)
-        self.gemv=gemv;self.split_decode=split_decode;self.runtime=InferenceRuntimeMode();self._cache_owner=object()
+        self.gemv=gemv;self.split_decode=split_decode;self.sliced_decode=sliced_decode;self.runtime=InferenceRuntimeMode();self._cache_owner=object()
         self.eval()
 
     def load_hf_state_dict(self,state):
@@ -66,12 +66,12 @@ class TritonQwen3Inference(nn.Module):
         return self
 
     @classmethod
-    def from_pretrained(cls,path,*,device='cuda',gemv=True,split_decode=False):
+    def from_pretrained(cls,path,*,device='cuda',gemv=True,split_decode=False,sliced_decode=False):
         """Load local official safetensors; no HF model/GPU compute dependency."""
         import json
         from safetensors import safe_open
         path=Path(path).resolve();config=AutoConfig.from_pretrained(path,local_files_only=True)
-        model=cls(config,gemv=gemv,split_decode=split_decode)
+        model=cls(config,gemv=gemv,split_decode=split_decode,sliced_decode=sliced_decode)
         if (path/'generation_config.json').is_file():
             model.generation_config=GenerationConfig.from_pretrained(path,local_files_only=True)
         index=path/'model.safetensors.index.json'
@@ -116,23 +116,23 @@ class TritonQwen3Inference(nn.Module):
             for i,layer in enumerate(self.model.layers):
                 h=rms_norm(x,layer.input_layernorm.weight,layer.input_layernorm.eps)
                 a=layer.self_attn;d=a.head_dim
-                q=kernels.linear(h,a.q_proj.weight,gemv=self.gemv).view(b,s,a.num_heads,d)
-                k=kernels.linear(h,a.k_proj.weight,gemv=self.gemv).view(b,s,a.num_kv_heads,d)
-                v=kernels.linear(h,a.v_proj.weight,gemv=self.gemv).view(b,s,a.num_kv_heads,d)
+                q=kernels.linear(h,a.q_proj.weight,gemv=self.gemv,sliced=self.sliced_decode).view(b,s,a.num_heads,d)
+                k=kernels.linear(h,a.k_proj.weight,gemv=self.gemv,sliced=self.sliced_decode).view(b,s,a.num_kv_heads,d)
+                v=kernels.linear(h,a.v_proj.weight,gemv=self.gemv,sliced=self.sliced_decode).view(b,s,a.num_kv_heads,d)
                 q=norm_rope(q,a.q_norm.weight,cos,sin,a.q_norm.eps)
                 k=norm_rope(k,a.k_norm.weight,cos,sin,a.k_norm.eps)
                 kernels.append(k,v,cache.keys[i],cache.values[i],start)
                 y=kernels.attention(q,cache.keys[i],cache.values[i],start,split_decode=self.split_decode).view(b,s,-1)
-                x=residual_add(x,kernels.linear(y,a.o_proj.weight,gemv=self.gemv))
+                x=residual_add(x,kernels.linear(y,a.o_proj.weight,gemv=self.gemv,sliced=self.sliced_decode))
                 h=rms_norm(x,layer.post_attention_layernorm.weight,layer.post_attention_layernorm.eps)
                 m=layer.mlp
                 if b*s<=8 and self.gemv:
                     y=swiglu(kernels.linear(h,m.gate_proj.weight),kernels.linear(h,m.up_proj.weight))
                 else:y=gate_up_swiglu(h,m.gate_proj.weight,m.up_proj.weight,optimized=True)
-                x=residual_add(x,kernels.linear(y,m.down_proj.weight,gemv=self.gemv))
+                x=residual_add(x,kernels.linear(y,m.down_proj.weight,gemv=self.gemv,sliced=self.sliced_decode))
             x=rms_norm(x,self.model.norm.weight,self.model.norm.eps)
             if logits_to_keep:x=x[:,-logits_to_keep:,:].contiguous()
-            logits=kernels.linear(x,self.lm_head.weight,gemv=self.gemv)
+            logits=kernels.linear(x,self.lm_head.weight,gemv=self.gemv,sliced=self.sliced_decode)
             cache.length=start+s
         except BaseException:
             cache.valid=False

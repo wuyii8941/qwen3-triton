@@ -5,8 +5,9 @@ runtime (`2577c29`). Training entry points and their evidence remain independent
 The small independent attention/cache/graph checks passed (nine numerical cases plus
 cache guards, greedy generation and EOS handling). See
 [small fixture evidence](results/qwen3_triton_inference_v15_small_fixture_v1.json).
-Official8B inference qualification and performance are still pending; code existence
-and a small fixture do not establish full-model correctness or speed.
+Official8B checks now include full S512 logit parity and monitored graph timings.
+Short/decode numerical gates still fail, so general inference qualification and
+quality-equivalent speed claims remain pending. See the evidence below.
 
 The new `qwen3_triton.inference.TritonQwen3Inference` path loads local official
 BF16 safetensors and provides dense prefill, chunked prefill, request-owned KV
@@ -195,7 +196,7 @@ in the two16-token text continuations has exactly tied topHFlogits; Triton's
 choice also has maximumHFlogit. That tie can diverge subsequent free generation.
 These observations neither replace the original gates nor establish universal
 quality equivalence. The original two absolute-logit gate failures and literal
-greedy mismatch remain false. Full512-block/S512quality evaluation is pending.
+greedy mismatch remain false. The later full512-block/S512 comparison is recorded below.
 [Raw diagnostic](results/qwen3_triton_inference_v15_quality_diagnostic_v1.json),
 [exact execution source](results/qwen3_triton_inference_v15_quality_source_v1.json).
 
@@ -250,3 +251,58 @@ on token151645after8tokens within a32-token budget, without stderr.
 The metadata fix changes CPU stopping configuration, not GPU arithmetic;
 phase009's exact pre-metadata source is retained. This smoke check does not
 resolve the original short-shape numerical gates or establish broad chat quality.
+
+
+## Experimental interleaved decode accumulation
+
+`TritonQwen3Inference.from_pretrained(..., sliced_decode=True)` explicitly enables
+an inference-only experiment for B1 single-token Q/O/down linear projections
+(N4096,K4096/12288). The default remains `False`. Two independent FP32 TensorCore
+accumulators consume alternating32-element Ksegments before a final sum, matching
+the measured SM86 cuBLAS sliced1x2 order on identical operands. This does not
+change prefill, K/V/gate/up, weights, activation dtype or the original gates.
+
+Across all36layers and four decoded positions, this kernel has zero unequal
+coordinates against the recorded native Q/O/down results; the old GEMV has4746
+unequal coordinates. This is local operand parity, not complete model parity.
+[Shape coverage](results/qwen3_triton_inference_v15_sliced_shape_coverage_v1.json),
+[single-kernel check](results/qwen3_triton_inference_v15_sliced_kernel_check_v1.json),
+[initial interleaving probe](results/qwen3_triton_inference_v15_interleaved_probe_v1.json).
+
+The first full8B diagnostic with this route passes all four phase audits and
+both16-token text continuations matchHF. However, one original logit case still
+fails: B1decode after67tokens has meanAbs0.0552724 and relativeL2 0.0248562,
+versus0.0371610/0.0174549 with default GEMV. The failing-case count drops from2to1,
+but the remaining error is larger. The eightS128 corpus diagnostics are unchanged
+because prefill is unchanged. This route therefore stays opt-in and unqualified.
+[Full diagnostic](results/qwen3_triton_inference_v15_sliced_full_diagnostic_v1.json),
+[exact source before the opt-in API change](results/qwen3_triton_inference_v15_sliced_execution_sources_v1.json).
+
+The verifier accepts `--sliced-decode --diagnostic --warmup-collection`; phase
+counts require145GEMV+108sliced kernels per decode instead of253GEMV. CPU tests
+exercise both routes and reject wrong-route counts, missing compute and missing
+GPU activity. `compare_qwen3_graph_v15.py --include-sliced` compares HF, default
+and sliced eager/graph requests in both orders with the same resident weights,
+prompt, token budget, GPU admission and continuous foreign-process monitoring.
+
+A fresh8B run through the explicit opt-in API reproduces all24case metrics from
+the first diagnostic exactly. All four new phase audits pass, including exactly
+108sliced and145GEMV launches per decode, with no observed foreignGPUprocesses.
+The original numerical failure remains false; both text continuations agree.
+[Explicit opt-in verification](results/qwen3_triton_inference_v15_sliced_optin_verification_v1.json).
+
+The same-process six-arm request comparison confirms the sliced route is slower:
+
+| Graph request |Forward order seconds|Reverse order seconds|
+|---|---:|---:|
+|HF|0.218586|0.218960|
+|Triton default|0.204737|0.204710|
+|Triton sliced|0.213085|0.213162|
+
+Sliced is4.08%/4.13% slower than default, while matchingHF on all three tested
+changed inputs (default matches2/3). Each graph matches its own eager route.
+No foreignGPUprocess was observed. B1S65,8generated tokens, no earlyEOS, same
+resident weights, preparation/capture excluded. This rejects sliced as a speed
+improvement and does not resolve the numerical gates. Default Graph's6.34%/6.51%
+lower latency thanHF Graph remains conditional, not quality-equivalent evidence.
+[Six-arm raw report](results/qwen3_triton_inference_v15_sliced_paired_graph_v1.json).
