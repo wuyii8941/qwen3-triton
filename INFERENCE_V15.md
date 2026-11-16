@@ -176,3 +176,25 @@ cuBLAS GEMV and TensorCore GEMM kernels, captured in the retained diagnostic
 summary. [Linear-order diagnostics](results/qwen3_triton_inference_v15_linear_order_diagnostics_v1.json).
 These observations narrow the remaining precision investigation; they do not
 establish bitwise parity or justify relaxing the original full-model gates.
+
+
+## Independent rounding and exploratory quality diagnostics
+
+CPUFP64 matrix products and `math.fsum` agree exactly on the228disagreeing
+coordinates sampled from20realHF layer calls. On223of those coordinates the
+TritonBF16 result is nearer the fsum dot product, and HF is nearer on5. These
+are selected disagreements, not an unbiased whole-model precision comparison.
+They show that discrepancy fromHF alone does not identify a candidate bug.
+[Independent oracle](results/qwen3_triton_inference_v15_linear_oracle_v1.json).
+
+Eight fixed128-token validation blocks(1024prediction positions,1016shiftedNLL
+targets) show HFmeanNLL3.066296 and Triton3.066984, a difference0.000688.
+Top1matches1012/1024; meanHF-to-TritonKL0.000925. The earlier random-input
+cases match397/398top1positions. The only teacher-forced token difference
+in the two16-token text continuations has exactly tied topHFlogits; Triton's
+choice also has maximumHFlogit. That tie can diverge subsequent free generation.
+These observations neither replace the original gates nor establish universal
+quality equivalence. The original two absolute-logit gate failures and literal
+greedy mismatch remain false. Full512-block/S512quality evaluation is pending.
+[Raw diagnostic](results/qwen3_triton_inference_v15_quality_diagnostic_v1.json),
+[exact execution source](results/qwen3_triton_inference_v15_quality_source_v1.json).

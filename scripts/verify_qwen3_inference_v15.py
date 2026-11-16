@@ -22,6 +22,11 @@ def sha(p):
 def metrics(x,y):
     x=x.float();y=y.float();d=x-y
     values=dict(max_abs=float(d.abs().max()),mean_abs=float(d.abs().mean()),relative_l2=float(torch.linalg.vector_norm(d)/torch.linalg.vector_norm(y).clamp_min(1e-12)),top1_matches=int((x.argmax(-1)==y.argmax(-1)).sum()),rows=x.numel()//x.shape[-1])
+    logp=torch.log_softmax(x,dim=-1);logq=torch.log_softmax(y,dim=-1)
+    kl=(logq.exp()*(logq-logp)).sum(-1)
+    tv=.5*(logq.exp()-logp.exp()).abs().sum(-1)
+    centered=d-d.mean(-1,keepdim=True)
+    values.update(KL_HF_to_Triton_mean=float(kl.mean()),KL_max=float(kl.max()),TV_mean=float(tv.mean()),TV_max=float(tv.max()),mean_logit_offset=float(d.mean()),centered_relative_l2=float(torch.linalg.vector_norm(centered)/torch.linalg.vector_norm(y-y.mean(-1,keepdim=True)).clamp_min(1e-12)))
     values['passed']=values['relative_l2']<=.02 and values['mean_abs']<=.03 and values['max_abs']<=.5
     return values
 
@@ -76,6 +81,24 @@ def run(a,out,foreign):
         x=candidate(prefix[:,3:].contiguous(),past_key_values=chunks,logits_to_keep=1).logits
         y=hf(prefix,use_cache=False,logits_to_keep=1).logits
         values=metrics(x,y);save_case(dict(kind='chunked_prefill',batch=batch,length=length,**values));assert a.diagnostic or values['passed'],cases[-1]
+    corpus_rows=[]
+    if a.corpus_blocks:
+        from training.data import Blocks
+        corpus=Path('/data1/tzh/proj/qwen_operator_lab/artifacts/convergence_corpus_v1/validation.bin')
+        assert sha(corpus)==identity['tokens_sha256']['validation.bin']
+        blocks=Blocks(corpus,a.corpus_sequence)
+        assert 1<=a.corpus_blocks<=len(blocks),'Corpus request must not repeat blocks'
+        import math
+        assert math.gcd(8191,len(blocks))==1,'Fixed ordering must cover every requested block uniquely'
+        for block in range(a.corpus_blocks):
+            index=(block*8191)%len(blocks);tokens=blocks[index].unsqueeze(0).cuda()
+            x=candidate(tokens,logits_to_keep=0).logits;y=hf(tokens,use_cache=False,logits_to_keep=0).logits
+            row=dict(block=index,**metrics(x,y))
+            target=tokens[:,1:].reshape(-1)
+            row['Triton_NLL']=float(torch.nn.functional.cross_entropy(x[:,:-1].float().reshape(-1,x.shape[-1]),target))
+            row['HF_NLL']=float(torch.nn.functional.cross_entropy(y[:,:-1].float().reshape(-1,y.shape[-1]),target))
+            corpus_rows.append(row)
+            with (out/'corpus_diagnostics.jsonl').open('a') as f:f.write(json.dumps(row)+'\n')
     generation=[]
     for prompt in ['The capital of France is','Write a Python function that adds two numbers.']:
         text=prompt  # Explicit raw-text continuation; local snapshot has no chat template.
@@ -84,6 +107,15 @@ def run(a,out,foreign):
         y=hf.generate(ids,max_new_tokens=16,do_sample=False,eos_token_id=None,pad_token_id=0,attention_mask=torch.ones_like(ids),use_cache=True)
         tokens=x[0,ids.shape[1]:].cpu().tolist();reference=y[0,ids.shape[1]:].cpu().tolist()
         row=dict(prompt=prompt,token_ids=tokens,HF_token_ids=reference,exact_match=tokens==reference,text=tokenizer.decode(tokens,skip_special_tokens=True))
+        # Teacher-force the same HF continuation, preserving both caches.
+        cc=candidate.new_cache(1,ids.shape[1]+16);hc=DynamicCache();current=ids;teacher=[]
+        for step,expected in enumerate(reference):
+            xc=candidate(current,past_key_values=cc).logits[:,-1,:].float()
+            yh=hf(current,past_key_values=hc,use_cache=True,logits_to_keep=1).logits[:,-1,:].float()
+            proposed=int(xc.argmax(-1));top=yh.topk(2,dim=-1).values[0]
+            teacher.append(dict(step=step,HF=int(yh.argmax(-1)),Triton=proposed,HF_top1_gap=float(top[0]-top[1]),HF_logprob_penalty=float(yh.max()-yh[0,proposed]),**metrics(xc,yh)))
+            current=torch.tensor([[expected]],device='cuda')
+        row['teacher_forced']=teacher
         generation.append(row)
     ids=torch.randint(1,100000,(1,65),device='cuda');token=torch.tensor([[50]],device='cuda')
     cache=candidate.new_cache(1,80)
@@ -110,7 +142,7 @@ def run(a,out,foreign):
     numerical=all(v['passed'] for v in cases);greedy=all(v['exact_match'] for v in generation)
     result=dict(complete=True,model='Qwen/Qwen3-8B',revision=identity['revision'],parameter_count=8190735360,layers=36,single_GPU=True,
         environment=dict(torch=torch.__version__,CUDA=torch.version.cuda,GPU=torch.cuda.get_device_name(),capability=torch.cuda.get_device_capability()),
-        physical_GPU=a.physical_device,compute='BF16 weights/activations, FP32 reductions',numerics=numerical,greedy_exact_match=greedy,cases=cases,generation=generation,traces=traces,latencies=latencies,
+        physical_GPU=a.physical_device,compute='BF16 weights/activations, FP32 reductions',corpus_protocol=dict(sequence=a.corpus_sequence,blocks=a.corpus_blocks,shifted_tokens=a.corpus_blocks*(a.corpus_sequence-1),full_validation=a.corpus_blocks==512 and a.corpus_sequence==512),corpus_diagnostics=corpus_rows,numerics=numerical,greedy_exact_match=greedy,cases=cases,generation=generation,traces=traces,latencies=latencies,
         strict_GPU_dispatch=candidate.runtime.report(),peak_process_allocated_GiB=torch.cuda.max_memory_allocated()/2**30,foreign_GPU_processes=foreign,
         diagnostic_only=a.diagnostic,qualified=not a.diagnostic and numerical and greedy and all(t['passed'] for t in traces.values()) and not foreign,
         source_sha256={str(p.relative_to(ROOT)):sha(p) for p in sources},input_identity_sha256=sha(a.identity),
@@ -121,7 +153,7 @@ def run(a,out,foreign):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',default='/data1/tzh/models/Qwen/Qwen3-8B');p.add_argument('--identity',default='/data1/tzh/proj/qwen_operator_lab/artifacts/official_qwen3_inputs_v1.json');p.add_argument('--diagnostic',action='store_true',help='Retain failing metrics and continue; qualification still requires every original gate');p.add_argument('--physical-device',type=int,default=0);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',default='/data1/tzh/models/Qwen/Qwen3-8B');p.add_argument('--identity',default='/data1/tzh/proj/qwen_operator_lab/artifacts/official_qwen3_inputs_v1.json');p.add_argument('--corpus-sequence',type=int,default=128);p.add_argument('--corpus-blocks',type=int,default=0);p.add_argument('--diagnostic',action='store_true',help='Retain failing metrics and continue; qualification still requires every original gate');p.add_argument('--physical-device',type=int,default=0);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
     out=a.output.resolve();assert out.is_relative_to(Path('/data1/tzh')) and not out.exists();out.mkdir(parents=True)
     foreign=[];stop=threading.Event()
     assert os.environ.get('CUDA_VISIBLE_DEVICES')==str(a.physical_device),'Explicit physical-device/CUDA mapping required'
