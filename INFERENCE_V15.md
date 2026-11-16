@@ -330,3 +330,23 @@ dispatch is unchanged. The full-request experiment uses a local research-only
 route override, then checks all logits and cached continuation against the
 unaltered baseline before reporting timings.
 [Complete tile screen](results/qwen3_triton_inference_v15_prefill_tiles_v1.json).
+
+
+The research-only S65 route now has complete-model evidence: eight random
+prompts, each with full65-position prefill logits and four cached decode steps,
+give40/40bitwise equality comparisons against the unchanged Triton baseline.
+Both fresh prefill/decode traces pass. Each graph matches its own eager route;
+three changed-input generations agree across baseline/tiled/HF in this run.
+This does not replace the independent original short/decode HF gates.
+
+|Graph request|Forward order seconds|Reverse order seconds|
+|---|---:|---:|
+|HF|0.219219|0.219673|
+|Triton default|0.205221|0.205345|
+|Triton S65 tiles|0.194885|0.194781|
+
+The tiled request is5.04%/5.14% lower latency than default and11.10%/11.33%
+lower thanHF in this B1S65/8-token graph experiment. No foreignGPUprocesses
+were observed. Graph setup is excluded, as in all prior comparisons. This
+result belongs to the standalone research override; it is not yet an exported
+production option. [Complete request spike](results/qwen3_triton_inference_v15_tiled_request_spike_v1.json).
