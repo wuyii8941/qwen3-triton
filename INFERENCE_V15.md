@@ -87,7 +87,7 @@ JSON summaries and source hashes. Current evidence status is updated after the
 actual check, not inferred from the script.
 
 
-## Measured development status
+## Measured development status (historical default route)
 
 The complete36-layer8B diagnostic now runs prefill, chunked prefill, cached
 single-token decode and raw-text greedy generation. Four raw phase traces pass
@@ -610,7 +610,7 @@ complete public-model/audit/fixed-corpus qualification and speed follow separate
 [Exported-module operator checks](results/qwen3_triton_inference_v15_reference_api_ops_v1.json).
 
 
-## Actual API qualification: reference accumulation + prefill tiling
+## Actual API qualification032: before short-row norm correction
 
 Run032 uses the exported API with `reference_accumulation=True`,
 `prefill_tiling=True`, default `gemv=True` and `sliced_decode=False`. All24
@@ -676,3 +676,84 @@ the left operand as an in-place output; a CPU regression reproduces the alias.
 These source changes require fresh complete validation and request measurements.
 Ordinary and widened random norm fixtures both passed640/640before the fix, so
 they are retained as weak checks; actual model-input regression is required.
+
+
+## Fresh qualification039: short-row norm correction included
+
+The current opt-in reference+prefill-tiling source passes a fresh complete run039.
+All24original numerical cases pass (maximummeanAbs0.0258631855); all512unique
+fixedS512blocks have bitwise-identical logits and identical meanNLL
+2.605893106199801; both original16-token continuations match literally. All five
+phase audits pass, including73reference-norm launches per B1decode. Raw gzip
+traces total1172877bytes. All executed source hashes match and continuous
+monitoring reports no foreign context. No original gate was relaxed.
+
+The original failed changed-input case also passes8HFteacher-forcedsteps, with
+576/576real-inputRMSNorm,2016/2016body-linear and288/288same-QKVattention
+checks bitwise. All propagated model-body intermediates match; the unchanged
+fastLMhead retains a few BF16rounding differences. Synthetic norm checks cover
+640cases, but the actual-input RED→GREEN record is the evidence for the fix.
+
+The earlier032source is superseded for current qualification. Extra text-prompt
+teacher-forced logits still retain23meanAbs failures despite literal greedy
+equality, so this is finite-protocol acceptance, not a universal accuracy claim.
+Two new option defaults remainFalse. No training numerical/performance result
+is re-certified by this inference run. The shared boolean dispatcher correction
+has a targeted CPU alias regression and fresh complete inference validation.
+
+[Current complete report](results/qwen3_triton_inference_v15_reference_api_qualified_v2.json),
+[current source/raw-trace receipt](results/qwen3_triton_inference_v15_reference_api_receipt_v2.json),
+[real-input norm RED→GREEN](results/qwen3_triton_inference_v15_reference_norm_regression_v1.json),
+[preserved failed request](results/qwen3_triton_inference_v15_reference_request_failure_v1.json).
+
+The combined regression/full run can be reproduced under one continuously
+monitored stableGPUlease:
+
+```bash
+CUDA_VISIBLE_DEVICES=1 bash scripts/research_python.sh \
+  scripts/qualify_qwen3_reference_request_v15.py \
+  --output /data1/tzh/proj/qwen_operator_lab/artifacts/inference_v15/new_unique_regression
+```
+
+
+## Qualified-route paired whole-request measurement040
+
+Same physicalA6000, B1S65,8output tokens including prefill+7cacheddecode steps,
+fixed budget/no earlyEOS, two opposite orders,2warmup+5measured repetitions.
+Both model instances remain resident; model loading, compilation and graph
+construction are uniformly excluded. Every arm's complete request is synchronized
+and wall-timed. Source/options/raw-trace proof is bound to complete039validation.
+
+|Complete request, ms|Order1 median|Reverse-order median|
+|---|---:|---:|
+|HF eager|306.705|306.081|
+|HF Graph|218.790|219.010|
+|Default Triton eager (unqualified route)|1108.736|1122.598|
+|Default Triton Graph (unqualified route)|204.735|204.902|
+|Reference+tiling Triton eager|1111.911|1111.335|
+|Reference+tiling Triton Graph|201.387|201.237|
+
+The measured reference Graph request uses7.95%/8.12%less time than same-order
+HF Graph and1.64%/1.79%less than the default Triton Graph. The default route
+remains numerically unqualified and is only a timing ablation. Eager has no
+consistent improvement versus default and remains about3.63xslower than HF
+eager. This is a Graph-only result at the stated finite shape/protocol, not a
+serving-throughput or unrestricted quality-equivalence claim. The earlier194.8ms
+prefill-only path failed original quality gates and is not promoted here.
+
+All three changed inputs have Graph=eager output equality for all routes;
+reference output also matches HF for all three (default only2/3). The original
+failed case1nowproduces `[11,220,16,15,15,15,15,15]` in both HF and reference.
+No foreign context is observed and source hashes match. All60measured samples
+are retained; no median was selected across orders. The original033failure and
+its guard remain; no assertion or quality threshold was removed to get timings.
+
+[All paired samples, changed-input tokens and source/proof binding](results/qwen3_triton_inference_v15_reference_paired_request_v1.json).
+
+```bash
+CUDA_VISIBLE_DEVICES=1 bash scripts/research_python.sh \
+  scripts/compare_qwen3_graph_v15.py --include-reference \
+  --reference-prefill-tiling \
+  --qualification /data1/tzh/proj/qwen_operator_lab/artifacts/inference_v15/reference_norm_qualified_039/full/result.json \
+  --output /data1/tzh/proj/qwen_operator_lab/artifacts/inference_v15/new_unique_paired_request
+```

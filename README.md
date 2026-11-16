@@ -12,7 +12,12 @@ GitHub main 的首次发布固定已验收的 V9 实现与小型证据；本研�
 两条16-token生成对照、完整512块S512验证和五段GPU审计；验证语料logits逐位一致。
 额外逐步logits诊断仍有超阈值项，因此结论限于已测协议，两个选项均默认关闭。
 旧 `prefill_tiling` 单独开启的5.1% Graph收益属于未通过完整质量检查的历史路径，
-不能当作新验收路径的性能数字。新路径完整请求速度单独测量。
+不能当作新验收路径的性能数字。最新验收含短行RMSNorm修正，原先失败的新增提示回归也已通过。
+[正式证据](results/qwen3_triton_inference_v15_reference_api_qualified_v2.json)。
+新路径在单A6000、B1S65、生成8token的完整Graph请求中为 **201.4 / 201.2 ms**，
+同轮HF Graph为 **218.8 / 219.0 ms**，耗时减少 **7.95% / 8.12%**。
+三条更换输入的生成对照均通过。Eager仍约比HF慢3.63倍，收益限于上述Graph场景。
+[完整配对样本与限制](results/qwen3_triton_inference_v15_reference_paired_request_v1.json)。
 
 本分支最新通过完整验收的是 [V13](OPTIMIZATION_V13.md)：
 两轮为 **4.5148 / 4.5176 秒/步**，

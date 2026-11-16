@@ -35,7 +35,7 @@
 - [x] Run028proved the selected SplitK/interleaved calls but retained one cached decode failure.
 - [x] Run029identified32-lane K/V and16-lane gate/up sequential accumulator trees with descending warp reduction.
 - [x] Run030explicitly reproduced these trees:2520/2520real-layer local calls are bitwise, all24original numerical gates and both literal16-token continuations pass. Exact-source receipts are in `results/qwen3_triton_inference_v15_reference_order_*_v1.json`.
-- [ ] Exported API, complete updated phase audits, full fixed validation and paired performance remain open below. Research qualified=False is retained.
+- [x] Exported API, complete updated phase audits, full fixed validation and paired performance completed below. Research030qualified=False is retained.
 
 ### Task 1: Export inference-only arithmetic and configuration
 
@@ -68,10 +68,10 @@
 
 **Interfaces:** Same GPU, B1S65,8outputs, no earlyEOS, two orders,2warmup+5measured repetitions, HF/default/reference arithmetic graph and eager arms; each graph must equal its own eager path.
 
-- [ ] Fix the observed changed-input RMSNorm failure with real-input RED→GREEN evidence, rerun unchanged full gates, and preserve original failed benchmark.
-- [ ] Capture/select options before graph creation and verify three changed inputs.
-- [ ] Measure both orders and retain all eager/graph samples; exclude preparation uniformly and report any absent eager improvement.
-- [ ] If a tile choice changes the proven FP32 schedule, revalidate local/full-model arithmetic before using its timings. Do not select a faster path that fails original gates.
-- [ ] Obtain independent read-only code review, fix concrete defects with regression evidence, and commit exact-source results/documentation. Leave speculative/unqualified alternatives opt-in.
+- [x] Fix the observed changed-input RMSNorm failure with real-input RED→GREEN evidence, rerun unchanged full gates, and preserve original failed benchmark.
+- [x] Capture/select options before graph creation and verify three changed inputs.
+- [x] Measure both orders and retain all eager/graph samples; exclude preparation uniformly and report any absent eager improvement.
+- [x] If a tile choice changes the proven FP32 schedule, revalidate local/full-model arithmetic before using its timings. Do not select a faster path that fails original gates.
+- [x] Obtain independent read-only code review, fix concrete defects with regression evidence, and commit exact-source results/documentation. Leave speculative/unqualified alternatives opt-in.
 
 Execution is native in the existing worktree, continuing the user's authorization. Review subagents remain read-only and never use GPUs or mutate executed source.
