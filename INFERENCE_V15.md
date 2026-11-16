@@ -5,9 +5,11 @@ runtime (`2577c29`). Training entry points and their evidence remain independent
 The small independent attention/cache/graph checks passed (nine numerical cases plus
 cache guards, greedy generation and EOS handling). See
 [small fixture evidence](results/qwen3_triton_inference_v15_small_fixture_v1.json).
-Official8B checks now include full S512 logit parity and monitored graph timings.
-Short/decode numerical gates still fail, so general inference qualification and
-quality-equivalent speed claims remain pending. See the evidence below.
+The opt-in reference accumulation route now passes the original official8B
+qualification protocol, including all512fixedS512blocks and five complete GPU
+phase audits. This is finite-protocol acceptance, not universal numerical parity.
+Earlier default-route failures remain documented below. Request performance for
+the qualified route is measured separately.
 
 The new `qwen3_triton.inference.TritonQwen3Inference` path loads local official
 BF16 safetensors and provides dense prefill, chunked prefill, request-owned KV
@@ -33,6 +35,7 @@ research environment. A local official checkpoint/tokenizer is required:
 CUDA_VISIBLE_DEVICES=0 bash scripts/research_python.sh \
   scripts/generate_qwen3_triton_v15.py \
   --model /data1/tzh/models/Qwen/Qwen3-8B \
+  --reference-accumulation --prefill-tiling \
   --chat --prompt 'What is the capital of France?' --max-new-tokens 32
 ```
 
@@ -42,7 +45,9 @@ change the GPU architecture. Tokenizer/chat formatting run on the CPU.
 ```python
 from qwen3_triton.inference import TritonQwen3Inference
 
-model = TritonQwen3Inference.from_pretrained('/data1/tzh/models/Qwen/Qwen3-8B')
+model = TritonQwen3Inference.from_pretrained(
+    '/data1/tzh/models/Qwen/Qwen3-8B',
+    reference_accumulation=True, prefill_tiling=True)
 # ids: contiguous CUDA int64[B,S], no padding, all IDs in vocabulary.
 cache = model.new_cache(batch_size=ids.shape[0], max_length=2048)
 output = model(ids, past_key_values=cache, logits_to_keep=1)
@@ -68,8 +73,10 @@ EOS/padding and finished-row handling. This fixture does not qualify8B.
 
 `verify_qwen3_inference_v15.py` verifies pinned official checkpoint hashes, then
 runs the complete36-layer8B graph against HF with cached decoding, chunked
-prefill and text generation. Four compressed raw traces cover weight transfer,
-prefill, decode and generation; the auditor rejects unclassified kernel names,
+prefill and text generation. Five compressed raw traces cover weight transfer,
+M17/M65 prefill, decode and generation; the auditor requires the actual phase
+scope, exact operation counts and GPU activity for every correlated launch.
+It rejects unclassified kernel names,
 native GPU memset and device copies. Each trace is capped at8MiB. Opposite-order
 latency comparisons use fresh caches, the same prompt/continuation and2warmup
 plus5measured repetitions. No dense logits, gradients, weights or checkpoints
@@ -601,3 +608,46 @@ verify loading/CLI propagation, defaultFalse, independent options and weights.
 No foreignGPUprocesses were observed. This is local exported-module evidence;
 complete public-model/audit/fixed-corpus qualification and speed follow separately.
 [Exported-module operator checks](results/qwen3_triton_inference_v15_reference_api_ops_v1.json).
+
+
+## Actual API qualification: reference accumulation + prefill tiling
+
+Run032 uses the exported API with `reference_accumulation=True`,
+`prefill_tiling=True`, default `gemv=True` and `sliced_decode=False`. All24
+original cases pass unchanged relativeL2<=0.02, meanAbs<=0.03, maxAbs<=0.5;
+maximum case meanAbs is0.027414. Both original raw-text16-token greedy
+continuations match HF literally. All512unique fixedS512validation blocks
+(261632shifted targets) have bitwise-identical logits and meanNLL
+2.605893106199801 on both implementations. Official pinned weights were
+hash-verified; executed source hashes match the retained report.
+
+All five raw phase traces pass, including M17's separate split/reduce path,
+M65's180split+180reduce launches, and decode's144orderedGEMV+108interleaved
+launches per forward. No unclassified/native compute, device-memory fallback,
+missing launch activity or foreign GPU process was observed. The five gzip
+traces total1199585bytes; each is bounded by8MiB. Only metrics/tokens and raw
+traces are retained, with no tensors/checkpoints/logits.
+
+`functional_qualified` covers the original numerical/greedy gates and all five
+phase audits with clean monitoring. `qualified` additionally requires the
+complete unique512xS512fixed validation set and all its numerical gates. Empty
+or partial corpus runs cannot qualify the complete protocol. CPU regressions
+reject missing scopes, launches, reductions, activity and incorrect route counts.
+
+Limits: extra teacher-forced diagnostics on the two text prompts retain22
+meanAbs failures despite literal token equality. The original24case gate is
+unchanged; these diagnostics are not silently counted as passing numerical
+checks. Unsupported shapes use the existing Triton route and have no blanket
+parity guarantee. New flags remain opt-in/defaultFalse. Earlier failures and
+unqualified faster routes are historical evidence, not substitutes for this run.
+
+[Complete API report](results/qwen3_triton_inference_v15_reference_api_qualified_v1.json),
+[source/raw-trace receipt](results/qwen3_triton_inference_v15_reference_api_receipt_v1.json).
+
+```bash
+CUDA_VISIBLE_DEVICES=1 bash scripts/research_python.sh \
+  scripts/verify_qwen3_inference_v15.py --physical-device 1 \
+  --reference-accumulation --prefill-tiling --warmup-collection \
+  --corpus-blocks 512 --corpus-sequence 512 \
+  --output /data1/tzh/proj/qwen_operator_lab/artifacts/inference_v15/new_unique_run
+```

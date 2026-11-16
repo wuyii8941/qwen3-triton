@@ -28,7 +28,8 @@ def run():
      counts['_inference_gemv']=253 if sliced else 145
      counts['_inference_sliced_linear']=0 if sliced else 108
     data=events(counts)
-    if scenario=='missing_activity':data.append(dict(cat='cuda_driver',name='cuLaunchKernelEx',ts=99999,args={'correlation':99999}))
+    data.append(dict(cat='user_annotation',name='actual_decode',ts=0,dur=100000))
+    if scenario=='missing_activity':data.append(dict(cat='cuda_driver',name='cuLaunchKernelEx',ts=.5,args={'correlation':99999}))
     with patch('torch.profiler.profile',return_value=Profiler(data)),patch('torch.cuda.synchronize'):
      _,report=trace(Path(tmp),'decode',lambda:None,36,sliced_decode=sliced)
     assert report['passed']==(scenario=='complete'),report

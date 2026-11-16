@@ -8,10 +8,11 @@ V9–V13 的参数、autograd、分配器、FSDP2/NCCL 和 AdamW 使用共同的
 GitHub main 的首次发布固定已验收的 V9 实现与小型证据；本研究分支继续以此优化。
 训练版本的验收范围不包含完整预训练框架。新增 [V15 推理实现](INFERENCE_V15.md)
 提供单卡 BF16 prefill、KV cache、decode、贪心生成和固定请求 CUDA Graph；
-完整 S512 语料对照一致，但短序列数值门槛尚有未通过项，暂不作为质量等价推荐。
-新增显式 `prefill_tiling=True` / `--prefill-tiling`：在单卡 A6000、B1S65、生成8token
-的固定 Graph 请求中，相对当前 Triton 再降低约 **5.1%** 耗时；40次完整 logits
-比较与当前 Triton 逐位一致。收益限于已测形状，默认关闭，Eager 无稳定提速。
+显式 `reference_accumulation=True, prefill_tiling=True` 路径已通过原24项数值检查、
+两条16-token生成对照、完整512块S512验证和五段GPU审计；验证语料logits逐位一致。
+额外逐步logits诊断仍有超阈值项，因此结论限于已测协议，两个选项均默认关闭。
+旧 `prefill_tiling` 单独开启的5.1% Graph收益属于未通过完整质量检查的历史路径，
+不能当作新验收路径的性能数字。新路径完整请求速度单独测量。
 
 本分支最新通过完整验收的是 [V13](OPTIMIZATION_V13.md)：
 两轮为 **4.5148 / 4.5176 秒/步**，

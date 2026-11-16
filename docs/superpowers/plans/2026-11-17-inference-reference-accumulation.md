@@ -56,11 +56,11 @@
 
 **Interfaces:** Verifier `--reference-accumulation` forwards/records the actual model option. Trace reviewer takes that option and explicit prompt length, with expected counts derived for the M65 and M17 routes.
 
-- [ ] Write/run failing CPU trace fixtures for the new complete route, missing partials, missing reductions, wrong route and unmatched launch activity.
-- [ ] Add only actual new Triton kernel names to the whitelist and require all operation counts. M65 prefill has180split+180reduce,36fusedgate/up,1GEMV; B1decode has108interleaved+144orderedGEMV+1existingGEMV. M17 prefill has108ordinaryGEMM,72fusedinterleaved,72split+72reduce,36SwiGLU,1existingGEMV. Other common attention/cache/norm/residual counts remain unchanged.
-- [ ] Record complete M17 and M65 phase traces with bounded bootstrap collection; verify all launches have GPU events and reject native compute/device memory fallbacks.
-- [ ] Run unchanged24cases, literal two16-token continuations and full fixed512xS512 corpus with the actual exported API, pinned checkpoint hashes, source freeze, stable lease and continuous monitoring. Preserve earlier failed reports.
-- [ ] Declare qualification only if every required gate and clean-monitor condition is proven; record exact limits.
+- [x] Write/run failing CPU trace fixtures for the new complete route, missing partials, missing reductions, wrong route and unmatched launch activity.
+- [x] Add only actual new Triton kernel names to the whitelist and require all operation counts. M65 prefill has180split+180reduce,36fusedgate/up,1GEMV; B1decode has108interleaved+144orderedGEMV+1existingGEMV. M17 prefill has108ordinaryGEMM,72fusedinterleaved,72split+72reduce,36SwiGLU,1existingGEMV. Other common attention/cache/norm/residual counts remain unchanged.
+- [x] Record complete M17 and M65 phase traces with bounded bootstrap collection; verify all launches have GPU events and reject native compute/device memory fallbacks.
+- [x] Run unchanged24cases, literal two16-token continuations and full fixed512xS512 corpus with the actual exported API, pinned checkpoint hashes, source freeze, stable lease and continuous monitoring. Preserve earlier failed reports.
+- [x] Declare qualification only if every required gate and clean-monitor condition is proven; record exact limits.
 
 ### Task 3: Matched whole-request performance and evidence
 
