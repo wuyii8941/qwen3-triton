@@ -126,8 +126,12 @@ def _inference_gemv(X,W,Y,N:tl.constexpr,K:tl.constexpr,BN:tl.constexpr,BK:tl.co
     tl.store(Y+row*N+n,tl.sum(acc,1),n<N)
 
 
-def linear(x,weight,*,gemv=True,accurate=False,sliced=False,prefill_tiling=False):
+def linear(x,weight,*,gemv=True,accurate=False,sliced=False,prefill_tiling=False,reference_accumulation=False):
     shape=x.shape;m=x.numel()//shape[-1];k=shape[-1];n=weight.shape[0]
+    if reference_accumulation and not accurate:
+        from .accumulation import linear as reference_linear
+        output=reference_linear(x,weight,gemv=gemv)
+        if output is not None:return output
     if prefill_tiling and m==65 and x.is_cuda and x.dtype==torch.bfloat16 and weight.dtype==x.dtype and weight.device==x.device and x.is_contiguous() and weight.is_contiguous() and (n,k) in ((4096,4096),(1024,4096),(4096,12288)):
         bn=32 if n==1024 else 64
         out=raw_empty((*shape[:-1],n),device=x.device,dtype=x.dtype)

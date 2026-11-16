@@ -37,20 +37,20 @@
 - [x] Run030explicitly reproduced these trees:2520/2520real-layer local calls are bitwise, all24original numerical gates and both literal16-token continuations pass. Exact-source receipts are in `results/qwen3_triton_inference_v15_reference_order_*_v1.json`.
 - [ ] Exported API, complete updated phase audits, full fixed validation and paired performance remain open below. Research qualified=False is retained.
 
-### Task1: Export inference-only arithmetic and configuration
+### Task 1: Export inference-only arithmetic and configuration
 
 **Files:** Create `qwen3_triton/inference/accumulation.py`; modify inference `kernels.py`, `model.py`, generation CLI; add `scripts/check_reference_accumulation_config_v15.py`.
 
 **Interfaces:** `TritonQwen3Inference(..., reference_accumulation=False)` and `from_pretrained` retain the option; CLI `--reference-accumulation` forwards it. `accumulation.linear(x,weight)` returns a BF16 output for supported contiguous same-device BF16 CUDA shapes, otherwiseNone. `kernels.linear(...,reference_accumulation=False)` checks it before existing paths and preserves diagnostic `accurate` precedence.
 
-- [ ] Write/run CPU failing loader/CLI regression: explicitTrue survives loading, defaultFalse, official fixture state tensors unchanged, prefill tiling independent.
-- [ ] Implement exact routing: M1N4096K4096/12288 interleaved2x32; M17N1024K4096 interleaved2x32; M1N1024K4096 ordered GEMV32 andM1N12288K4096 ordered GEMV16; M17N12288K4096 split3; M65N4096K4096 split3, N1024K4096 split5, N4096K12288 split7; all global partitions aligned64 and reduced in increasing partition order in FP32 before BF16 materialization.
-- [ ] Use measured GEMM machinery and raw overwrite allocation; preserve native-precision SwiGLU. M17 gate/up use independently reduced linears plus existing SwiGLU; other MLP shapes retain existing path.
-- [ ] Check contiguous/shape/type guards, partition-tail coverage and literal disabled fallback; run CPU configuration checks.
-- [ ] Validate selected kernels on actual36-layer HF operands, including positive-stride views; retain discrepancies, do not infer full-model parity from local checks.
-- [ ] Commit only after fresh checks, with bounded actual-source evidence.
+- [x] Write/run CPU failing loader/CLI regression: explicitTrue survives loading, defaultFalse, official fixture state tensors unchanged, prefill tiling independent.
+- [x] Implement exact routing: M1N4096K4096/12288 interleaved2x32; M17N1024K4096 interleaved2x32; M1N1024K4096 ordered GEMV32 andM1N12288K4096 ordered GEMV16; M17N12288K4096 split3; M65N4096K4096 split3, N1024K4096 split5, N4096K12288 split7; all global partitions aligned64 and reduced in increasing partition order in FP32 before BF16 materialization.
+- [x] Use measured GEMM machinery and raw overwrite allocation; preserve native-precision SwiGLU. M17 gate/up use independently reduced linears plus existing SwiGLU; other MLP shapes retain existing path.
+- [x] Check contiguous/shape/type guards, partition-tail coverage and literal disabled fallback; run CPU configuration checks.
+- [x] Validate selected kernels on actual36-layer HF operands, including positive-stride views; retain discrepancies, do not infer full-model parity from local checks.
+- [x] Commit only after fresh checks, with bounded actual-source evidence.
 
-### Task2: Complete trace audit and unchanged8B gates
+### Task 2: Complete trace audit and unchanged8B gates
 
 **Files:** Modify `scripts/verify_qwen3_inference_v15.py`, `scripts/check_inference_trace_integrity_v15.py`; add bounded results and update `INFERENCE_V15.md`.
 
@@ -62,7 +62,7 @@
 - [ ] Run unchanged24cases, literal two16-token continuations and full fixed512xS512 corpus with the actual exported API, pinned checkpoint hashes, source freeze, stable lease and continuous monitoring. Preserve earlier failed reports.
 - [ ] Declare qualification only if every required gate and clean-monitor condition is proven; record exact limits.
 
-### Task3: Matched whole-request performance and evidence
+### Task 3: Matched whole-request performance and evidence
 
 **Files:** Update the paired graph benchmark, bounded result records, README/INFERENCE usage.
 

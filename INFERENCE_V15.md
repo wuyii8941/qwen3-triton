@@ -578,3 +578,26 @@ correct version’s paired whole-request speed remain required.
 [Actual-source/complete arithmetic receipt](results/qwen3_triton_inference_v15_reference_order_complete_v1.json),
 [all real-layer checks](results/qwen3_triton_inference_v15_reference_order_locals_v1.json),
 [unchanged original gates and retained trace failures](results/qwen3_triton_inference_v15_reference_order_gates_v1.json).
+
+
+## Exported reference accumulation module
+
+`TritonQwen3Inference.from_pretrained(path, reference_accumulation=True)` and CLI
+`--reference-accumulation` now select the measured Triton-only arithmetic.
+DefaultFalse preserves the earlier inference path. The fast existing LMhead
+remains unchanged. Only the recorded M1/M17/M65official8B shapes are selected;
+unsupported shapes/layouts retain the existing Triton route. The diagnostic
+`accurate` flag takes precedence; `gemv=False` declines ordered GEMV routes.
+Qualification uses default `gemv=True`. Set options before graph construction.
+
+The exported module uses M128/N64tiles for M65split linears and M32/N64forM17,
+avoiding repeated weight reads across row tiles while retaining64-aligned K
+partitions and forward FP32reduction. Fresh identical-HF-input checks cover
+all2520real-layer calls and remain bitwise equal. Positive-stride input/weight
+views, unsupportedM and disabledGEMV preference preserve default outputs.
+Last-K-only tests for all four global-split shapes pass even when every FP32
+partial startsNaN, checking tail coverage and complete overwrite. CPU checks
+verify loading/CLI propagation, defaultFalse, independent options and weights.
+No foreignGPUprocesses were observed. This is local exported-module evidence;
+complete public-model/audit/fixed-corpus qualification and speed follow separately.
+[Exported-module operator checks](results/qwen3_triton_inference_v15_reference_api_ops_v1.json).
