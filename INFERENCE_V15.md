@@ -503,3 +503,29 @@ qualification. The production model remains unchanged.
 [Complete native schedule report](results/qwen3_triton_inference_v15_native_splitk_v1.json).
 The cuBLAS12.8documentation also exposes split count and reduction scheme as
 separate algorithm settings: [official cuBLASLt attributes](https://docs.nvidia.com/cuda/archive/12.8.2/cublas/index.html#cublasltmatmulalgoconfigattributes-t).
+
+
+## Real8B schedule reproduction (research override)
+
+The exact observed contiguous3/5/7partitions and interleaved2x32routes now match
+all1188selected realHF layer calls bitwise across36layers and10phases. The
+previous implementations differed on176031coordinates in those same selected
+calls. Under a process-local research wrapper, B1S17andS65full-prefill logits
+become bitwise equal toHF; both16-token text continuations match. The original
+B1S257prefill also remains bitwise equal.
+
+One original case still fails: cached decode after67tokens has meanAbs0.0429935
+(relativeL2 0.0196509), versus0.0371610in the unmodified baseline. After18tokens
+now passes at meanAbs0.0132812. Thus this is not adopted as the default or
+qualified as a complete fix. Remaining native GEMV reductions on K/V/gate/up
+still differ locally; exact body-prefill parity does not ensure later decoding
+parity when those values propagate through36layers.
+
+The underlying verifier was deliberately unchanged: its setup trace passes,
+but prefill/decode/generation traces reject the new kernel names/counts. Those
+failed raw audits are preserved, and the outer source receipt records the actual
+research wrappers while underlying model option flags remainFalse. No foreign
+GPUprocesses were observed. Formal API/audit work is planned only after the
+remaining numerical gate is resolved.
+[Actual-source/local-call receipt](results/qwen3_triton_inference_v15_native_order_local_v1.json),
+[unchanged-gate raw report](results/qwen3_triton_inference_v15_native_order_full_v1.json).
