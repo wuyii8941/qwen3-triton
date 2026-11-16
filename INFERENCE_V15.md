@@ -306,3 +306,27 @@ resident weights, preparation/capture excluded. This rejects sliced as a speed
 improvement and does not resolve the numerical gates. Default Graph's6.34%/6.51%
 lower latency thanHF Graph remains conditional, not quality-equivalent evidence.
 [Six-arm raw report](results/qwen3_triton_inference_v15_sliced_paired_graph_v1.json).
+
+
+## Prefill tile screening (research only)
+
+A synthetic identical-input screen of8configurations x4operator shapes x3M
+values (17/65/257) found96/96bitwise equal to the current Triton outputs.
+Only S65 is selected for the next full-request experiment; other lengths are
+not changed. The narrower Kstep32 variants do not provide the expected gain;
+the measured faster choices use Kstep64 and shape-specific Ntiles:
+
+|S65 operator|Default ms|Selected ms|M/N/K tile|
+|---|---:|---:|---|
+|Q/O|0.07837|0.05970|128/64/64|
+|K/V|0.04275|0.02804|128/32/64|
+|down|0.24796|0.17580|128/64/64|
+|gate/up|0.49578|0.31813|128/32/64|
+
+These are synthetic per-kernel graph replay measurements on one A6000, not
+whole-model speed results. At S257 several choices are slower, so there is no
+blanket switch to larger tiles. No foreignGPUprocess was observed. Production
+dispatch is unchanged. The full-request experiment uses a local research-only
+route override, then checks all logits and cached continuation against the
+unaltered baseline before reporting timings.
+[Complete tile screen](results/qwen3_triton_inference_v15_prefill_tiles_v1.json).
