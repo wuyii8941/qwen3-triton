@@ -6,6 +6,13 @@ from ..runtime.dispatch import TritonRuntimeMode
 class InferenceRuntimeMode(TritonRuntimeMode):
     def __torch_dispatch__(self,func,types,args=(),kwargs=None):
         kw=kwargs or {}
+        if func._schema.name=='aten::contiguous' and args[0].is_cuda:
+            source=args[0]
+            if kw.get('memory_format',torch.contiguous_format)!=torch.contiguous_format:raise ValueError('Contiguous layout only')
+            if source.is_contiguous():return source
+            from ..runtime.ops import clone
+            self.replaced['aten::contiguous']+=1
+            return clone(source,preserve=False)
         if func._schema.name=='aten::to':
             source=args[0];overload=func._schema.overload_name
             if overload=='dtype_layout':

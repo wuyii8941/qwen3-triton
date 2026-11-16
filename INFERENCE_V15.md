@@ -77,3 +77,37 @@ are saved. Reports distinguish numerical qualification and measured performance.
 Historical development runs and failures remain local; publish only bounded
 JSON summaries and source hashes. Current evidence status is updated after the
 actual check, not inferred from the script.
+
+
+## Measured development status
+
+The complete36-layer8B diagnostic now runs prefill, chunked prefill, cached
+single-token decode and raw-text greedy generation. Four raw phase traces pass
+the Triton-only kernel and GPU memory-event audit. The non-aligned chunked
+prefill NaN bug is fixed: reverse causal scanning now assigns zero softmax mass
+to empty tiles instead of evaluating negative-infinity minus negative-infinity.
+All four measured chunked-prefill cases pass their original numerical gates.
+
+**HF numerical qualification remains false.** Two of24logit cases exceed the
+original gates, and one of two16-token text continuations differs from HF. See
+[complete diagnostic](results/qwen3_triton_inference_v15_official_diagnostic_v1.json).
+The cases and original thresholds are retained. Diagnostic continuation does
+not relax gates or convert failures to success. Pinning the local checkpoint's
+missing tokenizer chat-template files is also required for `--chat`; measured
+text continuations use raw prompt text.
+
+`CapturedGreedyRequest(model, ids, max_new_tokens=8)` captures the same Triton
+GPU work for a fixed batch/prompt shape and output budget. Three changed8B
+inputs produce exactly the same tokens as eager Triton. For one65-token prompt
+and8generated tokens, two opposite orders measured eager1.2898/1.3006seconds
+versus graph0.20365/0.20373seconds, about6.3x faster than this eager candidate.
+This is not an HF speed claim or a serving-throughput result. The graph run
+used the shared stable GPU lease, but did not continuously monitor foreign
+contexts; treat its timings as preliminary until monitored paired confirmation.
+See [graph evidence](results/qwen3_triton_inference_v15_graph_8b_v1.json).
+
+Graph limitations: no earlyEOS, fixed dense shapes/token budget, output aliases
+request-owned storage until next replay, one object must stay on one stream
+and cannot serve concurrent requests. CUDA Graph removes repeated CPU launch
+work; its GPU arithmetic remains the existing Triton kernels. HF numerical
+parity, matched HF Graph timing and broader request/length coverage remain open.

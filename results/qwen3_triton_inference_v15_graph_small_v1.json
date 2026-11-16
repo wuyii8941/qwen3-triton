@@ -1,0 +1,63 @@
+{
+  "complete": true,
+  "small_fixture_only": true,
+  "HF_numerical_qualification": false,
+  "graph_matches_eager": [
+    true,
+    true,
+    true
+  ],
+  "prompt_tokens": 65,
+  "generated_tokens": 8,
+  "latencies": [
+    {
+      "order": 1,
+      "mode": "eager",
+      "median_seconds": 0.0890666414052248,
+      "samples": [
+        0.0890666414052248,
+        0.08779669180512428,
+        0.0991368405520916,
+        0.09116447530686855,
+        0.08798368275165558
+      ]
+    },
+    {
+      "order": 1,
+      "mode": "graph",
+      "median_seconds": 0.001242825761437416,
+      "samples": [
+        0.0012158825993537903,
+        0.0012842658907175064,
+        0.001226888969540596,
+        0.001242825761437416,
+        0.0012749526649713516
+      ]
+    },
+    {
+      "order": 2,
+      "mode": "graph",
+      "median_seconds": 0.0012273620814085007,
+      "samples": [
+        0.0012273620814085007,
+        0.0012302771210670471,
+        0.0012057870626449585,
+        0.001226823776960373,
+        0.0012381523847579956
+      ]
+    },
+    {
+      "order": 2,
+      "mode": "eager",
+      "median_seconds": 0.08679376542568207,
+      "samples": [
+        0.08686084300279617,
+        0.08688857406377792,
+        0.08679376542568207,
+        0.08587881736457348,
+        0.08652389794588089
+      ]
+    }
+  ],
+  "limitations": "Graph vs same Triton implementation only; no HF quality claim, fixed shape/budget, no earlyEOS, one request object cannot be used concurrently."
+}

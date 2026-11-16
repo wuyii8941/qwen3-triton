@@ -48,8 +48,12 @@ def _inference_cached_attention(Q,K,V,O,S:tl.constexpr,T:tl.constexpr,C:tl.const
         k=tl.load(K+offset,token[:,None]<T,0);v=tl.load(V+offset,token[:,None]<T,0)
         score=tl.dot(q,tl.trans(k))
         score=tl.where((token[None,:]<T)&(token[None,:]<=START+row[:,None]),score,-float('inf'))
-        new=tl.maximum(maximum,tl.max(score,1));alpha=tl.exp2((maximum-new)*SL2)
-        p=tl.exp2(score*SL2-new[:,None]*SL2)
+        new=tl.maximum(maximum,tl.max(score,1))
+        # A reverse-scanned tile may contain no visible keys for an early
+        # query in a non-aligned chunk. Avoid(-inf)-(-inf), keep its mass0.
+        safe_new=tl.where(new==-float('inf'),0.,new)
+        alpha=tl.where(maximum==-float('inf'),0.,tl.exp2((maximum-safe_new)*SL2))
+        p=tl.exp2(score*SL2-safe_new[:,None]*SL2)
         for index in tl.static_range(N//8):
             ix=tl.broadcast_to((lanes*2+index*8)[None,:],(M,4))
             if index==0:total=tl.fma(total,alpha[:,None],tl.gather(p,ix,1))
@@ -106,22 +110,23 @@ def attention(q,cache_k,cache_v,start,*,split_decode=True):
 
 
 @triton.jit
-def _inference_gemv(X,W,Y,N:tl.constexpr,K:tl.constexpr,BN:tl.constexpr,BK:tl.constexpr):
+def _inference_gemv(X,W,Y,N:tl.constexpr,K:tl.constexpr,BN:tl.constexpr,BK:tl.constexpr,ACCURATE:tl.constexpr):
     row=tl.program_id(1);n=tl.program_id(0)*BN+tl.arange(0,BN);k=tl.arange(0,BK)
-    acc=tl.zeros((BN,BK),tl.float32)
+    acc=tl.zeros((BN,BK),tl.float64 if ACCURATE else tl.float32)
     for block in range(tl.cdiv(K,BK)):
         kk=block*BK+k
         x=tl.load(X+row*K+kk,kk<K,0).to(tl.float32)
         w=tl.load(W+n[:,None]*K+kk[None,:],(n[:,None]<N)&(kk[None,:]<K),0).to(tl.float32)
-        acc+=w*x[None,:]
+        product=w*x[None,:]
+        acc+=product.to(tl.float64) if ACCURATE else product
     tl.store(Y+row*N+n,tl.sum(acc,1),n<N)
 
 
-def linear(x,weight,*,gemv=True):
+def linear(x,weight,*,gemv=True,accurate=False):
     shape=x.shape;m=x.numel()//shape[-1];k=shape[-1];n=weight.shape[0]
     if gemv and m<=8:
         y=raw_empty((*shape[:-1],n),device=x.device,dtype=x.dtype)
-        _inference_gemv[(triton.cdiv(n,16),m)](x,weight,y,n,k,16,256,num_warps=4,enable_fp_fusion=False)
+        _inference_gemv[(triton.cdiv(n,16),m)](x,weight,y,n,k,16,256,accurate,num_warps=4,enable_fp_fusion=False)
         return y
     return matmul(x.view(m,k),weight.t(),optimized=True).view(*shape[:-1],n)
 

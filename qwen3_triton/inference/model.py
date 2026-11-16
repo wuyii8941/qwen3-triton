@@ -96,7 +96,7 @@ class TritonQwen3Inference(nn.Module):
         values=[raw_empty(shape,device=self.device,dtype=torch.bfloat16) for _ in self.model.layers]
         return KVCache(keys,values,max_length,batch_size,self._cache_owner)
 
-    def _forward(self,input_ids,cache,logits_to_keep):
+    def _forward(self,input_ids,cache,logits_to_keep,*,validate_ids=True):
         if input_ids.ndim!=2 or input_ids.dtype not in (torch.int32,torch.int64) or input_ids.device!=self.device or not input_ids.is_contiguous():
             raise ValueError('Contiguous integer CUDA[B,S] input_ids on model device required')
         b,s=input_ids.shape
@@ -105,7 +105,7 @@ class TritonQwen3Inference(nn.Module):
             raise ValueError('Foreign, invalid, mismatched or exhausted KV cache')
         if type(logits_to_keep) is not int or not 0<=logits_to_keep<=s:raise ValueError('logits_to_keep must be0 or within current sequence length')
         # Prevent out-of-bounds embedding loads before launching any cache update.
-        if not bool(((input_ids>=0)&(input_ids<self.config.vocab_size)).all()):raise ValueError('Token ID outside vocabulary')
+        if validate_ids and not bool(((input_ids>=0)&(input_ids<self.config.vocab_size)).all()):raise ValueError('Token ID outside vocabulary')
         start=cache.length;pos=kernels.positions(b,s,start,self.device)
         try:
             x=embedding(input_ids,self.model.embed_tokens.weight)
@@ -170,10 +170,50 @@ class TritonQwen3Inference(nn.Module):
             output=raw_empty((b,s+max_new_tokens),device=self.device,dtype=torch.int64)
             copy_(output[:,:s],input_ids)
             done=zeros((b,),device=self.device,dtype=torch.bool)
+            # Validate once: future greedy tokens are in-vocabulary by construction.
+            if not torch.cuda.is_current_stream_capturing():
+                if not bool(((input_ids>=0)&(input_ids<self.config.vocab_size)).all()):raise ValueError('Token ID outside vocabulary')
             current=input_ids
             for step in range(max_new_tokens):
-                logits=self._forward(current,cache,1).logits[:,0,:]
+                logits=self._forward(current,cache,1,validate_ids=False).logits[:,0,:]
                 current=raw_empty((b,1),device=self.device,dtype=torch.int64)
                 kernels.select(logits,output,current,done,s+step,eos,pad)
                 if eos and bool(done.all()):break
             return output[:,:s+step+1].contiguous()
+
+
+class CapturedGreedyRequest:
+    """Fixed dense shape and fixed token budget; graph owns buffers, no earlyEOS.
+
+    One object is single-stream/non-concurrent. Returned tokens alias request
+    storage until next replay; clone for retention. Capture validates prompts
+    before replay. CUDA graph is a host launch service, GPU math remains Triton.
+    """
+    @torch.inference_mode()
+    def __init__(self,model,input_ids,*,max_new_tokens):
+        if type(max_new_tokens) is not int or max_new_tokens<1:raise ValueError('Positive fixed token budget required')
+        self.model=model;self.shape=tuple(input_ids.shape);self.busy=False
+        with model.runtime:
+            self.input=input_ids.clone()
+            if not bool(((self.input>=0)&(self.input<model.config.vocab_size)).all()):raise ValueError('Token ID outside vocabulary')
+        stream=torch.cuda.Stream(device=model.device)
+        stream.wait_stream(torch.cuda.current_stream(model.device))
+        with torch.cuda.stream(stream):
+            for _ in range(2):model.generate(self.input,max_new_tokens=max_new_tokens,eos_token_id=[],pad_token_id=0)
+        torch.cuda.current_stream(model.device).wait_stream(stream)
+        self.graph=torch.cuda.CUDAGraph()
+        with torch.cuda.graph(self.graph,stream=stream):
+            self.output=model.generate(self.input,max_new_tokens=max_new_tokens,eos_token_id=[],pad_token_id=0)
+
+    @torch.inference_mode()
+    def __call__(self,input_ids):
+        if self.busy:raise RuntimeError('Concurrent graph request reuse is unsupported')
+        if tuple(input_ids.shape)!=self.shape or input_ids.device!=self.model.device or input_ids.dtype!=self.input.dtype:raise ValueError('Captured input shape/device/dtype differs')
+        self.busy=True
+        try:
+            with self.model.runtime:
+                if not bool(((input_ids>=0)&(input_ids<self.model.config.vocab_size)).all()):raise ValueError('Token ID outside vocabulary')
+                copy_(self.input,input_ids)
+            self.graph.replay()
+            return self.output
+        finally:self.busy=False

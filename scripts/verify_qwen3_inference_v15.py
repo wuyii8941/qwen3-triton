@@ -56,26 +56,29 @@ def run(a,out,foreign):
     hf=AutoModelForCausalLM.from_pretrained(model_dir,local_files_only=True,torch_dtype=torch.bfloat16,attn_implementation='sdpa').eval().cuda()
     tokenizer=AutoTokenizer.from_pretrained(model_dir,local_files_only=True)
     cases=[];traces={'setup':setup}
+    def save_case(row):
+        cases.append(row)
+        with (out/'numerical_cases.jsonl').open('a') as f:f.write(json.dumps(row)+'\n')
     for batch,length in [(1,17),(1,65),(2,17),(1,257)]:
         ids=torch.randint(1,100000,(batch,length+4),device='cuda');prefix=ids[:,:length].contiguous()
         cache=candidate.new_cache(batch,length+8);hc=DynamicCache()
         x=candidate(prefix,past_key_values=cache,logits_to_keep=0).logits
         y=hf(prefix,past_key_values=hc,use_cache=True,logits_to_keep=0).logits
-        values=metrics(x,y);cases.append(dict(kind='prefill',batch=batch,length=length,**values))
-        assert values['passed'],cases[-1]
+        values=metrics(x,y);save_case(dict(kind='prefill',batch=batch,length=length,**values))
+        assert a.diagnostic or values['passed'],cases[-1]
         for j in range(4):
             token=ids[:,length+j:length+j+1].contiguous()
             x=candidate(token,past_key_values=cache).logits;y=hf(token,past_key_values=hc,use_cache=True,logits_to_keep=1).logits
-            values=metrics(x,y);cases.append(dict(kind='cached_decode',batch=batch,after_tokens=length+j,**values));assert values['passed'],cases[-1]
+            values=metrics(x,y);save_case(dict(kind='cached_decode',batch=batch,after_tokens=length+j,**values));assert a.diagnostic or values['passed'],cases[-1]
         # Multi-chunk prefill at a nonzero offset; compare same complete prompt.
         chunks=candidate.new_cache(batch,length+8)
         candidate(prefix[:,:3].contiguous(),past_key_values=chunks)
         x=candidate(prefix[:,3:].contiguous(),past_key_values=chunks,logits_to_keep=1).logits
         y=hf(prefix,use_cache=False,logits_to_keep=1).logits
-        values=metrics(x,y);cases.append(dict(kind='chunked_prefill',batch=batch,length=length,**values));assert values['passed'],cases[-1]
+        values=metrics(x,y);save_case(dict(kind='chunked_prefill',batch=batch,length=length,**values));assert a.diagnostic or values['passed'],cases[-1]
     generation=[]
     for prompt in ['The capital of France is','Write a Python function that adds two numbers.']:
-        text=tokenizer.apply_chat_template([dict(role='user',content=prompt)],tokenize=False,add_generation_prompt=True,enable_thinking=False)
+        text=prompt  # Explicit raw-text continuation; local snapshot has no chat template.
         ids=tokenizer(text,return_tensors='pt')['input_ids'].cuda()
         x=candidate.generate(ids,max_new_tokens=16,eos_token_id=[],pad_token_id=0)
         y=hf.generate(ids,max_new_tokens=16,do_sample=False,eos_token_id=None,pad_token_id=0,attention_mask=torch.ones_like(ids),use_cache=True)
@@ -87,7 +90,7 @@ def run(a,out,foreign):
     _,traces['prefill']=trace(out,'prefill',lambda:candidate(ids,past_key_values=cache),36)
     _,traces['decode']=trace(out,'decode',lambda:candidate(token,past_key_values=cache),36)
     _,traces['generate']=trace(out,'generate',lambda:candidate.generate(ids,max_new_tokens=3,eos_token_id=[],pad_token_id=0),108)
-    assert all(t['passed'] for t in traces.values()),traces
+    assert a.diagnostic or all(t['passed'] for t in traces.values()),traces
     # Teacher-forced continuation fixed across arms; cache is fresh each sample.
     continuation=torch.randint(1,100000,(1,8),device='cuda');latencies=[]
     for order,names in [(1,['HF','Triton']),(2,['Triton','HF'])]:
@@ -107,9 +110,9 @@ def run(a,out,foreign):
     numerical=all(v['passed'] for v in cases);greedy=all(v['exact_match'] for v in generation)
     result=dict(complete=True,model='Qwen/Qwen3-8B',revision=identity['revision'],parameter_count=8190735360,layers=36,single_GPU=True,
         environment=dict(torch=torch.__version__,CUDA=torch.version.cuda,GPU=torch.cuda.get_device_name(),capability=torch.cuda.get_device_capability()),
-        compute='BF16 weights/activations, FP32 reductions',numerics=numerical,greedy_exact_match=greedy,cases=cases,generation=generation,traces=traces,latencies=latencies,
+        physical_GPU=a.physical_device,compute='BF16 weights/activations, FP32 reductions',numerics=numerical,greedy_exact_match=greedy,cases=cases,generation=generation,traces=traces,latencies=latencies,
         strict_GPU_dispatch=candidate.runtime.report(),peak_process_allocated_GiB=torch.cuda.max_memory_allocated()/2**30,foreign_GPU_processes=foreign,
-        qualified=numerical and greedy and all(t['passed'] for t in traces.values()) and not foreign,
+        diagnostic_only=a.diagnostic,qualified=not a.diagnostic and numerical and greedy and all(t['passed'] for t in traces.values()) and not foreign,
         source_sha256={str(p.relative_to(ROOT)):sha(p) for p in sources},input_identity_sha256=sha(a.identity),
         retained_artifact_policy='Only JSON metrics/token outputs and four raw gzip traces <=8MiB each. No logits/weights/gradients/checkpoints.',
         limitations='Initial singleA6000 dense equal-length BF16 inference: greedy, contiguous request-owned cache, no padding/ragged scheduler, sampling, tensor parallel or serving engine. Finite cases do not establish universal numerical equivalence. Speed is measured, never presumed.')
@@ -118,11 +121,12 @@ def run(a,out,foreign):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',default='/data1/tzh/models/Qwen/Qwen3-8B');p.add_argument('--identity',default='/data1/tzh/proj/qwen_operator_lab/artifacts/official_qwen3_inputs_v1.json');p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',default='/data1/tzh/models/Qwen/Qwen3-8B');p.add_argument('--identity',default='/data1/tzh/proj/qwen_operator_lab/artifacts/official_qwen3_inputs_v1.json');p.add_argument('--diagnostic',action='store_true',help='Retain failing metrics and continue; qualification still requires every original gate');p.add_argument('--physical-device',type=int,default=0);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
     out=a.output.resolve();assert out.is_relative_to(Path('/data1/tzh')) and not out.exists();out.mkdir(parents=True)
     foreign=[];stop=threading.Event()
-    with stable_lease([0]):
-        uuid=subprocess.check_output(['nvidia-smi','-i','0','--query-gpu=uuid','--format=csv,noheader'],text=True).strip()
+    assert os.environ.get('CUDA_VISIBLE_DEVICES')==str(a.physical_device),'Explicit physical-device/CUDA mapping required'
+    with stable_lease([a.physical_device]):
+        uuid=subprocess.check_output(['nvidia-smi','-i',str(a.physical_device),'--query-gpu=uuid','--format=csv,noheader'],text=True).strip()
         def monitor():
             while not stop.wait(.5):
                 try:

@@ -1,0 +1,20 @@
+{
+  "op_diagnosis_001.json": {
+    "source_sha256": "83c0e8541ac99066a280a15505bead0ff7fc3f897f228277a1e65c6db2f55fc8",
+    "rows": 1990,
+    "scope": "Exact HF8B operands, diagnostic only; transient tensors not retained.",
+    "max_relative": 0.0005696784355677664
+  },
+  "op_diagnosis_accurate_001.json": {
+    "source_sha256": "8fbd0ed5d8606c78f1ded06bc130a2fbe17bbee1c26474272448f9d53b963445",
+    "rows": 1990,
+    "scope": "Exact HF8B operands, diagnostic only; transient tensors not retained.",
+    "max_relative": 0.0005696784355677664
+  },
+  "attention_diagnosis_001.json": {
+    "source_sha256": "7b2e6d7639d78bc72c14cfb0d664832b238fda0b135854b024e6a3fcb5718c9e",
+    "rows": 360,
+    "scope": "Exact HF8B operands, diagnostic only; transient tensors not retained.",
+    "max_relative": 0.0019527742406353354
+  }
+}

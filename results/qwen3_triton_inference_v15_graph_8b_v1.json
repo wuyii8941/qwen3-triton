@@ -1,0 +1,63 @@
+{
+  "complete": true,
+  "small_fixture_only": false,
+  "HF_numerical_qualification": false,
+  "graph_matches_eager": [
+    true,
+    true,
+    true
+  ],
+  "prompt_tokens": 65,
+  "generated_tokens": 8,
+  "latencies": [
+    {
+      "order": 1,
+      "mode": "eager",
+      "median_seconds": 1.2897669319063425,
+      "samples": [
+        1.2972266431897879,
+        1.2754804622381926,
+        1.2897669319063425,
+        1.263395432382822,
+        1.3477696143090725
+      ]
+    },
+    {
+      "order": 1,
+      "mode": "graph",
+      "median_seconds": 0.2036496326327324,
+      "samples": [
+        0.20336386375129223,
+        0.2036496326327324,
+        0.20383740402758121,
+        0.2037549801170826,
+        0.20361746102571487
+      ]
+    },
+    {
+      "order": 2,
+      "mode": "graph",
+      "median_seconds": 0.20373336412012577,
+      "samples": [
+        0.20373336412012577,
+        0.2037388365715742,
+        0.20378876104950905,
+        0.20367718115448952,
+        0.20357916504144669
+      ]
+    },
+    {
+      "order": 2,
+      "mode": "eager",
+      "median_seconds": 1.3006303813308477,
+      "samples": [
+        1.2954920642077923,
+        1.3709839545190334,
+        1.3233346156775951,
+        1.3006303813308477,
+        1.293914083391428
+      ]
+    }
+  ],
+  "limitations": "Graph vs same Triton implementation only; no HF quality claim, fixed shape/budget, no earlyEOS, one request object cannot be used concurrently."
+}
