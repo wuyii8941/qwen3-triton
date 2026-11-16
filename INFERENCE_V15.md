@@ -427,3 +427,36 @@ Historical API attempt020failed from a benchmark argument-name collision;
 022was retired while pending so it could not execute a previously imported
 unguarded module after the source changed. Both local records are retained;
 only complete guarded run023supplies the API performance claim above.
+
+
+## Original-failure attribution with public-path observation
+
+A reference-only diagnostic now reproduces all recorded metrics for the original
+B1S17/S65 prefixes and four cached decode positions (10phases), including both
+original failures. Wrappers around the actual public model entry retain only
+in-memory intermediate references; every wrapped call matches unwrapped logits
+and all initialized KV positions bitwise. Model/default arithmetic is unchanged.
+No foreignGPUprocesses were observed; all executed source digests are retained.
+
+On identicalHF operands, all360attention,720input/post-attention normalization,
+and360SwiGLU probes match bitwise. Earliest discrepancies appear in linear
+accumulation, then propagate through layer residuals and normalization. At the
+two failing positions, replacing the candidate LMhead with the nativeHF LMhead
+on the candidate hidden state leaves meanAbs essentially unchanged:
+
+|Original failing position|Triton full-path meanAbs|Native head on Triton hidden|
+|---|---:|---:|
+|after18tokens|0.0364415273|0.0364415757|
+|after67tokens|0.0371609703|0.0371609367|
+
+The Triton LMhead on exactHF hidden inputs instead differs by meanAbs only
+5.63e-8/1.13e-7 at those positions. Thus this experiment directs investigation
+toward accumulated body-linear rounding, not an LMhead or identical-input
+attention mismatch. The shared logit offsets are+0.0352378/-0.0351442; original
+raw-logit gates remain false. Local equivalence does not imply whole-model
+quality equivalence after different inputs have propagated through36layers.
+The HF cache is made contiguous only for the isolated attention reference probe;
+HF first-append caches may be transposed, unlike the model’s own cache contract.
+Attempt024was retired after review caught that diagnostic layout boundary;
+only corrected complete run025supplies these results.
+[Complete bounded diagnostic](results/qwen3_triton_inference_v15_error_growth_v1.json).
