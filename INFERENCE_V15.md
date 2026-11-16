@@ -460,3 +460,21 @@ HF first-append caches may be transposed, unlike the model’s own cache contrac
 Attempt024was retired after review caught that diagnostic layout boundary;
 only corrected complete run025supplies these results.
 [Complete bounded diagnostic](results/qwen3_triton_inference_v15_error_growth_v1.json).
+
+
+## Controlled accumulation-order probe
+
+The three-term probe uses BF16 weights with+2**30,-2**30and a unit marker.
+Exact arithmetic leaves1 (0when a large term overwrites the marker); FP32
+accumulation can lose the marker.196comparisons cover seven placements,
+M1/17/65/512, and seven Triton schedules. All four recorded native kernel names
+match the corresponding real8B Q-projection observations; monitoring is clean.
+M1matches interleaved2x32on all seven placements. M17andM512match sequential
+Triton accumulation. M65matches neither tested schedule: for a large pair at
+K0/K2048 only marker columns2816..4095survive; forK4064/K4095only0..2815survive.
+This suggests a different partition/reduction schedule, not a universal Ktile
+choice. A contiguous non-power-of-two split is a hypothesis to test next;
+marker patterns alone do not prove the complete native algorithm. Earlier
+native-name filters only retained GEMM/GEMV names, so any separately named
+reduction kernel needs full-event recollection. Production is unchanged.
+[Complete sparse-dot probe](results/qwen3_triton_inference_v15_dot_traversal_v1.json).
