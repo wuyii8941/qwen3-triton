@@ -16,3 +16,5 @@
 [Tiny 模型配置](model/config.py)仅用于快速测试；正式训练和推理读取官方 Qwen3-8B 权重。第三方来源和许可证见[来源说明](qwen3_triton/PROVENANCE.md)；项目自有源码许可证尚未选定。
 
 `qwen3_triton/kernels/` 是完整模型使用的算子，`qwen3_triton/runtime/` 管理训练中的 FSDP 通信、优化器和 GPU 辅助操作。`ops/` 包含独立算子及参考实现，供组件测试和 Tiny 模型使用。历史实验代码可从 Git 历史查阅。
+
+`scripts/` 中不带编号的训练、参考数据和推理脚本是常用入口；其余保留的脚本用于实现依赖、数值检查、调优或验证记录追溯。历史实验的启动和汇总脚本可从 Git 历史查阅。
