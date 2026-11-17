@@ -24,28 +24,8 @@ from qwen3_triton.audit import NoFallback
 from qwen3_triton._model_optimized import VARIANTS,OptimizationOptions
 from qwen3_triton.model import model_for_variant,PrecisionQwen3ForCausalLM as OptimizedTritonQwen3ForCausalLM
 from qwen3_triton.gradient_archive import save as save_archive
-from train_qwen3_triton_8b import compare_first_gradients, local, sha
+from train_qwen3_triton_8b import compare_first_gradients, local, sha, evaluate as _evaluate_core
 ROOT=Path(__file__).resolve().parents[1]
-
-@torch.no_grad()
-def _evaluate_core(model,dataset,is_triton):
-    was_training=model.training;model.eval();model.zero_grad(set_to_none=True)
-    rank=dist.get_rank();world=dist.get_world_size();nll=0.;count=0
-    try:
-        for ids,valid in validation_batches(dataset,rank,world,4):
-            labels=ids.clone();labels[~valid]=-100;ids=ids.cuda();labels=labels.cuda()
-            with sdpa_kernel(SDPBackend.FLASH_ATTENTION):
-                with NoFallback() if is_triton else nullcontext():out=model(ids,labels=labels,use_cache=False)
-            valid_count=int(valid.sum())
-            if valid_count:
-                value=float(out.loss);assert torch.isfinite(out.loss)
-                tokens=valid_count*(dataset.seq-1);nll+=value*tokens;count+=tokens
-            del out
-        totals=torch.tensor([nll,count],dtype=torch.float64,device='cuda');dist.all_reduce(totals)
-        expected=len(dataset)*(dataset.seq-1);assert int(totals[1])==expected
-        return dict(loss=float(totals[0]/totals[1]),tokens=expected,blocks=len(dataset),batch_per_rank=4)
-    finally:
-        reshard_official_parameters(model);model.train(was_training)
 
 @torch.no_grad()
 def evaluate(model,dataset,is_triton):

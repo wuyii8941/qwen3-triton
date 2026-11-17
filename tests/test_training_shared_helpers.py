@@ -41,3 +41,27 @@ def test_shared_gradient_check_accepts_match_and_rejects_changed_gradient(tmp_pa
     assert check()['numerical_gate_passed']
     params['weight_0'].grad.add_(1)
     assert not check()['numerical_gate_passed']
+
+
+def test_reference_evaluation_keeps_peer_memory_scope(monkeypatch):
+    from contextlib import contextmanager
+    from types import SimpleNamespace
+    reference = importlib.import_module('train_qwen3_vocab_v12')
+    baseline = importlib.import_module('train_qwen3_triton_8b')
+    assert reference._evaluate_core is baseline.evaluate
+    events = []
+
+    @contextmanager
+    def memory():
+        events.append('enter')
+        yield
+        events.append('exit')
+
+    def core(model, dataset, is_triton):
+        assert events == ['enter']
+        return {'loss': 1.0}
+
+    monkeypatch.setattr(reference, '_evaluate_core', core)
+    model = SimpleNamespace(_peer_gradient_communication=SimpleNamespace(validation_memory=memory))
+    assert reference.evaluate(model, None, True) == {'loss': 1.0}
+    assert events == ['enter', 'exit']
