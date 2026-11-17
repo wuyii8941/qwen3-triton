@@ -69,7 +69,7 @@ def selected_files():
     files=package+[Path('scripts')/name for name in SCRIPTS]+list(map(Path,COMMON))
     files += [Path('results')/name for name in RESULTS]
     files += [Path('results')/name for name in OPTIONAL_RESULTS if (ROOT/'results'/name).is_file()]
-    files += list(map(Path,('TRITON_QWEN3.md','QWEN3_TRITON_REPRODUCE.md','requirements-qwen3-triton.txt')))
+    files += list(map(Path,('TRITON_QWEN3.md','requirements-qwen3-triton.txt')))
     assert len(files)==len(set(files))
     for rel in files:
         path=ROOT/rel
@@ -92,43 +92,22 @@ def main():
         shutil.copyfile(source,destination)
         assert sha(source)==sha(destination)
         rows.append(dict(path=str(rel),sha256=sha(source),bytes=source.stat().st_size))
-    readme='''# Complete Triton Qwen3-8B source candidate
+    readme='''# Qwen3-8B Triton 源码导出
 
-This is a local source export for review, not a published or licensed release.
-The V9 source passes full8B BF16 forward and four-rank gradient/state and
-CUDA-coverage checks. The public HF/base/optimized entries each complete
-27 updates and full validation before/after16updates within the frozen short
-quality contract. Public module timing covers96cases in opposite orders.
-Inspect the paired review, when present, for whole-step performance; module
-timings do not establish whole-step gains. Read TRITON_QWEN3.md
-for source-specific evidence and QWEN3_TRITON_REPRODUCE.md for commands.
+此目录是用于审阅的源码包，包含模型计算、数据读取与验证辅助工具。
+模型权重、语料、虚拟环境、缓存、原始梯度和 profiler trace 不包含在内。
 
-qwen3_triton implements the entire model's forward/backward computation.
-The scripts compare native HF+Flash, complete Triton base and optimized,
-including five ablations, multiupdate/full validation and module timings.
-Training/data/FSDP/NCCL/AdamW are shared infrastructure, not operator gains.
+完整训练、推理及验证范围请查看 [训练指南](https://github.com/wuyii8941/qwen3-triton/blob/main/TRAINING.md)
+和 [推理指南](https://github.com/wuyii8941/qwen3-triton/blob/main/INFERENCE.md)。
+运行前需要准备本地官方权重和已校验的数据。
 
-No weights, dataset bytes, original experiment source directories, CUDA
-caches, raw gradient archives, virtualenvs or profiler traces are included.
-Obtain pinned official8B weights/data and run input verification separately.
-SOURCE_MANIFEST.json records every copied file's hash. Third-party notices
-are preserved under qwen3_triton/third_party; own source licensing is pending.
-
-The common sharder retains its original optional vocabulary helpers for
-source completeness; the public comparison entry fixes both options false.
-Use the public scripts, not legacy training CLI names in helper docstrings.
+`SOURCE_MANIFEST.json` 记录导出文件的哈希。第三方许可保存在
+`qwen3_triton/third_party/`；项目自有源码许可证尚未选定。
 '''
     if qualification['numerical_training_contract_qualified']:
-        readme += '''
-The bundled paired report covers all sixteen clean roles and passes the
-frozen short-training/numerical/CUDA-coverage contract. It discloses any
-interrupted-cohort recovery and excludes rejected resource-contaminated runs.
-Numerical qualification uses the recorded tolerance contract; bitwise gradient
-equivalence and training convergence are not claimed. Read the final report
-for the measured comparison with HF and the five ablations.
-'''
+        readme += '\n包内包含短程数值和 GPU 覆盖审计摘要；这些检查不证明长期训练收敛。\n'
     if 'agent_data_runtime_acceptance' in qualification:
-        readme += '\nThe latest data/runtime acceptance is recorded in results/qwen3_triton_v9_data_acceptance_v1.json.\n'
+        readme += '\n包内包含数据与运行环境检查摘要。\n'
     (output/'README.md').write_text(readme)
     report=dict(complete=True,export_kind='local_source_candidate_not_released',
         model='Qwen/Qwen3-8B',published=False,own_source_license_selected=False,

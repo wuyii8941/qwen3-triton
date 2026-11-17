@@ -1,29 +1,63 @@
 # 训练
 
-## 选择路径
+## 入口与范围
 
-| 路径 | 入口 | 使用范围 |
-| --- | --- | --- |
-| V14 完整 Triton GPU 数据通路 | [train_qwen3_runtime_v14.py](scripts/train_qwen3_runtime_v14.py) | 模型前后向、AdamW、GPU 张量通信和辅助数据操作由 Triton 实现；默认 `--runtime full`。 |
-| V13 训练性能方案 | [train_qwen3_peer_rs_v13.py](scripts/train_qwen3_peer_rs_v13.py) | Triton 模型与优化通信；保留部分 PyTorch/FSDP 基础设施，固定实验中更快。 |
-| HF 对照与旧版训练辅助 | [training/](training/) | 数据、验证、FSDP 主机调度和对照路径。 |
-| 小模型快速测试 | [model/config.py](model/config.py) | 两层 Tiny 配置，与正式 8B 入口分开。 |
+[完整训练入口](scripts/train_qwen3_runtime.py)默认启用完整 Triton GPU 运行时，加载本地官方 Qwen3-8B 配置和权重，并检查 36 层及完整参数数量。模型前后向、优化器、GPU 张量通信与辅助数据操作由 Triton 执行；FSDP/autograd 主机调度、数据准备、CUDA 驱动和主机设备传输由基础设施负责。
 
-正式入口加载本地官方 `Qwen/Qwen3-8B` 权重，检查 36 层和 8,190,735,360 个参数。主机端仍使用 Python/PyTorch 的 autograd、FSDP 状态管理及 CUDA 驱动服务。
+[模型算子](qwen3_triton/kernels/)包含 Linear、Attention、归一化、激活及对应反向实现；[训练运行时](qwen3_triton/runtime/)包含优化器、分片数据操作和通信。[Tiny 配置](model/config.py)用于快速测试，并非正式训练配置。
 
-## 环境与运行
+## 环境与输入
 
-已测环境为 Python 3.11、PyTorch 2.10.0+cu128、Triton 3.6 和 4×RTX A6000；实验使用 BF16 计算及 FP32 归约/优化器状态。准备官方权重、固定语料与 input manifest 的步骤，以及四卡完整命令，见 [完整复现步骤](QWEN3_TRITON_REPRODUCE.md#v14-full-training-gpu-runtime)。输入路径和输出目录需要按本机环境配置。
+需要四张支持 BF16 的 GPU、足够的主机内存、本地官方权重及固定训练/验证语料。已测设备为四张 RTX A6000；依赖见[清单](requirements-qwen3-triton.txt)。研究脚本将缓存和临时文件放在项目 `.runtime-research` 下，正式训练入口要求输出位于 `/data1/tzh`。
+
+按[输入校验清单](results/input_recipe.json)获取官方模型及 WikiText 数据；权重和语料不随仓库发布。在项目根目录准备语料和绑定输入：
 
 ```bash
-# 查看完整训练入口参数；不会启动训练
-CUDA_VISIBLE_DEVICES= bash scripts/research_python.sh scripts/train_qwen3_runtime_v14.py --help
+TOKENIZERS_PARALLELISM=false bash scripts/research_python.sh \
+  scripts/prepare_qwen3_triton_corpus.py \
+  --model-dir weights/Qwen3-8B \
+  --parquet-source datasets/wikitext-parquet \
+  --output artifacts/reproduced_wikitext
+
+bash scripts/research_python.sh scripts/configure_qwen3_triton_inputs.py \
+  --model-dir weights/Qwen3-8B \
+  --corpus-dir artifacts/reproduced_wikitext \
+  --output artifacts/reproduced_inputs
 ```
 
-使用前确认四张 GPU 可用。仓库的研究 wrapper 将缓存和临时文件放入 `.runtime-research`；历史控制脚本和 V14 入口的输出路径有 `/data1/tzh` 限制。权重、语料及训练产物不随源码发布。
+完整梯度对照需要先创建匹配同一 input manifest 的 HF 参考，且需要足够磁盘空间：
 
-## 已验证的结果
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 \
+  CUBLAS_WORKSPACE_CONFIG=:4096:8 \
+  bash scripts/research_python.sh -m torch.distributed.run \
+  --standalone --nproc_per_node=4 scripts/export_training_reference.py \
+  --variant hf --save-reference --input-root "$PWD" \
+  --protocol "$PWD/artifacts/reproduced_inputs/protocol.json" \
+  --input-manifest "$PWD/artifacts/reproduced_inputs/input_manifest.json" \
+  --output "$PWD/artifacts/training_reference" \
+  --quality-steps 1 --warmup-steps 1 --measure-steps 2 \
+  --keep-full-layers 36 --checkpoint-every 1 \
+  --skip-embedding-backward-gather --retain-lm-head
+```
 
-4×A6000、每卡 B1、序列 512 的固定协议中，V14 完整运行时约 5.927 秒/步，HF＋Flash 约 5.276 秒/步；V13 性能方案约 4.52 秒/步。V14 是完整 Triton 实现路径，V13 是该实验中的性能选择。
+使用同一输入和参考启动完整训练对照：
 
-8B 训练对照覆盖全部 399 个参数的梯度检查、16 步质量比较和前后完整 512 块验证；这些是对应历史源码版本的短程检查；当前源码包含后续推理兼容修改，尚未重新完成四卡训练全量验收。检查不证明长期预训练收敛，也不保证其他硬件或形状的性能。详见 [结果汇总](docs/RESULTS.md) 与 [V14 验证记录](docs/history/TRITON_RUNTIME_V14.md)。
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 \
+  GLOO_SOCKET_IFNAME=lo CUBLAS_WORKSPACE_CONFIG=:4096:8 \
+  PYTORCH_ALLOC_CONF=backend:native,expandable_segments:False \
+  bash scripts/research_python.sh -m torch.distributed.run \
+  --standalone --nproc_per_node=4 scripts/train_qwen3_runtime.py \
+  --input-root "$PWD" \
+  --protocol "$PWD/artifacts/reproduced_inputs/protocol.json" \
+  --input-manifest "$PWD/artifacts/reproduced_inputs/input_manifest.json" \
+  --reference-raw-dir "$PWD/artifacts/training_reference" \
+  --output "$PWD/artifacts/training_run" --full-validation --trace
+```
+
+以上路径是假设仓库位于 `/data1/tzh` 的示例；按实际路径调整，输出目录必须是新目录。完整协议包含短程质量、预热、计时、trace 和前后验证；运行前应确保四卡空闲。
+
+## 验证与限制
+
+固定四卡、每卡 B1、序列 512 的对照覆盖全部 399 个参数梯度、16 步质量和训练前后 512 块验证。完整 Triton 运行时约 5.927 秒/步，HF＋Flash 约 5.276 秒/步，结果见[实验结果](docs/RESULTS.md)。这些数据绑定验证时的源码；当前代码包含后续兼容修改，尚未重新完成四卡全量验收。短程检查不证明长期训练收敛。
