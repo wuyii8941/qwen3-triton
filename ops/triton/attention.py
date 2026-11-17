@@ -1,6 +1,6 @@
 """Current causal GQA training operator: tiled forward and autograd bridge.
 
-Decode-only implementations are archived under experiments/legacy/ops/triton.
+Earlier experiments are available in Git history.
 """
 
 from __future__ import annotations

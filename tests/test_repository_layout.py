@@ -5,16 +5,12 @@ from pathlib import Path
 import subprocess
 import sys
 
-from scripts.verify_legacy import verify
 from training.policy import resolve_policy, validate_exchange
 from training.provenance import source_snapshot
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 
-
-def test_archived_sources_are_byte_identical():
-    assert verify(ROOT / 'experiments/legacy') == 428
 
 
 def test_runtime_has_no_experimental_dependencies():

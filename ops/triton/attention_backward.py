@@ -1,6 +1,6 @@
 """Current training backward: register-accumulated dQ and fused dK+dV.
 
-Independent/partial-workspace baselines are preserved only in experiments/legacy.
+Earlier experiments are available in Git history.
 """
 
 from __future__ import annotations
