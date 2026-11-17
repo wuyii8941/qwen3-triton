@@ -91,9 +91,10 @@ class TritonDecoderLayer(nn.Module):
         return residual_add(x,self.mlp(self.post_attention_layernorm(x)))
 
 class TritonQwen3Model(nn.Module):
+    decoder_class = TritonDecoderLayer
     def __init__(self,c,options):
         super().__init__();self.embed_tokens=TritonEmbedding(c.vocab_size,c.hidden_size,c.initializer_range)
-        self.layers=nn.ModuleList([TritonDecoderLayer(c,options) for _ in range(c.num_hidden_layers)])
+        self.layers=nn.ModuleList([self.decoder_class(c,options) for _ in range(c.num_hidden_layers)])
         self.norm=TritonNorm(c.hidden_size,c.rms_norm_eps);self.rotary_emb=TritonRotary(c)
     def forward(self,ids,position_ids=None):
         x=self.embed_tokens(ids)
@@ -107,13 +108,14 @@ class TritonQwen3Model(nn.Module):
         return self.norm(x)
 
 class TritonQwen3ForCausalLM(nn.Module):
+    backbone_class = TritonQwen3Model
     def __init__(self,config,options=None):
         super().__init__();self.config=config;self.options=options or ComputeOptions()
         if config.model_type!='qwen3':raise ValueError('Official Qwen3 config required')
         if config.hidden_act!='silu' or config.attention_dropout!=0 or getattr(config,'attention_bias',False):raise ValueError('Only SiLU, zero dropout, bias-free Qwen3 supported')
         if getattr(config,'use_sliding_window',False) or getattr(config,'rope_scaling',None):raise ValueError('Sliding window and scaledRoPE are not implemented')
         if config.head_dim%2 or config.num_attention_heads%config.num_key_value_heads:raise ValueError('Even rotary dimension and valid GQA required')
-        self.model=TritonQwen3Model(config,self.options);self.lm_head=TritonLinear(config.hidden_size,config.vocab_size,config.initializer_range,self.options)
+        self.model=self.backbone_class(config,self.options);self.lm_head=TritonLinear(config.hidden_size,config.vocab_size,config.initializer_range,self.options)
         self.tie_weights()
     def tie_weights(self):
         if self.config.tie_word_embeddings:self.lm_head.weight=self.model.embed_tokens.weight

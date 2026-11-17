@@ -15,7 +15,7 @@ from training.data import Blocks
 from transformers.models.qwen3.modeling_qwen3 import Qwen3Attention,Qwen3MLP,Qwen3RMSNorm,apply_rotary_pos_emb
 from torch.nn.attention import sdpa_kernel,SDPBackend
 from qwen3_triton._model import TritonLinear
-from qwen3_triton._model_optimized import options_for_variant
+from qwen3_triton.configuration import options_for_variant
 from qwen3_triton.kernels.rotary import apply_rotary
 from qwen3_triton.kernels.loss import causal_cross_entropy
 from qwen3_triton.audit import NoFallback

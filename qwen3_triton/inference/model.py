@@ -11,7 +11,7 @@ from torch import nn
 from transformers import AutoConfig,GenerationConfig
 from transformers.modeling_outputs import CausalLMOutputWithPast
 from .._model import TritonQwen3ForCausalLM
-from .._model_optimized import OptimizationOptions
+from ..configuration import OptimizationOptions
 from ..kernels.embedding import embedding
 from ..kernels.math_precision import swiglu
 from .kernels import rms_norm,norm_rope

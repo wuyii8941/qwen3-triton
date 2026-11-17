@@ -21,7 +21,7 @@ from training.fsdp.official import shard_official_qwen,reshard_official_paramete
 from training.fsdp.activation_checkpoint import canonical_parameter_name
 from training.input_manifest import validate
 from qwen3_triton.audit import NoFallback
-from qwen3_triton._model_optimized import VARIANTS,OptimizationOptions
+from qwen3_triton.configuration import VARIANTS,OptimizationOptions
 from qwen3_triton.model import model_for_variant,PrecisionQwen3ForCausalLM as OptimizedTritonQwen3ForCausalLM
 from qwen3_triton.gradient_archive import load as load_archive,save as save_archive
 ROOT=Path(__file__).resolve().parents[1]
