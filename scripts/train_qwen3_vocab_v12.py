@@ -10,7 +10,7 @@ completed run numerically qualified without a separate comparison/review.
 from contextlib import nullcontext
 from datetime import timedelta
 from pathlib import Path
-import argparse,copy,hashlib,json,os,time
+import argparse,copy,json,os,time
 import torch
 import torch.distributed as dist
 from torch.nn.attention import sdpa_kernel,SDPBackend
@@ -23,44 +23,9 @@ from training.input_manifest import validate
 from qwen3_triton.audit import NoFallback
 from qwen3_triton._model_optimized import VARIANTS,OptimizationOptions
 from qwen3_triton.model import model_for_variant,PrecisionQwen3ForCausalLM as OptimizedTritonQwen3ForCausalLM
-from qwen3_triton.gradient_archive import load as load_archive,save as save_archive
+from qwen3_triton.gradient_archive import save as save_archive
+from train_qwen3_triton_8b import compare_first_gradients, local, sha
 ROOT=Path(__file__).resolve().parents[1]
-
-def sha(path):
-    digest=hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for block in iter(lambda:handle.read(8*2**20),b''):digest.update(block)
-    return digest.hexdigest()
-
-def local(tensor):return tensor.to_local() if hasattr(tensor,'to_local') else tensor
-
-def compare_first_gradients(parameters,ids,logits,loss,reference_dir,rank,identity,*,strict_control=False):
-    """Every coordinate of all399localFP32gradients, outside performance timing."""
-    result=json.loads((reference_dir/'result.json').read_text())
-    assert result['input_manifest_sha256']==identity and result['math_policy']['allow_bf16_reduced_precision_reduction'] is False
-    assert result['variant']=='hf' and result['layers']==36
-    path=reference_dir/f'raw_rank{rank}.pt.gz'
-    expected=result['ranks'][rank]['reference_archive'];assert sha(path)==expected['sha256']
-    raw=load_archive(path)['1'];assert torch.equal(ids,raw['ids'])
-    assert set(raw['gradients'])=={canonical_parameter_name(n) for n in parameters}
-    rows=[];error2=reference2=0.
-    for name,param in parameters.items():
-        name=canonical_parameter_name(name);got=local(param.grad).detach().cpu();ref=raw['gradients'][name]
-        assert got.shape==ref.shape and got.dtype==ref.dtype==torch.float32 and torch.isfinite(got).all() and torch.isfinite(ref).all()
-        delta=float((got-ref).norm());norm=float(ref.norm());threshold=(.0001 if strict_control else .06)*max(norm,1e-8)+(1e-7 if strict_control else 1e-6)
-        rows.append(dict(name=name,absolute_error_norm=delta,reference_norm=norm,relative_l2=delta/max(norm,1e-8),threshold=threshold,passed=delta<threshold))
-        error2+=delta**2;reference2+=norm**2;del got
-    assert len(rows)==399
-    reference=raw['logits'].float();got=logits.detach().cpu().float()
-    logit_error=float((got-reference).norm()/reference.norm().clamp_min(1e-8));loss_error=abs(float(loss.detach().cpu())-float(raw['local_loss']))
-    passed=all(row['passed'] for row in rows)
-    bitwise=torch.equal(logits.detach().cpu(),raw['logits']) and torch.equal(loss.detach().cpu(),raw['local_loss'])
-    forward_passed=logit_error<.025 and loss_error<.01 and (bitwise or not strict_control)
-    return dict(complete=True,rows=rows,passed=passed,global_relative_l2=(error2/max(reference2,1e-16))**.5,
-        logits_relative_l2=logit_error,loss_abs_error=loss_error,forward_gate_passed=forward_passed,strict_native_control=strict_control,forward_bitwise_equal=bitwise,
-        numerical_gate_passed=passed and forward_passed,reference_dir=str(reference_dir),
-        reference_result_sha256=sha(reference_dir/'result.json'),
-        scope='All-coordinate runtime comparison on firstupdate, same explicitBF16/FP32accum policyFalse. Dense candidategradients are not archived; original reference is losslessly archived.')
 
 @torch.no_grad()
 def _evaluate_core(model,dataset,is_triton):
@@ -246,7 +211,7 @@ def main(*, model_setup=None, extra_sources=(), extra_framework=None):
         (args.output/f'rank{rank}.json').write_text(json.dumps(rank_result,indent=2)+'\n')
         reports=[None]*4;dist.all_gather_object(reports,rank_result)
         if rank==0:
-            files=[Path(__file__),args.protocol,args.input_manifest,ROOT/'training/fsdp/official.py',ROOT/'training/fsdp/activation_checkpoint.py',*sorted((ROOT/'qwen3_triton').rglob('*.py'))]
+            files=[Path(__file__),ROOT/'scripts/train_qwen3_triton_8b.py',args.protocol,args.input_manifest,ROOT/'training/fsdp/official.py',ROOT/'training/fsdp/activation_checkpoint.py',*sorted((ROOT/'qwen3_triton').rglob('*.py'))]
             files.append(ROOT/'scripts/vocab_model_v12.py')
             files.extend(extra_sources)
             if args.gemm_plan:files.append(args.gemm_plan)

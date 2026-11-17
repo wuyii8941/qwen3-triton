@@ -219,7 +219,7 @@ def main():
         (args.output/f'rank{rank}.json').write_text(json.dumps(rank_result,indent=2)+'\n')
         reports=[None]*4;dist.all_gather_object(reports,rank_result,group=cpu_group)
         if rank==0:
-            sources=[Path(__file__),ROOT/'scripts/train_qwen3_vocab_v12.py',ROOT/'scripts/vocab_model_v12.py',args.protocol,args.input_manifest,
+            sources=[Path(__file__),ROOT/'scripts/train_qwen3_triton_8b.py',ROOT/'scripts/train_qwen3_vocab_v12.py',ROOT/'scripts/vocab_model_v12.py',args.protocol,args.input_manifest,
                 ROOT/'scripts/research_python.sh',*sorted((ROOT/'qwen3_triton').rglob('*.py')),
                 *sorted((ROOT/'training').rglob('*.py'))]
             if args.runtime in ['v13','adam']:sources.extend([ROOT/'scripts/fsdp_peer_rs_v13.py',ROOT/'scripts/symmetric_rs_v13.py'])
