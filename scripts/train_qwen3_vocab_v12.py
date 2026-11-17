@@ -20,7 +20,7 @@ from training.evaluation import validation_batches
 from training.fsdp.official import shard_official_qwen,reshard_official_parameters
 from training.fsdp.activation_checkpoint import canonical_parameter_name
 from training.input_manifest import validate
-from qwen3_triton.audit import NoFallback
+from qwen3_triton.validation.audit import NoFallback
 from qwen3_triton.configuration import VARIANTS,OptimizationOptions
 from qwen3_triton.model import model_for_variant,PrecisionQwen3ForCausalLM as OptimizedTritonQwen3ForCausalLM
 from qwen3_triton.gradient_archive import save as save_archive
@@ -184,7 +184,7 @@ def main(*, model_setup=None, extra_sources=(), extra_framework=None):
         rank_result=dict(vocab_head_calls=head_calls,reference_archive=archive,gemm_plan=gemm_plan_identity(),measured_training_peak=training_peak,rank=rank,complete=True,parameter_count=399,optimizer_state_count=len(optimizer.state),updates=total,rows=rows,full_validation=validation_rows,gradient_comparisons=comparisons,all_master_grad_moment_finite_fp32=True,peak_allocated_gib=torch.cuda.max_memory_allocated()/2**30,peak_reserved_gib=torch.cuda.max_memory_reserved()/2**30)
         if model_setup is not None:
             rank_result['communication']=communication.report() if communication is not None else dict(mode='native')
-            from qwen3_triton.overwrite_allocation import report as allocation_report
+            from qwen3_triton.runtime.allocation import report as allocation_report
             rank_result['overwrite_outputs']=allocation_report()
             extra_memory=rank_result['communication'].get('external_memory_budget_bytes',0)/2**30
             rank_result['effective_training_peak']={k:v+extra_memory for k,v in training_peak.items()}

@@ -7,7 +7,7 @@ import torch
 import triton
 import triton.language as tl
 from .gemm_tuning import gemm_entry
-from qwen3_triton.overwrite_allocation import empty as output_empty
+from qwen3_triton.runtime.allocation import empty as output_empty
 
 
 @triton.jit

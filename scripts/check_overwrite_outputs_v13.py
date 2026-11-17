@@ -7,10 +7,10 @@ deterministic fill stays True. No fallback kernel is substituted for the model.
 import argparse,hashlib,json
 from pathlib import Path
 import torch
-import qwen3_triton.overwrite_allocation as allocation
+import qwen3_triton.runtime.allocation as allocation
 from qwen3_triton.kernels.linear import matmul,linear
 from qwen3_triton.kernels.mlp_precision import gate_up_swiglu
-from qwen3_triton.audit import NoFallback
+from qwen3_triton.validation.audit import NoFallback
 
 
 def main():
@@ -59,7 +59,7 @@ def main():
     assert torch.utils.deterministic.fill_uninitialized_memory is True
     assert torch.are_deterministic_algorithms_enabled()
     root=Path(__file__).resolve().parents[1]
-    files=[Path(__file__),root/'qwen3_triton/overwrite_allocation.py',root/'qwen3_triton/kernels/linear.py',root/'qwen3_triton/kernels/mlp_precision.py']
+    files=[Path(__file__),root/'qwen3_triton/runtime/allocation.py',root/'qwen3_triton/kernels/linear.py',root/'qwen3_triton/kernels/mlp_precision.py']
     report=dict(complete=True,full_training_qualified=False,rows=rows,deterministic_fill_still_enabled=True,
         sources={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in files},scope=__doc__)
     with args.output.open('x') as f:f.write(json.dumps(report,indent=2)+'\n')

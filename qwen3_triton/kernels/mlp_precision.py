@@ -11,7 +11,7 @@ from triton.language.extra.cuda import libdevice
 from .math_precision import _hf_swiglu_backward as activation_backward
 from qwen3_triton.kernels.residual import residual_add
 from .gemm_tuning import gate_up_entry
-from qwen3_triton.overwrite_allocation import empty as output_empty, empty_like as output_empty_like
+from qwen3_triton.runtime.allocation import empty as output_empty, empty_like as output_empty_like
 
 @triton.jit
 def _gate_up(X,WG,WU,G,U,Y,M:tl.constexpr,N:tl.constexpr,K:tl.constexpr,

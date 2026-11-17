@@ -18,7 +18,7 @@ from qwen3_triton._model import TritonLinear
 from qwen3_triton.configuration import options_for_variant
 from qwen3_triton.kernels.rotary import apply_rotary
 from qwen3_triton.kernels.loss import causal_cross_entropy
-from qwen3_triton.audit import NoFallback
+from qwen3_triton.validation.audit import NoFallback
 from training.input_manifest import validate
 from qwen3_triton.model import model_for_variant
 from qwen3_triton.kernels.math_precision import rms_norm,norm_rope

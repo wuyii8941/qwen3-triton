@@ -4,6 +4,10 @@ Allocation, views, layout copies, parameter casts, autograd accumulation and
 the shared FSDP/NCCL infrastructure remain framework operations. Pair this
 dispatch guard with actual CUDA traces; the guard alone is not a trace audit.
 """
+
+
+# examine the output kernel in case that pytorch aten kernels are used
+
 from torch.utils._python_dispatch import TorchDispatchMode
 
 FORBIDDEN = {

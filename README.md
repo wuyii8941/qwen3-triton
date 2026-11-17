@@ -18,3 +18,5 @@
 `qwen3_triton/kernels/` 是完整模型使用的算子，`qwen3_triton/runtime/` 管理训练中的 FSDP 通信、优化器和 GPU 辅助操作。`ops/` 包含独立算子及参考实现，供组件测试和 Tiny 模型使用。历史实验代码可从 Git 历史查阅。
 
 `scripts/` 中不带编号的训练、参考数据和推理脚本是常用入口；其余保留的脚本用于实现依赖、数值检查、调优或验证记录追溯。历史实验的启动和汇总脚本可从 Git 历史查阅。
+
+执行检查位于 [`qwen3_triton/validation/`](qwen3_triton/validation/)，显存分配辅助位于 [`runtime/allocation.py`](qwen3_triton/runtime/allocation.py)，词表并行训练组件位于 [`training/vocab_parallel.py`](qwen3_triton/training/vocab_parallel.py)。

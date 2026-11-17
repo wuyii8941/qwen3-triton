@@ -11,7 +11,7 @@ from transformers.modeling_outputs import CausalLMOutputWithPast
 from transformers.models.qwen3.modeling_qwen3 import Qwen3ForCausalLM
 from training.fsdp.activation_checkpoint import checkpoint_layer_indices,wrap_decoder_checkpoint
 from qwen3_triton.model import PrecisionQwen3ForCausalLM
-from qwen3_triton.vocab_parallel import VocabParallelCE
+from qwen3_triton.training.vocab_parallel import VocabParallelCE
 
 
 class _LossOnlyGraph:

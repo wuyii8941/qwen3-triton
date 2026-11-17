@@ -15,9 +15,9 @@ must also cover allocation, layout copies and auxiliary tensor operations.
 """
 import torch
 import torch.distributed as dist
-from .kernels.linear import matmul
-from .kernels.attention import cast_tensor
-from .kernels.vocab_ce import (local_statistics,packed_statistics,finish_statistics,
+from ..kernels.linear import matmul
+from ..kernels.attention import cast_tensor
+from ..kernels.vocab_ce import (local_statistics,packed_statistics,finish_statistics,
                                logit_gradient,accumulate_weight_gradient)
 
 
@@ -78,7 +78,7 @@ class _VocabCE(torch.autograd.Function):
         else:ctx.owner.communication.reduce_scatter(local_dx,partial_dx,'sum')
         dx=cast_tensor(local_dx,torch.bfloat16)
         if ctx.owner.fused_dw:
-            from .kernels.vocab_dw import weight_gradient_mean
+            from ..kernels.vocab_dw import weight_gradient_mean
             dw=weight_gradient_mean(dz,h,r,world,ctx.owner.dw_config)
         else:
             dw=torch.empty(w.shape,device=w.device,dtype=torch.float32)
