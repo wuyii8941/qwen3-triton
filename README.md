@@ -5,8 +5,19 @@ Embedding、所有 Linear、RMSNorm、QK-Norm/RoPE、causal GQA attention、
 SwiGLU、residual 和交叉熵的模型计算及反向均由 Triton 实现。
 V9–V13 的参数、autograd、分配器、FSDP2/NCCL 和 AdamW 使用共同的 PyTorch 基础设施。
 
-GitHub main 的首次发布固定已验收的 V9 实现与小型证据；本研究分支继续以此优化。
-训练版本的验收范围不包含完整预训练框架。新增 [V15 推理实现](INFERENCE_V15.md)
+`main` 汇集完整 Triton 训练运行时 V14、训练性能优化 V13 与 V15 推理实现。
+当前训练验证是固定协议的短程实验，不代表完整预训练收敛。
+
+| 用途 | 入口或代码 |
+| --- | --- |
+| 完整 Triton 8B 训练（V14） | [训练入口](scripts/train_qwen3_runtime_v14.py)、[运行时](qwen3_triton/runtime/) |
+| 训练性能优化（V13） | [实验与使用说明](OPTIMIZATION_V13.md) |
+| Triton 推理（V15） | [推理说明与入口](INFERENCE_V15.md)、[推理代码](qwen3_triton/inference/) |
+| 训练和推理使用的 Triton 算子 | [算子代码](qwen3_triton/kernels/) |
+| 早期小模型测试 | [Tiny 配置](model/config.py)、[小模型实现](model/qwen_tiny.py) |
+
+Tiny 配置用于快速测试；正式 8B 训练入口读取官方 Qwen3-8B 配置和权重。
+[V15 推理实现](INFERENCE_V15.md)
 提供单卡 BF16 prefill、KV cache、decode、贪心生成和固定请求 CUDA Graph；
 显式 `reference_accumulation=True, prefill_tiling=True` 路径已通过原24项数值检查、
 两条16-token生成对照、完整512块S512验证和五段GPU审计；验证语料logits逐位一致。
@@ -19,7 +30,7 @@ GitHub main 的首次发布固定已验收的 V9 实现与小型证据；本研�
 三条更换输入的生成对照均通过。Eager耗时仍约为HF的3.1–3.2倍，收益限于上述Graph场景。
 [完整配对样本与限制](results/qwen3_triton_inference_v15_reference_paired_request_v2.json)。
 
-本分支最新通过完整验收的是 [V13](OPTIMIZATION_V13.md)：
+训练性能推荐的 [V13](OPTIMIZATION_V13.md) 在其验收协议中：
 两轮为 **4.5148 / 4.5176 秒/步**，
 相对同轮 HF＋Flash 耗时减少 **14.75% / 13.80%**，
 相对已有 V12 减少 **7.95% / 7.85%**。下文保留各代各自的实验协议与结果。
