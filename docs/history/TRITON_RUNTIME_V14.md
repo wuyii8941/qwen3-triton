@@ -28,7 +28,7 @@ profile更新；在更新0和16后都运行全部512个验证块。每角色28�
 完整运行时在两种顺序下都比 V13 慢约31.1%，所以它**通过功能资格，但没有
 通过性能采用门槛**。Triton AdamW 单独加入 V13 后也慢约2.35%；这些结果不能
 支持把新增 runtime/optimizer 当作提速。逐角色结果、原始尝试历史、冻结协议、
-资源审核、512块验证记录及历史源版本清单见[正式证据索引](results/qwen3_triton_runtime_v14_evidence_index_v1.json)
+资源审核、512块验证记录及历史源版本清单见[正式证据索引](../../results/qwen3_triton_runtime_v14_evidence_index_v1.json)
 及其关联 JSON。密集梯度、模型权重、检查点和 profiler 原始 trace 不随分支发布。
 
 主机仍负责 PyTorch FSDP2/autograd 状态机、CUDA Driver 内存分配和 IPC 映射、
@@ -57,7 +57,7 @@ dispatch，未实现的 CUDA 张量操作会报错；原始 profiler trace 由 r
 两轮 rank 0 trace 在 setup、首次更新、完整更新、完整验证中分别记录808、
 13579、12294、51459 个 GPU kernel 事件；这些事件均归入 Triton，未分类/原生
 计算为空，原生 GPU memset/设备间拷贝事件为零。审查范围和哈希见
-[`training_review`](results/qwen3_triton_runtime_v14_training_review_v1.json)；
+[`training_review`](../../results/qwen3_triton_runtime_v14_training_review_v1.json)；
 V14 资格限于审核中的 4×A6000、软件版本和消息形状。
 
 下面的组件和失败条目是按当时进度保留的审计历史；它们的“尚待完成”状态已由
@@ -124,7 +124,7 @@ Triton屏障和4次peer collective，没有NCCL或CUDA barrier kernel。
 上述组件检查阶段，完整36层8B接入、全399梯度、512块验证、完整step trace
 和整体/部分消融均待完成；后续真实8B进展见本文末尾。
 组件记录在原始 `artifacts/triton_qwen3_runtime_v14`，小型摘要见
-[组件证据](results/qwen3_triton_runtime_v14_components_v1.json)。
+[组件证据](../../results/qwen3_triton_runtime_v14_components_v1.json)。
 
 后续 `adamw_check_003` 已通过相同四rank128步及官方8B分片检查；新增最大
 `[37984,4096]` 分片的CPU检查点恢复，确认m/v/step使用原GPU缓冲区，恢复后
@@ -183,10 +183,10 @@ CUDA拦截或PyTorch修改。主机负责生命周期：所有GPU使用结束后
 超时负例，以及真实大桶全部48236608坐标的独立CPU FP64 oracle均通过。
 初始化trace只有9次Triton fill，没有任何原生GPU memset或memcpy；显式IPC
 teardown完成。该证据仍不代表完整8B数值/验证已通过，详见
-[IPC组件证据](results/qwen3_triton_runtime_v14_peer_memory_v1.json)。
+[IPC组件证据](../../results/qwen3_triton_runtime_v14_peer_memory_v1.json)。
 完整trace审核已扩展为拒绝所有原生GPU memset和设备间
 memcpy事件，保留CPU↔GPU DMA。组件和失败证据摘要见
-[最新进度](results/qwen3_triton_runtime_v14_progress_v3.json)。
+[最新进度](../../results/qwen3_triton_runtime_v14_progress_v3.json)。
 
 `reduction_order_probe_001` 对真实head dX大小8388608个FP32输入及词表CE
 4088/16352元素做原生NCCL与Triton比较。dX在rank0/1/2有112/100/117个
@@ -195,7 +195,7 @@ BF16舍入结果不同；rank3相同。独立CPU枚举加法树确认原生RS按
 输入的SUM ReduceScatter顺序；BF16无损梯度线和AVG路径保留原算法。
 四rank FP32/BF16分支预编译通过；`reduction_order_probe_002` 已实测确认每rank
 全部2097152个FP32输出与原生NCCL逐位一致，之前的BF16舍入差异全部消除，
-详见[归约顺序证据](results/qwen3_triton_runtime_v14_reduction_order_v1.json)。
+详见[归约顺序证据](../../results/qwen3_triton_runtime_v14_reduction_order_v1.json)。
 `full_pilot_004` 正在按新源码冻结重做8B检查；仍须全399梯度及完整质量验证
 证明整个模型的修复有效，不能从该组件逐位一致推出完整验收。
 该阶段的FP32 AllReduce仍有加法顺序差异；后续诊断和修复如下，门槛始终不变。
@@ -204,7 +204,7 @@ BF16舍入结果不同；rank3相同。独立CPU枚举加法树确认原生RS按
 审核全部通过，包括没有原生GPU memset/设备间拷贝；各rank显存门槛也通过。
 但rank1第8层K Norm梯度相对误差0.0635948656630924，仍未通过原门槛，
 其他rank全399梯度通过。首次干净失败和全部原始证据保留，详见
-[失败记录](results/qwen3_triton_runtime_v14_full_screen_failure_004.json)。
+[失败记录](../../results/qwen3_triton_runtime_v14_full_screen_failure_004.json)。
 
 `reduction_order_probe_003` 捕获实际NCCL `RING_LL` 内核，并用独立CPU加法树
 枚举定位到AllReduce各段的顺序：训练CE4088元素使用1channel、每rank1024
@@ -213,19 +213,19 @@ BF16舍入结果不同；rank3相同。独立CPU枚举加法树确认原生RS按
 顺序，仍只执行Triton；通用dtype/形状路径保留原语义。当前正在用3组不同
 输入复核全部坐标，尚待新8B梯度及完整质量验证。此为固定硬件/协议的数值
 边界对齐，不声称任意GPU/消息大小与NCCL逐位一致，不修改原有数值门槛。
-[原始诊断摘要](results/qwen3_triton_runtime_v14_AllReduce_order_diagnosis_v1.json)，
+[原始诊断摘要](../../results/qwen3_triton_runtime_v14_AllReduce_order_diagnosis_v1.json)，
 [对应NCCL源码](https://github.com/NVIDIA/nccl/blob/v2.27.5-1/src/device/all_reduce.h)。
 
 `reduction_order_probe_004` 已确认：四rank的两种CE AllReduce形状各3组不同
 输入、以及8388608元素dX ReduceScatter全部坐标与原生NCCL逐位一致，见
-[通信顺序证明](results/qwen3_triton_runtime_v14_collective_order_proof_v1.json)。
+[通信顺序证明](../../results/qwen3_triton_runtime_v14_collective_order_proof_v1.json)。
 
 `full_pilot_005` 完成首次干净的5次真实8B更新：四rank全部399参数梯度通过，
 完整首步梯度比较记录与历史已验收V13相同。FP32参数/梯度/m/v、实际更新
 计数、有效显存、初始化/首次更新/完整step的所有GPU事件检查均通过；初始化
 808次kernel均为Triton，且没有原生GPU memset/设备间拷贝。前5个全局loss与
 V13最多相差一个FP32舍入单位，不能据此声称完整状态逐位相同。
-[真实8B试跑证据](results/qwen3_triton_runtime_v14_full_pilot_v1.json)。
+[真实8B试跑证据](../../results/qwen3_triton_runtime_v14_full_pilot_v1.json)。
 正在运行 `full_validation_screen_001`：仍为5次更新，但在0/1更新后分别覆盖
 全部512块、261632 shifted tokens、每卡验证B4，并检查完整验证GPU路径。
 正式16质量更新/28实际更新、四组两轮消融和独立审查尚未完成。
@@ -234,7 +234,7 @@ V13最多相差一个FP32舍入单位，不能据此声称完整状态逐位相�
 512块、261632 shifted tokens、每卡B4；有optimizer状态时的有效allocated/
 reserved验证峰值为38.662/40.877GiB（含512MiB外部预算），没有缩小batch或
 数据覆盖。全399梯度、FP32状态、全部阶段显存与GPU事件/形状检查均通过，
-见[完整验证可行性证据](results/qwen3_triton_runtime_v14_validation_feasibility_proof_v1.json)。
+见[完整验证可行性证据](../../results/qwen3_triton_runtime_v14_validation_feasibility_proof_v1.json)。
 
 原CPU审核曾因AG计数预测少两次而拒绝结果；原始GPU运行、原审核状态和
 attempt history均保留。Torch2.10在no-grad forward中仍记录post-forward顺序，

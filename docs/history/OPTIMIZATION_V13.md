@@ -42,11 +42,11 @@ HF 可以使用相同 peer 算子，本轮同时测量了该控制，不能将�
 分层通信、协议筛选和省初始化的负结果、初次 API 调用错误，以及旧完整队列
 验证 OOM 均保留，未用失败或受干扰尝试支持性能结论。
 
-[独立完整审查](results/qwen3_triton_v13_training_review_v1.json)、
-[显式策略](results/qwen3_triton_v13_strategy_v1.json)、
-[完整尝试历史](results/qwen3_triton_v13_full_attempt_history_v1.json)、
-[环境](results/qwen3_triton_v13_environment_v1.json) 和
-[证据索引](results/qwen3_triton_v13_evidence_index_v1.json) 给出数值、资源、
+[独立完整审查](../../results/qwen3_triton_v13_training_review_v1.json)、
+[显式策略](../../results/qwen3_triton_v13_strategy_v1.json)、
+[完整尝试历史](../../results/qwen3_triton_v13_full_attempt_history_v1.json)、
+[环境](../../results/qwen3_triton_v13_environment_v1.json) 和
+[证据索引](../../results/qwen3_triton_v13_evidence_index_v1.json) 给出数值、资源、
 源码及原始记录哈希；模型、语料、环境、原始 trace 和梯度档案不随 Git 分发。
 
 ## 已完成的通信模块实验
@@ -73,8 +73,8 @@ rank，以显式 FP64 求和/均值作为独立参考，检查四 rank 的全部
 Simple 的大消息仍约 70.7 ms；SYS 约 83.7–84.0 ms，更慢。保留默认自动选择，
 环境变量仅作用于各实验子进程，没有修改系统配置。
 
-小型记录：[分层/独立组实验](results/qwen3_triton_v13_communication_micro_001.json)、
-[协议筛选](results/qwen3_triton_v13_protocol_screen_001.json)。
+小型记录：[分层/独立组实验](../../results/qwen3_triton_v13_communication_micro_001.json)、
+[协议筛选](../../results/qwen3_triton_v13_protocol_screen_001.json)。
 模块实验不能支持训练提速结论。
 
 ## 未采用的整模型筛选：省去冗余初始化
@@ -102,7 +102,7 @@ GEMM 的每个有效 `(row,column)` 坐标有唯一写入者，尾块带掩码�
 六组全部九步损失一致，实际 CUDA 契约、有限 FP32 状态及原显存门槛通过。
 组合版相对首尾控制只减少约 1.74% / 1.67%，均未达到原 3% 门槛，**不采用**。
 这些运行没有原生梯度档案比较或全量验证，不称为完整训练验收。
-[独立短测审查](results/qwen3_triton_v13_short_screen_review_v1.json) 保留全部结果。
+[独立短测审查](../../results/qwen3_triton_v13_short_screen_review_v1.json) 保留全部结果。
 
 另一个独立开关使用 FSDP 的 custom Comm 接口，为 AG/RS 的完整覆写缓冲省去
 初始化。限定 Torch 2.10、四 rank、dim0 可被四整除的 Qwen 参数；不修改
@@ -111,7 +111,7 @@ PyTorch 内部函数。它是 HF 同样可用的基础设施优化，最终对�
 这条优化依赖当前确定性初始化协议。在通常关闭该保护的生产运行中，收益可能
 消失；它不能代替新的计算或通信算法，也不能声称是普适的生产提速。
 
-[新入口](scripts/train_qwen3_communication_v13.py) 仅在原 V12 分片完成后、
+[新入口](../../scripts/train_qwen3_communication_v13.py) 仅在原 V12 分片完成后、
 optimizer 创建前应用新配置。梯度比较、验证数值核心与完整更新/计时循环的 AST
 与 V12 保持相同；后续增加的验证外层仅管理 peer 缓冲生命周期。
 短测采用全 36 层官方 8B、9 次更新，比较独立通信组、
@@ -147,12 +147,12 @@ rendezvous。源值先按 BF16 舍入后升为 FP32，模拟“已有 BF16 梯�
 
 BF16 peer 的模块耗时减少约 23.6%，FP32 peer 更慢；全部四 rank 的 AVG/SUM
 完整坐标、不可表示 FP32 值的负例，以及反复更换数据的读取检查通过。
-[模块记录](results/qwen3_triton_v13_symmetric_rs_micro_v1.json) 保存原实现来源。
+[模块记录](../../results/qwen3_triton_v13_symmetric_rs_micro_v1.json) 保存原实现来源。
 模块和实际训练接入分开验收，不把模块收益直接称为整步收益。
 
 ## 从试运行到完整验收：保留失败并修复生命周期
 
-[接入](scripts/fsdp_peer_rs_v13.py) 保持 FSDP 的 FP32 输入/输出及 AVG/SUM
+[接入](../../scripts/fsdp_peer_rs_v13.py) 保持 FSDP 的 FP32 输入/输出及 AVG/SUM
 接口，只替换 36 层 decoder 的大梯度规约，其他尺寸仍用 native FP32 NCCL。
 每次传输、每个坐标都会检查转换为 BF16 再还原后的 FP32 **位模式**；任何
 差异都会记录为失败并拒绝结果，不能用原梯度容差掩盖额外量化。
@@ -185,16 +185,16 @@ HF/Flash 接入相同通信路径的九步试运行也通过：更严格的原�
 修复只管理缓冲生命周期：所有 GPU 流同步后释放 peer 存储，核对 NVML 观察到
 释放约 370 MiB，再执行原 batch=4 的全 512 块验证；验证数值核心没有改变。
 训练恢复前重建缓冲，跨重建保留同一个错误标记及累计覆盖计数。
-[生命周期检查](scripts/check_peer_lifecycle_v13.py) 在四 rank 上通过两次释放/
+[生命周期检查](../../scripts/check_peer_lifecycle_v13.py) 在四 rank 上通过两次释放/
 重建、真实层大小输出检查及错误标记负例：即使在缓冲暂停时置入错误，也会拒绝
 恢复，不能靠新建缓冲清零错误。没有减少验证批量、样本或放宽显存/数值门槛。
 
-修复后的 `formal_002` [完整队列](scripts/run_qwen3_peer_full_v13.py) 已完成。
+修复后的 `formal_002` [完整队列](../../scripts/run_qwen3_peer_full_v13.py) 已完成。
 为先覆盖此前的失败点，事先固定顺序为 HF＋peer、V12 Triton、原生 HF、
 Triton＋peer，再逆序执行，共八组；每组 27 次实际更新、全部 399
 参数首步梯度、16 次质量更新、初末全部 512 块验证及实际 CUDA 契约检查。
 全部八组通过原门槛，候选两轮均比三个合格控制快至少 3%，并通过
-[独立 CPU 审查](scripts/review_qwen3_peer_full_v13.py)，据此推荐显式启用。
+[独立 CPU 审查](../../scripts/review_qwen3_peer_full_v13.py)，据此推荐显式启用。
 本队列共有 15 次尝试；其中 7 次观察到未归属本作业的 GPU 进程，
 按预设规则剔除并保留日志，等待连续 120 秒四卡空闲后重试。接纳的是每个角色
 第一个完整且监控干净的尝试；没有因速度或数值筛选重复。
@@ -220,10 +220,10 @@ barrier。没有删除规约语义，也没有将 trace 中的自定义 kernel �
 Symmetric Memory backend。相关接口仍具有实验性；本机证明可用不代表各平台
 都支持或更快。HF 接入相同通信算法是正式控制，优化收益不归为 Triton 独占。
 
-先按 [原复现流程](QWEN3_TRITON_REPRODUCE.md) 准备固定环境、官方 Qwen3-8B
+先按 [原复现流程](../../QWEN3_TRITON_REPRODUCE.md) 准备固定环境、官方 Qwen3-8B
 权重、语料、重新绑定的 input manifest 和原生首步梯度参考。通过
 `scripts/research_python.sh -m torch.distributed.run --standalone --nproc_per_node=4`
-调用 [peer 训练入口](scripts/train_qwen3_peer_rs_v13.py)，保留输入/输出参数并追加：
+调用 [peer 训练入口](../../scripts/train_qwen3_peer_rs_v13.py)，保留输入/输出参数并追加：
 
 ```text
 --variant triton_optimized
@@ -244,9 +244,9 @@ Symmetric Memory backend。相关接口仍具有实验性；本机证明可用�
 
 HF＋peer 使用同一 peer 入口，选择 `--variant hf --retain-lm-head`，省略两个
 vocab 标志和 GEMM 计划。V12/native HF 控制使用
-[原生通信入口](scripts/train_qwen3_communication_v13.py) 与
+[原生通信入口](../../scripts/train_qwen3_communication_v13.py) 与
 `--communication native`，其余参数分别与 Triton/HF arm 对应。
-[完整研究队列](scripts/run_qwen3_peer_full_v13.py) 和
-[CPU 审查](scripts/review_qwen3_peer_full_v13.py) 固定本机历史参考、试运行及
+[完整研究队列](../../scripts/run_qwen3_peer_full_v13.py) 和
+[CPU 审查](../../scripts/review_qwen3_peer_full_v13.py) 固定本机历史参考、试运行及
 输入路径，迁移时须准备相同证据并调整编排路径；它们不是通用的便携训练框架。
 本分支的 peer 路径显式启用，原默认入口和 V9–V12 历史结果保持不变。

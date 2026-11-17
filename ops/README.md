@@ -14,4 +14,4 @@
 
 推理专用 decode、静态 cache、INT8、稀疏算法、参数调优版本和旧 attention backward 基线都在 `experiments/legacy/ops/`。这些是保留的实验，不会被主运行时偷偷导入。
 
-从 [目录导航](../REPOSITORY_LAYOUT.md) 查看训练路径与测试命令。注意 PyTorch 数学 reference 与 HF 的低精度中间 cast 语义不是同一个验收口径。
+从 [目录导航](../docs/history/REPOSITORY_LAYOUT.md) 查看训练路径与测试命令。注意 PyTorch 数学 reference 与 HF 的低精度中间 cast 语义不是同一个验收口径。

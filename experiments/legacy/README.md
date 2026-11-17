@@ -18,4 +18,4 @@ bash scripts/legacy_python.sh -m training.fsdp_convergence_job --help
 
 原监督器可能校验冻结清单中的绝对路径。归档保留源码身份和只读审计能力，不承诺所有历史长训练监督器在新路径下能原样重启；不得为迁移重写旧证据。当前重新训练用根目录 `training.train` 并生成独立记录。
 
-当前目录说明见 [仓库导航](../../REPOSITORY_LAYOUT.md)。
+历史目录说明见 [仓库导航](../../docs/history/REPOSITORY_LAYOUT.md)。

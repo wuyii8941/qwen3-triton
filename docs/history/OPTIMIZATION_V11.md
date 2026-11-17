@@ -11,7 +11,7 @@
 继续使用共享 PyTorch 基础设施。BF16 计算、FP32 master/梯度/AdamW 状态、
 禁用 TF32 与 BF16 reduced-precision reduction 的策略不变。
 
-新增独立入口 [train_qwen3_training_v11.py](scripts/train_qwen3_training_v11.py)，允许显式选择：
+新增独立入口 [train_qwen3_training_v11.py](../../scripts/train_qwen3_training_v11.py)，允许显式选择：
 
 - decoder 前向后保留的完整参数层数，减少反向前的参数 AllGather。
 - 保留 LM head 参数，减少它的反向 AllGather。
@@ -20,7 +20,7 @@
 - 已有 V10 GEMM 调优计划，保持显式启用。
 
 更新、计时、全量验证及首步全参数梯度比较的 AST 与原入口一致。
-原 [V9/V10 训练入口](scripts/train_qwen3_triton_8b.py) 未修改，默认策略未切换。
+原 [V9/V10 训练入口](../../scripts/train_qwen3_triton_8b.py) 未修改，默认策略未切换。
 这属于训练策略与已有算子的组合优化，不宣称新发明了 FSDP 或新的 GEMM 算法。
 
 ## 实验条件和选优规则
@@ -99,14 +99,14 @@ reserved 峰值为 **41.840 GiB**。同策略 HF 分别约为 **40.248 / 41.865 
 
 ## 实际执行的审查
 
-[qwen3_training_v11_contract.py](scripts/qwen3_training_v11_contract.py) 按重计算层数
+[qwen3_training_v11_contract.py](../../scripts/qwen3_training_v11_contract.py) 按重计算层数
 核对全部模型 kernel 数量、GEMM/gate-up 的 grid 和 warp 数，以及实际 NCCL
 AllGather/ReduceScatter 次数。原控制组应为 78/39；保留36层及head并跳过
 embedding 反向聚合时应为 40/39。该规则已用三份真实 V10 trace 校验，并拒绝
 错误的重计算和参数保留标签；六组正式运行的实际 trace 均通过对应规则。
 
-[独立验收报告](results/qwen3_triton_v11_training_review_v1.json) 记录六组数值、
-短程质量、计时样本及 CUDA 审查；[证据索引](results/qwen3_triton_v11_evidence_index_v1.json)
+[独立验收报告](../../results/qwen3_triton_v11_training_review_v1.json) 记录六组数值、
+短程质量、计时样本及 CUDA 审查；[证据索引](../../results/qwen3_triton_v11_evidence_index_v1.json)
 给出小型副本、原始记录与源码的哈希。所有 399 参数的稠密梯度坐标均在运行时
 比较；候选稠密梯度没有另存档，CPU 复核验证原生参考档案及记录的误差运算，
 不声称独立重算了未存档的候选梯度。
@@ -122,7 +122,7 @@ embedding 反向聚合时应为 40/39。该规则已用三份真实 V10 trace �
 
 ## 显式使用策略
 
-完成 [环境、权重、语料与参考档案准备](QWEN3_TRITON_REPRODUCE.md) 后，使用新的
+完成 [环境、权重、语料与参考档案准备](../../QWEN3_TRITON_REPRODUCE.md) 后，使用新的
 训练入口，并保留原来的输入、验证、梯度参考及输出参数。Triton 候选追加：
 
 ```text
@@ -138,6 +138,6 @@ HF 对照使用相同训练策略，将 variant 改为 `hf` 并省略 `--gemm-pl
 没有改变原入口的默认值。该显存配置需要重新验证才能用于更长序列或其他 batch。
 
 本分支已包含经过统一审查的小型证据和
-[显式策略描述](results/qwen3_triton_v11_strategy_v1.json)。在保留完整原始记录的环境中可用
+[显式策略描述](../../results/qwen3_triton_v11_strategy_v1.json)。在保留完整原始记录的环境中可用
 `scripts/bundle_qwen3_training_v11.py --artifacts ARTIFACT_ROOT --results results`
 生成小型证据副本及显式策略参数描述。描述文件不是新的 CLI 配置加载器。

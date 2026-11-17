@@ -47,16 +47,16 @@ BLAS/Flash 回退；FSDP/NCCL、分配及 native fused AdamW 仍为 PyTorch。
 trace 是 27 次更新后额外一次 rank0 前向/反向，没有第 28 次 optimizer step，
 不能用它代替完整训练计时或 optimizer profiling。双顺序不构成统计显著性证明。
 
-证据：[逐方法审查](results/qwen3_triton_v12_method_review_v1.json)、
-[原始全队列报告](results/qwen3_triton_v12_cohort_review_v1.json)、
-[资源接纳审查](results/qwen3_triton_v12_resource_review_v1.json)、
-[显式策略](results/qwen3_triton_v12_strategy_v1.json)、
-[证据索引](results/qwen3_triton_v12_evidence_index_v1.json)。
+证据：[逐方法审查](../../results/qwen3_triton_v12_method_review_v1.json)、
+[原始全队列报告](../../results/qwen3_triton_v12_cohort_review_v1.json)、
+[资源接纳审查](../../results/qwen3_triton_v12_resource_review_v1.json)、
+[显式策略](../../results/qwen3_triton_v12_strategy_v1.json)、
+[证据索引](../../results/qwen3_triton_v12_evidence_index_v1.json)。
 
 ## 实现范围
 
-新增 [词表分片输出层](qwen3_triton/vocab_parallel.py) 与
-[局部 CE kernel](qwen3_triton/kernels/vocab_ce.py)。每卡保留本地词表行的 FP32
+新增 [词表分片输出层](../../qwen3_triton/vocab_parallel.py) 与
+[局部 CE kernel](../../qwen3_triton/kernels/vocab_ce.py)。每卡保留本地词表行的 FP32
 master 与 AdamW 状态；交换各 data rank 的 BF16 hidden states 和标签，在本地
 执行投影，使用 FP32 softmax 统计量规约得到完整词表的 loss。没有词表采样或量化。
 
@@ -102,9 +102,9 @@ admission 及全过程进程观察均通过。模块结果尚未代表真实 dec
 
 ## 完整模型接入与前期筛选
 
-[训练入口](scripts/train_qwen3_vocab_v12.py) 使用官方 8B 全部 36 层、399 参数，
+[训练入口](../../scripts/train_qwen3_vocab_v12.py) 使用官方 8B 全部 36 层、399 参数，
 保留相同语料、BF16/FP32 策略和原 41.875 GiB allocator 预算。
-[接入辅助](scripts/vocab_model_v12.py) 将 head 排除在 FSDP 外，并显式替换 labeled
+[接入辅助](../../scripts/vocab_model_v12.py) 将 head 排除在 FSDP 外，并显式替换 labeled
 loss 路径。默认不返回完整 logits；仅首步梯度诊断可显式交换完整 logits，计时不含该步。
 
 第一次完整接入在首次 optimizer step 因 mixed Tensor/DTensor 参数组失败，
@@ -125,7 +125,7 @@ HF decoder＋定制 head 也完成短测，但后续完整梯度检查失败，�
 没有达到事先固定的 3% 筛选门槛；不重计算略慢。因此仍选逐层重计算，保留
 负结果与未达门槛的结果，不把“减少 FLOPs”直接当作整步加速。
 
-[融合 dW kernel](qwen3_triton/kernels/vocab_dw.py) 另行实验：在同一 kernel 内
+[融合 dW kernel](../../qwen3_triton/kernels/vocab_dw.py) 另行实验：在同一 kernel 内
 计算各 data rank 的 dW，逐份保留 BF16 舍入边界，再按顺序求 FP32 平均。
 目标是省去四份 BF16 权重梯度的中间写回与独立求平均 kernel。单 GPU 模块实验中，
 完整 `[37984,4096]` 本地权重梯度从约 19.4–19.5 ms 降至 8.4–8.5 ms，减少
@@ -170,8 +170,8 @@ HF decoder＋定制 head 的两轮完整运行均有一项未过门槛的梯度�
 
 ## 复现与显式启用
 
-先完成 [环境、官方权重、语料和原生梯度参考准备](QWEN3_TRITON_REPRODUCE.md)。
-使用 [训练入口](scripts/train_qwen3_vocab_v12.py)，保留原输入、输出、全量验证及
+先完成 [环境、官方权重、语料和原生梯度参考准备](../../QWEN3_TRITON_REPRODUCE.md)。
+使用 [训练入口](../../scripts/train_qwen3_vocab_v12.py)，保留原输入、输出、全量验证及
 梯度参考参数，并追加：
 
 ```text
@@ -191,10 +191,10 @@ native HF/V11 控制省略两个 vocab 标志，使用 `--retain-lm-head`；HF �
 GEMM 计划并选择 `--variant hf`。策略 JSON 是描述文件，不是 CLI 加载器。
 
 固定数学源码见队列 manifest；资源队列与 CPU 审查源码单独列哈希。
-[完整队列](scripts/run_vocab_resource_queue_v12.py)、
-[数值审查](scripts/review_vocab_full_v12.py)、
-[逐方法审查](scripts/review_qwen3_vocab_methods.py) 和
-[小型证据收集](scripts/bundle_qwen3_vocab_evidence.py) 均已提交。
+[完整队列](../../scripts/run_vocab_resource_queue_v12.py)、
+[数值审查](../../scripts/review_vocab_full_v12.py)、
+[逐方法审查](../../scripts/review_qwen3_vocab_methods.py) 和
+[小型证据收集](../../scripts/bundle_qwen3_vocab_evidence.py) 均已提交。
 原始本机 artifacts、权重、语料、稠密梯度和 profiler trace 不随 Git 分发。
 
 ## 下一轮优先方向：按瓶颈选择
@@ -202,7 +202,7 @@ GEMM 计划并选择 `--variant hf`。策略 JSON 是描述文件，不是 CLI �
 以下尚未实现或验收，不计入本轮收益。分析日期为 2026-11-15；本轮软件环境仍
 固定 Torch 2.10.0、Triton 3.6.0、Transformers 4.51.0，不能代表最新版 HF 生态。
 
-已有 [rank0 前向/反向 trace 汇总](results/qwen3_triton_v12_forward_backward_profile_v1.json)
+已有 [rank0 前向/反向 trace 汇总](../../results/qwen3_triton_v12_forward_backward_profile_v1.json)
 显示 FP32 ReduceScatter 39 次累计 2.810 秒，AllGather 42 次累计 1.482 秒，
 通用 GEMM 866 次累计 0.272 秒。通信 kernel 时间可能包含其他 rank 的等待，
 各类别可以重叠，不是整步占比或可消除时间。机器拓扑为 0/1、2/3 各经 PCIe

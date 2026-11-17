@@ -278,20 +278,20 @@ CUDA_VISIBLE_DEVICES='' bash scripts/research_python.sh \
 
 ## Checked-in evidence and configuration reuse
 
-- [Evidence index and original-file hashes](results/qwen3_triton_v10_evidence_index_v1.json).
-- [Final selection summary](results/qwen3_triton_v10_paired_training_v1.json) and
-  [independent training review](results/qwen3_triton_v10_training_review_v1.json).
-- [Frozen cohort manifest](results/qwen3_triton_v10_cohort_manifest_v1.json),
-  [pre-timing policy](results/qwen3_triton_v10_selection_policy_v1.json) and
-  [recovery disclosure](results/qwen3_triton_v10_recovery_v1.json).
-- [Raw operator screen](results/qwen3_triton_v10_operator_screen_v1.json) and
-  [its ownership monitor](results/qwen3_triton_v10_operator_resource_v1.json).
-- [CPU code generation](results/qwen3_triton_v10_cpu_codegen_v1.json) and
-  [accumulation-spelling negative control](results/qwen3_triton_v10_accumulation_control_v1.json).
-- [All-plan module review](results/qwen3_triton_v10_all_modules_v1.json),
-  [selective-plan module review](results/qwen3_triton_v10_selective_modules_v1.json),
-  [source/meta checks](results/qwen3_triton_v10_source_meta_v1.json) and
-  [trace overlap](results/qwen3_triton_v10_trace_overlap_v1.json).
+- [Evidence index and original-file hashes](../../results/qwen3_triton_v10_evidence_index_v1.json).
+- [Final selection summary](../../results/qwen3_triton_v10_paired_training_v1.json) and
+  [independent training review](../../results/qwen3_triton_v10_training_review_v1.json).
+- [Frozen cohort manifest](../../results/qwen3_triton_v10_cohort_manifest_v1.json),
+  [pre-timing policy](../../results/qwen3_triton_v10_selection_policy_v1.json) and
+  [recovery disclosure](../../results/qwen3_triton_v10_recovery_v1.json).
+- [Raw operator screen](../../results/qwen3_triton_v10_operator_screen_v1.json) and
+  [its ownership monitor](../../results/qwen3_triton_v10_operator_resource_v1.json).
+- [CPU code generation](../../results/qwen3_triton_v10_cpu_codegen_v1.json) and
+  [accumulation-spelling negative control](../../results/qwen3_triton_v10_accumulation_control_v1.json).
+- [All-plan module review](../../results/qwen3_triton_v10_all_modules_v1.json),
+  [selective-plan module review](../../results/qwen3_triton_v10_selective_modules_v1.json),
+  [source/meta checks](../../results/qwen3_triton_v10_source_meta_v1.json) and
+  [trace overlap](../../results/qwen3_triton_v10_trace_overlap_v1.json).
 
 These are byte-identical copies of the corresponding local evidence. The raw
 training logs, traces, rejected attempts, reference gradients and input corpus

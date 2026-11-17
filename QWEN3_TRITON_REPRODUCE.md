@@ -1,3 +1,5 @@
+> 历史兼容文档：当前入口请查看 [仓库首页](README.md)。
+
 # Reproduce complete Qwen3-8B experiments
 
 V14 extends model arithmetic to the complete training GPU data path. Its

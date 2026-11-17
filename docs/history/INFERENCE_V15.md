@@ -4,7 +4,7 @@ Development branch: `research/inference-v15`, based on the qualified V14 trainin
 runtime (`2577c29`). Training entry points and their evidence remain independent.
 The small independent attention/cache/graph checks passed (nine numerical cases plus
 cache guards, greedy generation and EOS handling). See
-[small fixture evidence](results/qwen3_triton_inference_v15_small_fixture_v1.json).
+[small fixture evidence](../../results/qwen3_triton_inference_v15_small_fixture_v1.json).
 The opt-in reference accumulation route now passes the original official8B
 qualification protocol, including all512fixedS512blocks and five complete GPU
 phase audits. This is finite-protocol acceptance, not universal numerical parity.
@@ -98,7 +98,7 @@ All four measured chunked-prefill cases pass their original numerical gates.
 
 **HF numerical qualification remains false.** Two of24logit cases exceed the
 original gates, and one of two16-token text continuations differs from HF. See
-[complete diagnostic](results/qwen3_triton_inference_v15_official_diagnostic_v1.json).
+[complete diagnostic](../../results/qwen3_triton_inference_v15_official_diagnostic_v1.json).
 The cases and original thresholds are retained. Diagnostic continuation does
 not relax gates or convert failures to success. Pinning the local checkpoint's
 missing tokenizer chat-template files is also required for `--chat`; measured
@@ -112,7 +112,7 @@ versus graph0.20365/0.20373seconds, about6.3x faster than this eager candidate.
 This is not an HF speed claim or a serving-throughput result. The graph run
 used the shared stable GPU lease, but did not continuously monitor foreign
 contexts; treat its timings as preliminary until monitored paired confirmation.
-See [graph evidence](results/qwen3_triton_inference_v15_graph_8b_v1.json).
+See [graph evidence](../../results/qwen3_triton_inference_v15_graph_8b_v1.json).
 
 Graph limitations: no earlyEOS, fixed dense shapes/token budget, output aliases
 request-owned storage until next replay, one object must stay on one stream
@@ -134,11 +134,11 @@ agreement with HF for32-key tiles (both64/128query tiles), while64-key and
 split decode have differences. Prefill on the same HF operands agrees exactly
 with64-key tiles. The default now selects64-key prefill and32-key single-token
 decode, with split decode retained as an explicit experimental control.
-See [geometry probe](results/qwen3_triton_inference_v15_attention_geometry_v1.json).
+See [geometry probe](../../results/qwen3_triton_inference_v15_attention_geometry_v1.json).
 
 The full-model rerun still fails two original numerical gates and one generated
 continuation. All four phase GPU coverage audits pass and monitoring recorded no
-foreign processes. The [new full diagnostic](results/qwen3_triton_inference_v15_official_diagnostic_v2.json)
+foreign processes. The [new full diagnostic](../../results/qwen3_triton_inference_v15_official_diagnostic_v2.json)
 preserves those failures: local attention agreement does not qualify the full
 model. Earlier graph speed measurements apply to the earlier split-decode source,
 not this revised default; graph speed and output parity must be revalidated for
@@ -167,13 +167,13 @@ equivalent performance recommendation:** one of the three inputs generates
 different tokens from HF, and the original full-model logit gates still fail.
 Preparation/capture cost is excluded in all replay timings, both models are
 resident simultaneously, and this is not a serving throughput result.
-[Full monitored comparison](results/qwen3_triton_inference_v15_paired_graph_v1.json).
+[Full monitored comparison](../../results/qwen3_triton_inference_v15_paired_graph_v1.json).
 
 On identical officialHF intermediate operands, all measured rotary tables,
 fusedQK-Norm/RoPE and SwiGLU outputs match bitwise; remaining local differences
 are in linear projection/MLP accumulation. The current separate-GEMV decode
 MLP is closer toHF than the experimental tensorcore fusedMLP on those inputs,
-so that experimental path was not adopted. [Boundary diagnostics](results/qwen3_triton_inference_v15_boundaries_v1.json).
+so that experimental path was not adopted. [Boundary diagnostics](../../results/qwen3_triton_inference_v15_boundaries_v1.json).
 
 
 Linear isolation probes compared identical HF operands at layers0/12/24/31/35
@@ -181,7 +181,7 @@ in prefill and fourdecode positions. Changing GEMM Ktile16/32/64/128 did not
 change their discrepancy. SplitK2/4/8/16 and GEMV lane widths32/64/128/256/512
 also did not remove it. No probe was adopted. Native HF decode uses a mix of
 cuBLAS GEMV and TensorCore GEMM kernels, captured in the retained diagnostic
-summary. [Linear-order diagnostics](results/qwen3_triton_inference_v15_linear_order_diagnostics_v1.json).
+summary. [Linear-order diagnostics](../../results/qwen3_triton_inference_v15_linear_order_diagnostics_v1.json).
 These observations narrow the remaining precision investigation; they do not
 establish bitwise parity or justify relaxing the original full-model gates.
 
@@ -193,7 +193,7 @@ coordinates sampled from20realHF layer calls. On223of those coordinates the
 TritonBF16 result is nearer the fsum dot product, and HF is nearer on5. These
 are selected disagreements, not an unbiased whole-model precision comparison.
 They show that discrepancy fromHF alone does not identify a candidate bug.
-[Independent oracle](results/qwen3_triton_inference_v15_linear_oracle_v1.json).
+[Independent oracle](../../results/qwen3_triton_inference_v15_linear_oracle_v1.json).
 
 Eight fixed128-token validation blocks(1024prediction positions,1016shiftedNLL
 targets) show HFmeanNLL3.066296 and Triton3.066984, a difference0.000688.
@@ -204,8 +204,8 @@ choice also has maximumHFlogit. That tie can diverge subsequent free generation.
 These observations neither replace the original gates nor establish universal
 quality equivalence. The original two absolute-logit gate failures and literal
 greedy mismatch remain false. The later full512-block/S512 comparison is recorded below.
-[Raw diagnostic](results/qwen3_triton_inference_v15_quality_diagnostic_v1.json),
-[exact execution source](results/qwen3_triton_inference_v15_quality_source_v1.json).
+[Raw diagnostic](../../results/qwen3_triton_inference_v15_quality_diagnostic_v1.json),
+[exact execution source](../../results/qwen3_triton_inference_v15_quality_source_v1.json).
 
 
 ## Complete fixed-corpus S512 comparison
@@ -215,8 +215,8 @@ indices,261632shiftedNLLtargets and262144logit positions. Every block's maximum
 and mean absolute logit difference,KL andTV is zero; all top1positions agree.
 HF and Triton meanNLL are both2.605893106199801. No foreignGPUprocess was
 observed, and the recorded model/source hashes match that run’s executed source.
-[Complete raw report](results/qwen3_triton_inference_v15_full_validation_v1.json),
-[coverage and source receipt](results/qwen3_triton_inference_v15_full_validation_receipt_v1.json).
+[Complete raw report](../../results/qwen3_triton_inference_v15_full_validation_v1.json),
+[coverage and source receipt](../../results/qwen3_triton_inference_v15_full_validation_receipt_v1.json).
 
 This qualifies this recorded S512numerical comparison, not every inference
 shape. The two original short/decode logit failures and literal greedy mismatch
@@ -238,13 +238,13 @@ passes setup/prefill/decode/generation with no missing correlations, count gaps,
 unclassified kernels or native GPU memory events. Collector bootstrap consists
 of64Triton position launches separately annotated and retained in each raw trace.
 Original full_validation_008 stays failed; the fresh phase evidence is separately
-labeled. [New phase report](results/qwen3_triton_inference_v15_phase_reaudit_v1.json),
-[execution-source boundary](results/qwen3_triton_inference_v15_phase_reaudit_sources_v1.json).
+labeled. [New phase report](../../results/qwen3_triton_inference_v15_phase_reaudit_v1.json),
+[execution-source boundary](../../results/qwen3_triton_inference_v15_phase_reaudit_sources_v1.json).
 
 The local checkpoint lacked tokenizer_config.json. The exact official file from
 revisionb968826d9c46dd6066d109eabc6255188de91218was fetched and installed without
 changing weights or tokenizer.json. SHA256d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101,
-9732bytes; [source receipt](results/qwen3_triton_inference_v15_tokenizer_metadata_v1.json).
+9732bytes; [source receipt](../../results/qwen3_triton_inference_v15_tokenizer_metadata_v1.json).
 Fresh clones need a complete local official checkpoint/tokenizer including this
 file. This supplies both thinking/non-thinking CPU chat templates.
 
@@ -254,7 +254,7 @@ model's EOSlist with a single tokenizerEOS. CPU regression verifies loading and
 CLI propagation of multipleEOS IDs with a conflicting tokenizer fixture. In the
 real8B CLI run, `--chat` answered `The capital of France is Paris.` and stopped
 on token151645after8tokens within a32-token budget, without stderr.
-[CLI record](results/qwen3_triton_inference_v15_chat_demo_v1.json).
+[CLI record](../../results/qwen3_triton_inference_v15_chat_demo_v1.json).
 The metadata fix changes CPU stopping configuration, not GPU arithmetic;
 phase009's exact pre-metadata source is retained. This smoke check does not
 resolve the original short-shape numerical gates or establish broad chat quality.
@@ -272,9 +272,9 @@ change prefill, K/V/gate/up, weights, activation dtype or the original gates.
 Across all36layers and four decoded positions, this kernel has zero unequal
 coordinates against the recorded native Q/O/down results; the old GEMV has4746
 unequal coordinates. This is local operand parity, not complete model parity.
-[Shape coverage](results/qwen3_triton_inference_v15_sliced_shape_coverage_v1.json),
-[single-kernel check](results/qwen3_triton_inference_v15_sliced_kernel_check_v1.json),
-[initial interleaving probe](results/qwen3_triton_inference_v15_interleaved_probe_v1.json).
+[Shape coverage](../../results/qwen3_triton_inference_v15_sliced_shape_coverage_v1.json),
+[single-kernel check](../../results/qwen3_triton_inference_v15_sliced_kernel_check_v1.json),
+[initial interleaving probe](../../results/qwen3_triton_inference_v15_interleaved_probe_v1.json).
 
 The first full8B diagnostic with this route passes all four phase audits and
 both16-token text continuations matchHF. However, one original logit case still
@@ -282,8 +282,8 @@ fails: B1decode after67tokens has meanAbs0.0552724 and relativeL2 0.0248562,
 versus0.0371610/0.0174549 with default GEMV. The failing-case count drops from2to1,
 but the remaining error is larger. The eightS128 corpus diagnostics are unchanged
 because prefill is unchanged. This route therefore stays opt-in and unqualified.
-[Full diagnostic](results/qwen3_triton_inference_v15_sliced_full_diagnostic_v1.json),
-[exact source before the opt-in API change](results/qwen3_triton_inference_v15_sliced_execution_sources_v1.json).
+[Full diagnostic](../../results/qwen3_triton_inference_v15_sliced_full_diagnostic_v1.json),
+[exact source before the opt-in API change](../../results/qwen3_triton_inference_v15_sliced_execution_sources_v1.json).
 
 The verifier accepts `--sliced-decode --diagnostic --warmup-collection`; phase
 counts require145GEMV+108sliced kernels per decode instead of253GEMV. CPU tests
@@ -296,7 +296,7 @@ A fresh8B run through the explicit opt-in API reproduces all24case metrics from
 the first diagnostic exactly. All four new phase audits pass, including exactly
 108sliced and145GEMV launches per decode, with no observed foreignGPUprocesses.
 The original numerical failure remains false; both text continuations agree.
-[Explicit opt-in verification](results/qwen3_triton_inference_v15_sliced_optin_verification_v1.json).
+[Explicit opt-in verification](../../results/qwen3_triton_inference_v15_sliced_optin_verification_v1.json).
 
 The same-process six-arm request comparison confirms the sliced route is slower:
 
@@ -312,7 +312,7 @@ No foreignGPUprocess was observed. B1S65,8generated tokens, no earlyEOS, same
 resident weights, preparation/capture excluded. This rejects sliced as a speed
 improvement and does not resolve the numerical gates. Default Graph's6.34%/6.51%
 lower latency thanHF Graph remains conditional, not quality-equivalent evidence.
-[Six-arm raw report](results/qwen3_triton_inference_v15_sliced_paired_graph_v1.json).
+[Six-arm raw report](../../results/qwen3_triton_inference_v15_sliced_paired_graph_v1.json).
 
 
 ## Prefill tile screening (research only)
@@ -338,7 +338,7 @@ blanket switch to larger tiles. No foreignGPUprocess was observed. Production
 dispatch is unchanged. The full-request experiment uses a local research-only
 route override, then checks all logits and cached continuation against the
 unaltered baseline before reporting timings.
-[Complete tile screen](results/qwen3_triton_inference_v15_prefill_tiles_v1.json).
+[Complete tile screen](../../results/qwen3_triton_inference_v15_prefill_tiles_v1.json).
 
 
 The research-only S65 route now has complete-model evidence: eight random
@@ -358,7 +358,7 @@ The tiled request is5.04%/5.14% lower latency than default and11.10%/11.33%
 lower thanHF in this B1S65/8-token graph experiment. No foreignGPUprocesses
 were observed. Graph setup is excluded, as in all prior comparisons. This
 result belongs to the standalone research override; it is not yet an exported
-production option. [Complete request spike](results/qwen3_triton_inference_v15_tiled_request_spike_v1.json).
+production option. [Complete request spike](../../results/qwen3_triton_inference_v15_tiled_request_spike_v1.json).
 
 
 Source review found an important boundary in the preceding spike: its gate/up
@@ -396,8 +396,8 @@ including the same two failed decode cases (meanAbs0.0364415 after18tokens and
 0.0371610 after67tokens) and the raw greedy mismatch. It passes all four complete
 phase traces and observes no foreignGPUprocesses. The eightS128 diagnostics are
 unchanged. Original qualification remainsFalse.
-[Original-gate audit](results/qwen3_triton_inference_v15_prefill_api_HF_gates_v1.json),
-[exact pre-layout-guard source](results/qwen3_triton_inference_v15_prefill_api_HF_sources_v1.json).
+[Original-gate audit](../../results/qwen3_triton_inference_v15_prefill_api_HF_gates_v1.json),
+[exact pre-layout-guard source](../../results/qwen3_triton_inference_v15_prefill_api_HF_sources_v1.json).
 
 Read-only review identified a layout boundary: fixed-stride tiled launches must
 not consume positive-stride views accepted by the existing matmul helper. The
@@ -427,7 +427,7 @@ Capture/preparation is excluded. Eager timings do not show a consistent gain
 and remain slower thanHF; this is a graph-replay optimization result. The
 original independent HF short/decode gates remain failed, so the option stays
 explicit and is not a generally qualified quality-equivalent recommendation.
-[Guarded API raw report](results/qwen3_triton_inference_v15_prefill_api_request_v1.json).
+[Guarded API raw report](../../results/qwen3_triton_inference_v15_prefill_api_request_v1.json).
 
 Reproduce with `probe_qwen3_tiled_request_v15.py --production --output ...`.
 Historical API attempt020failed from a benchmark argument-name collision;
@@ -466,7 +466,7 @@ The HF cache is made contiguous only for the isolated attention reference probe;
 HF first-append caches may be transposed, unlike the model’s own cache contract.
 Attempt024was retired after review caught that diagnostic layout boundary;
 only corrected complete run025supplies these results.
-[Complete bounded diagnostic](results/qwen3_triton_inference_v15_error_growth_v1.json).
+[Complete bounded diagnostic](../../results/qwen3_triton_inference_v15_error_growth_v1.json).
 
 
 ## Controlled accumulation-order probe
@@ -484,7 +484,7 @@ choice. A contiguous non-power-of-two split is a hypothesis to test next;
 marker patterns alone do not prove the complete native algorithm. Earlier
 native-name filters only retained GEMM/GEMV names, so any separately named
 reduction kernel needs full-event recollection. Production is unchanged.
-[Complete sparse-dot probe](results/qwen3_triton_inference_v15_dot_traversal_v1.json).
+[Complete sparse-dot probe](../../results/qwen3_triton_inference_v15_dot_traversal_v1.json).
 
 
 ## Complete native linear schedule recollection
@@ -507,7 +507,7 @@ split tests did not include the observed3/5/7choices. The sparse-dot2816boundary
 corresponds to two1408-element partitions. These measurements identify a
 concrete arithmetic mismatch to test on all real layers, not yet full-model
 qualification. The production model remains unchanged.
-[Complete native schedule report](results/qwen3_triton_inference_v15_native_splitk_v1.json).
+[Complete native schedule report](../../results/qwen3_triton_inference_v15_native_splitk_v1.json).
 The cuBLAS12.8documentation also exposes split count and reduction scheme as
 separate algorithm settings: [official cuBLASLt attributes](https://docs.nvidia.com/cuda/archive/12.8.2/cublas/index.html#cublasltmatmulalgoconfigattributes-t).
 
@@ -534,8 +534,8 @@ failed raw audits are preserved, and the outer source receipt records the actual
 research wrappers while underlying model option flags remainFalse. No foreign
 GPUprocesses were observed. Formal API/audit work is planned only after the
 remaining numerical gate is resolved.
-[Actual-source/local-call receipt](results/qwen3_triton_inference_v15_native_order_local_v1.json),
-[unchanged-gate raw report](results/qwen3_triton_inference_v15_native_order_full_v1.json).
+[Actual-source/local-call receipt](../../results/qwen3_triton_inference_v15_native_order_local_v1.json),
+[unchanged-gate raw report](../../results/qwen3_triton_inference_v15_native_order_full_v1.json).
 
 
 ## Native GEMV tree identification
@@ -555,7 +555,7 @@ run implements the inferred tree explicitly (rather than relying on an
 implementation-dependent generic reduction), preserves K-order while unrolling
 loads, and rechecks real operands plus all original full-model gates. The fast
 existing LMhead is unchanged. Production defaults remain unchanged.
-[Complete GEMV tree probe](results/qwen3_triton_inference_v15_gemv_tree_v1.json).
+[Complete GEMV tree probe](../../results/qwen3_triton_inference_v15_gemv_tree_v1.json).
 
 
 ## Complete arithmetic research prototype: original gates pass
@@ -582,9 +582,9 @@ passes while prefill/decode/generation audits remainFalse and qualified=False.
 The outer receipt includes the actual new kernel/wrapper source. Exporting the
 option, testing complete phase counts, full fixed validation and measuring the
 correct version’s paired whole-request speed remain required.
-[Actual-source/complete arithmetic receipt](results/qwen3_triton_inference_v15_reference_order_complete_v1.json),
-[all real-layer checks](results/qwen3_triton_inference_v15_reference_order_locals_v1.json),
-[unchanged original gates and retained trace failures](results/qwen3_triton_inference_v15_reference_order_gates_v1.json).
+[Actual-source/complete arithmetic receipt](../../results/qwen3_triton_inference_v15_reference_order_complete_v1.json),
+[all real-layer checks](../../results/qwen3_triton_inference_v15_reference_order_locals_v1.json),
+[unchanged original gates and retained trace failures](../../results/qwen3_triton_inference_v15_reference_order_gates_v1.json).
 
 
 ## Exported reference accumulation module
@@ -607,7 +607,7 @@ partial startsNaN, checking tail coverage and complete overwrite. CPU checks
 verify loading/CLI propagation, defaultFalse, independent options and weights.
 No foreignGPUprocesses were observed. This is local exported-module evidence;
 complete public-model/audit/fixed-corpus qualification and speed follow separately.
-[Exported-module operator checks](results/qwen3_triton_inference_v15_reference_api_ops_v1.json).
+[Exported-module operator checks](../../results/qwen3_triton_inference_v15_reference_api_ops_v1.json).
 
 
 ## Actual API qualification032: before short-row norm correction
@@ -641,8 +641,8 @@ checks. Unsupported shapes use the existing Triton route and have no blanket
 parity guarantee. New flags remain opt-in/defaultFalse. Earlier failures and
 unqualified faster routes are historical evidence, not substitutes for this run.
 
-[Complete API report](results/qwen3_triton_inference_v15_reference_api_qualified_v1.json),
-[source/raw-trace receipt](results/qwen3_triton_inference_v15_reference_api_receipt_v1.json).
+[Complete API report](../../results/qwen3_triton_inference_v15_reference_api_qualified_v1.json),
+[source/raw-trace receipt](../../results/qwen3_triton_inference_v15_reference_api_receipt_v1.json).
 
 ```bash
 CUDA_VISIBLE_DEVICES=1 bash scripts/research_python.sh \
@@ -701,10 +701,10 @@ Two new option defaults remainFalse. No training numerical/performance result
 is re-certified by this inference run. The shared boolean dispatcher correction
 has a targeted CPU alias regression and fresh complete inference validation.
 
-[Current complete report](results/qwen3_triton_inference_v15_reference_api_qualified_v2.json),
-[current source/raw-trace receipt](results/qwen3_triton_inference_v15_reference_api_receipt_v2.json),
-[real-input norm RED→GREEN](results/qwen3_triton_inference_v15_reference_norm_regression_v1.json),
-[preserved failed request](results/qwen3_triton_inference_v15_reference_request_failure_v1.json).
+[Current complete report](../../results/qwen3_triton_inference_v15_reference_api_qualified_v2.json),
+[current source/raw-trace receipt](../../results/qwen3_triton_inference_v15_reference_api_receipt_v2.json),
+[real-input norm RED→GREEN](../../results/qwen3_triton_inference_v15_reference_norm_regression_v1.json),
+[preserved failed request](../../results/qwen3_triton_inference_v15_reference_request_failure_v1.json).
 
 The combined regression/full run can be reproduced under one continuously
 monitored stableGPUlease:
@@ -748,7 +748,7 @@ No foreign context is observed and source hashes match. All60measured samples
 are retained; no median was selected across orders. The original033failure and
 its guard remain; no assertion or quality threshold was removed to get timings.
 
-[All paired samples, changed-input tokens and source/proof binding](results/qwen3_triton_inference_v15_reference_paired_request_v1.json).
+[All paired samples, changed-input tokens and source/proof binding](../../results/qwen3_triton_inference_v15_reference_paired_request_v1.json).
 
 ```bash
 CUDA_VISIBLE_DEVICES=1 bash scripts/research_python.sh \
@@ -810,11 +810,11 @@ cache has prompt-only capacity, so continuation uses the explicit preallocated
 cache shown in Usage. Fresh training certification, serving/sampling/ragged/TP
 and concurrent graph use remain outside this inference evidence.
 
-[Current full report](results/qwen3_triton_inference_v15_reference_api_qualified_v3.json),
-[current source/raw evidence index](results/qwen3_triton_inference_v15_reference_api_receipt_v3.json),
-[current60paired samples](results/qwen3_triton_inference_v15_reference_paired_request_v2.json),
-[independent strided oracle](results/qwen3_triton_inference_v15_strided_boundary_v1.json),
-[review, fix verification and execution rulings](results/qwen3_triton_inference_v15_final_review_v1.json).
+[Current full report](../../results/qwen3_triton_inference_v15_reference_api_qualified_v3.json),
+[current source/raw evidence index](../../results/qwen3_triton_inference_v15_reference_api_receipt_v3.json),
+[current60paired samples](../../results/qwen3_triton_inference_v15_reference_paired_request_v2.json),
+[independent strided oracle](../../results/qwen3_triton_inference_v15_strided_boundary_v1.json),
+[review, fix verification and execution rulings](../../results/qwen3_triton_inference_v15_final_review_v1.json).
 
 The combined `qualify_qwen3_reference_request_v15.py` command now includes the
 stride regression and paired benchmark after complete validation, all under

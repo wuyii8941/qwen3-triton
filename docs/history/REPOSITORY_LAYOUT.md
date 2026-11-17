@@ -105,4 +105,4 @@ bash scripts/legacy_python.sh -m pytest -q tests
 - 迁移后重新执行历史 8B expandable 完整结果只读审计：两个任务均通过；未更改结果、模型、数据或旧 manifest。
 - 发布检查与 Markdown 链接检查通过；未上传 artifacts、数据、权重、环境或缓存。
 
-小型摘要见 [目录整理验证记录](results/repository_layout_validation_v1.json)。本机原始输出位于 `artifacts/layout_refactor_smoke_v1/`，不发布。未重新执行真实 8B 长训练，也未把原来的收益宣称为新入口实测。
+小型摘要见 [目录整理验证记录](../../results/repository_layout_validation_v1.json)。本机原始输出位于 `artifacts/layout_refactor_smoke_v1/`，不发布。未重新执行真实 8B 长训练，也未把原来的收益宣称为新入口实测。

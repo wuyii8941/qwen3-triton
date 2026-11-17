@@ -1,3 +1,5 @@
+> 历史兼容文档：当前入口请查看 [仓库首页](README.md)。
+
 # Complete Triton Qwen3-8B: training implementation and results
 
 The target is official **Qwen/Qwen3-8B**, revision

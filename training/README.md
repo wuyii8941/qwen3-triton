@@ -9,4 +9,4 @@
 - `fsdp/custom.py`：自研 block 分片，显式 `--backend custom`。
 - `fsdp/communication.py`：显式开启的 Torch decoder exchange；不是 Triton 获胜结论。
 
-启动命令、旧新命名对照、支持边界见 [目录导航](../REPOSITORY_LAYOUT.md)。历史完整训练、恢复/导出和单卡 FlashOptim 过程均在 [实验归档](../experiments/legacy/README.md)。
+启动命令、旧新命名对照、支持边界见 [目录导航](../docs/history/REPOSITORY_LAYOUT.md)。历史完整训练、恢复/导出和单卡 FlashOptim 过程均在 [实验归档](../experiments/legacy/README.md)。
