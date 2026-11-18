@@ -45,3 +45,13 @@ def test_pyproject_matches_pinned_runtime_requirements():
         if (spec := line.strip()) and not spec.startswith("#")
     }
     assert set(declared) == set(pinned)
+    for name, spec in pinned.items():
+        assert declared[name].replace("_", "-") == spec.replace("_", "-")
+
+
+def test_inference_validation_uses_configured_inputs():
+    source = (ROOT / "scripts" / "verify_inference.py").read_text()
+    assert "qwen_operator_lab" not in source
+    assert "official_qwen3_inputs_v1.json" not in source
+    assert "identity['corpus_dir']" in source
+    assert "required=True" in source

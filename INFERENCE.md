@@ -23,6 +23,7 @@ CUDA_VISIBLE_DEVICES=0 bash scripts/research_python.sh scripts/generate.py \
 ```bash
 CUDA_VISIBLE_DEVICES=0 bash scripts/research_python.sh scripts/verify_inference.py \
   --model weights/Qwen3-8B \
+  --identity artifacts/inputs/input_manifest.json \
   --prefill-tiling --reference-accumulation \
   --output artifacts/inference_validation
 ```

@@ -147,7 +147,7 @@ def run(a,out,foreign):
     corpus_rows=[]
     if a.corpus_blocks:
         from training.data import Blocks
-        corpus=Path('/data1/tzh/proj/qwen_operator_lab/artifacts/convergence_corpus_v1/validation.bin')
+        corpus=Path(identity['corpus_dir'])/'validation.bin'
         assert sha(corpus)==identity['tokens_sha256']['validation.bin']
         blocks=Blocks(corpus,a.corpus_sequence)
         assert 1<=a.corpus_blocks<=len(blocks),'Corpus request must not repeat blocks'
@@ -220,7 +220,7 @@ def run(a,out,foreign):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',default='/data1/tzh/models/Qwen/Qwen3-8B');p.add_argument('--identity',default='/data1/tzh/proj/qwen_operator_lab/artifacts/official_qwen3_inputs_v1.json');p.add_argument('--sliced-decode',action='store_true');p.add_argument('--prefill-tiling',action='store_true');p.add_argument('--reference-accumulation',action='store_true');p.add_argument('--warmup-collection',action='store_true');p.add_argument('--corpus-sequence',type=int,default=128);p.add_argument('--corpus-blocks',type=int,default=0);p.add_argument('--diagnostic',action='store_true',help='Retain failing metrics and continue; qualification still requires every original gate');p.add_argument('--physical-device',type=int,default=0);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',type=Path,required=True);p.add_argument('--identity',type=Path,required=True,help='input_manifest.json created by configure_inputs.py');p.add_argument('--sliced-decode',action='store_true');p.add_argument('--prefill-tiling',action='store_true');p.add_argument('--reference-accumulation',action='store_true');p.add_argument('--warmup-collection',action='store_true');p.add_argument('--corpus-sequence',type=int,default=128);p.add_argument('--corpus-blocks',type=int,default=0);p.add_argument('--diagnostic',action='store_true',help='Retain failing metrics and continue; qualification still requires every original gate');p.add_argument('--physical-device',type=int,default=0);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
     out=a.output.resolve();assert out.is_relative_to(Path('/data1/tzh')) and not out.exists();out.mkdir(parents=True)
     foreign=[];stop=threading.Event()
     assert os.environ.get('CUDA_VISIBLE_DEVICES')==str(a.physical_device),'Explicit physical-device/CUDA mapping required'
