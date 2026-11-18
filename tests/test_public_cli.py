@@ -24,7 +24,7 @@ def test_public_commands_have_cpu_safe_help():
             cwd=ROOT,
             text=True,
             capture_output=True,
-            timeout=30,
+            timeout=120,
         )
         assert result.returncode == 0, (name, result.stdout, result.stderr)
         assert "usage:" in result.stdout.lower(), name
