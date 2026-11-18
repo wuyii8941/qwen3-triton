@@ -1,9 +1,9 @@
-"""Official full Qwen3-8B training with an explicit complete Triton GPU path.
+"""Official Qwen3-8B training with explicit full or hybrid collectives.
 
-This is the single supported full runtime; historical comparison arms live in Git history.
-FSDP2/autograd host orchestration and CUDA driver/DMA remain host services;
-no native GPU arithmetic/copy/fill/collective exemption exists in full mode.
-Every formal run has16quality+3warmup+8timed+1real profiled updates=28.
+Full mode keeps every GPU collective in Triton. Hybrid mode retains Triton
+model math and routes only large FP32 reduce-scatter through the peer transport,
+using NCCL for the remaining collectives. Every formal run has
+16quality+3warmup+8timed+1real profiled updates=28.
 Full-model qualification is an independent review, never a raw-run boolean.
 """
 import argparse,copy,json,os,time
@@ -73,6 +73,7 @@ def arguments():
     p.add_argument('--quality-steps',type=int,default=16);p.add_argument('--warmup-steps',type=int,default=3)
     p.add_argument('--measure-steps',type=int,default=8)
     p.add_argument('--full-validation',action='store_true');p.add_argument('--trace',action='store_true')
+    p.add_argument('--collective-mode',choices=['full','hybrid'],default='full')
     a=p.parse_args()
     if a.quality_steps<1 or a.warmup_steps<1 or a.measure_steps<2:p.error('Need quality>=1, warmup>=1, timed>=2')
     for key in ['output','input_root','protocol','input_manifest','gemm_plan']:setattr(a,key,getattr(a,key).resolve())
@@ -111,7 +112,7 @@ def main():
         assert set(dict(model.named_parameters()))==set(dict(hf.named_parameters()));del weights,hf
         setup_capture=args.trace and rank==0
         with profiler(setup_capture) as setup_trace:
-            runtime=TrainingRuntime('full',cpu_group)
+            runtime=TrainingRuntime(args.collective_mode,cpu_group)
             with runtime.scope():
                 model=shard_vocab_loss_model(model,keep_full_layers=36,checkpoint_every=1,skip_embedding_backward_gather=True,fused_vocab_dw=True).train()
                 runtime.bind(model)
@@ -131,7 +132,7 @@ def main():
             rows=[];validation_rows=[];comparisons=[];traces=setup_traces;quality_warm_timed=args.quality_steps+args.warmup_steps+args.measure_steps
             if args.full_validation:
                 value=evaluate(model,validation,runtime,phase='validation_0');validation_rows.append(dict(after_updates=0,**value))
-                if rank==0:print(json.dumps(dict(event='full_validation',runtime='full',after_updates=0,**value)),flush=True)
+                if rank==0:print(json.dumps(dict(event='full_validation',runtime=args.collective_mode,after_updates=0,**value)),flush=True)
                 dist.barrier(group=cpu_group)
             total=quality_warm_timed+1
             for step in range(1,total+1):
@@ -172,7 +173,7 @@ def main():
                 row=dict(step=step,global_loss=global_loss,measured=measured,profile_update=profiled,wall_seconds=elapsed,
                     includes_reference_review=step==1 and bool(args.reference_raw_dir))
                 rows.append(row)
-                if rank==0:print(json.dumps(dict(event='optimizer_update',runtime='full',variant='triton_optimized',**row)),flush=True)
+                if rank==0:print(json.dumps(dict(event='optimizer_update',runtime=args.collective_mode,variant='triton_optimized',**row)),flush=True)
                 if step==quality_warm_timed:
                     training_peak=runtime.record_peak('timed_updates',reset=True)['torch']
                 elif step==args.quality_steps:runtime.record_peak('quality_updates',reset=True)
@@ -182,7 +183,7 @@ def main():
                     path=args.output/'full_validation_trace.json.gz' if args.trace and rank==0 else None
                     value=evaluate(model,validation,runtime,phase='validation_after_quality',trace_path=path);validation_rows.append(dict(after_updates=step,**value))
                     if path is not None:traces[path.name]=sha(path)
-                    if rank==0:print(json.dumps(dict(event='full_validation',runtime='full',after_updates=step,**value)),flush=True)
+                    if rank==0:print(json.dumps(dict(event='full_validation',runtime=args.collective_mode,after_updates=step,**value)),flush=True)
                     dist.barrier(group=cpu_group)
             # The extra profiled step really updated parameters and moments.
             # Validate and report28, rather than hiding it as27+backward-only.
@@ -211,7 +212,7 @@ def main():
             formal=args.full_validation and args.trace and (args.quality_steps,args.warmup_steps,args.measure_steps)==(16,3,8) and bool(args.reference_raw_dir)
             result=dict(complete=True,full_runtime_qualified=False,performance_adopted=False,screen_only=not formal,
                 experiment='full_GPU_runtime',model='Qwen/Qwen3-8B',official_parameter_count=official_numel,layers=36,world_size=4,
-                variant='triton_optimized',runtime='full',input_root=str(args.input_root),input_manifest_sha256=checked[0]['identity'],
+                variant='triton_optimized',runtime=args.collective_mode,input_root=str(args.input_root),input_manifest_sha256=checked[0]['identity'],
                 math_policy=dict(compute='BF16',master_gradient_moments='FP32',TF32=False,allow_bf16_reduced_precision_reduction=False),
                 protocol=dict(quality_steps=args.quality_steps,warmup_steps=args.warmup_steps,measured_steps=args.measure_steps,
                     real_profile_updates=1,total_optimizer_updates=total,validation_points=[0,args.quality_steps] if args.full_validation else [],
