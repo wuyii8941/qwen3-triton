@@ -1,18 +1,14 @@
-# 实验结果与证据
+# 汇总结论
 
-| 实验 | 硬件和形状 | Triton | 同轮 HF | 结论 |
+下表是清理前最终一次固定协议验收的历史数据，用于说明当前工程方向，不代表清理后的提交已经重新测量。
+
+| 实验 | 条件 | Triton | HF 对照 | 结论 |
 | --- | --- | --- | --- | --- |
-| 完整训练 | 4×A6000，每卡 B1/S512 | 5.9268 / 5.9269 秒/步 | 5.2760 / 5.2756 秒/步 | 固定协议的功能验收通过；性能慢约 12.3%。 |
-| 推理 Graph | 单 A6000，B1/S65，生成 8 token | 202.146 / 202.154 ms | 220.338 / 220.151 ms | 完整请求耗时减少 8.26% / 8.17%；Eager 慢于 HF。 |
+| 完整训练 | 4×RTX A6000，每卡 B1/S512 | 5.9268 / 5.9269 秒/步 | 5.2760 / 5.2756 秒/步 | Triton 约慢 12.3%，collective 与 overlap 仍是主要优化方向。 |
+| 固定 Graph 推理 | 单 RTX A6000，B1/S65，生成 8 token | 202.146 / 202.154 ms | 220.338 / 220.151 ms | 完整请求约快 8.2%；Eager 仍慢于 HF。 |
 
-训练检查覆盖 399 参数梯度、16 步质量、训练前后 512 块验证及 GPU 事件审计；主机 FSDP/autograd、CUDA 驱动及数据服务仍保留。训练结果绑定验证时源码；当前源码包含后续兼容修改，尚未重新完成四卡训练全量验收。短程结果不证明长期收敛。
+训练验收曾覆盖全部 399 个参数梯度、16 步短程质量、训练前后 512 块验证和 GPU 事件审计。推理验收曾覆盖 24 项数值检查、两条 16-token 生成、512 块 S512 验证和五段 GPU trace；另有 23 个逐步文本 logits 诊断项超过阈值。
 
-推理通过 24 项原数值检查、两条 16-token 生成、512 块 S512 和五段 GPU 审计；额外文本 logits 诊断有 23 项超阈值。这些是有限范围的验证，不代表任意输入、设备或服务场景均与 HF 数值等价。
+原始 JSON、梯度、权重、语料和 profiler trace 已从当前树移除，可从 Git 历史追溯。当前可复现入口是 `scripts/prepare_corpus.py`、`scripts/configure_inputs.py`、`scripts/export_training_reference.py`、`scripts/train.py`、`scripts/generate.py` 和 `scripts/verify_inference.py`；固定配置是 `configs/input_recipe.json` 与 `configs/gemm_plan.json`。
 
-- [训练数值、性能与审计索引](../results/training_qualification.json)
-- [推理数值与审计报告](../results/inference_qualification.json)
-- [推理完整请求样本](../results/inference_benchmark.json)
-
-仓库保留小型 JSON 证据；模型权重、语料、原始梯度和 profiler 原始 trace 不随源码发布。
-
-模型封装与组件已经重构，历史报告中的源码哈希对应重构前的实现。当前结构需要重新进行 GPU 数值、训练和推理性能验收；历史结果不代表重构后的重新测量。
+因此当前结论是：推理 Graph 路径在所测形状有优势；训练尚无性能优势。下一阶段只应在同一正确性门槛下量化 collective、通信/计算 overlap，以及 TP/PP/DP 组合，确认有提升后再纳入稳定代码。

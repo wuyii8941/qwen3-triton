@@ -45,3 +45,19 @@ def test_package_does_not_import_scripts():
             else:
                 continue
             assert not any(name == "scripts" or name.startswith("scripts.") for name in names), path
+
+
+def test_user_documentation_names_only_the_final_surface():
+    documents = (
+        ROOT / "README.md",
+        ROOT / "TRAINING.md",
+        ROOT / "INFERENCE.md",
+        ROOT / "docs" / "RESULTS.md",
+    )
+    text = "\n".join(path.read_text(encoding="utf-8") for path in documents)
+
+    for script in PUBLIC:
+        assert f"scripts/{script}" in text
+    assert "configs/input_recipe.json" in text
+    assert "configs/gemm_plan.json" in text
+    assert "results/" not in text

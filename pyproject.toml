@@ -1,7 +1,7 @@
 [project]
-name = "qwen-operator-lab"
+name = "qwen3-triton"
 version = "0.1.0"
-description = "Qwen3 Triton kernels, numerical validation, inference and training benchmarks"
+description = "Qwen3-8B Triton training and inference runtime"
 requires-python = ">=3.11,<3.13"
 dependencies = [
     "accelerate>=1.6",
@@ -13,4 +13,4 @@ package = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-norecursedirs = ["experiments", "artifacts", ".venv*", ".runtime*"]
+norecursedirs = ["artifacts", ".venv*", ".runtime*"]
