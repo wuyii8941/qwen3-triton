@@ -18,3 +18,5 @@ def test_runtime_constructs_a_separate_nccl_group_for_hybrid_mode():
     assert "kind not in ('full','hybrid')" in source
     assert "scatter=370*2**20" in source
     assert "gather=4096" in source
+    assert "dist.all_reduce(nccl_warm" in source
+    assert "del nccl_warm" in source

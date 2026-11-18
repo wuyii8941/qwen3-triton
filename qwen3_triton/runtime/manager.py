@@ -36,6 +36,9 @@ class TrainingRuntime:
             capacities=dict(gather=4096,scatter=370*2**20,reduce=4096,alltoall=4096)
             self.peer=TritonCollectives(capacities=capacities)
             self.nccl_group=dist.new_group(ranks=[0,1,2,3],backend='nccl')
+            nccl_warm=zeros((1,),device='cuda',dtype=torch.int32)
+            dist.all_reduce(nccl_warm,group=self.nccl_group)
+            torch.cuda.synchronize();del nccl_warm
             self.communication=HybridCollectives(self.peer,self.nccl_group)
         else:
             self.peer=TritonCollectives()
