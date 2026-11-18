@@ -54,9 +54,8 @@ GiB. A complete peer-visible FP32 input is therefore rejected under the current
 memory contract.
 
 The remaining candidate is two smaller alternating peer buffers to defer the
-reuse barrier and pipeline
-   staging of chunk N+1 with reduction of chunk N. The total external allocation
-   must remain at or below the current 512 MiB reserve.
+reuse barrier and pipeline staging of chunk N+1 with reduction of chunk N. The
+total external allocation must remain at or below the current 512 MiB reserve.
 
 For each candidate, compare isolated RS latency and full-step traces. Adopt only
 if the full-step median improves by at least 3% in both execution orders without

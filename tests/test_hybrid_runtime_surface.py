@@ -20,3 +20,10 @@ def test_runtime_constructs_a_separate_nccl_group_for_hybrid_mode():
     assert "gather=4096" in source
     assert "dist.all_reduce(nccl_warm" in source
     assert "del nccl_warm" in source
+    assert "peer_buffers_needed_for_validation_all_gather=self.full" in source
+
+
+def test_training_result_labels_the_selected_runtime():
+    source = (ROOT / "scripts" / "train.py").read_text()
+    assert "experiment=f'{args.collective_mode}_GPU_runtime'" in source
+    assert "runtime=args.collective_mode" in source

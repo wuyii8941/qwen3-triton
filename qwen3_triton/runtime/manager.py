@@ -69,7 +69,7 @@ class TrainingRuntime:
         torch.cuda.synchronize();torch.cuda.empty_cache()
         yield
         torch.cuda.synchronize()
-        self.validation_cycles.append(dict(peer_buffers_needed_for_validation_all_gather=True,
+        self.validation_cycles.append(dict(peer_buffers_needed_for_validation_all_gather=self.full,
             torch_allocator_cap_GiB=CAP_GIB-RESERVE/2**30,
             original_effective_cap_GiB=CAP_GIB,max_allocated_GiB=torch.cuda.max_memory_allocated()/2**30,
             max_reserved_GiB=torch.cuda.max_memory_reserved()/2**30))

@@ -211,7 +211,7 @@ def main():
             sources.append(args.gemm_plan)
             formal=args.full_validation and args.trace and (args.quality_steps,args.warmup_steps,args.measure_steps)==(16,3,8) and bool(args.reference_raw_dir)
             result=dict(complete=True,full_runtime_qualified=False,performance_adopted=False,screen_only=not formal,
-                experiment='full_GPU_runtime',model='Qwen/Qwen3-8B',official_parameter_count=official_numel,layers=36,world_size=4,
+                experiment=f'{args.collective_mode}_GPU_runtime',model='Qwen/Qwen3-8B',official_parameter_count=official_numel,layers=36,world_size=4,
                 variant='triton_optimized',runtime=args.collective_mode,input_root=str(args.input_root),input_manifest_sha256=checked[0]['identity'],
                 math_policy=dict(compute='BF16',master_gradient_moments='FP32',TF32=False,allow_bf16_reduced_precision_reduction=False),
                 protocol=dict(quality_steps=args.quality_steps,warmup_steps=args.warmup_steps,measured_steps=args.measure_steps,
@@ -221,7 +221,7 @@ def main():
                     retain_lm_head=False,vocab_parallel=True,fused_vocab_dw=True,optimizer_groups='decoder+head',
                     optimizer='TritonAdamW',batch_per_rank=1,sequence=512),
                 gemm_plan=gemm_identity(),ranks=reports,sources={str(p):sha(p) for p in sources},
-                scope=__doc__,limitations='Raw run, not independent qualification. Full mode retains CPU FSDP/autograd/driver/DMA; all GPU kernels need phase-wide trace audit.16quality updates not convergence, fixed4A6000/B1S512, no inference claim.')
+                scope=__doc__,limitations='Raw run, not independent qualification. CPU FSDP/autograd/driver/DMA remain; hybrid mode additionally uses native NCCL for its declared collective scope.16quality updates not convergence, fixed4A6000/B1S512, no inference claim.')
             (args.output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
         runtime.communication.close()
     finally:dist.destroy_process_group()
