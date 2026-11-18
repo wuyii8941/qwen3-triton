@@ -131,7 +131,7 @@ def main(*, model_setup=None, extra_sources=(), extra_framework=None):
         if args.vocab_ce:
             from qwen3_triton.training.model import shard_vocab_loss_model
             model=shard_vocab_loss_model(model,keep_full_layers=args.keep_full_layers,checkpoint_every=args.checkpoint_every,skip_embedding_backward_gather=args.skip_embedding_backward_gather,fused_vocab_dw=args.fused_vocab_dw).train()
-        else:model=shard_official_qwen(model,keep_full_layers=args.keep_full_layers,checkpoint_every=args.checkpoint_every,checkpoint_mode='full',vocab_parallel_head=False,vocab_parallel_embedding=False).train()
+        else:model=shard_official_qwen(model,keep_full_layers=args.keep_full_layers,checkpoint_every=args.checkpoint_every,checkpoint_mode='full').train()
         if args.skip_embedding_backward_gather and not args.vocab_ce:
             model.model.embed_tokens.set_unshard_in_backward(False)
         if args.retain_lm_head:

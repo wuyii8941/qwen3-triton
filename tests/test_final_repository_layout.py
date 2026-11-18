@@ -61,3 +61,20 @@ def test_user_documentation_names_only_the_final_surface():
     assert "configs/input_recipe.json" in text
     assert "configs/gemm_plan.json" in text
     assert "results/" not in text
+    assert "model/config.py" not in text
+    assert "ops/" not in text
+    assert not re.search(r"scripts/[A-Za-z0-9_]+_v\d+\.py", text)
+
+
+def test_retained_python_does_not_reference_deleted_modules():
+    deleted = (
+        "training" + ".provenance",
+        "training.fsdp" + ".vocab_head",
+        "training.fsdp" + ".vocab_embedding",
+    )
+    for relative in tracked():
+        if not relative.endswith(".py"):
+            continue
+        source = (ROOT / relative).read_text(encoding="utf-8")
+        for module in deleted:
+            assert module not in source, (relative, module)
