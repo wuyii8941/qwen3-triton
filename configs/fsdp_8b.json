@@ -1,6 +1,5 @@
 {
   "schema_version": 1,
-  "status": "official_qwen3_weights_pending_real_model_revalidation",
   "model": "/data1/tzh/models/Qwen/Qwen3-8B",
   "model_repo": "Qwen/Qwen3-8B",
   "model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
@@ -33,8 +32,8 @@
   "resource_policy": {
     "serial_large_model_jobs": true,
     "home_writes": false,
-    "runtime_root": "/data1/tzh/proj/qwen_operator_lab/.runtime-research",
-    "output_root": "/data1/tzh/proj/qwen_operator_lab/artifacts",
+    "runtime_root": ".runtime-research",
+    "output_root": "artifacts",
     "save_full_optimizer_checkpoint": false,
     "reason": "Available disk cannot hold approximately 92 GiB full optimizer checkpoint",
     "best_parameters": "One reusable CPU snapshot per rank; no repeated 16 GiB model exports during validation"

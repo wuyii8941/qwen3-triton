@@ -69,7 +69,7 @@ def arguments():
     p.add_argument('--protocol',type=Path,default=ROOT/'configs/fsdp_8b.json')
     p.add_argument('--input-manifest',type=Path,required=True)
     p.add_argument('--reference-raw-dir',type=Path,action='append',default=[])
-    p.add_argument('--gemm-plan',type=Path,default=ROOT/'results/qwen3_triton_v10_gemm_plan_001.json')
+    p.add_argument('--gemm-plan',type=Path,default=ROOT/'configs/gemm_plan.json')
     p.add_argument('--quality-steps',type=int,default=16);p.add_argument('--warmup-steps',type=int,default=3)
     p.add_argument('--measure-steps',type=int,default=8)
     p.add_argument('--full-validation',action='store_true');p.add_argument('--trace',action='store_true')

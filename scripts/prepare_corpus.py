@@ -19,7 +19,7 @@ def sha(path):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--model-dir',type=Path,required=True)
-    parser.add_argument('--recipe',type=Path,default=ROOT/'results/qwen3_triton_input_recipe_v1.json')
+    parser.add_argument('--recipe',type=Path,default=ROOT/'configs/input_recipe.json')
     source=parser.add_mutually_exclusive_group(required=True)
     source.add_argument('--parquet-source',type=Path)
     source.add_argument('--text-source',type=Path)

@@ -19,7 +19,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--model-dir',type=Path,required=True)
     parser.add_argument('--corpus-dir',type=Path,required=True)
-    parser.add_argument('--recipe',type=Path,default=ROOT/'results/qwen3_triton_input_recipe_v1.json')
+    parser.add_argument('--recipe',type=Path,default=ROOT/'configs/input_recipe.json')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args();recipe=json.loads(args.recipe.read_text())
     model=args.model_dir.resolve();corpus=args.corpus_dir.resolve()
