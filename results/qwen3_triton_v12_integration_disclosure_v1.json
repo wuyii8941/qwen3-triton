@@ -1,9 +1,0 @@
-{
-  "failed_run": "full_screen_001",
-  "terminal": true,
-  "failure": "First optimizer step: native fused AdamW rejects mixed DTensor and local Tensor in one group",
-  "no_complete_update_or_timing": true,
-  "fix": "Separate decoder and head parameter groups in every arm; identical native fused AdamW hyperparameters",
-  "source_sha256": "98705fa21a82fc8582a719c40308b2b196541b856feb3a5a5afa814126c17282",
-  "strict_control_rule": "Only unmodified native HF uses bitwise/1e-4 gates. HF with custom vocabulary head uses unchanged candidate tolerances."
-}

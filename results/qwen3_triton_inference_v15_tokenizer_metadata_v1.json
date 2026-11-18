@@ -1,7 +1,0 @@
-{
-  "source": "https://huggingface.co/Qwen/Qwen3-8B/resolve/b968826d9c46dd6066d109eabc6255188de91218/tokenizer_config.json",
-  "path": "/data1/tzh/models/Qwen/Qwen3-8B/tokenizer_config.json",
-  "bytes": 9732,
-  "sha256": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
-  "scope": "Missing official CPU tokenizer/chat metadata installed. Existing checkpoint/tokenizer.json bytes unchanged."
-}
