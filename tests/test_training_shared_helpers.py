@@ -9,19 +9,19 @@ if SCRIPTS not in sys.path:
 
 
 def test_training_entries_use_shared_gradient_check():
-    baseline = importlib.import_module('train_qwen3_triton_8b')
-    reference = importlib.import_module('train_qwen3_vocab_v12')
-    runtime = importlib.import_module('train_qwen3_runtime_v14')
-    assert reference.compare_first_gradients is baseline.compare_first_gradients
-    assert runtime.compare_first_gradients is baseline.compare_first_gradients
-    assert reference.sha is baseline.sha
+    shared = importlib.import_module('qwen3_triton.validation.training_reference')
+    reference = importlib.import_module('export_training_reference')
+    runtime = importlib.import_module('train')
+    assert reference.compare_first_gradients is shared.compare_first_gradients
+    assert runtime.compare_first_gradients is shared.compare_first_gradients
+    assert reference.sha is shared.sha
 
 
 def test_shared_gradient_check_accepts_match_and_rejects_changed_gradient(tmp_path, monkeypatch):
     import json
     import torch
 
-    shared = importlib.import_module('train_qwen3_triton_8b')
+    shared = importlib.import_module('qwen3_triton.validation.training_reference')
     params = {f'weight_{i}': torch.nn.Parameter(torch.ones(1)) for i in range(399)}
     for param in params.values():
         param.grad = torch.ones(1)
@@ -46,9 +46,7 @@ def test_shared_gradient_check_accepts_match_and_rejects_changed_gradient(tmp_pa
 def test_reference_evaluation_keeps_peer_memory_scope(monkeypatch):
     from contextlib import contextmanager
     from types import SimpleNamespace
-    reference = importlib.import_module('train_qwen3_vocab_v12')
-    baseline = importlib.import_module('train_qwen3_triton_8b')
-    assert reference._evaluate_core is baseline.evaluate
+    reference = importlib.import_module('export_training_reference')
     events = []
 
     @contextmanager
