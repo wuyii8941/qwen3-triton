@@ -31,11 +31,14 @@ class TrainingRuntime:
         warm=zeros((1,),device='cuda',dtype=torch.int32);torch.cuda.synchronize();del warm;torch.cuda.empty_cache()
         total=torch.cuda.get_device_properties().total_memory
         torch.cuda.set_per_process_memory_fraction((CAP_GIB*2**30-RESERVE)/total)
-        before=own_nvml_mib();self.peer=TritonCollectives()
+        before=own_nvml_mib()
         if kind=='hybrid':
+            capacities=dict(gather=4096,scatter=370*2**20,reduce=4096,alltoall=4096)
+            self.peer=TritonCollectives(capacities=capacities)
             self.nccl_group=dist.new_group(ranks=[0,1,2,3],backend='nccl')
             self.communication=HybridCollectives(self.peer,self.nccl_group)
         else:
+            self.peer=TritonCollectives()
             self.nccl_group=None;self.communication=self.peer
         torch.cuda.synchronize()
         extra=max(0,own_nvml_mib()-before)*2**20

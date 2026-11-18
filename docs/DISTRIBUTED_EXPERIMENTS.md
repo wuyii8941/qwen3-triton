@@ -47,11 +47,14 @@ Current peer RS performs a complete source-to-peer staging pass, a system
 barrier, remote reduction, and a reuse barrier. Merely returning an async handle
 does not remove these dependencies.
 
-Candidates, in order:
+FSDP2 allocates a complete FP32 reduce-scatter input before its copy-in. The
+largest current input is about 736 MiB, while the external-memory reserve is
+512 MiB and historical effective reserved memory reached about 41.87/41.875
+GiB. A complete peer-visible FP32 input is therefore rejected under the current
+memory contract.
 
-1. Symmetric FSDP communication input allocation, so gradient production writes
-   directly into peer-visible storage and removes the staging pass.
-2. Two smaller alternating peer buffers to defer the reuse barrier and pipeline
+The remaining candidate is two smaller alternating peer buffers to defer the
+reuse barrier and pipeline
    staging of chunk N+1 with reduction of chunk N. The total external allocation
    must remain at or below the current 512 MiB reserve.
 
