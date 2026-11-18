@@ -19,7 +19,7 @@ def sha(p):
         for data in iter(lambda:f.read(8*2**20),b''):h.update(data)
     return h.hexdigest()
 
-EXECUTION_SOURCES=[*sorted((ROOT/'qwen3_triton').rglob('*.py')),Path(__file__),ROOT/'scripts/check_qwen3_inference_v15.py',ROOT/'scripts/generate_qwen3_triton_v15.py']
+EXECUTION_SOURCES=[*sorted((ROOT/'qwen3_triton').rglob('*.py')),Path(__file__),ROOT/'scripts/generate.py']
 EXECUTION_SOURCE_SHA256={str(p.relative_to(ROOT)):sha(p) for p in EXECUTION_SOURCES}
 
 def metrics(x,y):

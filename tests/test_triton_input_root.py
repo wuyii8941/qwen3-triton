@@ -11,7 +11,7 @@ import torch
 def test_input_root_preserves_cli_path_binding_before_cuda(tmp_path, monkeypatch):
     root = Path(__file__).resolve().parents[1]
     spec = importlib.util.spec_from_file_location(
-        '_qwen3_input_root_entry', root / 'scripts/train_qwen3_triton_8b.py')
+        '_qwen3_input_root_entry', root / 'scripts/train.py')
     entry = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(entry)
     launch = tmp_path / 'launcher'
@@ -21,7 +21,7 @@ def test_input_root_preserves_cli_path_binding_before_cuda(tmp_path, monkeypatch
     monkeypatch.setenv('RANK', '0')
     monkeypatch.setenv('LOCAL_RANK', '0')
     monkeypatch.setattr(sys, 'argv', [
-        'train_qwen3_triton_8b.py', '--variant', 'hf',
+        'train.py',
         '--protocol', 'protocol.json', '--input-manifest', 'inputs.json',
         '--output', 'result', '--reference-raw-dir', 'reference',
         '--input-root', str(data)])
