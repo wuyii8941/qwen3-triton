@@ -1,5 +1,7 @@
 """Final commands consume stable configuration, never result artifacts."""
 import ast
+import re
+import tomllib
 import json
 from pathlib import Path
 
@@ -27,3 +29,19 @@ def test_retained_python_has_no_result_json_dependency():
         path = ROOT / "scripts" / name
         ast.parse(path.read_text())
         assert "results/" not in path.read_text(), path
+
+
+def test_pyproject_matches_pinned_runtime_requirements():
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]
+    requirements = (ROOT / "requirements-qwen3-triton.txt").read_text().splitlines()
+
+    def package_name(spec: str) -> str:
+        return re.split(r"[<>=!~\[]", spec, maxsplit=1)[0].lower().replace("_", "-")
+
+    declared = {package_name(spec): spec for spec in project["dependencies"]}
+    pinned = {
+        package_name(spec): spec
+        for line in requirements
+        if (spec := line.strip()) and not spec.startswith("#")
+    }
+    assert set(declared) == set(pinned)

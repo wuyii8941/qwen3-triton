@@ -4,8 +4,13 @@ version = "0.1.0"
 description = "Qwen3-8B Triton training and inference runtime"
 requires-python = ">=3.11,<3.13"
 dependencies = [
-    "accelerate>=1.6",
+    "torch==2.10.0+cu128",
+    "triton==3.6.0",
     "transformers==4.51.0",
+    "safetensors==0.8.0",
+    "numpy==2.4.6",
+    "huggingface-hub==0.36.2",
+    "pyarrow==26.0.0",
 ]
 
 [tool.uv]
