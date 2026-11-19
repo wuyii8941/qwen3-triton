@@ -73,7 +73,7 @@ def arguments():
     p.add_argument('--quality-steps',type=int,default=16);p.add_argument('--warmup-steps',type=int,default=3)
     p.add_argument('--measure-steps',type=int,default=8)
     p.add_argument('--full-validation',action='store_true');p.add_argument('--trace',action='store_true')
-    p.add_argument('--collective-mode',choices=['full','hybrid'],default='full')
+    p.add_argument('--collective-mode',choices=['full','hybrid'],default='hybrid')
     a=p.parse_args()
     if a.quality_steps<1 or a.warmup_steps<1 or a.measure_steps<2:p.error('Need quality>=1, warmup>=1, timed>=2')
     for key in ['output','input_root','protocol','input_manifest','gemm_plan']:setattr(a,key,getattr(a,key).resolve())
@@ -155,7 +155,7 @@ def main():
                         # Coordinate host completion before another GPU signal
                         # barrier, so its timeout does not measure CPU file IO.
                         dist.barrier(group=cpu_group)
-                    if not measured:
+                    if not measured and not profiled:
                         for name,p in parameters.items():
                             g=local(p.grad);assert g is not None and g.dtype==torch.float32 and torch.isfinite(g).all(),name
                         del g

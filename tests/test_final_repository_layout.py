@@ -13,7 +13,8 @@ PUBLIC = {
 
 
 def tracked():
-    return subprocess.check_output(["git", "ls-files"], cwd=ROOT, text=True).splitlines()
+    paths = subprocess.check_output(["git", "ls-files"], cwd=ROOT, text=True).splitlines()
+    return [path for path in paths if (ROOT / path).exists()]
 
 
 def test_only_final_public_scripts_remain():
@@ -78,3 +79,37 @@ def test_retained_python_does_not_reference_deleted_modules():
         source = (ROOT / relative).read_text(encoding="utf-8")
         for module in deleted:
             assert module not in source, (relative, module)
+
+
+def test_retained_python_does_not_reference_deleted_public_scripts():
+    tracked_scripts = {
+        path for path in tracked() if path.startswith("scripts/") and path.endswith(".py")
+    }
+    referenced_scripts = set()
+    pattern = re.compile(r"scripts/[A-Za-z0-9_]+\.py")
+    for relative in tracked():
+        if not relative.endswith(".py"):
+            continue
+        referenced_scripts.update(
+            pattern.findall((ROOT / relative).read_text(encoding="utf-8"))
+        )
+    assert referenced_scripts <= tracked_scripts
+
+
+def test_only_the_final_result_summary_remains_under_docs():
+    assert {path for path in tracked() if path.startswith("docs/")} == {
+        "docs/RESULTS.md"
+    }
+
+
+def test_tracked_text_does_not_reference_deleted_public_scripts():
+    tracked_scripts = {
+        path for path in tracked() if path.startswith("scripts/") and path.endswith(".py")
+    }
+    pattern = re.compile(r"scripts/[A-Za-z0-9_]+\.py")
+    for relative in tracked():
+        path = ROOT / relative
+        if path.suffix not in {".py", ".md", ".toml", ".json"}:
+            continue
+        for reference in pattern.findall(path.read_text(encoding="utf-8")):
+            assert reference in tracked_scripts, (relative, reference)

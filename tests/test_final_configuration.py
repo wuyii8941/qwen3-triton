@@ -55,3 +55,10 @@ def test_inference_validation_uses_configured_inputs():
     assert "official_qwen3_inputs_v1.json" not in source
     assert "identity['corpus_dir']" in source
     assert "required=True" in source
+
+
+def test_profile_update_excludes_duplicate_inline_finite_checks():
+    source = (ROOT / "scripts" / "train.py").read_text()
+    assert "if not measured and not profiled:" in source
+    assert "for name,p in parameters.items():" in source
+    assert "assert local(p.grad).dtype==torch.float32" in source

@@ -212,7 +212,7 @@ def main(*, model_setup=None, extra_sources=(), extra_framework=None):
         (args.output/f'rank{rank}.json').write_text(json.dumps(rank_result,indent=2)+'\n')
         reports=[None]*4;dist.all_gather_object(reports,rank_result)
         if rank==0:
-            files=[Path(__file__),ROOT/'scripts/train_qwen3_triton_8b.py',args.protocol,args.input_manifest,ROOT/'training/fsdp/official.py',ROOT/'training/fsdp/activation_checkpoint.py',*sorted((ROOT/'qwen3_triton').rglob('*.py'))]
+            files=[Path(__file__),ROOT/'scripts/train.py',args.protocol,args.input_manifest,ROOT/'training/fsdp/official.py',ROOT/'training/fsdp/activation_checkpoint.py',*sorted((ROOT/'qwen3_triton').rglob('*.py'))]
             files.append(ROOT/'qwen3_triton/training/model.py')
             files.extend(extra_sources)
             if args.gemm_plan:files.append(args.gemm_plan)

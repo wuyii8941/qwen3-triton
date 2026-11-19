@@ -20,11 +20,21 @@ def own_nvml_mib():
     return values[0]
 
 
+def external_process_bytes(current_mib,baseline_mib,current_torch_reserved,baseline_torch_reserved):
+    process_growth=max(0,current_mib-baseline_mib)*2**20
+    allocator_growth=max(0,current_torch_reserved-baseline_torch_reserved)
+    return max(0,process_growth-allocator_growth)
+
+
 class TrainingRuntime:
     def __init__(self,kind,cpu_group):
         if kind not in ('full','hybrid'):raise ValueError('Explicit full or hybrid collective mode required')
         self.kind=kind;self.cpu_group=cpu_group;self.full=kind=='full'
-        self.mode=TritonRuntimeMode()
+        native_collectives=set() if self.full else {
+            'c10d::barrier','c10d::allreduce_','c10d::_allgather_base_',
+            'c10d::_reduce_scatter_base_','c10d::alltoall_base_',
+        }
+        self.mode=TritonRuntimeMode(native_collectives=native_collectives)
         self.communication=None;self.hooks=None;self.observed_extra_bytes=0
         self.validation_cycles=[];self.phase_peaks=[]
         if os.environ.get('CUDA_VISIBLE_DEVICES') not in (None,'0,1,2,3'):raise ValueError('Identity device mapping required for accounting')
@@ -32,8 +42,10 @@ class TrainingRuntime:
         total=torch.cuda.get_device_properties().total_memory
         torch.cuda.set_per_process_memory_fraction((CAP_GIB*2**30-RESERVE)/total)
         before=own_nvml_mib()
+        self.nvml_baseline_mib=before
+        self.torch_reserved_baseline=torch.cuda.memory_reserved()
         if kind=='hybrid':
-            capacities=dict(gather=4096,scatter=370*2**20,reduce=4096,alltoall=4096)
+            capacities=dict(gather=4096,scatter=320*2**20,reduce=4096,alltoall=4096)
             self.peer=TritonCollectives(capacities=capacities)
             self.nccl_group=dist.new_group(ranks=[0,1,2,3],backend='nccl')
             nccl_warm=zeros((1,),device='cuda',dtype=torch.int32)
@@ -44,12 +56,10 @@ class TrainingRuntime:
             self.peer=TritonCollectives()
             self.nccl_group=None;self.communication=self.peer
         torch.cuda.synchronize()
-        extra=max(0,own_nvml_mib()-before)*2**20
-        observed=[None]*4;dist.all_gather_object(observed,extra,group=cpu_group)
-        self.observed_extra_bytes=max(observed)
+        self.refresh_external_memory()
         report=self.peer.report()
         mapped=sum(c['mapped_buffer_and_signal_bytes'] for c in report['channels'].values())
-        if self.observed_extra_bytes>RESERVE or mapped>RESERVE:raise RuntimeError('External peer buffers exceed conservative512MiB budget')
+        if mapped>RESERVE:raise RuntimeError(f'External peer buffers exceed conservative512MiB budget: mapped={mapped}, reserve={RESERVE}')
 
     def scope(self):return self.mode
 
@@ -77,15 +87,27 @@ class TrainingRuntime:
     @property
     def extra_bytes(self):return RESERVE
 
+    def refresh_external_memory(self):
+        current=external_process_bytes(own_nvml_mib(),self.nvml_baseline_mib,
+            torch.cuda.memory_reserved(),self.torch_reserved_baseline)
+        observed=[None]*4;dist.all_gather_object(observed,current,group=self.cpu_group)
+        self.observed_extra_bytes=max(self.observed_extra_bytes,max(observed))
+        if self.observed_extra_bytes>RESERVE:
+            raise RuntimeError(f'External process memory exceeds conservative512MiB budget: observed={self.observed_extra_bytes}, reserve={RESERVE}, ranks={observed}')
+        return self.observed_extra_bytes
+
     def record_peak(self,phase,*,external_bytes=None,reset=False):
+        self.refresh_external_memory()
         extra=self.extra_bytes if external_bytes is None else external_bytes
         peak=dict(allocated_gib=torch.cuda.max_memory_allocated()/2**30,reserved_gib=torch.cuda.max_memory_reserved()/2**30)
-        row=dict(phase=phase,torch=peak,external_budget_bytes=extra,effective={k:v+extra/2**30 for k,v in peak.items()})
+        row=dict(phase=phase,torch=peak,external_budget_bytes=extra,observed_external_bytes=self.observed_extra_bytes,
+            effective={k:v+extra/2**30 for k,v in peak.items()})
         self.phase_peaks.append(row)
         if reset:torch.cuda.reset_peak_memory_stats()
         return row
 
     def report(self):
+        self.refresh_external_memory()
         comm=self.communication.report() if self.communication is not None else dict(mode='native')
         comm.update(external_memory_budget_bytes=RESERVE,observed_extra_process_bytes=self.observed_extra_bytes,
             torch_allocator_cap_GiB=CAP_GIB-RESERVE/2**30,total_effective_cap_GiB=CAP_GIB,

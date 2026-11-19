@@ -23,10 +23,21 @@ _METADATA={
     'aten::lift_fresh','aten::record_stream',
 }
 
+_AUDITED_NATIVE_COLLECTIVES=frozenset({
+    'c10d::barrier','c10d::allreduce_','c10d::_allgather_base_',
+    'c10d::_reduce_scatter_base_','c10d::alltoall_base_',
+})
+
 
 class TritonRuntimeMode(TorchDispatchMode):
-    def __init__(self):
+    def __init__(self, *, native_collectives=()):
         super().__init__();self.replaced=Counter();self.metadata=Counter();self.host_dma=Counter()
+        self.native_collectives=frozenset(native_collectives)
+        if any(not name.startswith('c10d::') for name in self.native_collectives):
+            raise ValueError('Only explicit c10d collective schemas may be native')
+        if unsupported:=self.native_collectives-_AUDITED_NATIVE_COLLECTIVES:
+            raise ValueError(f'Only audited c10d collective schemas may be native: {sorted(unsupported)}')
+        self.native_collective_calls=Counter()
 
     def __torch_dispatch__(self,func,types,args=(),kwargs=None):
         kw=kwargs or {};name=func._schema.name
@@ -34,6 +45,9 @@ class TritonRuntimeMode(TorchDispatchMode):
         device=kw.get('device');requested=torch.device(device) if device is not None else None
         cuda=any(t.is_cuda for t in tensors) or (requested is not None and requested.type=='cuda')
         if not cuda:return func(*args,**kw)
+        if name in self.native_collectives:
+            self.native_collective_calls[name]+=1
+            return func(*args,**kw)
         if name in _METADATA:
             self.metadata[name]+=1;return func(*args,**kw)
         if name in ['aten::_local_scalar_dense','aten::is_nonzero']:
@@ -151,4 +165,6 @@ class TritonRuntimeMode(TorchDispatchMode):
 
     def report(self):
         return dict(strict=True,replaced_GPU_operations=dict(self.replaced),host_metadata_operations=dict(self.metadata),host_DMA_operations=dict(self.host_dma),
+            native_collective_operations=dict(self.native_collective_calls),
+            allowed_native_collective_schemas=sorted(self.native_collectives),
             scope='Host views/autograd/FSDP scheduling/driver/DMA remain. Unknown GPU data operations fail. Full real-kernel trace must additionally prove no hidden native compute.')

@@ -1,14 +1,23 @@
 # 汇总结论
 
-下表是清理前最终一次固定协议验收的历史数据，用于说明当前工程方向，不代表清理后的提交已经重新测量。
+下表区分清理后的正式验收与清理前的历史对照。正式 hybrid 数据来自当前分支、同一固定输入、4×RTX A6000、B1/S512。
 
 | 实验 | 条件 | Triton | HF 对照 | 结论 |
 | --- | --- | --- | --- | --- |
-| 完整训练 | 4×RTX A6000，每卡 B1/S512 | 5.9268 / 5.9269 秒/步 | 5.2760 / 5.2756 秒/步 | Triton 约慢 12.3%，collective 与 overlap 仍是主要优化方向。 |
+| 正式 hybrid 训练 | 4×RTX A6000，每卡 B1/S512，8 个计时步 | 中位 4.6535 秒/步，均值 4.6110 | 历史 HF native 中位 5.2758 秒/步 | hybrid 快约 11.8%；相对清理后 full 对照中位 5.970 秒/步快约 22.1%。 |
+| 全 Triton collective 对照 | 4×RTX A6000，每卡 B1/S512，两次反向顺序短筛 | 5.971 / 5.970 秒/步 | 历史 HF native 5.2760 / 5.2756 秒/步 | full 模式仍无优势，只保留为显式对照。 |
 | 固定 Graph 推理 | 单 RTX A6000，B1/S65，生成 8 token | 202.146 / 202.154 ms | 220.338 / 220.151 ms | 完整请求约快 8.2%；Eager 仍慢于 HF。 |
 
-训练验收曾覆盖全部 399 个参数梯度、16 步短程质量、训练前后 512 块验证和 GPU 事件审计。推理验收曾覆盖 24 项数值检查、两条 16-token 生成、512 块 S512 验证和五段 GPU trace；另有 23 个逐步文本 logits 诊断项超过阈值。
+当前 hybrid 正式验收覆盖全部 399 个参数梯度、16 步短程质量、训练前后各 512 块验证和四段 GPU trace。4/4 rank 的 numerical gate 均通过，logits 相对误差为 0，loss 误差不超过 2.39e-7；验证 loss 从 2.605893 降到 2.227712。有效 reserved 峰值为 41.8652/41.875 GiB，因此显存余量很窄。推理历史验收曾覆盖 24 项数值检查、两条 16-token 生成、512 块 S512 验证和五段 GPU trace；另有 23 个逐步文本 logits 诊断项超过阈值。
 
 原始 JSON、梯度、权重、语料和 profiler trace 已从当前树移除，可从 Git 历史追溯。当前可复现入口是 `scripts/prepare_corpus.py`、`scripts/configure_inputs.py`、`scripts/export_training_reference.py`、`scripts/train.py`、`scripts/generate.py` 和 `scripts/verify_inference.py`；固定配置是 `configs/input_recipe.json` 与 `configs/gemm_plan.json`。
 
-因此当前结论是：推理 Graph 路径在所测形状有优势；训练尚无性能优势。下一阶段只应在同一正确性门槛下量化 collective、通信/计算 overlap，以及 TP/PP/DP 组合，确认有提升后再纳入稳定代码。
+因此当前结论是：推理 Graph 路径在所测形状有优势；训练应默认采用 selective hybrid collective，不能再称为“全 Triton collective runtime”。下一阶段继续在同一正确性门槛下量化 overlap 与 TP/PP/DP；没有完整步收益的候选不纳入稳定代码。
+
+## Collective、overlap 与并行策略
+
+默认 hybrid 只把至少 64 MiB 的 FP32 FSDP reduce-scatter 路由到 Triton peer transport；all-gather、小 reduce-scatter、all-reduce、all-to-all 和 barrier 仍由 NCCL 执行。正式 28-update 运行中，rank 0 记录到 1,036 次 Triton reduce-scatter、1,506 次 NCCL all-gather、56 次 NCCL 小 reduce-scatter、242 次 NCCL all-reduce、1 次 all-to-all 和 28 次 barrier。外部显存增量为 500 MiB；320 MiB peer staging 是在完整模型内通过 512 MiB 外部预算的最大已验收配置。
+
+去掉 profile 更新中重复的 399 参数有限性检查后，干净 full-step trace 显示：peer reduce-scatter 占 2.247 s，其中 1.665 s 与计算重叠，重叠率约 74.1%；NCCL 通信占 1.492 s，只有 0.105 s 与计算重叠。主要 overlap 缺口是 forward all-gather，而不是 peer reduce-scatter。更激进的两层 FSDP 预取需要额外容纳一层数百 MiB BF16 参数，但正式有效 reserved 峰值距离 41.875 GiB 上限仅约 10 MiB；双 peer buffer 也不能证明完整步收益。因此当前不增加 overlap 模式。
+
+四卡拓扑是 `(0,1)`、`(2,3)` 为 PIX，其余为 SYS。实测 4 MiB NCCL all-reduce 在 PIX 为 0.403–0.407 ms、SYS 为 1.05–1.06 ms；128 MiB 输出的 all-gather 在 PIX 为 6.64–6.71 ms、SYS 为 17.24–17.43 ms；256 MiB FP32 输入的 reduce-scatter 在 PIX 为 14.05–14.25 ms、SYS 为 24.37–24.67 ms。由此只值得继续研究 `TP=2 × DP=2`：TP 固定在 PIX 对，DP 跨 SYS。TP=4 会让每层通信跨 SYS，拒绝；当前 FSDP 本身就是 DP/sharded baseline；microbatch=1 时 PP2 的 1F1B 利用率只有 1/2，拒绝。TP2×DP2 仍需重构 attention head、row/column parallel linear、vocab CE、两 rank DP group 与 runtime，尚无完整训练步证据，所以不加入公开入口。

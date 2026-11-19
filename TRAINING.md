@@ -2,7 +2,7 @@
 
 ## 范围与依赖
 
-唯一支持的训练入口是 `scripts/train.py`。它加载官方 Qwen3-8B BF16 权重，以四进程 FSDP2 运行完整模型；Triton 路径负责模型前后向、优化器及 GPU 数据操作，PyTorch 负责 autograd、FSDP 主机编排和 CUDA 驱动服务。
+唯一支持的训练入口是 `scripts/train.py`。它加载官方 Qwen3-8B BF16 权重，以四进程 FSDP2 运行完整模型。默认 `--collective-mode hybrid`：大 FP32 reduce-scatter 使用 Triton peer transport，其余 collective 使用 NCCL；`--collective-mode full` 是全 Triton 对照。Triton 路径负责模型前后向与优化器，PyTorch 负责 autograd、FSDP 主机编排和 CUDA 驱动服务。
 
 推荐环境为 Python 3.11、四张支持 BF16 的 GPU、足够的主机内存和本地模型/语料。安装 `requirements-qwen3-triton.txt`，并始终通过 `scripts/research_python.sh` 调用 Python。仓库不会自动下载或覆盖输入。
 
@@ -56,7 +56,8 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 \
   --input-manifest "$PWD/artifacts/inputs/input_manifest.json" \
   --reference-raw-dir "$PWD/artifacts/training_reference" \
   --gemm-plan "$PWD/configs/gemm_plan.json" \
-  --output "$PWD/artifacts/training_run" --full-validation --trace
+  --output "$PWD/artifacts/training_run" --full-validation --trace \
+  --collective-mode hybrid
 ```
 
 运行前确认四卡空闲且输出目录不存在。短程数值检查只证明固定协议下的实现一致性，不证明长期收敛；硬件、驱动、依赖或源码变化后都应重新做完整验收。

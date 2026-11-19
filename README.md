@@ -22,4 +22,4 @@
 - 已有性能结论及适用范围见 [docs/RESULTS.md](docs/RESULTS.md)
 - 第三方来源见 [qwen3_triton/PROVENANCE.md](qwen3_triton/PROVENANCE.md)
 
-当前保留的实现仍让 PyTorch 负责 autograd、FSDP 主机调度、CUDA 资源管理和请求控制；模型 GPU 数学、优化器与完整运行时的数据操作由 Triton 路径执行。历史性能不能替代在目标机器上的重新验收。
+默认训练模式是已重新验收的 hybrid runtime：大 FP32 reduce-scatter 使用 Triton peer transport，其余 collective 使用 NCCL；`--collective-mode full` 仅保留为全 Triton 对照。PyTorch 继续负责 autograd、FSDP 主机调度、CUDA 资源管理和请求控制，模型 GPU 数学与优化器走 Triton 路径。硬件、驱动、依赖或源码变化后仍需重新验收。
