@@ -24,8 +24,6 @@ def launches(monkeypatch):
 
     monkeypatch.setattr(kernels, "raw_empty", allocate)
     monkeypatch.setattr(kernels, "_inference_cached_attention", Capture("cached"))
-    monkeypatch.setattr(kernels, "_inference_decode_partial", Capture("partial"))
-    monkeypatch.setattr(kernels, "_inference_decode_merge", Capture("merge"))
     kernels._sm86_decode_device.cache_clear()
     yield calls
     kernels._sm86_decode_device.cache_clear()
@@ -63,13 +61,6 @@ def test_attention_launch_geometry(monkeypatch, launches, batch, tokens, keys, c
     assert args[-2:] == (rows, 32 if tokens == 1 else 64)
     assert kwargs == dict(num_warps=4, num_stages=2, enable_fp_fusion=False)
 
-
-def test_explicit_split_decode_keeps_two_stage_route(monkeypatch, launches):
-    monkeypatch.setattr(torch.cuda, "get_device_capability", lambda device: (8, 6))
-    q, cache = operands(1, 1)
-    result = kernels.attention(q, cache, cache, 2047, split_decode=True, compact_decode=True)
-    assert result.shape == q.shape
-    assert [(name, grid) for name, grid, _, _ in launches] == [("partial", (32, 8)), ("merge", (32,))]
 
 
 def test_repeated_long_decode_reuses_capability_per_device(monkeypatch, launches):

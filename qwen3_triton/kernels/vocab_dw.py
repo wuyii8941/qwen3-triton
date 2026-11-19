@@ -2,7 +2,7 @@
 
 The BF16 boundary after each data rank's GEMM is explicit. Accumulate the
 four rounded contributions in FP32, in rank order, without writing separate
-BF16 partial weight gradients. Independently written experimental kernel.
+BF16 partial weight gradients.
 """
 import torch
 import triton
@@ -35,7 +35,7 @@ def weight_gradient_mean(dz,hidden,rows_per_rank,world,config=(64,64,32,8,4,3)):
             dz.device!=hidden.device or not dz.is_contiguous() or not hidden.is_contiguous() or
             dz.shape[0]!=hidden.shape[0] or dz.shape[0]!=rows_per_rank*world):
         raise ValueError('Contiguous same-device BF16 [world*R,V] dZ and [world*R,H] hidden required')
-    if world!=4 or rows_per_rank!=512:raise ValueError('Experimental qualification is four ranks and 512 rows')
+    if world!=4 or rows_per_rank!=512:raise ValueError('Vocabulary weight gradients require four ranks and 512 rows')
     bm,bn,bk,group,warps,stages=config
     v,k=dz.shape[1],hidden.shape[1];out=torch.empty((v,k),device=dz.device,dtype=torch.float32)
     _vocab_dw_mean[(triton.cdiv(v,bm)*triton.cdiv(k,bn),)](

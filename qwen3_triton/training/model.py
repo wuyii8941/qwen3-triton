@@ -1,4 +1,4 @@
-"""Explicit model-graph and FSDP integration for experimental vocabulary CE.
+"""FSDP model integration for vocabulary-parallel cross-entropy.
 
 This changes the graph, collective schedule and parameter ownership. It is
 not a standard FSDP switch. Decoder FSDP and native fused AdamW are shared.
@@ -8,8 +8,7 @@ already data averaged; root FSDP must ignore it.
 import torch
 from torch.distributed.fsdp import fully_shard,MixedPrecisionPolicy
 from transformers.modeling_outputs import CausalLMOutputWithPast
-from transformers.models.qwen3.modeling_qwen3 import Qwen3ForCausalLM
-from training.fsdp.activation_checkpoint import checkpoint_layer_indices,wrap_decoder_checkpoint
+from qwen3_triton.training.fsdp.activation_checkpoint import checkpoint_layer_indices,wrap_decoder_checkpoint
 from qwen3_triton.model import PrecisionQwen3ForCausalLM
 from qwen3_triton.training.vocab_parallel import VocabParallelCE
 
@@ -21,22 +20,19 @@ class _LossOnlyGraph:
         if (labels is None or use_cache or attention_mask is not None or past_key_values is not None
                 or output_attentions or output_hidden_states or logits_to_keep):
             raise ValueError('Vocabulary CE requires dense unpadded labeled loss-only training/evaluation')
-        if isinstance(self,PrecisionQwen3ForCausalLM):hidden=self.model(input_ids,position_ids)
-        else:hidden=self.model(input_ids=input_ids,position_ids=position_ids,use_cache=False,return_dict=True).last_hidden_state
+        hidden=self.model(input_ids,position_ids)
         loss,logits=self.lm_head(hidden,labels,diagnostics=diagnostic_logits)
         if not return_dict:return (loss,logits)
         return CausalLMOutputWithPast(loss=loss,logits=logits)
 
 
 class VocabLossTritonQwen3(_LossOnlyGraph,PrecisionQwen3ForCausalLM):pass
-class VocabLossHFQwen3(_LossOnlyGraph,Qwen3ForCausalLM):pass
 
 
 def shard_vocab_loss_model(model,*,keep_full_layers,checkpoint_every,skip_embedding_backward_gather,fused_vocab_dw=False):
     if model.config.tie_word_embeddings:raise ValueError('Untied head required')
     if not 0<=keep_full_layers<=len(model.model.layers):raise ValueError('Invalid retention count')
     if isinstance(model,PrecisionQwen3ForCausalLM):model.__class__=VocabLossTritonQwen3
-    elif isinstance(model,Qwen3ForCausalLM):model.__class__=VocabLossHFQwen3
     else:raise TypeError('Supported Qwen3 graph required')
     model.lm_head=VocabParallelCE(model.lm_head.weight.detach().cpu(),fused_dw=fused_vocab_dw)
     body=model.model;mp=MixedPrecisionPolicy(param_dtype=torch.bfloat16,reduce_dtype=torch.float32)

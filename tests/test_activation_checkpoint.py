@@ -1,7 +1,7 @@
 import copy
 import pytest
 import torch
-from training.fsdp.activation_checkpoint import checkpoint_layer_indices,wrap_decoder_checkpoint,canonical_parameter_name
+from qwen3_triton.training.fsdp.activation_checkpoint import checkpoint_layer_indices,wrap_decoder_checkpoint,canonical_parameter_name
 
 
 def test_layer_selection_and_ambiguous_config_rejected():

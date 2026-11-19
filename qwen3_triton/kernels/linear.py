@@ -61,7 +61,7 @@ def matmul(a, b, *, optimized=False, output_dtype=None):
     out = output_empty((m, n), device=a.device, dtype=dtype)
     entry = gemm_entry(a, b, dtype) if optimized else None
     if entry is not None and entry['family'] == 'split_k':
-        from .gemm_experiments import split_matmul_into
+        from .split_k import split_matmul_into
         splits = entry['splits']
         partials = torch.empty((splits, m, n), device=a.device, dtype=torch.float32)
         split_matmul_into(a, b, out, partials, entry['config'], splits)

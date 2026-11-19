@@ -1,7 +1,7 @@
 import torch
 import torch.nn.functional as F
 import pytest
-from training.evaluation import validation_batches,shifted_nll
+from qwen3_triton.training.evaluation import validation_batches,shifted_nll
 
 
 @pytest.mark.parametrize('size,world,batch',[(1,4,4),(17,4,4),(32,4,4),(7,2,3)])

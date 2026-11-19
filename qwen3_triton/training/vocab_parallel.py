@@ -1,4 +1,4 @@
-"""Experimental Triton vocabulary-parallel projection and exact full CE.
+"""Triton vocabulary-parallel projection and exact full CE.
 
 Ranks keep their data-parallel decoder inputs and contiguous FP32 vocabulary
 master shards. Hidden states/labels are gathered, vocabulary-local CE uses

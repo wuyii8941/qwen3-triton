@@ -69,58 +69,28 @@ def _inference_cached_attention(Q,K,V,O,S:tl.constexpr,T:tl.constexpr,C:tl.const
     tl.store(O+((batch*S+row[:,None])*HQ+h)*D+d[None,:],value,row[:,None]<S)
 
 
-@triton.jit
-def _inference_decode_partial(Q,K,V,P,L,T:tl.constexpr,C:tl.constexpr,HQ:tl.constexpr,HK:tl.constexpr,D:tl.constexpr,SPLITS:tl.constexpr,CHUNK:tl.constexpr,SCALE:tl.constexpr):
-    bh=tl.program_id(0);part=tl.program_id(1);batch=bh//HQ;head=bh%HQ;kh=head//(HQ//HK)
-    token=part*CHUNK+tl.arange(0,CHUNK);d=tl.arange(0,D)
-    q=tl.load(Q+bh*D+d).to(tl.float32)
-    k=tl.load(K+((batch*HK+kh)*C+token[:,None])*D+d[None,:],token[:,None]<T,0).to(tl.float32)
-    score=tl.sum(k*q[None,:],1)*SCALE
-    score=tl.where(token<T,score,-float('inf'))
-    maximum=tl.max(score,0);p=tl.exp(score-maximum);total=tl.sum(p,0)
-    v=tl.load(V+((batch*HK+kh)*C+token[:,None])*D+d[None,:],token[:,None]<T,0).to(tl.float32)
-    value=tl.sum(p[:,None]*v,0)/total
-    tl.store(P+(bh*SPLITS+part)*D+d,value)
-    tl.store(L+bh*SPLITS+part,maximum+tl.log(total))
-
-
-@triton.jit
-def _inference_decode_merge(P,L,O,H:tl.constexpr,D:tl.constexpr,SPLITS:tl.constexpr,R:tl.constexpr):
-    bh=tl.program_id(0);r=tl.arange(0,R);d=tl.arange(0,D)
-    l=tl.load(L+bh*SPLITS+r,r<SPLITS,-float('inf'));p=tl.exp(l-tl.max(l,0));denom=tl.sum(p,0)
-    x=tl.load(P+(bh*SPLITS+r[:,None])*D+d[None,:],r[:,None]<SPLITS,0)
-    value=tl.sum(x*p[:,None],0)/denom
-    tl.store(O+bh*D+d,value)
-
 
 @lru_cache
 def _sm86_decode_device(device):
     return torch.cuda.get_device_capability(device)==(8,6)
 
 
-def attention(q,cache_k,cache_v,start,*,split_decode=False,compact_decode=False):
+def attention(q,cache_k,cache_v,start,*,compact_decode=False):
     b,s,h,d=q.shape;hk=cache_k.shape[1];capacity=cache_k.shape[2];total=start+s
     out=raw_empty(q.shape,device=q.device,dtype=q.dtype)
-    if s==1 and split_decode:
-        chunk=256;splits=triton.cdiv(total,chunk)
-        partial=raw_empty((b*h,splits,d),device=q.device,dtype=torch.float32)
-        lse=raw_empty((b*h,splits),device=q.device,dtype=torch.float32)
-        _inference_decode_partial[(b*h,splits)](q,cache_k,cache_v,partial,lse,total,capacity,h,hk,d,splits,chunk,d**-.5,num_warps=8,enable_fp_fusion=False)
-        _inference_decode_merge[(b*h,)](partial,lse,out,b*h,d,splits,triton.next_power_of_2(splits),num_warps=4)
-    else:
-        # Preserve the trained candidate's BF16 rounding and reverse tile order.
-        import struct
-        scale=struct.unpack('f',struct.pack('f',d**-.5))[0]
-        sl2=struct.unpack('f',struct.pack('f',scale*math.log2(math.e)))[0]
-        # Actual HF Flash decode uses32-key tiles; prefill uses64.
-        # Same-QKV all36layer probes establish the required rounding order.
-        key_tile=32 if s==1 else 64
-        # Reduce padded query rows on SM86 without changing the key tiles
-        # or the order of BF16 softmax-weight materialization.
-        query_tile=16 if compact_decode and b==s==1 and total>=512 and _sm86_decode_device(q.device) else 64
-        _inference_cached_attention[(triton.cdiv(s,query_tile),b*h)](
-            q,cache_k,cache_v,out,s,total,capacity,h,hk,d,start,sl2,query_tile,key_tile,
-            num_warps=4,num_stages=2,enable_fp_fusion=False)
+    # Preserve the trained candidate's BF16 rounding and reverse tile order.
+    import struct
+    scale=struct.unpack('f',struct.pack('f',d**-.5))[0]
+    sl2=struct.unpack('f',struct.pack('f',scale*math.log2(math.e)))[0]
+    # Actual HF Flash decode uses32-key tiles; prefill uses64.
+    # Same-QKV all36layer probes establish the required rounding order.
+    key_tile=32 if s==1 else 64
+    # Reduce padded query rows on SM86 without changing the key tiles
+    # or the order of BF16 softmax-weight materialization.
+    query_tile=16 if compact_decode and b==s==1 and total>=512 and _sm86_decode_device(q.device) else 64
+    _inference_cached_attention[(triton.cdiv(s,query_tile),b*h)](
+        q,cache_k,cache_v,out,s,total,capacity,h,hk,d,start,sl2,query_tile,key_tile,
+        num_warps=4,num_stages=2,enable_fp_fusion=False)
     return out
 
 
@@ -137,7 +107,7 @@ def _inference_gemv(X,W,Y,N:tl.constexpr,K:tl.constexpr,BN:tl.constexpr,BK:tl.co
     tl.store(Y+row*N+n,tl.sum(acc,1),n<N)
 
 
-def linear(x,weight,*,gemv=True,accurate=False,sliced=False,prefill_tiling=False,reference_accumulation=False):
+def linear(x,weight,*,gemv=True,accurate=False,prefill_tiling=False,reference_accumulation=False):
     shape=x.shape;m=x.numel()//shape[-1];k=shape[-1];n=weight.shape[0]
     if reference_accumulation and not accurate:
         from .accumulation import linear as reference_linear
@@ -148,8 +118,6 @@ def linear(x,weight,*,gemv=True,accurate=False,sliced=False,prefill_tiling=False
         out=raw_empty((*shape[:-1],n),device=x.device,dtype=x.dtype)
         _gemm[(triton.cdiv(m,128)*triton.cdiv(n,bn),)](x,weight,out,m,n,k,k,1,1,k,128,bn,64,1,num_warps=4,num_stages=3)
         return out
-    if gemv and sliced and not accurate and m==1 and n==4096 and k in (4096,12288) and x.is_contiguous() and weight.is_contiguous():
-        return sliced_linear(x,weight)
     if gemv and m<=8 and x.is_contiguous() and weight.is_contiguous():
         y=raw_empty((*shape[:-1],n),device=x.device,dtype=x.dtype)
         _inference_gemv[(triton.cdiv(n,16),m)](x,weight,y,n,k,16,256,accurate,num_warps=4,enable_fp_fusion=False)
@@ -203,30 +171,6 @@ def norm_rope(x,weight,cos,sin,eps):
     inv=raw_empty((rows,),device=x.device,dtype=torch.float32)
     _hf_norm_rope_forward[(rows,)](x,weight,cos,sin,y,inv,h,x.shape[2],eps,triton.next_power_of_2(h),enable_fp_fusion=False)
     return y
-
-
-@triton.jit
-def _inference_sliced_linear(X,W,Y,N:tl.constexpr,K:tl.constexpr):
-    """Two interleaved32K accumulators, matching measured SM86 sliced1x2."""
-    row=tl.arange(0,16);col=tl.program_id(0)*32+tl.arange(0,32);kk=tl.arange(0,32)
-    a0=tl.zeros((16,32),tl.float32);a1=tl.zeros((16,32),tl.float32)
-    for step in range(tl.cdiv(K,64)):
-        k0=step*64+kk;k1=k0+32
-        x0=tl.load(X+tl.zeros((16,1),tl.int32)+k0[None,:],(row[:,None]==0)&(k0[None,:]<K),0)
-        x1=tl.load(X+tl.zeros((16,1),tl.int32)+k1[None,:],(row[:,None]==0)&(k1[None,:]<K),0)
-        w0=tl.load(W+col[None,:]*K+k0[:,None],(col[None,:]<N)&(k0[:,None]<K),0)
-        w1=tl.load(W+col[None,:]*K+k1[:,None],(col[None,:]<N)&(k1[:,None]<K),0)
-        a0=tl.dot(x0,w0,a0,input_precision='ieee')
-        a1=tl.dot(x1,w1,a1,input_precision='ieee')
-    tl.store(Y+row[:,None]*0+col[None,:],a0+a1,(row[:,None]==0)&(col[None,:]<N))
-
-
-def sliced_linear(x,weight):
-    if x.numel()!=x.shape[-1] or not x.is_contiguous() or not weight.is_contiguous():raise ValueError('Single contiguous query and row-major weight required')
-    if x.dtype!=torch.bfloat16 or weight.dtype!=x.dtype or x.device!=weight.device or not x.is_cuda or x.shape[-1]!=weight.shape[1]:raise ValueError('Matching BF16 CUDA input/weight required')
-    out=raw_empty((*x.shape[:-1],weight.shape[0]),device=x.device,dtype=x.dtype)
-    _inference_sliced_linear[(triton.cdiv(weight.shape[0],32),)](x,weight,out,weight.shape[0],weight.shape[1],num_warps=4,num_stages=2,enable_fp_fusion=False)
-    return out
 
 
 

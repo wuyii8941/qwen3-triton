@@ -34,15 +34,14 @@ def metrics(x,y):
     return values
 
 
-def _phase_counts(kind,*,reference_accumulation=False,sliced_decode=False,prompt_tokens=65):
-    families={'_inference_reference_norm','_inference_positions','_lookup','_tables','_hf_norm_forward','_hf_norm_rope_forward','_inference_cache_append','_inference_cached_attention','_inference_decode_partial','_inference_decode_merge','_add','_gemm','_gate_up','_inference_gemv','_inference_sliced_linear','_inference_interleaved_linear','_inference_reference_gemv','_split_gemm','_inference_reduce_parts','_hf_swiglu_forward','_inference_argmax_parts','_inference_select'}
+def _phase_counts(kind,*,reference_accumulation=False,prompt_tokens=65):
+    families={'_inference_reference_norm','_inference_positions','_lookup','_tables','_hf_norm_forward','_hf_norm_rope_forward','_inference_cache_append','_inference_cached_attention','_add','_gemm','_gate_up','_inference_gemv','_inference_interleaved_linear','_inference_reference_gemv','_split_gemm','_inference_reduce_parts','_hf_swiglu_forward','_inference_argmax_parts','_inference_select'}
     counts=dict.fromkeys(families,0)
     if kind=='setup':return counts
     counts.update(_inference_positions=1,_lookup=1,_tables=1,_hf_norm_forward=73,_hf_norm_rope_forward=72,_inference_cache_append=36,_inference_cached_attention=36,_add=72)
     if kind=='decode':
         counts['_hf_swiglu_forward']=36
         if reference_accumulation:counts.update(_hf_norm_forward=0,_inference_reference_norm=73,_inference_gemv=1,_inference_reference_gemv=144,_inference_interleaved_linear=108)
-        elif sliced_decode:counts.update(_inference_gemv=145,_inference_sliced_linear=108)
         else:counts['_inference_gemv']=253
     elif kind=='prefill':
         if prompt_tokens not in (17,65):raise ValueError('Audited B1 prefill length must be17 or65')
@@ -54,7 +53,7 @@ def _phase_counts(kind,*,reference_accumulation=False,sliced_decode=False,prompt
     return counts
 
 
-def trace(out,name,fn,expected_cache_appends,*,warmup_collection=False,sliced_decode=False,reference_accumulation=False,prompt_tokens=65):
+def trace(out,name,fn,expected_cache_appends,*,warmup_collection=False,reference_accumulation=False,prompt_tokens=65):
     with torch.profiler.profile(activities=[torch.profiler.ProfilerActivity.CPU,torch.profiler.ProfilerActivity.CUDA]) as prof:
         if warmup_collection:
             from qwen3_triton.inference.kernels import positions
@@ -66,7 +65,7 @@ def trace(out,name,fn,expected_cache_appends,*,warmup_collection=False,sliced_de
     p=out/(name+'.json.gz');prof.export_chrome_trace(str(p))
     assert p.stat().st_size<=8*2**20,'Trace exceeds8MiB cap'
     data=json.loads(gzip.decompress(p.read_bytes()));events=data['traceEvents'];counts=Counter(e['name'] for e in events if e.get('cat')=='kernel')
-    allowed={'_inference_reference_norm','_inference_positions','_inference_cache_append','_inference_cached_attention','_inference_decode_partial','_inference_decode_merge','_inference_gemv','_inference_sliced_linear','_inference_interleaved_linear','_inference_reference_gemv','_split_gemm','_inference_reduce_parts','_inference_argmax_parts','_inference_select',
+    allowed={'_inference_reference_norm','_inference_positions','_inference_cache_append','_inference_cached_attention','_inference_gemv','_inference_interleaved_linear','_inference_reference_gemv','_split_gemm','_inference_reduce_parts','_inference_argmax_parts','_inference_select',
         '_hf_norm_forward','_hf_norm_rope_forward','_hf_swiglu_forward','_gemm','_gate_up','_lookup','_tables','_add',
         '_runtime_fill','_runtime_typed_fill','_runtime_strided_copy','_runtime_binary','_runtime_compare','_runtime_reduce','_runtime_unary'}
     scopes=[e for e in events if e.get('name')=='actual_'+name and e.get('cat')=='user_annotation']
@@ -82,7 +81,7 @@ def trace(out,name,fn,expected_cache_appends,*,warmup_collection=False,sliced_de
     else:actual=[e for e in events if e.get('cat')=='kernel']
     recorded={e.get('args',{}).get('correlation') for e in actual}
     missing=[e.get('args',{}).get('correlation') for e in launches if e.get('args',{}).get('correlation') not in recorded]
-    options=dict(reference_accumulation=reference_accumulation,sliced_decode=sliced_decode,prompt_tokens=prompt_tokens)
+    options=dict(reference_accumulation=reference_accumulation,prompt_tokens=prompt_tokens)
     if name=='generate':
         assert expected_cache_appends>=36 and expected_cache_appends%36==0
         steps=expected_cache_appends//36
@@ -119,7 +118,7 @@ def run(a,out,foreign):
     assert identity['repo']=='Qwen/Qwen3-8B' and Path(identity['model_dir']).resolve()==model_dir
     for name,item in identity['shards'].items():assert sha(model_dir/name)==item['sha256'],name
     for name,h in identity['model_files_sha256'].items():assert sha(model_dir/name)==h,name
-    candidate,setup=trace(out,'setup',lambda:TritonQwen3Inference.from_pretrained(model_dir,sliced_decode=a.sliced_decode,prefill_tiling=a.prefill_tiling,reference_accumulation=reference_accumulation),0,warmup_collection=a.warmup_collection,sliced_decode=a.sliced_decode,reference_accumulation=reference_accumulation)
+    candidate,setup=trace(out,'setup',lambda:TritonQwen3Inference.from_pretrained(model_dir,prefill_tiling=a.prefill_tiling,reference_accumulation=reference_accumulation),0,warmup_collection=a.warmup_collection,reference_accumulation=reference_accumulation)
     assert sum(p.numel() for p in candidate.parameters())==8190735360 and len(list(candidate.parameters()))==399 and len(candidate.model.layers)==36
     hf=AutoModelForCausalLM.from_pretrained(model_dir,local_files_only=True,torch_dtype=torch.bfloat16,attn_implementation='sdpa').eval().cuda()
     tokenizer=AutoTokenizer.from_pretrained(model_dir,local_files_only=True)
@@ -146,7 +145,7 @@ def run(a,out,foreign):
         values=metrics(x,y);save_case(dict(kind='chunked_prefill',batch=batch,length=length,**values));assert a.diagnostic or values['passed'],cases[-1]
     corpus_rows=[]
     if a.corpus_blocks:
-        from training.data import Blocks
+        from qwen3_triton.training.data import Blocks
         corpus=Path(identity['corpus_dir'])/'validation.bin'
         assert sha(corpus)==identity['tokens_sha256']['validation.bin']
         blocks=Blocks(corpus,a.corpus_sequence)
@@ -182,7 +181,7 @@ def run(a,out,foreign):
         generation.append(row)
     ids=torch.randint(1,100000,(1,65),device='cuda');token=torch.tensor([[50]],device='cuda')
     cache=candidate.new_cache(1,80)
-    options=dict(warmup_collection=a.warmup_collection,sliced_decode=a.sliced_decode,reference_accumulation=reference_accumulation)
+    options=dict(warmup_collection=a.warmup_collection,reference_accumulation=reference_accumulation)
     short_cache=candidate.new_cache(1,32);short_ids=ids[:,:17].contiguous()
     _,traces['prefill17']=trace(out,'prefill17',lambda:candidate(short_ids,past_key_values=short_cache),36,prompt_tokens=17,**options)
     _,traces['prefill']=trace(out,'prefill',lambda:candidate(ids,past_key_values=cache),36,**options)
@@ -209,7 +208,7 @@ def run(a,out,foreign):
     acceptance=qualification(diagnostic=a.diagnostic,numerics=numerical,greedy=greedy,traces=traces,foreign=foreign,corpus_rows=corpus_rows,corpus_blocks=a.corpus_blocks,corpus_sequence=a.corpus_sequence)
     result=dict(complete=True,model='Qwen/Qwen3-8B',revision=identity['revision'],parameter_count=8190735360,layers=36,single_GPU=True,
         environment=dict(torch=torch.__version__,CUDA=torch.version.cuda,GPU=torch.cuda.get_device_name(),capability=torch.cuda.get_device_capability()),
-        physical_GPU=a.physical_device,sliced_decode=a.sliced_decode,prefill_tiling=a.prefill_tiling,reference_accumulation=reference_accumulation,compute='BF16 weights/activations, FP32 reductions',corpus_protocol=dict(sequence=a.corpus_sequence,blocks=a.corpus_blocks,shifted_tokens=a.corpus_blocks*(a.corpus_sequence-1),full_validation=acceptance['full_validation'],unique_blocks=len({row['block'] for row in corpus_rows})),corpus_diagnostics=corpus_rows,numerics=numerical,greedy_exact_match=greedy,cases=cases,generation=generation,traces=traces,latencies=latencies,
+        physical_GPU=a.physical_device,prefill_tiling=a.prefill_tiling,reference_accumulation=reference_accumulation,compute='BF16 weights/activations, FP32 reductions',corpus_protocol=dict(sequence=a.corpus_sequence,blocks=a.corpus_blocks,shifted_tokens=a.corpus_blocks*(a.corpus_sequence-1),full_validation=acceptance['full_validation'],unique_blocks=len({row['block'] for row in corpus_rows})),corpus_diagnostics=corpus_rows,numerics=numerical,greedy_exact_match=greedy,cases=cases,generation=generation,traces=traces,latencies=latencies,
         strict_GPU_dispatch=candidate.runtime.report(),peak_process_allocated_GiB=torch.cuda.max_memory_allocated()/2**30,foreign_GPU_processes=foreign,
         diagnostic_only=a.diagnostic,functional_qualified=acceptance['functional_qualified'],corpus_numerics=acceptance['corpus_numerics'],qualified=acceptance['qualified'],
         source_sha256=EXECUTION_SOURCE_SHA256,input_identity_sha256=sha(a.identity),
@@ -220,7 +219,7 @@ def run(a,out,foreign):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',type=Path,required=True);p.add_argument('--identity',type=Path,required=True,help='input_manifest.json created by configure_inputs.py');p.add_argument('--sliced-decode',action='store_true');p.add_argument('--prefill-tiling',action='store_true');p.add_argument('--reference-accumulation',action='store_true');p.add_argument('--warmup-collection',action='store_true');p.add_argument('--corpus-sequence',type=int,default=128);p.add_argument('--corpus-blocks',type=int,default=0);p.add_argument('--diagnostic',action='store_true',help='Retain failing metrics and continue; qualification still requires every original gate');p.add_argument('--physical-device',type=int,default=0);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',type=Path,required=True);p.add_argument('--identity',type=Path,required=True,help='input_manifest.json created by configure_inputs.py');p.add_argument('--prefill-tiling',action='store_true');p.add_argument('--reference-accumulation',action='store_true');p.add_argument('--warmup-collection',action='store_true');p.add_argument('--corpus-sequence',type=int,default=128);p.add_argument('--corpus-blocks',type=int,default=0);p.add_argument('--diagnostic',action='store_true',help='Retain failing metrics and continue; qualification still requires every original gate');p.add_argument('--physical-device',type=int,default=0);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
     out=a.output.resolve();assert out.is_relative_to(Path('/data1/tzh')) and not out.exists();out.mkdir(parents=True)
     foreign=[];stop=threading.Event()
     assert os.environ.get('CUDA_VISIBLE_DEVICES')==str(a.physical_device),'Explicit physical-device/CUDA mapping required'

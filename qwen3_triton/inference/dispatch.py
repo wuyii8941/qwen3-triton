@@ -1,4 +1,4 @@
-"""Inference additions to the frozen V14 strict CUDA operation dispatcher."""
+"""Strict CUDA operation dispatch for inference."""
 import torch
 from ..runtime.dispatch import TritonRuntimeMode
 

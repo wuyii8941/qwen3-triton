@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 import torch
 
-from training.data import Blocks
+from qwen3_triton.training.data import Blocks
 
 
 def test_blocks_match_historical_permutation_and_drop_tail(tmp_path):

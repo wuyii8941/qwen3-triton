@@ -6,7 +6,7 @@ the checked-in recipe. No network, downloads or existing-evidence edits.
 """
 from pathlib import Path
 import argparse,hashlib,json
-from training.input_manifest import validate
+from qwen3_triton.training.input_manifest import validate
 
 ROOT=Path(__file__).resolve().parents[1]
 def sha(path):

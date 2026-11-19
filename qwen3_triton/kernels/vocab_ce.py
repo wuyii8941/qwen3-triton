@@ -1,4 +1,4 @@
-"""Experimental vocabulary-local CE and FP32 gradient accumulation.
+"""Vocabulary-local cross-entropy and FP32 gradient accumulation.
 
 Model arithmetic is Triton; collectives live in vocab_parallel.py. The loss
 keeps the BF16 projection rounding boundary. No quantization or sampled loss.

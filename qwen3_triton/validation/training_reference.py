@@ -6,7 +6,7 @@ from pathlib import Path
 import torch
 
 from qwen3_triton.gradient_archive import load as load_archive
-from training.fsdp.activation_checkpoint import canonical_parameter_name
+from qwen3_triton.training.fsdp.activation_checkpoint import canonical_parameter_name
 
 
 def sha(path):

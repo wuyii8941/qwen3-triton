@@ -1,25 +1,38 @@
 # Qwen3-8B Triton 训练与推理
 
-本仓库只保留一套可运行的 Qwen3-8B 实现：四卡 FSDP 训练与单卡 BF16 推理。历史版本、对照分支和原始实验产物均在 Git 历史中，不再放在当前源码树。
+四卡 FSDP2 训练和单卡 BF16 推理，支持固定请求 CUDA Graph。训练使用 Triton 算子和 AdamW，通信由 Triton reduce-scatter 与 NCCL 协作完成。
 
-## 稳定入口
+## 安装
 
-| 工作 | 命令 |
+在 Linux CUDA 环境使用 Python 3.11，并按 `requirements-qwen3-triton.txt` 安装锁定版本：
+
+```bash
+python3.11 -m venv .venv-research
+.venv-research/bin/python -m pip install --index-url https://download.pytorch.org/whl/cu128 'torch==2.10.0+cu128'
+.venv-research/bin/python -m pip install -r requirements-qwen3-triton.txt
+```
+
+通过 `bash scripts/research_python.sh ...` 启动项目命令。权重和语料使用本地路径。训练与推理验证的输出目录须位于 `/data1/tzh` 下。输入校验规则在 `configs/input_recipe.json`，训练 GEMM 计划在 `configs/gemm_plan.json`。
+
+## 运行
+
+| 工作 | 入口 |
 | --- | --- |
 | 准备固定语料 | `scripts/prepare_corpus.py` |
-| 绑定本地权重与语料 | `scripts/configure_inputs.py` |
+| 绑定本地权重和语料 | `scripts/configure_inputs.py` |
 | 导出 HF 训练参考 | `scripts/export_training_reference.py` |
-| 运行完整 Triton 训练 | `scripts/train.py` |
+| 四卡训练 | `scripts/train.py` |
 | 单卡生成 | `scripts/generate.py` |
-| 推理正确性与性能验证 | `scripts/verify_inference.py` |
+| 验证推理数值与性能 | `scripts/verify_inference.py` |
 
-依赖安装：`python -m pip install -r requirements-qwen3-triton.txt`。研究环境统一通过 `bash scripts/research_python.sh ...` 启动，使缓存和临时文件留在项目的 `.runtime-research` 中。
+完整命令见[训练指南](TRAINING.md)和[推理指南](INFERENCE.md)，实测收益和适用条件见[结果汇总](docs/RESULTS.md)。
 
-训练输入的固定校验规则在 `configs/input_recipe.json`，矩阵乘计划在 `configs/gemm_plan.json`。权重、语料、运行输出和 profiler trace 不随仓库发布。
+## 代码结构
 
-- 完整训练步骤见 [TRAINING.md](TRAINING.md)
-- 推理和验证见 [INFERENCE.md](INFERENCE.md)
-- 已有性能结论及适用范围见 [docs/RESULTS.md](docs/RESULTS.md)
-- 第三方来源见 [qwen3_triton/PROVENANCE.md](qwen3_triton/PROVENANCE.md)
+- `qwen3_triton/training/` 训练模型、数据、输入校验与 FSDP。
+- `qwen3_triton/inference/` 推理模型、KV cache 和 CUDA Graph。
+- `qwen3_triton/kernels/` 计算算子。
+- `qwen3_triton/runtime/` CUDA 调度、显存、通信与优化器。
+- `qwen3_triton/validation/` 验证与参考比较。
 
-默认训练模式是已重新验收的 hybrid runtime：大 FP32 reduce-scatter 使用 Triton peer transport，其余 collective 使用 NCCL；`--collective-mode full` 仅保留为全 Triton 对照。PyTorch 继续负责 autograd、FSDP 主机调度、CUDA 资源管理和请求控制，模型 GPU 数学与优化器走 Triton 路径。硬件、驱动、依赖或源码变化后仍需重新验收。
+第三方来源及其许可证见[来源说明](qwen3_triton/PROVENANCE.md)。

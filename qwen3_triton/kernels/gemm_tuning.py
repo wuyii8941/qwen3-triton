@@ -2,24 +2,11 @@
 import hashlib
 import json
 from pathlib import Path
-from contextlib import contextmanager
 
 _entries = {}
 _identity = None
-_enabled = True
 _capabilities = {}
 
-
-@contextmanager
-def enabled(value):
-    """Explicit control for same-process V9/candidate module comparisons."""
-    global _enabled
-    before = _enabled
-    _enabled = bool(value)
-    try:
-        yield
-    finally:
-        _enabled = before
 
 
 def load_plan(path):
@@ -65,7 +52,7 @@ def identity():
 
 
 def gemm_entry(a,b,output_dtype):
-    if not _enabled or not _entries:
+    if not _entries:
         return None
     import torch
     if a.dtype != torch.bfloat16 or output_dtype != torch.bfloat16:
@@ -84,7 +71,7 @@ def gemm_entry(a,b,output_dtype):
 
 
 def gate_up_entry(x,n):
-    if not _enabled or not _entries:
+    if not _entries:
         return None
     import torch
     if x.dtype != torch.bfloat16:

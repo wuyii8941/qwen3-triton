@@ -68,7 +68,7 @@ def main():
         records[split]=dict(text_sha256=sha(text),token_sha256=digest,tokens=count,exact_fixed_token_bytes=True)
         print(json.dumps(dict(split=split,**records[split])),flush=True)
     # A partial replay is explicitly labelled; it cannot replace all three
-    # splits required by training.input_manifest.validate.
+    # splits required by qwen3_triton.training.input_manifest.validate.
     result=dict(complete=True,all_three_splits_complete=set(records)=={'train','validation','test'},
         model='Qwen/Qwen3-8B',revision=recipe['model']['revision'],splits=records,
         tokenizer_sha256=sha(args.model_dir/'tokenizer.json'),recipe_sha256=sha(args.recipe),

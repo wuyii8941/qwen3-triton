@@ -7,7 +7,7 @@ import torch
 import triton
 import triton.language as tl
 from ..runtime.memory import raw_empty
-from ..kernels.gemm_experiments import _split_gemm
+from ..kernels.split_k import _split_gemm
 
 
 def strategy(m,n,k):

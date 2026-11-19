@@ -25,7 +25,7 @@ def shard_official_qwen(model, *, checkpoint=False, keep_full_layers=0,
     body = model.model
     if not 0<=keep_full_layers<=len(body.layers):
         raise ValueError('keep_full_layers outside decoder layer count')
-    from training.fsdp.activation_checkpoint import checkpoint_layer_indices,wrap_decoder_checkpoint
+    from qwen3_triton.training.fsdp.activation_checkpoint import checkpoint_layer_indices,wrap_decoder_checkpoint
     checkpointed=checkpoint_layer_indices(len(body.layers),all_layers=checkpoint,every=checkpoint_every)
     if checkpoint_mode!='full':raise ValueError('Only full checkpoint mode is supported')
     tied = body.embed_tokens.weight is model.lm_head.weight

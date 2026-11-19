@@ -14,10 +14,10 @@ import torch
 import torch.distributed as dist
 from torch.nn.attention import sdpa_kernel,SDPBackend
 from transformers import AutoModelForCausalLM
-from training.data import Blocks
-from training.evaluation import validation_batches
-from training.fsdp.official import shard_official_qwen,reshard_official_parameters
-from training.input_manifest import validate
+from qwen3_triton.training.data import Blocks
+from qwen3_triton.training.evaluation import validation_batches
+from qwen3_triton.training.fsdp.official import shard_official_qwen,reshard_official_parameters
+from qwen3_triton.training.input_manifest import validate
 from qwen3_triton.model import model_for_variant
 from qwen3_triton.kernels.gemm_tuning import load_plan,identity as gemm_identity
 from qwen3_triton.runtime.manager import TrainingRuntime,CAP_GIB
@@ -205,9 +205,8 @@ def main():
         (args.output/f'rank{rank}.json').write_text(json.dumps(rank_result,indent=2)+'\n')
         reports=[None]*4;dist.all_gather_object(reports,rank_result,group=cpu_group)
         if rank==0:
-            sources=[Path(__file__),ROOT/'qwen3_triton/validation/training_reference.py',ROOT/'qwen3_triton/training/model.py',args.protocol,args.input_manifest,
-                ROOT/'scripts/research_python.sh',*sorted((ROOT/'qwen3_triton').rglob('*.py')),
-                *sorted((ROOT/'training').rglob('*.py'))]
+            sources=[Path(__file__),args.protocol,args.input_manifest,
+                ROOT/'scripts/research_python.sh',*sorted((ROOT/'qwen3_triton').rglob('*.py'))]
             sources.append(args.gemm_plan)
             formal=args.full_validation and args.trace and (args.quality_steps,args.warmup_steps,args.measure_steps)==(16,3,8) and bool(args.reference_raw_dir)
             result=dict(complete=True,full_runtime_qualified=False,performance_adopted=False,screen_only=not formal,

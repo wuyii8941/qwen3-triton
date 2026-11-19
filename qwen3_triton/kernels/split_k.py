@@ -1,49 +1,7 @@
-"""Experimental SM86 GEMM decompositions; not the qualified V9 default.
-
-Split-K uses FP32 partials and a separate fixed-tree reduction. No atomics,
-TF32, reduced precision accumulation, external matmul, or native fallback.
-"""
+"""Split-K matrix multiplication with FP32 partials and a fixed reduction."""
 import torch
 import triton
 import triton.language as tl
-from triton.language.extra.cuda import libdevice
-
-
-@triton.jit
-def _gate_up_accum(X, WG, WU, G, U, Y, M: tl.constexpr, N: tl.constexpr,
-                   K: tl.constexpr, BM: tl.constexpr, BN: tl.constexpr,
-                   BK: tl.constexpr, GROUP: tl.constexpr):
-    pid = tl.program_id(0)
-    nm, nn = tl.cdiv(M, BM), tl.cdiv(N, BN)
-    width = GROUP * nn
-    first = (pid // width) * GROUP
-    height = tl.minimum(nm-first, GROUP)
-    pm = first + (pid % width) % height
-    pn = (pid % width) // height
-    rows = pm * BM + tl.arange(0, BM)
-    cols = pn * BN + tl.arange(0, BN)
-    offsets = tl.arange(0, BK)
-    gate = tl.zeros((BM, BN), tl.float32)
-    up = tl.zeros((BM, BN), tl.float32)
-    for block in range(tl.cdiv(K, BK)):
-        ks = block * BK + offsets
-        a = tl.load(X + rows[:, None]*K + ks[None, :],
-                    (rows[:, None] < M) & (ks[None, :] < K), 0)
-        gw = tl.load(WG + cols[None, :]*K + ks[:, None],
-                     (cols[None, :] < N) & (ks[:, None] < K), 0)
-        uw = tl.load(WU + cols[None, :]*K + ks[:, None],
-                     (cols[None, :] < N) & (ks[:, None] < K), 0)
-        gate = tl.dot(a, gw, gate, input_precision='ieee')
-        up = tl.dot(a, uw, up, input_precision='ieee')
-    # Keep the qualified BF16 materialization and activation rounding edges.
-    gate = gate.to(G.dtype.element_ty).to(tl.float32)
-    up = up.to(U.dtype.element_ty).to(tl.float32)
-    silu = tl.div_rn(gate, 1. + libdevice.exp(-gate)).to(Y.dtype.element_ty).to(tl.float32)
-    indexes = rows[:, None]*N + cols[None, :]
-    mask = (rows[:, None] < M) & (cols[None, :] < N)
-    tl.store(G + indexes, gate, mask)
-    tl.store(U + indexes, up, mask)
-    tl.store(Y + indexes, silu*up, mask)
 
 
 @triton.jit
@@ -87,7 +45,7 @@ def _reduce_split(P, C, SIZE: tl.constexpr, SPLITS: tl.constexpr,
 
 
 def split_matmul_into(a, b, out, partials, config, splits):
-    """Preallocated benchmark interface; both launches are timed together."""
+    """Write partials and reduce them into the provided output."""
     tm, tn, tk, group, warps, stages = config
     m, k = a.shape
     n = b.shape[1]
