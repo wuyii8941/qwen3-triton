@@ -21,3 +21,13 @@
 去掉 profile 更新中重复的 399 参数有限性检查后，干净 full-step trace 显示：peer reduce-scatter 占 2.247 s，其中 1.665 s 与计算重叠，重叠率约 74.1%；NCCL 通信占 1.492 s，只有 0.105 s 与计算重叠。主要 overlap 缺口是 forward all-gather，而不是 peer reduce-scatter。更激进的两层 FSDP 预取需要额外容纳一层数百 MiB BF16 参数，但正式有效 reserved 峰值距离 41.875 GiB 上限仅约 10 MiB；双 peer buffer 也不能证明完整步收益。因此当前不增加 overlap 模式。
 
 四卡拓扑是 `(0,1)`、`(2,3)` 为 PIX，其余为 SYS。实测 4 MiB NCCL all-reduce 在 PIX 为 0.403–0.407 ms、SYS 为 1.05–1.06 ms；128 MiB 输出的 all-gather 在 PIX 为 6.64–6.71 ms、SYS 为 17.24–17.43 ms；256 MiB FP32 输入的 reduce-scatter 在 PIX 为 14.05–14.25 ms、SYS 为 24.37–24.67 ms。由此只值得继续研究 `TP=2 × DP=2`：TP 固定在 PIX 对，DP 跨 SYS。TP=4 会让每层通信跨 SYS，拒绝；当前 FSDP 本身就是 DP/sharded baseline；microbatch=1 时 PP2 的 1F1B 利用率只有 1/2，拒绝。TP2×DP2 仍需重构 attention head、row/column parallel linear、vocab CE、两 rank DP group 与 runtime，尚无完整训练步证据，所以不加入公开入口。
+
+## 推理和 all-gather 复验
+
+以下推理数据均为单张 A6000、B1、固定 CUDA Graph、生成 8 token。对 HF 的检查关闭 TF32 和 BF16 降精度归约。此前短 prompt 对照遗漏了后者，HF 在相同输入上的最大 logits 偏差为 0.375–0.75。关闭后 HF 的有缓存和无缓存 prefill logits 逐元素一致。
+
+- 65-token **prefill tiling** 搭配参考累加时，Graph 延迟约为 207 → 201.3 ms。三个样本的 prefill logits 与 HF 逐元素一致，21 个 teacher-forced decode 步和贪心 token 均通过。该组合在独占 A6000 上通过正式验收。普通累加约为 205.1 → 194.6 ms，开启和关闭 tiling 的对照均只通过 14/21 个 decode 数值检查。
+- **长上下文 decode** 在 SM86 单批、单 token、可见 KV ≥512 时采用 16 行 query tile。512-token 请求从 286.7 降到 279.4 ms，2048-token 请求从 684.7 降到 654.0 ms。两种长度各 21 个 teacher-forced 步的 logits 和生成 token 均与 64 行路径逐元素一致。19 个 KV 长度和三种输入尺度共 57 个独立 attention 检查均逐元素一致，包含 NaN 缓存尾部。兼容性审计通过 24 项数值、512 块语料、两条生成和五段 trace。
+- 原 **split-KV** 改变了累加和 BF16 softmax 权重的舍入顺序，2048-token 的一个近并列样本从 token 197 变为 220。16 行路径保留 32-key 反向遍历及原舍入，解决该样本的分叉。Eager 的实测波动盖过收益，16 行路径只在固定请求 Graph 的预热和捕获时启用。
+- 免打包 **QKV 合并** 用单次 launch 写出三块独立连续输出。65-token Graph 从约 194.75 降到 193.97 ms，三个样本的 logits 和 token 逐元素一致。当前收益约 0.4%，保留实验结论。
+- 持久复用 **all-gather 缓冲区** 的两轮五步均值为 4.610、4.614 s，早期匹配基线为 4.650 s，有效 allocated 增加约 368 MiB。跳过会被完整覆盖的确定性填充后，显存回到基线。更紧的计时对照为 4.6148 → 4.6103 s，四个 rank 的首步 399 参数梯度字节摘要一致。外部 GPU 任务打断了基线的最终状态摘要。训练默认采用既有 hybrid。

@@ -99,7 +99,7 @@ class TritonQwen3Inference(nn.Module):
         values=[raw_empty(shape,device=self.device,dtype=torch.bfloat16) for _ in self.model.layers]
         return KVCache(keys,values,max_length,batch_size,self._cache_owner)
 
-    def _forward(self,input_ids,cache,logits_to_keep,*,validate_ids=True):
+    def _forward(self,input_ids,cache,logits_to_keep,*,validate_ids=True,compact_decode=False):
         if input_ids.ndim!=2 or input_ids.dtype not in (torch.int32,torch.int64) or input_ids.device!=self.device or not input_ids.is_contiguous():
             raise ValueError('Contiguous integer CUDA[B,S] input_ids on model device required')
         b,s=input_ids.shape
@@ -122,7 +122,8 @@ class TritonQwen3Inference(nn.Module):
                 q=norm_rope(q,a.q_norm.weight,cos,sin,a.q_norm.eps)
                 k=norm_rope(k,a.k_norm.weight,cos,sin,a.k_norm.eps)
                 kernels.append(k,v,cache.keys[i],cache.values[i],start)
-                y=kernels.attention(q,cache.keys[i],cache.values[i],start,split_decode=self.split_decode).view(b,s,-1)
+                y=kernels.attention(q,cache.keys[i],cache.values[i],start,
+                    split_decode=self.split_decode,compact_decode=compact_decode).view(b,s,-1)
                 x=residual_add(x,kernels.linear(y,a.o_proj.weight,gemv=self.gemv,sliced=self.sliced_decode,prefill_tiling=self.prefill_tiling,reference_accumulation=self.reference_accumulation))
                 h=rms_norm(x,layer.post_attention_layernorm.weight,layer.post_attention_layernorm.eps,reference_accumulation=self.reference_accumulation)
                 m=layer.mlp
@@ -156,7 +157,7 @@ class TritonQwen3Inference(nn.Module):
         return out
 
     @torch.inference_mode()
-    def generate(self,input_ids,*,max_new_tokens=32,eos_token_id=None,pad_token_id=None):
+    def generate(self,input_ids,*,max_new_tokens=32,eos_token_id=None,pad_token_id=None,_compact_decode=False):
         """Greedy GPU argmax with per-row EOS, padding and request-local cache."""
         if type(max_new_tokens) is not int or max_new_tokens<0:raise ValueError('Nonnegative max_new_tokens required')
         eos=self.generation_config.eos_token_id if eos_token_id is None else eos_token_id
@@ -181,7 +182,8 @@ class TritonQwen3Inference(nn.Module):
                 if not bool(((input_ids>=0)&(input_ids<self.config.vocab_size)).all()):raise ValueError('Token ID outside vocabulary')
             current=input_ids
             for step in range(max_new_tokens):
-                logits=self._forward(current,cache,1,validate_ids=False).logits[:,0,:]
+                logits=self._forward(current,cache,1,validate_ids=False,
+                    compact_decode=_compact_decode).logits[:,0,:]
                 current=raw_empty((b,1),device=self.device,dtype=torch.int64)
                 kernels.select(logits,output,current,done,s+step,eos,pad)
                 if eos and bool(done.all()):break
@@ -204,12 +206,13 @@ class CapturedGreedyRequest:
             if not bool(((self.input>=0)&(self.input<model.config.vocab_size)).all()):raise ValueError('Token ID outside vocabulary')
         stream=torch.cuda.Stream(device=model.device)
         stream.wait_stream(torch.cuda.current_stream(model.device))
+        options=dict(max_new_tokens=max_new_tokens,eos_token_id=[],pad_token_id=0,_compact_decode=True)
         with torch.cuda.stream(stream):
-            for _ in range(2):model.generate(self.input,max_new_tokens=max_new_tokens,eos_token_id=[],pad_token_id=0)
+            for _ in range(2):model.generate(self.input,**options)
         torch.cuda.current_stream(model.device).wait_stream(stream)
         self.graph=torch.cuda.CUDAGraph()
         with torch.cuda.graph(self.graph,stream=stream):
-            self.output=model.generate(self.input,max_new_tokens=max_new_tokens,eos_token_id=[],pad_token_id=0)
+            self.output=model.generate(self.input,**options)
 
     @torch.inference_mode()
     def __call__(self,input_ids):

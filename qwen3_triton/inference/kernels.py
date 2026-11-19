@@ -1,4 +1,5 @@
 """Inference-only Triton cache, attention, small-M linear and token kernels."""
+from functools import lru_cache
 import math
 import torch
 import triton
@@ -92,7 +93,12 @@ def _inference_decode_merge(P,L,O,H:tl.constexpr,D:tl.constexpr,SPLITS:tl.conste
     tl.store(O+bh*D+d,value)
 
 
-def attention(q,cache_k,cache_v,start,*,split_decode=False):
+@lru_cache
+def _sm86_decode_device(device):
+    return torch.cuda.get_device_capability(device)==(8,6)
+
+
+def attention(q,cache_k,cache_v,start,*,split_decode=False,compact_decode=False):
     b,s,h,d=q.shape;hk=cache_k.shape[1];capacity=cache_k.shape[2];total=start+s
     out=raw_empty(q.shape,device=q.device,dtype=q.dtype)
     if s==1 and split_decode:
@@ -109,7 +115,12 @@ def attention(q,cache_k,cache_v,start,*,split_decode=False):
         # Actual HF Flash decode uses32-key tiles; prefill uses64.
         # Same-QKV all36layer probes establish the required rounding order.
         key_tile=32 if s==1 else 64
-        _inference_cached_attention[(triton.cdiv(s,64),b*h)](q,cache_k,cache_v,out,s,total,capacity,h,hk,d,start,sl2,64,key_tile,num_warps=4,num_stages=2,enable_fp_fusion=False)
+        # Reduce padded query rows on SM86 without changing the key tiles
+        # or the order of BF16 softmax-weight materialization.
+        query_tile=16 if compact_decode and b==s==1 and total>=512 and _sm86_decode_device(q.device) else 64
+        _inference_cached_attention[(triton.cdiv(s,query_tile),b*h)](
+            q,cache_k,cache_v,out,s,total,capacity,h,hk,d,start,sl2,query_tile,key_tile,
+            num_warps=4,num_stages=2,enable_fp_fusion=False)
     return out
 
 

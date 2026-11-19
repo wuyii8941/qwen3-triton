@@ -16,6 +16,8 @@ CUDA_VISIBLE_DEVICES=0 bash scripts/research_python.sh scripts/generate.py \
 
 `--model` 必须指向本地官方 Qwen3-8B 权重。两个优化开关默认关闭，便于显式比较。
 
+SM86 上的固定请求 CUDA Graph 在单批、单 token decode 且可见 KV 长度至少为 512 时使用 16 行 query tile，沿用 32-key tile 的遍历及 BF16 舍入顺序。短 prompt 的 B1/S65 验收使用 `--prefill-tiling --reference-accumulation`。
+
 ## 验证
 
 `scripts/verify_inference.py` 对固定模型做数值审计和相反执行顺序的延迟比较，并把小型汇总写到指定的新目录：
@@ -25,6 +27,7 @@ CUDA_VISIBLE_DEVICES=0 bash scripts/research_python.sh scripts/verify_inference.
   --model weights/Qwen3-8B \
   --identity artifacts/inputs/input_manifest.json \
   --prefill-tiling --reference-accumulation \
+  --warmup-collection --corpus-sequence 512 --corpus-blocks 512 \
   --output artifacts/inference_validation
 ```
 
